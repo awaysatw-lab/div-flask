@@ -8,8 +8,7 @@ def create_app():
     def index():
         return "flask team project!!"
 
-    @app.route('/chs')
-    def chs():
-        return render_template('chs.html')
-
+    @app.route('/hj')
+    def hj():
+        return render_template('hj.html')
     return app
