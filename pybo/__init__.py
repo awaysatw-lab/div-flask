@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 
 def create_app():
@@ -8,4 +8,7 @@ def create_app():
     def index():
         return "flask team project!!"
 
+    @app.route('/hj')
+    def hj():
+        return render_template('hj.html')
     return app
