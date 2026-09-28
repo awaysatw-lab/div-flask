@@ -35,6 +35,12 @@
         {% endif %}
       </span>
     </div>
+    {% if portone_payment_id %}
+    <div class="info-row">
+      <span class="info-label">PortOne 결제 식별자</span>
+      <span class="info-val" style="font-family: monospace; font-size: 13px; color: #475569;">{{ portone_payment_id }}</span>
+    </div>
+    {% endif %}
     <div class="info-row">
       <span class="info-label">최종 결제 금액</span>
       <span class="info-val" style="color: var(--primary); font-size: 16px;">{{ "{:,}".format(total_final) }}원</span>

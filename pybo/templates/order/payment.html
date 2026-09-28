@@ -8,7 +8,7 @@
 <div class="container page-content">
   <div class="page-header">
     <h1>결제 진행</h1>
-    <p>예약 정보 및 여행객 명단을 확인하신 후 결제 수단을 선택해 결제를 완료해주세요.</p>
+    <p>예약 정보 및 여행객 명단을 확인하신 후 결제를 진행해주세요.</p>
   </div>
 
   <div class="checkout-layout">
@@ -74,10 +74,18 @@
         </div>
       </div>
 
-      <!-- 4. 결제 수단 선택 -->
-      <div class="card-section">
-        <h3>4. 결제 수단 선택</h3>
-        <form id="paymentForm" action="{{ url_for('order.pay_complete') }}" method="POST">
+      <!-- 4. 최종 결제 금액 (PortOne 결제 연동) -->
+      <div class="card-section" id="finalPaymentSection">
+        <h3>4. 최종 결제 금액</h3>
+        <form id="paymentForm" action="{{ url_for('order.pay_complete') }}" method="POST"
+          data-store-id="store-7f00ba71-7aff-42b3-b1e7-2e6e2e19a745"
+          data-channel-key="channel-key-8aa7da59-1180-4c4e-9723-ed30e22b7ff4"
+          data-order-name="{{ product.name }}"
+          data-total-amount="1000"          <!-- 정상적이면 ... total_discount -->
+          data-reserver-name="{{ reserver_name }}"
+          data-reserver-phone="{{ reserver_phone }}"
+          data-reserver-email="{{ reserver_email }}"
+        >
           <input type="hidden" name="product_id" value="{{ product.id }}">
           <input type="hidden" name="headcount" value="{{ headcount }}">
           <input type="hidden" name="reserver_name" value="{{ reserver_name }}">
@@ -88,77 +96,66 @@
           <input type="hidden" name="agree_privacy" value="{{ '1' if agree_privacy else '0' }}">
           <input type="hidden" name="agree_sensitive" value="{{ '1' if agree_sensitive else '0' }}">
           <input type="hidden" name="agree_location" value="{{ '1' if agree_location else '0' }}">
+          <input type="hidden" name="payment_method" value="CARD">
+          <input type="hidden" name="portone_payment_id" id="portonePaymentId" value="">
+          <input type="hidden" name="portone_tx_id" id="portoneTxId" value="">
+          <input type="hidden" name="paid_amount" id="formPaidAmount" value="1000">
 
-          <div class="payment-methods-grid">
-            <label class="pay-method-card">
-              <input type="radio" name="payment_method" value="CARD" checked>
-              <div class="method-box">
-                <span class="method-icon">💳</span>
-                <span class="method-name">신용/체크카드</span>
+          <div class="final-amount-box">
+            <!-- 금액 상세 요약 -->
+            <div class="amount-detail-grid">
+              <div class="amount-detail-item">
+                <span class="detail-label">정상 상품 금액 ({{ headcount }}명)</span>
+                <span class="detail-val">{{ "{:,}".format(total_original) }}원</span>
               </div>
-            </label>
+              <div class="amount-detail-item">
+                <span class="detail-label">
+                  {% if is_member %}
+                    회원 우대 할인 ({{ (product.member_discount_rate * 100)|int }}%)
+                  {% else %}
+                    회원 할인 (비회원 정가)
+                  {% endif %}
+                </span>
+                <span class="detail-val discount">
+                  {% if is_member %}
+                    - {{ "{:,}".format(total_discount) }}원
+                  {% else %}
+                    0원
+                  {% endif %}
+                </span>
+              </div>
+              <div class="amount-detail-item">
+                <span class="detail-label">주문 기준 총액</span>
+                <span class="detail-val">{{ "{:,}".format(total_final) }}원</span>
+              </div>
+            </div>
 
-            <label class="pay-method-card">
-              <input type="radio" name="payment_method" value="EASY_PAY">
-              <div class="method-box">
-                <span class="method-icon">📱</span>
-                <span class="method-name">간편결제 (카카오/네이버)</span>
+            <!-- PortOne 결제 안내 바 -->
+            <div class="final-highlight-bar">
+              <div class="final-highlight-left">
+                <div class="highlight-title">
+                  <span>💳 신용카드 결제</span>                  
+                </div>
+                <p class="highlight-desc">신용/체크카드로 전자결제가 안전하게 진행됩니다.</p>
               </div>
-            </label>
+            </div>
 
-            <label class="pay-method-card">
-              <input type="radio" name="payment_method" value="BANK_TRANSFER">
-              <div class="method-box">
-                <span class="method-icon">🏦</span>
-                <span class="method-name">실시간 계좌이체</span>
-              </div>
-            </label>
+            <button type="submit" class="btn-pay-main" id="btnPayMain">
+              결제하기
+            </button>
+
+            <a href="{{ url_for('order.reserve', product_id=product.id, headcount=headcount) }}" class="btn-back-link">
+              &lt; 예약 정보 수정하기
+            </a>
           </div>
         </form>
       </div>
 
     </div>
-
-    <!-- 우측 영수증 -->
-    <div class="checkout-sidebar">
-      <div class="receipt-card">
-        <h3>최종 결제 금액</h3>
-
-        <div class="receipt-row">
-          <span>정상 상품 금액 ({{ headcount }}명)</span>
-          <span>{{ "{:,}".format(total_original) }}원</span>
-        </div>
-
-        {% if is_member %}
-          <div class="receipt-row discount">
-            <span>회원 특별 할인 ({{ (product.member_discount_rate * 100)|int }}%)</span>
-            <span>- {{ "{:,}".format(total_discount) }}원</span>
-          </div>
-        {% else %}
-          <div class="receipt-row">
-            <span class="text-muted">회원 할인 (비회원 정가)</span>
-            <span class="text-muted">0원</span>
-          </div>
-        {% endif %}
-
-        <div class="receipt-divider"></div>
-
-        <div class="receipt-row total">
-          <span>총 결제 금액</span>
-          <span class="amount">{{ "{:,}".format(total_final) }}원</span>
-        </div>
-
-        <button type="submit" form="paymentForm" class="btn-pay-complete">
-          {{ "{:,}".format(total_final) }}원 결제 완료하기
-        </button>
-
-        <a href="{{ url_for('order.reserve', product_id=product.id, headcount=headcount) }}" class="btn-back-link">
-          &lt; 예약 정보 수정하기
-        </a>
-      </div>
-    </div>
   </div>
 </div>
 
+<!-- PortOne V2 Browser SDK 로드 -->
+<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
 <script src="{{ url_for('static', filename='js/payment.js') }}"></script>
 {% endblock %}

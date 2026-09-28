@@ -1,35 +1,123 @@
-// payment.js - 결제 화면 수단 선택 및 중복 결제 방지 스크립트
+// payment.js - PortOne V2 1,000원 결제 연동 스크립트
 
 document.addEventListener('DOMContentLoaded', function() {
   const paymentForm = document.getElementById('paymentForm');
-  const payBtn = document.querySelector('.btn-pay-complete');
+  const payBtnMain = document.getElementById('btnPayMain');
+  const payBtnSidebar = document.getElementById('btnPayComplete');
+  const allPayButtons = [payBtnMain, payBtnSidebar].filter(Boolean);
 
-  if (paymentForm && payBtn) {
-    paymentForm.addEventListener('submit', function() {
-      payBtn.disabled = true;
-      payBtn.innerText = '결제 처리 중입니다...';
+  if (!paymentForm) return;
+
+  function setButtonsState(disabled, text) {
+    allPayButtons.forEach(btn => {
+      btn.disabled = disabled;
+      if (text) btn.innerText = text;
     });
   }
 
-  // 결제 수단 카드 클릭 활성화 효과
-  const methodRadios = document.querySelectorAll('input[name="payment_method"]');
-  methodRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      methodRadios.forEach(r => {
-        const box = r.closest('.pay-method-card').querySelector('.method-box');
-        if (box) {
-          if (r.checked) {
-            box.style.borderColor = 'var(--primary)';
-            box.style.background = 'var(--primary-light)';
-            box.style.color = 'var(--primary)';
-          } else {
-            box.style.borderColor = 'var(--border-color)';
-            box.style.background = '#ffffff';
-            box.style.color = '#334155';
-          }
-        }
-      });
-    });
+  /**
+   * PortOne V2 SDK 1,000원 테스트 결제 요청 함수
+   * @param {Object} options 파라미터 오버라이드 객체 (선택)
+   */
+  async function requestPayment(options = {}) {
+    if (typeof PortOne === 'undefined') {
+      throw new Error('PortOne 브라우저 SDK가 로드되지 않았습니다. 인터넷 연결을 확인해주세요.');
+    }
+
+    const storeId = options.storeId 
+      || paymentForm.dataset.storeId 
+      || "store-7f00ba71-7aff-42b3-b1e7-2e6e2e19a745";
+
+    const channelKey = options.channelKey 
+      || paymentForm.dataset.channelKey 
+      || "channel-key-8aa7da59-1180-4c4e-9723-ed30e22b7ff4";
+
+    // UUID 기반 주문별 고유 식별자 설정
+    const uuid = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    const paymentId = options.paymentId || `payment-${uuid}`;
+
+    // 항상 1,000원으로 고정 호출
+    const totalAmount = options.totalAmount !== undefined ? options.totalAmount : 1000;
+    const orderName = options.orderName || paymentForm.dataset.orderName || "테스트 상품 결제";
+    const payMethod = options.payMethod || "CARD";
+
+    const reserverName = paymentForm.dataset.reserverName || '';
+    const reserverPhone = paymentForm.dataset.reserverPhone || '';
+    const reserverEmail = paymentForm.dataset.reserverEmail || '';
+
+    // PortOne.requestPayment 파라미터 구성
+    const paymentParams = {
+      storeId: storeId,
+      channelKey: channelKey,
+      paymentId: paymentId,
+      orderName: orderName,
+      totalAmount: totalAmount,
+      currency: "KRW",
+      payMethod: payMethod,
+    };
+
+    if (reserverName || reserverEmail || reserverPhone) {
+      paymentParams.customer = {
+        fullName: reserverName || '고객',
+        phoneNumber: reserverPhone || undefined,
+        email: reserverEmail || undefined,
+      };
+    }
+
+    console.log('[PortOne] requestPayment 호출 파라미터:', paymentParams);
+
+    // PortOne V2 결제창 호출
+    const response = await PortOne.requestPayment(paymentParams);
+    return { response, paymentId, totalAmount, orderName };
+  }
+
+  // 브라우저 개발자 도구 콘솔 등에서 수동 호출 가능하도록 window에 등록
+  window.requestPayment = requestPayment;
+
+  // 폼 제출 이벤트 가로채기 -> PortOne 결제 모달 띄우기
+  paymentForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    setButtonsState(true, '결제창을 여는 중입니다...');
+
+    try {
+      const { response, paymentId, totalAmount } = await requestPayment();
+
+      console.log('[PortOne] 결제 응답 결과:', response);
+
+      // 결제창 닫힘, 취소 또는 실패 시
+      if (response && response.code != null) {
+        alert(`결제가 취소되었거나 승인에 실패하였습니다.\n[사유] ${response.message || response.code}`);
+        setButtonsState(false, '1,000원 결제하기 (PortOne)');
+        return;
+      }
+
+      // 결제 성공 시
+      setButtonsState(true, '결제 승인 완료! 저장 중...');
+
+      const portonePaymentIdEl = document.getElementById('portonePaymentId');
+      const portoneTxIdEl = document.getElementById('portoneTxId');
+      const formPaidAmountEl = document.getElementById('formPaidAmount');
+
+      if (portonePaymentIdEl) {
+        portonePaymentIdEl.value = (response && response.paymentId) ? response.paymentId : paymentId;
+      }
+      if (portoneTxIdEl) {
+        portoneTxIdEl.value = (response && response.txId) ? response.txId : ((response && response.paymentId) ? response.paymentId : paymentId);
+      }
+      if (formPaidAmountEl) {
+        formPaidAmountEl.value = totalAmount; // 1000
+      }
+
+      // 서버의 /order/pay/complete 로 주문 저장 처리
+      paymentForm.submit();
+
+    } catch (error) {
+      console.error('[PortOne] 결제 처리 에러:', error);
+      alert(`결제 처리 중 오류가 발생했습니다: ${error.message || error}`);
+      setButtonsState(false, '1,000원 결제하기 (PortOne)');
+    }
   });
 });
-
