@@ -15,18 +15,36 @@
                 <span class="slogan">오늘, 더 특별한 여행</span>
             </div>
 
+<<<<<<< HEAD
             <div class="header-right-block">
 
+=======
+            <!-- 우측 영역 (1층 유틸과 2층 메뉴+검색창이 모두 포함됨) -->
+            <div class="header-right-block">
+
+                <!-- 1층: 미니 유틸리티 메뉴 -->
+>>>>>>> cf693045411fb2e372dbd5aba6c3bd859556ec83
                 <div class="utility-menu">
                     <a href="#">로그인</a>
                     <a href="#">고객센터</a>
                     <a href="#">🌐 한국어 ▾</a>
+<<<<<<< HEAD
                 </div>
 
                 <div class="nav-search-line">
                     <nav class="main-nav">
                         <div class="nav-links">
                             <div class="nav-item"><a href="{{ url_for('product.main_product') }}">여행 ▾</a></div>
+=======
+                </div> <!-- 닫는 태그 누락 오류 해결 -->
+
+                <!-- 2층: 메뉴 리스트와 검색창을 가로로 정렬하는 라인 -->
+                <div class="nav-search-line">
+                    <!-- 메인 내비게이션 바 -->
+                    <nav class="main-nav">
+                        <div class="nav-links">
+                            <div class="nav-item"><a href="#">여행 ▾</a></div>
+>>>>>>> cf693045411fb2e372dbd5aba6c3bd859556ec83
                             <div class="nav-item"><a href="#">추천 <span class="badge">N</span> ▾</a></div>
                             <div class="nav-item"><a href="#">후기</a></div>
                             <div class="nav-item"><a href="#">QnA</a></div>
@@ -39,10 +57,18 @@
                     </div>
                 </div>
 
+<<<<<<< HEAD
             </div>
         </div>
     </header>
 
+=======
+            </div> <!-- .header-right-block을 여기서 완전히 닫아줍니다. -->
+        </div>
+    </header>
+
+    <!-- 본문 콘텐츠 영역 -->
+>>>>>>> cf693045411fb2e372dbd5aba6c3bd859556ec83
     {% block content %}
     {% endblock %}
 

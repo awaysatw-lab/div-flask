@@ -23,7 +23,11 @@ class User(db.Model):
     likes = db.relationship('ProductLike', backref='user', lazy='dynamic', cascade='all, delete-orphan')
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> cf693045411fb2e372dbd5aba6c3bd859556ec83
 class RegionEnum(str, enum.Enum):
     SEOUL_GYEONGGI = "서울/경기"
     JEONLA = "전라"
