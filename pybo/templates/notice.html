@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 | 대한민국 구석구석 여행</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        a {
+            text-shadow: none;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 1. 헤더 (Header) */
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .utill-menu a {
+            margin-left: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 2. 네비게이션 (Navigation) */
+        .nav {
+            background-color: #0066cc;
+            overflow: hidden;
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-menu li a {
+            display: block;
+            padding: 15px 20px;
+            color: #fff;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        .nav-menu li a:hover, .nav-menu li.active a {
+            background-color: #004da0;
+        }
+
+        /* 메인 컨텐츠 영역 */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            border-bottom: 2px solid #333;
+            padding-bottom: 15px;
+        }
+
+        /* 3. 공지사항 목록 (Notice List Table) */
+        .notice-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            margin-bottom: 30px;
+        }
+        .notice-table th, .notice-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .notice-table th {
+            background-color: #f5f7fa;
+            font-weight: 600;
+            border-top: 1px solid #333;
+        }
+        .notice-table td.title {
+            text-align: left;
+            font-weight: 500;
+        }
+        .notice-table td.title a:hover {
+            text-decoration: underline;
+            color: #0066cc;
+        }
+        .badge-notice {
+            background-color: #ff4d4d;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* 페이징 (Pagination) */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 20px;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination li a {
+            display: block;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .pagination li.active a {
+            background-color: #0066cc;
+            color: #fff;
+            border-color: #0066cc;
+        }
+
+        /* 4. 푸터 (Footer) */
+        .footer {
+            background-color: #333;
+            color: #ccc;
+            padding: 40px 20px;
+            margin-top: auto;
+            font-size: 14px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            margin-right: 20px;
+            color: #fff;
+        }
+        .footer-info {
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+        .copyright {
+            margin-top: 15px;
+            color: #888;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 헤더 영역 -->
+    <header class="header">
+        <div class="logo">K-Tour Connect</div>
+        <div class="utill-menu">
+            <a href="#">로그인</a>
+            <a href="#">회원가입</a>
+            <a href="#">English</a>
+        </div>
+    </header>
+
+    <!-- 2. 네비게이션 영역 -->
+    <nav class="nav">
+        <ul class="nav-menu">
+            <li><a href="#">홈</a></li>
+            <li><a href="#">여행지 소개</a></li>
+            <li><a href="#">축제/행사</a></li>
+            <li><a href="#">여행 가이드</a></li>
+            <li class="active"><a href="#">공지사항</a></li>
+        </ul>
+    </nav>
+
+    <!-- 메인 컨텐츠 및 3. 공지사항 목록 영역 -->
+    <main class="container">
+        <h2 class="page-title">공지사항</h2>
+        
+        <table class="notice-table">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">번호</th>
+                    <th style="width: 57%;">제목</th>
+                    <th style="width: 15%;">작성일</th>
+                    <th style="width: 10%;">조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 상단 고정 공지 -->
+                <tr>
+                    <td><span class="badge-notice">공지</span></td>
+                    <td class="title"><a href="#">[중요] 시스템 점검에 따른 여행 예약 서비스 일시 중단 안내</a></td>
+                    <td>2026-09-28</td>
+                    <td>1,245</td>
+                </tr>
+                <tr>
+                    <td><span class="badge-notice">공지</span></td>
+                    <td class="title"><a href="#">[이벤트] 가을 맞이 국내 숙박 할인 쿠폰 지급 이벤트 (선착순)</a></td>
+                    <td>2026-09-25</td>
+                    <td>3,890</td>
+                </tr>
+                <!-- 일반 공지 목록 -->
+                <tr>
+                    <td>5</td>
+                    <td class="title"><a href="#">전라남도 지역 축제 셔틀버스 운행 시간표 변경 안내</a></td>
+                    <td>2026-09-24</td>
+                    <td>452</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="title"><a href="#">[발표] 8월 베스트 포토 후기 작성자 경품 당첨자 발표</a></td>
+                    <td>2026-09-20</td>
+                    <td>612</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="title"><a href="#">경복궁 야간 관람 예매 방식 변경 안내</a></td>
+                    <td>2026-09-15</td>
+                    <td>1,805</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="title"><a href="#">제주도 렌터카 제휴 업체 가격 비교 서비스 오픈 안내</a></td>
+                    <td>2026-09-10</td>
+                    <td>930</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td class="title"><a href="#">K-Tour Connect 서비스 공식 론칭 안내</a></td>
+                    <td>2026-09-01</td>
+                    <td>2,341</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 페이징 영역 -->
+        <ul class="pagination">
+            <li><a href="#">&lt;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&gt;</a></li>
+        </ul>
+    </main>
+
+    <!-- 4. 푸터 영역 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">이용약관</a>
+                <a href="#"><strong>개인정보처리방침</strong></a>
+                <a href="#">고객센터</a>
+                <a href="#">찾아오시는 길</a>
+            </div>
+            <div class="footer-info">
+                <p>(우) 06132 서울특별시 강남구 테헤란로 | 대표자: 홍길동</p>
+                <p>사업자등록번호: 123-45-67890 | 통신판매업신고: 제 2026-서울강남-0000호</p>
+                <p class="copyright">&copy; 2026 K-Tour Connect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -198,11 +198,19 @@ def pay_complete():
     agree_sensitive = request.form.get('agree_sensitive') in ['1', 'on', 'true', 'True']
     agree_location = request.form.get('agree_location') in ['1', 'on', 'true', 'True']
 
+    # PortOne 결제 응답 파라미터 수신
+    portone_payment_id = request.form.get('portone_payment_id', '').strip()
+    portone_tx_id = request.form.get('portone_tx_id', '').strip()
+    paid_amount_str = request.form.get('paid_amount', '').strip()
+
     unit_final_price = product.get_discounted_price(is_member=is_member)
     unit_discount = product.get_discount_amount(is_member=is_member)
     total_original = product.original_price * headcount
     total_discount = unit_discount * headcount
     total_final = unit_final_price * headcount
+
+    # 실제 결제된 금액 (테스트 1,000원 결제 또는 정상 결제액)
+    actual_paid = int(paid_amount_str) if (paid_amount_str and paid_amount_str.isdigit()) else total_final
 
     order_no = Order.generate_order_no()
     order = Order(
@@ -231,11 +239,13 @@ def pay_complete():
     )
     db.session.add(order_item)
 
+    # PortOne 고유 payment_id / tx_id 우선 저장
+    tx_id = portone_payment_id or portone_tx_id or f"TX-{order_no}"
     payment = Payment(
         order_id=order.id,
         payment_method=payment_method,
-        paid_amount=total_final,
-        transaction_id=f"TX-{order_no}",
+        paid_amount=actual_paid,
+        transaction_id=tx_id,
         status='SUCCESS'
     )
     db.session.add(payment)
@@ -253,5 +263,6 @@ def pay_complete():
         headcount=headcount,
         travelers=travelers,
         payment_method=payment_method,
-        total_final=total_final
+        total_final=actual_paid,
+        portone_payment_id=portone_payment_id or portone_tx_id
     )
