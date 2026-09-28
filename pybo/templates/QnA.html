@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대한민국 구석구석 - 여행 Q&A</title>
+    <style>
+        /* 기본 리셋 및 폰트 설정 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
+        body { background-color: #f8f9fa; color: #333; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* 1. 헤더 (Header) */
+        .header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 24px; font-weight: bold; color: #007bff; }
+        .user-menu a { margin-left: 15px; font-size: 14px; color: #666; }
+
+        /* 메인 컨테이너 */
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+
+        /* 2. 검색창 & 타이틀 세션 (Search Bar) */
+        .search-section { text-align: center; margin-bottom: 40px; }
+        .search-section h1 { font-size: 28px; margin-bottom: 20px; color: #222; }
+        .search-box { position: relative; max-width: 600px; margin: 0 auto; }
+        .search-box input { width: 100%; padding: 15px 20px; font-size: 16px; border: 2px solid #007bff; border-radius: 30px; outline: none; box-shadow: 0 4px 6px rgba(0,123,255,0.1); }
+        .search-box button { position: absolute; right: 5px; top: 5px; background-color: #007bff; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        .search-box button:hover { background-color: #0056b3; }
+
+        /* 3. 네비게이션 (Navigation - 카테고리 탭) */
+        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #e9ecef; padding-bottom: 10px; }
+        .tab-item { padding: 10px 20px; font-size: 15px; font-weight: 500; color: #666; cursor: pointer; border-radius: 20px; transition: all 0.2s; }
+        .tab-item.active { background-color: #007bff; color: white; }
+        .tab-item:hover:not(.active) { background-color: #e9ecef; }
+
+        /* 4. Q&A 리스트 영역 */
+        .qa-list { background-color: #ffffff; border-radius: 8px; border: 1px solid #eeeeee; overflow: hidden; }
+        .qa-item { padding: 20px; border-bottom: 1px solid #eeeeee; display: flex; justify-content: space-between; align-items: center; }
+        .qa-item:last-child { border-bottom: none; }
+        .qa-content { flex: 1; }
+        .qa-status { display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 4px; font-weight: bold; margin-bottom: 8px; }
+        .status-resolved { background-color: #e6f4ea; color: #137333; }
+        .status-pending { background-color: #feeee7; color: #c26401; }
+        .qa-title { font-size: 18px; font-weight: bold; margin-bottom: 6px; color: #222; }
+        .qa-title:hover { color: #007bff; }
+        .qa-info { font-size: 13px; color: #888; }
+        .qa-meta { text-align: right; min-width: 80px; }
+        .reply-count { font-size: 14px; font-weight: bold; color: #007bff; background-color: #f0f7ff; padding: 6px 12px; border-radius: 20px; }
+
+        /* 5. 푸터 (Footer) */
+        .footer { background-color: #ffffff; border-top: 1px solid #eeeeee; padding: 30px 20px; text-align: center; font-size: 13px; color: #888; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 헤더 -->
+    <header class="header">
+        <div class="logo">대한민국 구석구석</div>
+        <nav class="user-menu">
+            <a href="#">로그인</a>
+            <a href="#">회원가입</a>
+            <a href="#">고객센터</a>
+        </nav>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <main class="container">
+        
+        <!-- 2. 검색창 세션 -->
+        <section class="search-section">
+            <h1>궁금한 국내 여행 정보를 찾아보세요</h1>
+            <div class="search-box">
+                <input type="text" placeholder="지역명, 관광지, 맛집 등을 검색해보세요.">
+                <button type="button">검색</button>
+            </div>
+        </section>
+
+        <!-- 3. 네비게이션 탭 -->
+        <nav class="nav-tabs">
+            <div class="tab-item active">전체</div>
+            <div class="tab-item">관광지</div>
+            <div class="tab-item">맛집</div>
+            <div class="tab-item">숙소</div>
+            <div class="tab-item">교통/일정</div>
+        </nav>
+
+        <!-- 4. Q&A 리스트 -->
+        <section class="qa-list">
+            <!-- 게시글 1 -->
+            <div class="qa-item">
+                <div class="qa-content">
+                    <span class="qa-status status-resolved">답변완료</span>
+                    <a href="#"><h2 class="qa-title">10월 중순 경주 2박 3일 가족 여행 코스 추천 부탁드립니다.</h2></a>
+                    <div class="qa-info">작성자: 길동이 | 작성일: 2026.09.28 | 조회수: 124</div>
+                </div>
+                <div class="qa-meta">
+                    <span class="reply-count">답변 3</span>
+                </div>
+            </div>
+            
+            <!-- 게시글 2 -->
+            <div class="qa-item">
+                <div class="qa-content">
+                    <span class="qa-status status-pending">답변대기</span>
+                    <a href="#"><h2 class="qa-title">부산 광안리 근처 혼밥하기 좋은 맛집 있을까요?</h2></a>
+                    <div class="qa-info">작성자: 여행조아 | 작성일: 2026.09.28 | 조회수: 45</div>
+                </div>
+                <div class="qa-meta">
+                    <span class="reply-count">답변 0</span>
+                </div>
+            </div>
+
+            <!-- 게시글 3 -->
+            <div class="qa-item">
+                <div class="qa-content">
+                    <span class="qa-status status-resolved">답변완료</span>
+                    <a href="#"><h2 class="qa-title">여수 밤바다 크루즈 예약은 미리 해야 하나요? 현장 발권 가능한가요?</h2></a>
+                    <div class="qa-info">작성자: 마린보이 | 작성일: 2026.09.27 | 조회수: 312</div>
+                </div>
+                <div class="qa-meta">
+                    <span class="reply-count">답변 2</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 5. 푸터 -->
+    <footer class="footer">
+        <p>© 2026 대한민국 구석구석 여행 Q&A. All 오너십 및 권리 보유.</p>
+    </footer>
+
+</body>
+</html>

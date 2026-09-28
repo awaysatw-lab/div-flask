@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국 여행 후기</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Malgun Gothic', sans-serif; }
+        body { background-color: #f8f9fa; color: #333; }
+        a { text-decoration: none; color: inherit; }
+
+        /* 1. 헤더 (Header) */
+        .header {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eeeeee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 20px; font-weight: bold; color: #1D3557; }
+        .search-bar { padding: 6px 12px; border: 1px solid #ddd; border-radius: 20px; width: 200px; }
+
+        /* 2. 네비게이션 (Navigation) */
+        .nav {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .nav-item { font-size: 14px; font-weight: 600; color: #495057; cursor: pointer; }
+        .nav-item.active { color: #0084FF; border-bottom: 2px solid #0084FF; padding-bottom: 2px; }
+
+        /* 공통 컨테이너 */
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        .section-title { font-size: 18px; font-weight: bold; margin: 25px 0 12px 0; display: flex; align-items: center; gap: 5px; color: #1D3557; }
+
+        /* 3. 대표/배너 사진 (Main Banner) */
+        .main-banner {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('https://picsum.photos') center/cover;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+        .banner-tag { background-color: #0084FF; color: white; font-size: 11px; padding: 3px 8px; border-radius: 4px; width: fit-content; margin-bottom: 8px; }
+        .banner-title { font-size: 22px; font-weight: bold; text-shadow: 1px 1px 4px rgba(0,0,0,0.6); }
+
+        /* 4. 본문 소감 및 반응 바 */
+        .post-meta { display: flex; justify-content: space-between; align-items: center; padding: 5px 0 15px; border-bottom: 1px solid #eee; font-size: 13px; color: #777; }
+        .post-body { font-size: 15px; line-height: 1.7; color: #444; margin: 20px 0; }
+
+        .engagement-bar { display: flex; gap: 15px; padding: 12px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; font-size: 14px; color: #555; }
+        .btn-action { cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .btn-action:hover { color: #0084FF; }
+
+        /* 5. 사진 갤러리 (2열 그리드 구조) */
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .gallery-item { width: 100%; height: 160px; border-radius: 8px; object-fit: cover; background-color: #e9ecef; }
+
+        /* 6. 일정 및 경비 요약 표 */
+        .summary-table { width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .summary-table th, .summary-table td { padding: 12px; font-size: 14px; text-align: left; border-bottom: 1px solid #eeeeee; }
+        .summary-table th { background-color: #E6F2FF; color: #0056B3; font-weight: bold; }
+        .summary-table tr:last-child td { border-bottom: none; }
+        .price-text { font-weight: bold; color: #D90429; text-align: right; }
+
+        /* 7. 댓글 입력 및 목록 */
+        .comment-section { background-color: #ffffff; border-radius: 8px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .comment-form { display: flex; gap: 10px; margin-bottom: 20px; }
+        .comment-input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .comment-submit { background-color: #1D3557; color: white; border: none; padding: 0 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .comment-submit:hover { background-color: #0084FF; }
+
+        .comment-list { display: flex; flex-direction: column; gap: 12px; }
+        .comment-item { border-bottom: 1px solid #f1f3f5; padding-bottom: 12px; }
+        .comment-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .comment-user { font-size: 13px; font-weight: bold; color: #333; margin-bottom: 4px; }
+        .comment-text { font-size: 14px; color: #555; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 헤더 -->
+    <header class="header">
+        <div class="logo">K-TravelLog</div>
+        <input type="text" class="search-bar" placeholder="지역이나 맛집 검색...">
+    </header>
+
+    <!-- 2. 네비게이션 -->
+    <nav class="nav">
+        <div class="nav-item">홈</div>
+        <div class="nav-item active">여행후기</div>
+        <div class="nav-item">인기명소</div>
+        <div class="nav-item">마이페이지</div>
+    </nav>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="container">
+        
+        <!-- 3. 대표/배너 사진 -->
+        <div class="main-banner">
+            <span class="banner-tag">서울 여행</span>
+            <h1 class="banner-title">전통과 현대가 공존하는 서울 2박 3일 힐링 투어</h1>
+        </div>
+
+        <!-- 작성 정보 및 본문 -->
+        <div class="post-meta">
+            <span>작성자: 김여행 | 2026.09.28</span>
+            <span>조회수 1,245</span>
+        </div>
+
+        <article class="post-body">
+            이번 주말에 다녀온 서울 여행 후기입니다! 첫날 경복궁에서 한복을 대여해 걸어 다녔는데 날씨까지 완벽해서 멋진 사진을 많이 건졌어요. 
+            인사동 쌈지길에서 아기자기한 소품들도 구경하고, 저녁에는 한강공원에서 배달 음식을 먹으며 야경을 즐겼는데 정말 낭만적이었습니다. 
+            도심 속에서 힐링이 필요하신 분들께 강추하는 코스입니다!
+        </article>
+
+        <!-- 반응 바 (좋아요/댓글수) -->
+        <div class="engagement-bar">
+            <div class="btn-action">❤️ 좋아요 <span>42</span></div>
+            <div class="btn-action">💬 댓글 <span>3</span></div>
+            <div class="btn-action">🔖 공유하기</div>
+        </div>
+
+        <!-- 4. 사진 갤러리 -->
+        <h2 class="section-title">📸 여행의 순간들</h2>
+        <div class="gallery-grid">
+            <img class="gallery-item" src="https://picsum.photos" alt="여행 사진 1">
+            <img class="gallery-item" src="https://picsum.photos" alt="여행 사진 2">
+            <img class="gallery-item" src="https://picsum.photos" alt="여행 사진 3">
+            <img class="gallery-item" src="https://picsum.photos" alt="여행 사진 4">
+        </div>
+
+        <!-- 5. 일정 및 경비 요약 -->
+        <h2 class="section-title">📊 일정 및 경비 요약</h2>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>날짜</th>
+                    <th>주요 방문 코스</th>
+                    <th style="text-align: right;">지출 비용</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1일차</td>
+                    <td>경복궁 ➔ 인사동 ➔ 뚝섬 한강공원</td>
+                    <td class="price-text">65,000원</td>
+                </tr>
+                <tr>
+                    <td>2일차</td>
+                    <td>남산서울타워 ➔ 명동 ➔ 동대문 DDP</td>
+                    <td class="price-text">88,000원</td>
+                </tr>
+                <tr>
+                    <td>3일차</td>
+                    <td>익선동 한옥마을 ➔ 귀가</td>
+                    <td class="price-text">35,000원</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 6. 댓글 영역 -->
+        <h2 class="section-title">💬 방문자 후기</h2>
+        <div class="comment-section">
+            <!-- 댓글 입력창 -->
+            <form class="comment-form" onsubmit="event.preventDefault();">
+                <input type="text" class="comment-input" placeholder="따뜻한 댓글을 남겨주세요.">
+                <button type="submit" class="comment-submit">등록</button>
+            </form>
+            
+            <!-- 댓글 목록 -->
+            <div class="comment-list">
+                <div class="comment-item">
+                    <div class="comment-user">하늘나리</div>
+                    <div class="comment-text">저도 이번 주말에 한강 가려고 했는데 코스가 정말 알차네요! 저장해두고 참고하겠습니다. 😊</div>
+                </div>
+                <div class="comment-item">
+                    <div class="comment-user">PixelArt</div>
+                    <div class="comment-text">한복 대여 팁이나 맛집 위치 정보도 조금 더 공유해 주실 수 있나요? 사진 너무 예뻐요!</div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
