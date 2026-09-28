@@ -21,8 +21,6 @@ def create_app():
 
     app = Flask(__name__)
     app.config.from_object(config)
-<<<<<<< HEAD
-=======
 
     # ORM
     db.init_app(app)
@@ -33,28 +31,18 @@ def create_app():
 
     from . import models
 
-    from .views import main_views
->>>>>>> cf693045411fb2e372dbd5aba6c3bd859556ec83
-
-    # ORM
-    db.init_app(app)
-    if app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite'):
-        migrate.init_app(app, db, render_as_batch=True)
-    else:
-        migrate.init_app(app, db)
-
-    from . import models
-
-<<<<<<< HEAD
     from .views import order_views
     app.register_blueprint(order_views.bp)
 
     from .views import main_views
     app.register_blueprint(main_views.bp)
 
-    from .views import product_views
-    app.register_blueprint(product_views.bp)
+    @app.route('/main_product')
+    def main_product():
+        return render_template('product/main_product.html')
 
-=======
->>>>>>> cf693045411fb2e372dbd5aba6c3bd859556ec83
+    @app.route('/sub_product')
+    def sub_product():
+        return render_template('product/sub_product.html')
+
     return app
