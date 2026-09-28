@@ -12,20 +12,24 @@
 }
 
 .carousel-item{
-    position: relative;
     width: 100%;
-    height: 450px;
+    height: 500px;
     background-size: 100%;
     overflow: hidden;
 }
 
+
 /*슬라이드 밑 nav*/
-.wide1 > nav{
+div > nav{
     width: 100%;
-    background-color: #1D3557;
+    height: 50px;
+    background-color: #FAF8F5;
+    opacity: 0.9;
     margin-bottom: 20px;
+    position: relative;
+    top: -50px;
 }
-.wide1 > nav > .container-fluid{
+div > nav > .container-fluid{
     height: 50px;
     width: 600px;
     color: white;
@@ -35,7 +39,7 @@
 .navbar-brand{
     width: 100px;
     height: 50px;
-    background-color: #F6F4EE;
+    background-color: #FAF8F5;
     color: #212529;
     border-radius: 10px;
     display: flex;
@@ -70,7 +74,7 @@
 .map-btn{
     width: 145px;
     height: 40px;
-    background-color: #F6F4EE;
+    background-color: #FAF8F5;
     color: #212529;
     border-radius: 5px;
     border-style: none;
@@ -93,7 +97,7 @@
 
 .card-body > .card-price{
     height: 90px;
-    background-color: #eeeeee;
+    background-color: #FAF8F5;
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
@@ -112,10 +116,11 @@
 }
 
 .card-body > .card-price > div > p{
-    color: #154AD3;
+    color: #ED4956;
     font-size: 10pt;
     margin-top: -8px;
     margin-left: 5px;
+    font-weight: 600;
 }
 
 .card-body > div > a:first-child{
@@ -126,14 +131,18 @@
 }
 .card-body > div > a:last-child{
     width: 85px;
-    background-color: #1D3557;
+    background-color: #E76F5F;
     color: #ffffff;
-    border-color: #1D3557;
+    border-color: #E76F5F;
 }
 
 
 
 /*sub*/
+#sub_wide1-1{
+    display: flex;
+    margin-top: 30px;
+}
 /*스와이퍼*/
 #carouselExample:first-child{
     height: 320px;
@@ -146,7 +155,7 @@
 }
 
 #recommend{
-    background-color: #eeeeee;
+    background-color: #FAF8F5;
     margin: 10px 0;
     display: flex;
     align-items: center;
@@ -160,12 +169,17 @@
 #heart-log{
     width: 100px;
     margin: 10px 5px 10px 0;
-    background-color: #f5faf8f5;
-    color: #E76F5F;
-    border-color: none;
-    border-style: none;
+    background-color: #faf8f5;
+    color: #ED4956;
+    border-color: #E76F5F;
+    border-style: solid;
     border-radius: 10px;
     font-weight: 700;
+}
+
+#heart-log:not(.active):hover {
+    background-color: #E76F5F;
+    color: white;
 }
 
 .white-btn{
@@ -179,7 +193,7 @@
 
 #schedule{
     width: 100%;
-    background-color: #dddddd;
+    background-color: #FAF8F5;
     margin: 30px 0 10px;
 }
 
@@ -197,7 +211,7 @@
 }
 
 #purchase{
-    background-color: #eeeeee;
+    background-color: #FAF8F5;
     height: 110px;
     margin-top: 20px;
     padding: 20px 10px;
@@ -237,8 +251,10 @@
     height: 40px;
     position: relative;
     top: -5px;
-    background-color: #0f172a;
+    background-color: #ED4956;
     color: #ffffff;
+    border-color: none;
+    border-style: none;
     border-radius: 5px;
     font-weight: 500;
 }
@@ -247,7 +263,7 @@
     height: 120px;
     margin: 10px 0;
     padding: 15px;
-    background-color: #eeeeee;
+    background-color: #FAF8F5;
     border-radius: 10px;
 }
 
@@ -257,11 +273,27 @@
     justify-content: space-around;
 }
 
-#log-discount>div>button{
+#log-discount>div>button:first-child{
     width: 230px;
     height: 50px;
     margin-top: 15px;
     border-radius: 5px;
+    color: white;
+    background-color: #1D3557;
+    border-color: #1D3557;
+    border-style: solid;
+}
+
+#log-discount>div>button:last-child{
+    width: 230px;
+    height: 50px;
+    margin-top: 15px;
+    border-radius: 5px;
+    color: #1D3557;
+    background-color: #ffffff;
+    border-color: #1D3557;
+    border-style: solid;
+    font-weight: 700;
 }
 
 /*sub 구역2*/
@@ -299,14 +331,15 @@
 }
 
 .infomation > h5{
-    margin: 30px 0 10px;
+    margin: 50px 0 10px;
     font-weight: 700;
 }
 
 #log-ad{
     height: 90px;
+    margin-top: 50px;
     padding: 0 20px;
-    background-color: #bfdbfe;
+    background-color: #E6F2FF;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
@@ -327,5 +360,31 @@
     width: 80px;
     height: 35px;
     background-color: white;
+    border-radius: 5px;
+    border-style: none;
+}
+
+#log-ad > div > button:not(.active):hover {
+    background-color: #1D3557;
+    color: white;
+}
+
+.review{
+    margin-top: 50px;
+}
+.review > h5{
+    font-weight: 700;
+}
+
+.review > div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.review > div > div{
+    width: 160px;
+    height: 25px;
+    background-color: #FFFFDD;
+    text-align: center;
     border-radius: 5px;
 }

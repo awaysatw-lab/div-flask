@@ -9,3 +9,4 @@ def main_product():
 @bp.route('/sub_product')
 def sub_product():
     return render_template('product/sub_product.html')
+
