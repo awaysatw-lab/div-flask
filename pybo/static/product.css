@@ -24,7 +24,7 @@
 }
 
 /*슬라이드 밑 nav*/
-div > nav{
+#slider > nav{
     width: 100%;
     height: 50px;
     background-color: #FAF8F5;
@@ -33,7 +33,7 @@ div > nav{
     position: relative;
     top: -50px;
 }
-div > nav > .container-fluid{
+#slider > nav > .container-fluid{
     height: 50px;
     width: 600px;
     color: white;
