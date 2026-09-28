@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>길마중 - 회원가입</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
+        body { background-color: #FDFBF7; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        .signup-card { background: #ffffff; width: 100%; max-width: 440px; border-radius: 16px; padding: 35px 25px; box-shadow: 0 12px 35px rgba(139,94,60,0.08); text-align: center; border: 1px solid #F0E6DF; }
+        
+        .top-icon { width: 44px; height: 44px; background-color: #E28743; margin: 0 auto 14px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; }
+        
+        h2 { font-size: 22px; color: #4A3B32; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
+        .sub-txt { font-size: 12px; color: #9C8E85; line-height: 1.5; margin-bottom: 20px; }
+
+        /* 시안 속 주황색 혜택 알림 바 */
+        .benefit-banner { background-color: #FBE7C6; color: #D97736; font-size: 11px; font-weight: 700; padding: 10px; border-radius: 6px; margin-bottom: 24px; text-align: center; }
+        .benefit-banner span { background-color: #D97736; color: #fff; padding: 1px 5px; border-radius: 3px; margin-right: 4px; font-size: 10px; }
+
+        .input-row { width: 100%; margin-bottom: 12px; }
+        .input-row input { width: 100%; height: 46px; padding: 0 16px; border: 1px solid #F0D9CC; background-color: #FFF3EB; border-radius: 8px; font-size: 13.5px; color: #5C4D43; outline: none; transition: all 0.2s; }
+        .input-row input::placeholder { color: #C4B2A6; }
+        .input-row input:focus { border-color: #E28743; background-color: #fff; }
+
+        /* 비밀번호 확인 가로 배열 정렬 */
+        .pw-flex { display: flex; gap: 8px; }
+
+        .btn-submit { width: 100%; height: 48px; background-color: #8B5E3C; color: #ffffff; border: none; border-radius: 8px; font-size: 14.5px; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 14px; margin-bottom: 20px; }
+        .btn-submit:hover { background-color: #6F4A2F; }
+
+        .divider { border-top: 1px solid #F0E6DF; margin-bottom: 18px; }
+
+        .bottom-msg { font-size: 12px; color: #9C8E85; margin-bottom: 10px; }
+        .btn-back-login { display: inline-block; width: 100%; max-width: 120px; height: 34px; background-color: #FBE7C6; color: #D97736; border: none; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; line-height: 34px; text-decoration: none; }
+        .btn-back-login:hover { background-color: #F9DCB0; }
+    </style>
+</head>
+<body>
+
+    <div class="signup-card">
+        <div class="top-icon">Ⅲ</div>
+        <h2>회원가입</h2>
+        <div class="sub-txt">길마중에 오신 것을 환영합니다.<br>간편 가입하고 전 상품 우대 혜택을 누려보세요.</div>
+        
+        <div class="benefit-banner">
+            <span>회원 혜택</span> 전 상품 10~20% 특별 할인 및 추천 숙소 연계 예약
+        </div>
+
+        <form method="POST" action="#">
+            <div class="input-row">
+                <input type="text" placeholder="👤   로그인 아이디 (4-20자)" required>
+            </div>
+            <div class="input-row">
+                <input type="text" placeholder="👤   실명 또는 사용자 이름" required>
+            </div>
+            <div class="input-row">
+                <input type="email" placeholder="✉️   이메일 주소 (예: user@example.com)" required>
+            </div>
+            <div class="input-row">
+                <input type="tel" placeholder="📱   휴대폰 번호 (예: 010-1234-5678)" required>
+            </div>
+            <div class="input-row pw-flex">
+                <input type="password" placeholder="🔒   비밀번호 (8자 이상)" required>
+                <input type="password" placeholder="🔄   비밀번호 확인" required>
+            </div>
+            
+            <button type="submit" class="btn-submit">회원가입 완료하기</button>
+        </form>
+
+        <div class="divider"></div>
+
+        <div class="bottom-msg">이미 계정이 있으신가요?</div>
+        <!-- 누르면 새 창이 닫히며 부모 창으로 귀환하는 세팅 -->
+        <button type="button" class="btn-back-login" onclick="window.close();">로그인하기 &gt;</button>
+    </div>
+
+</body>
+</html>
