@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국 여행 후기</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Malgun Gothic', sans-serif; }
+        body { background-color: #f8f9fa; color: #333; }
+        a { text-decoration: none; color: inherit; }
+
+        /* 1. 헤더 (Header) */
+        .header {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eeeeee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 20px; font-weight: bold; color: #1D3557; }
+        .search-bar { padding: 6px 12px; border: 1px solid #ddd; border-radius: 20px; width: 200px; }
+
+        /* 2. 네비게이션 (Navigation) */
+        .nav {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .nav-item { font-size: 14px; font-weight: 600; color: #495057; cursor: pointer; }
+        .nav-item.active { color: #0084FF; border-bottom: 2px solid #0084FF; padding-bottom: 2px; }
+
+        /* 공통 컨테이너 */
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        .section-title { font-size: 18px; font-weight: bold; margin: 20px 0 10px 0; display: flex; align-items: center; gap: 5px; }
+
+        /* 3. 대표/배너 사진 (Main Image) */
+        .main-banner {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(rgba(243, 254, 231), rgba(243, 254, 231)), url('/https://picsum.photos') center/cover;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-end;
+            padding: 72px;
+            color: #212529;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* 4. 베스트 후기 (Best Reviews) */
+        .best-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+        .best-card {
+            background: #E9C46A;
+            min-width: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+        .best-img { width: 100%; height: 100px; object-fit: cover; }
+        .best-badge { background: #E9C46A; color: #333; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; margin: 8px; }
+        .best-text { padding: 0 8px 8px 8px; font-size: 12px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* 5. 일반 후기 리스트 (Standard Reviews) */
+        .review-list { display: flex; flex-direction: column; gap: 15px; }
+        .review-card {
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        .review-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: #777; }
+        .user-name { font-weight: bold; color: #333; }
+        .rating { color: #E9C46A; }
+        .review-content-box { display: flex; gap: 12px; }
+        .review-text { font-size: 14px; line-height: 1.4; flex: 1; color: #495057; }
+        .review-img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; }
+
+        /* 6. 더보기 창 / 버튼 (Load More Section) */
+        .more-btn-container { text-align: center; margin: 30px 0; }
+        .more-btn {
+            background-color: #ffffff;
+            border: 1px solid #0084FF;
+            color: #0084FF;
+            padding: 10px 40px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .more-btn:hover { background-color: #0084FF; color: white; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 헤더 -->
+    <header class="header">
+        <div class="logo">TrIP_KOREA</div>
+        <input type="text" class="search-bar" placeholder="도시나 숙소 검색">
+    </header>
+
+    <!-- 2. 네비게이션 -->
+    <nav class="nav">
+        <div class="nav-item">홈</div>
+        <div class="nav-item active">여행후기</div>
+        <div class="nav-item">명소 추천</div>
+        <div class="nav-item">마이페이지</div>
+    </nav>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <div class="container">
+
+        <!-- 3. 메인 사진/배너 -->
+        <div class="main-banner">
+            <div>이번 주 인기 여행지, 제주</div>
+        </div>
+
+        <!-- 4. 베스트 후기 영역 -->
+        <div class="section-title">✨ 베스트 후기</div>
+        <div class="best-container">
+            <!-- 베스트 1 -->
+            <div class="best-card">
+                <img src="{{ url_for('static',filename='img/life_01.jpg') }}" alt="베스트1" class="best-img">
+                <span class="best-badge">BEST 1</span>
+                <div class="best-text">인생 노을 명소 공유합니다!</div>
+            </div>
+            <!-- 베스트 2 -->
+            <div class="best-card">
+                <img src="https://picsum.photos" alt="베스트2" class="best-img">
+                <span class="best-badge">BEST 2</span>
+                <div class="best-text">가성비 최고였던 독채 감성 숙소</div>
+            </div>
+            <!-- 베스트 3 -->
+            <div class="best-card">
+                <img src="https://picsum.photos" alt="베스트3" class="best-img">
+                <span class="best-badge">BEST 3</span>
+                <div class="best-text">엄마와 함께한 2박3일 부산여행</div>
+            </div>
+        </div>
+
+        <!-- 5. 일반 후기 영역 -->
+        <div class="section-title">💬 최근 올라온 후기</div>
+        <div class="review-list">
+            
+            <!-- 후기 1 -->
+            <div class="review-card">
+                <div class="review-header">
+                    <span class="user-name">여행조아</span>
+                    <span class="rating">★★★★★ 5.0</span>
+                </div>
+                <div class="review-content-box">
+                    <p class="review-text">주말에 다녀왔는데 주차가 조금 힘들었지만 뷰가 진짜 환상적이었어요. 근처 맛집 리스트 공유글 보고 가길 잘했네요!</p>
+                    <img src="https://picsum.photos" alt="후기사진1" class="review-img">
+                </div>
+            </div>
+
+            <!-- 후기 2 -->
+            <div class="review-card">
+                <div class="review-header">
+                    <span class="user-name">떠돌이길동</span>
+                    <span class="rating">★★★★☆ 4.0</span>
+                </div>
+                <div class="review-content-box">
+                    <p class="review-text">생각보다 사람이 너무 많아서 줄을 오래 섰어요. 그래도 한 번쯤은 꼭 가볼 만한 가치가 있는 곳입니다. 사진이 정말 잘 나와요.</p>
+                    <img src="https://picsum.photos" alt="후기사진2" class="review-img">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 6. 더보기 창 (버튼) -->
+        <div class="more-btn-container">
+            <button class="more-btn" onclick="alert('다음 후기 10개를 더 불러옵니다.')">후기 더보기 ∨</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
