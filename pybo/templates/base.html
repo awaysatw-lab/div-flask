@@ -8,7 +8,7 @@
     </title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+          href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
 <body>
@@ -17,14 +17,19 @@
         <div class="header-container">
 
             <div class="logo-area">
-                <h1 class="logo">🟠길마중</h1>
+                <a href="{{ url_for('main.index') }}" class=>🟠길마중</a>
                 <span class="slogan">오늘, 더 특별한 여행</span>
             </div>
 
             <div class="header-right-block">
 
                 <div class="utility-menu">
-                    <a href="{{ url_for('main.login') }}">로그인</a>
+                    <a href="{{ url_for('order.lookup') }}" style="font-weight: 600; color: #2563eb;">예약확인</a>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('order.logout') }}">로그아웃</a>
+                    {% else %}
+                        <a href="{{ url_for('order.login') }}">로그인</a>
+                    {% endif %}
                     <a href="#">고객센터</a>
                     <a href="#">🌐 한국어 ▾</a>
                 </div>
@@ -66,9 +71,6 @@
     </header>
 
 
-    <!-- =================================
-         페이지별 내용
-         ================================= -->
 
     {% block content %}
     {% endblock %}
