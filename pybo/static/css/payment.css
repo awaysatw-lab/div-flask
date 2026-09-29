@@ -1,8 +1,8 @@
 :root {
-  --primary: #2563eb;
+  --primary: #1D3557;
   --primary-hover: #1d4ed8;
   --primary-light: #eff6ff;
-  --success: #10b981;
+  --success: #1D3557;
   --text-main: #1e293b;
   --text-muted: #64748b;
   --border-color: #e2e8f0;
@@ -13,7 +13,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  background-color: #f1f5f9;
+  background-color: #FAF8F5;
   color: var(--text-main);
   line-height: 1.6;
   padding-bottom: 60px;
@@ -214,7 +214,7 @@ body {
   transition: background 0.15s, transform 0.05s;
 }
 .btn-pay-complete:hover {
-  background: #059669;
+  background: #1D3557;
 }
 .btn-pay-complete:disabled {
   background: #94a3b8;
@@ -277,7 +277,7 @@ body {
   justify-content: space-between;
   align-items: center;
   background: #f0fdf4;
-  border: 2px solid #22c55e;
+  border: 2px solid #1D3557;
   border-radius: 10px;
   padding: 18px 22px;
   box-shadow: 0 2px 4px rgba(34, 197, 94, 0.08);
@@ -295,11 +295,11 @@ body {
   gap: 8px;
   font-size: 16px;
   font-weight: 700;
-  color: #15803d;
+  color: #1D3557;
   margin-bottom: 4px;
 }
 .badge-portone {
-  background: #16a34a;
+  background: #1D3557;
   color: #ffffff;
   font-size: 11px;
   padding: 2px 8px;
@@ -334,7 +334,7 @@ body {
 
 .btn-pay-main {
   width: 100%;
-  background: #16a34a;
+  background: #1D3557;
   color: #ffffff;
   font-size: 17px;
   font-weight: 700;
@@ -346,7 +346,7 @@ body {
   transition: all 0.15s ease;
 }
 .btn-pay-main:hover {
-  background: #15803d;
+  background: #1D3557;
 }
 .btn-pay-main:disabled {
   background: #94a3b8;
@@ -376,4 +376,5 @@ body {
   font-weight: 800;
   color: #16a34a;
 }
+
 
