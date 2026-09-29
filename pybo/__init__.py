@@ -31,6 +31,9 @@ def create_app():
 
     from . import models
 
+    from .views import auth_views
+    app.register_blueprint(auth_views.bp)
+
     from .views import order_views
     app.register_blueprint(order_views.bp)
 
