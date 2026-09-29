@@ -1,187 +1,117 @@
-<!DOCTYPE html>
-<html lang="ko">
+import base64
+import webbrowser
+
+# 1. 통합 데이터베이스
+tour_db = {
+    "site_info": {
+        "title": "K-Review Center | Global Tourist & Product Reviews",
+        "brand": "K-Review", "sub_brand": "Center",
+        "copyright": "© 2026 K-Review Center. All rights reserved."
+    },
+    "reviews": [
+        {
+            "type": "tour", "badge_text": "Regional Tour",
+            "target": "Gamcheon Culture Village, Busan", "stars": "★★★★★",
+            "meta": "By Hans_Mueller (Germany) | Sep 29, 2026",
+            "body": "The colorful houses terraced on the foothills were absolutely breathtaking. Walking through the narrow alleys felt like navigating a beautiful maze."
+        },
+        {
+            "type": "product", "badge_text": "K-Product",
+            "target": "Beauty of Joseon - Relief Sun Cream", "stars": "★★★★★",
+            "meta": "By Sakura_Tokyo (Japan) | Sep 28, 2026",
+            "body": "Purchased this at a flagship store in Myeongdong. It leaves absolutely no white cast and functions perfectly like a light moisturizing lotion."
+        }
+    ],
+    "trending_places": [
+        {"name": "Jeju Island", "sub": "⭐ 4.9 | Volcanic Landscapes"},
+        {"name": "Gyeongbokgung Palace", "sub": "⭐ 4.8 | Historical Seoul"}
+    ],
+    "top_souvenirs": [
+        {"name": "K-Beauty Skincare", "sub": "Serums, Sunscreens & Masks"},
+        {"name": "Gourmet Snacks", "sub": "Flavored Almonds & Seaweed"}
+    ]
+}
+
+# 2. 파이썬 반복문으로 웹 레이아웃 자동 빌드
+review_html = ""
+for rev in tour_db["reviews"]:
+    badge_class = "badge-tour" if rev["type"] == "tour" else "badge-product"
+    card_class = "review-card product-review" if rev["type"] == "product" else "review-card"
+    review_html += f"""
+    <div class="{card_class}">
+        <span class="badge {badge_class}">{rev['badge_text']}</span>
+        <div class="review-header">
+            <div class="target-name">{rev['target']}</div>
+            <div class="stars">{rev['stars']}</div>
+        </div>
+        <div class="review-meta">{rev['meta']}</div>
+        <div class="review-body">{rev['body']}</div>
+    </div>
+    """
+
+places_html = ""
+for rank, place in enumerate(tour_db["trending_places"], start=1):
+    places_html += f"""<li class="best-item"><div class="rank">{rank:02d}</div><div class="best-details"><h4>{place['name']}</h4><p>{place['sub']}</p></div></li>"""
+
+souvenirs_html = ""
+for rank, item in enumerate(tour_db["top_souvenirs"], start=1):
+    souvenirs_html += f"""<li class="best-item"><div class="rank">{rank:02d}</div><div class="best-details"><h4>{item['name']}</h4><p>{item['sub']}</p></div></li>"""
+
+# 3. HTML/CSS 최종 조립
+final_html = f"""<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>한국 여행 후기</title>
+    <title>{tour_db['site_info']['title']}</title>
     <style>
-        /* 기본 스타일 초기화 */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Malgun Gothic', sans-serif; }
-        body { background-color: #f8f9fa; color: #333; }
-        a { text-decoration: none; color: inherit; }
-
-        /* 1. 헤더 (Header) */
-        .header {
-            background-color: #ffffff;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eeeeee;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo { font-size: 20px; font-weight: bold; color: #1D3557; }
-        .search-bar { padding: 6px 12px; border: 1px solid #ddd; border-radius: 20px; width: 200px; }
-
-        /* 2. 네비게이션 (Navigation) */
-        .nav {
-            background-color: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        .nav-item { font-size: 14px; font-weight: 600; color: #495057; cursor: pointer; }
-        .nav-item.active { color: #0084FF; border-bottom: 2px solid #0084FF; padding-bottom: 2px; }
-
-        /* 공통 컨테이너 */
-        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
-        .section-title { font-size: 18px; font-weight: bold; margin: 20px 0 10px 0; display: flex; align-items: center; gap: 5px; }
-
-        /* 3. 대표/배너 사진 (Main Image) */
-        .main-banner {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(rgba(243, 254, 231), rgba(243, 254, 231)), url('/https://picsum.photos') center/cover;
-            border-radius: 12px;
-            display: flex;
-            align-items: flex-end;
-            padding: 72px;
-            color: #212529;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        /* 4. 베스트 후기 (Best Reviews) */
-        .best-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
-        .best-card {
-            background: #E9C46A;
-            min-width: 160px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-        }
-        .best-img { width: 100%; height: 100px; object-fit: cover; }
-        .best-badge { background: #E9C46A; color: #333; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; display: inline-block; margin: 8px; }
-        .best-text { padding: 0 8px 8px 8px; font-size: 12px; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-        /* 5. 일반 후기 리스트 (Standard Reviews) */
-        .review-list { display: flex; flex-direction: column; gap: 15px; }
-        .review-card {
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
-        }
-        .review-header { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: #777; }
-        .user-name { font-weight: bold; color: #333; }
-        .rating { color: #E9C46A; }
-        .review-content-box { display: flex; gap: 12px; }
-        .review-text { font-size: 14px; line-height: 1.4; flex: 1; color: #495057; }
-        .review-img { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; }
-
-        /* 6. 더보기 창 / 버튼 (Load More Section) */
-        .more-btn-container { text-align: center; margin: 30px 0; }
-        .more-btn {
-            background-color: #ffffff;
-            border: 1px solid #0084FF;
-            color: #0084FF;
-            padding: 10px 40px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .more-btn:hover { background-color: #0084FF; color: white; }
+        :root {{ --primary-color: #0f2027; --secondary-color: #203a43; --accent-color: #2c5364; --highlight: #e74c3c; --bg-color: #f8f9fa; --card-bg: #ffffff; --text-color: #333333; --text-muted: #666666; }}
+        * {{ box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }}
+        body {{ background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }}
+        header {{ background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); color: white; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }}
+        .logo h1 {{ font-size: 1.5rem; font-weight: 700; }} .logo span {{ color: var(--highlight); }}
+        nav ul {{ display: flex; list-style: none; gap: 20px; }} nav a {{ color: #ffffff; text-decoration: none; font-size: 0.95rem; }}
+        .container {{ max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }}
+        .section-title {{ font-size: 1.3rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--secondary-color); }}
+        .review-feed {{ display: flex; flex-direction: column; gap: 20px; }}
+        .review-card {{ background: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid var(--accent-color); }}
+        .review-card.product-review {{ border-left-color: var(--highlight); }}
+        .review-header {{ display: flex; justify-content: space-between; margin-bottom: 10px; }}
+        .badge {{ display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }}
+        .badge-tour {{ background-color: #e3f2fd; color: #0d47a1; }} .badge-product {{ background-color: #fbe9e7; color: #d84315; }}
+        .target-name {{ font-size: 1.1rem; font-weight: 600; color: var(--primary-color); }} .stars {{ color: #ffca28; }}
+        .review-meta {{ font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }}
+        .sidebar {{ display: flex; flex-direction: column; gap: 30px; }}
+        .best-card {{ background: var(--card-bg); border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }}
+        .best-list {{ list-style: none; display: flex; flex-direction: column; gap: 15px; }}
+        .best-item {{ display: flex; align-items: center; gap: 15px; padding-bottom: 10px; border-bottom: 1px dashed #dddddd; }}
+        .best-item:last-child {{ border-bottom: none; }}
+        .rank {{ font-size: 1.2rem; font-weight: 700; color: var(--highlight); width: 25px; }}
+        footer {{ background-color: var(--primary-color); color: #ffffff; text-align: center; padding: 25px; font-size: 0.85rem; margin-top: 60px; border-top: 4px solid var(--highlight); }}
     </style>
 </head>
 <body>
-
-    <!-- 1. 헤더 -->
-    <header class="header">
-        <div class="logo">TrIP_KOREA</div>
-        <input type="text" class="search-bar" placeholder="도시나 숙소 검색">
+    <header>
+        <div class="logo"><h1>{tour_db['site_info']['brand']}<span>{tour_db['site_info']['sub_brand']}</span></h1></div>
+        <nav><ul><li><a href="#">Feed</a></li><li><a href="#">Attractions</a></li><li><a href="#">K-Products</a></li></ul></nav>
     </header>
-
-    <!-- 2. 네비게이션 -->
-    <nav class="nav">
-        <div class="nav-item">홈</div>
-        <div class="nav-item active">여행후기</div>
-        <div class="nav-item">명소 추천</div>
-        <div class="nav-item">마이페이지</div>
-    </nav>
-
-    <!-- 메인 컨텐츠 영역 -->
     <div class="container">
-
-        <!-- 3. 메인 사진/배너 -->
-        <div class="main-banner">
-            <div>이번 주 인기 여행지, 제주</div>
-        </div>
-
-        <!-- 4. 베스트 후기 영역 -->
-        <div class="section-title">✨ 베스트 후기</div>
-        <div class="best-container">
-            <!-- 베스트 1 -->
-            <div class="best-card">
-                <img src="{{ url_for('static',filename='img/life_01.jpg') }}" alt="베스트1" class="best-img">
-                <span class="best-badge">BEST 1</span>
-                <div class="best-text">인생 노을 명소 공유합니다!</div>
-            </div>
-            <!-- 베스트 2 -->
-            <div class="best-card">
-                <img src="https://picsum.photos" alt="베스트2" class="best-img">
-                <span class="best-badge">BEST 2</span>
-                <div class="best-text">가성비 최고였던 독채 감성 숙소</div>
-            </div>
-            <!-- 베스트 3 -->
-            <div class="best-card">
-                <img src="https://picsum.photos" alt="베스트3" class="best-img">
-                <span class="best-badge">BEST 3</span>
-                <div class="best-text">엄마와 함께한 2박3일 부산여행</div>
-            </div>
-        </div>
-
-        <!-- 5. 일반 후기 영역 -->
-        <div class="section-title">💬 최근 올라온 후기</div>
-        <div class="review-list">
-            
-            <!-- 후기 1 -->
-            <div class="review-card">
-                <div class="review-header">
-                    <span class="user-name">여행조아</span>
-                    <span class="rating">★★★★★ 5.0</span>
-                </div>
-                <div class="review-content-box">
-                    <p class="review-text">주말에 다녀왔는데 주차가 조금 힘들었지만 뷰가 진짜 환상적이었어요. 근처 맛집 리스트 공유글 보고 가길 잘했네요!</p>
-                    <img src="https://picsum.photos" alt="후기사진1" class="review-img">
-                </div>
-            </div>
-
-            <!-- 후기 2 -->
-            <div class="review-card">
-                <div class="review-header">
-                    <span class="user-name">떠돌이길동</span>
-                    <span class="rating">★★★★☆ 4.0</span>
-                </div>
-                <div class="review-content-box">
-                    <p class="review-text">생각보다 사람이 너무 많아서 줄을 오래 섰어요. 그래도 한 번쯤은 꼭 가볼 만한 가치가 있는 곳입니다. 사진이 정말 잘 나와요.</p>
-                    <img src="https://picsum.photos" alt="후기사진2" class="review-img">
-                </div>
-            </div>
-
-        </div>
-
-        <!-- 6. 더보기 창 (버튼) -->
-        <div class="more-btn-container">
-            <button class="more-btn" onclick="alert('다음 후기 10개를 더 불러옵니다.')">후기 더보기 ∨</button>
-        </div>
-
+        <main>
+            <div class="section-title"><h2>Latest Global Reviews</h2></div>
+            <div class="review-feed">{review_html}</div>
+        </main>
+        <aside class="sidebar">
+            <div class="best-card"><div class="section-title"><h3>Trending Places</h3></div><ul class="best-list">{places_html}</ul></div>
+            <div class="best-card"><div class="section-title"><h3>Top Souvenirs</h3></div><ul class="best-list">{souvenirs_html}</ul></div>
+        </aside>
     </div>
-
+    <footer><p>{tour_db['site_info']['copyright']}</p></footer>
 </body>
-</html>
+</html>"""
+
+# 4. 파일 저장 없이 메모리 코드로 크롬에 직접 브라우징 (Data URI 방식)
+# HTML 텍스트를 인코딩 처리하여 브라우저에 바로 던집니다.
+encoded_html = base64.b64encode(final_html.encode('utf-8')).decode('utf-8')
+data_uri = f"data:text/html;charset=utf-8;base64,{encoded_html}"
+
+print("🚀 파일 생성 없이 실시간 크롬 렌더링을 시작합니다...")
+webbrowser.open(data_uri)
