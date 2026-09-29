@@ -22,16 +22,21 @@
             </div>
 
             <div class="header-right-block">
-
-                <div class="utility-menu">
-                    <a href="{{ url_for('order.lookup') }}" style="font-weight: 600; color: #2563eb;">예약확인</a>
-                    {% if session.get('user_id') %}
-                        <a href="{{ url_for('order.logout') }}">로그아웃</a>
+               <div class="top-util-menu">
+                    {% if g.user %}
+                        <!-- 로그인 성공 시 상태 노출 -->
+                        <span class="util-user-name">👤 {{ g.user.name }}님</span>
+                        <a href="{{ url_for('auth.logout') }}" class="util-link logout-btn">로그아웃</a>
                     {% else %}
-                        <a href="{{ url_for('order.login') }}">로그인</a>
+                        <a href="{{ url_for('auth.login') }}" class="util-link">로그인</a>
                     {% endif %}
-                    <a href="#">고객센터</a>
-                    <a href="#">🌐 한국어 ▾</a>
+                    <span class="util-divider">|</span>
+                    <a href="#" class="util-link">고객센터</a>
+                    <span class="util-divider">|</span>
+                    <div class="lang-dropdown">
+                        <span class="util-text">🌐 한국어</span>
+                        <span class="arrow-down">▼</span>
+                    </div>
                 </div>
 
                 <div class="nav-search-line">
