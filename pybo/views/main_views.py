@@ -21,8 +21,8 @@ def login():
 
         return redirect(url_for('main.index'))
 
-    return render_template('login.html')
+    return render_template('auth/login.html')
 
 @bp.route('/signup/')
 def signup():
-    return render_template('signup.html')
+    return render_template('auth/signup.html')
