@@ -67,5 +67,11 @@
   <a href="{{ url_for('order.reserve', product_id=product.id) }}" class="btn-home">
     다른 여행 더 알아보기
   </a>
+
+  <div style="margin-top: 14px; text-align: center;">
+    <a href="{{ url_for('order.lookup', order_no=order.order_no) }}" style="color: var(--primary); font-size: 14px; font-weight: 600; text-decoration: underline;">
+      방금 완료된 예약 상세 내역 확인하기 &gt;
+    </a>
+  </div>
 </div>
 {% endblock %}

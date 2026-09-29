@@ -266,3 +266,91 @@ def pay_complete():
         total_final=actual_paid,
         portone_payment_id=portone_payment_id or portone_tx_id
     )
+
+
+@bp.route("/lookup", methods=['GET', 'POST'])
+def lookup():
+    """예약 확인 / 조회 화면
+    - 로그인 시: 해당 회원의 예약 목록을 최신순(created_at desc)으로 표시, 항목 클릭 시 상세 표시
+    - 비로그인 시: guest_name과 order_no를 입력받아 예약 검색, 로그인 상세와 동일한 정보 표시
+    """
+    is_member, logged_user = check_is_member()
+    selected_order_no = request.args.get('order_no', '').strip()
+
+    if is_member and logged_user:
+        # 로그인 회원: 최신순 정렬하여 목록 조회
+        orders = Order.query.filter_by(user_id=logged_user.id).order_by(Order.created_at.desc()).all()
+        detail_order = None
+        if selected_order_no:
+            detail_order = Order.query.filter_by(order_no=selected_order_no, user_id=logged_user.id).first()
+
+        return render_template(
+            'order/lookup.html',
+            is_member=True,
+            logged_user=logged_user,
+            orders=orders,
+            detail_order=detail_order,
+            selected_order_no=selected_order_no
+        )
+    else:
+        # 비로그인(게스트): 폼 입력 기반 조회
+        detail_order = None
+        error_msg = None
+        guest_name = ''
+        order_no = ''
+
+        if request.method == 'POST':
+            guest_name = request.form.get('guest_name', '').strip()
+            order_no = request.form.get('order_no', '').strip()
+
+            if not guest_name or not order_no:
+                error_msg = "예약자 성함과 주문번호를 모두 입력해주세요."
+            else:
+                target_order = Order.query.filter_by(order_no=order_no).first()
+                if target_order:
+                    # 비회원 주문자명 또는 회원 주문인 경우 회원명과 대조
+                    match_name = (target_order.guest_name and target_order.guest_name.strip() == guest_name) or \
+                                 (target_order.user and target_order.user.name.strip() == guest_name)
+                    if match_name:
+                        detail_order = target_order
+                    else:
+                        error_msg = "입력하신 예약자 성함이 일치하지 않습니다. 다시 확인해주세요."
+                else:
+                    error_msg = "입력하신 주문번호에 해당하는 예약 내역이 존재하지 않습니다."
+        elif selected_order_no:
+            # URL 파라미터로 직접 조회 요청 시
+            target_order = Order.query.filter_by(order_no=selected_order_no).first()
+            if target_order:
+                detail_order = target_order
+
+        return render_template(
+            'order/lookup.html',
+            is_member=False,
+            logged_user=None,
+            orders=[],
+            detail_order=detail_order,
+            guest_name=guest_name,
+            order_no=order_no,
+            error_msg=error_msg
+        )
+
+
+@bp.route("/detail/<order_no>", methods=['GET'])
+def detail(order_no):
+    """예약 상세 정보 페이지 (로그인/비로그인 공통 단독 화면)"""
+    is_member, logged_user = check_is_member()
+    order = Order.query.filter_by(order_no=order_no).first_or_404()
+
+    # 회원인 경우 본인 주문인지 검증
+    if is_member and logged_user and order.user_id and order.user_id != logged_user.id:
+        flash('본인의 예약 내역만 열람하실 수 있습니다.', 'danger')
+        return redirect(url_for('order.lookup'))
+
+    return render_template(
+        'order/detail.html',
+        order=order,
+        is_member=is_member,
+        logged_user=logged_user
+    )
+
+

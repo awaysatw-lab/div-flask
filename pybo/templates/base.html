@@ -24,7 +24,12 @@
             <div class="header-right-block">
 
                 <div class="utility-menu">
-                    <a href="{{ url_for('main.login') }}">로그인</a>
+                    <a href="{{ url_for('order.lookup') }}" style="font-weight: 600; color: #2563eb;">예약확인</a>
+                    {% if session.get('user_id') %}
+                        <a href="{{ url_for('order.logout') }}">로그아웃</a>
+                    {% else %}
+                        <a href="{{ url_for('order.login') }}">로그인</a>
+                    {% endif %}
                     <a href="#">고객센터</a>
                     <a href="#">🌐 한국어 ▾</a>
                 </div>

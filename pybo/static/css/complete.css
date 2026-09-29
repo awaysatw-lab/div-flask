@@ -11,7 +11,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  background-color: #f1f5f9;
+  background-color: #FAF8F5;
   color: var(--text-main);
   padding: 60px 20px;
 }

@@ -1,10 +1,10 @@
 :root {
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
+  --primary: #1D3557;
+  --primary-hover: #1D3557;
   --primary-light: #eff6ff;
-  --success: #10b981;
+  --success: #1D3557;
   --danger: #ef4444;
-  --text-main: #1e293b;
+  --text-main: #212529;
   --text-muted: #64748b;
   --border-color: #e2e8f0;
   --bg-gray: #f8fafc;
@@ -14,7 +14,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  background-color: #f1f5f9;
+  background-color: #FAF8F5;
   color: var(--text-main);
   line-height: 1.6;
   padding-bottom: 80px;
@@ -32,7 +32,7 @@ body {
 .page-header h1 {
   font-size: 26px;
   font-weight: 700;
-  color: #0f172a;
+  color: #212529;
   margin-bottom: 6px;
 }
 .page-header p {
@@ -52,7 +52,7 @@ body {
 .badge-guest {
   display: inline-block;
   background: #f1f5f9;
-  color: #475569;
+  color: #212529;
   font-size: 12px;
   font-weight: 600;
   padding: 3px 8px;
@@ -103,6 +103,7 @@ body {
 }
 .checkout-prices {
   text-align: right;
+  color : #E76F5F;
 }
 .orig-strike {
   font-size: 13px;
@@ -113,7 +114,7 @@ body {
 .discount-final {
   font-size: 18px;
   font-weight: 700;
-  color: var(--primary);
+  color : #E76F5F;
 }
 
 /* 인원수 컨트롤러 */
@@ -150,7 +151,7 @@ body {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  color: #334155;
+  color: #212529;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -196,9 +197,9 @@ body {
 .guest-checkout-alert {
   display: flex;
   gap: 10px;
-  background: #fffbeb;
+  background: #FAF8F5;
   border: 1px solid #fef3c7;
-  color: #92400e;
+  color: #15803D;
   padding: 12px 14px;
   border-radius: 8px;
   font-size: 13px;
@@ -284,7 +285,7 @@ body {
 .btn-same-as-reserver.active {
   background: #dbeafe;
   border-color: #93c5fd;
-  color: #1d4ed8;
+  color: #1D3557;
 }
 .rep-same-notice {
   display: flex;
@@ -476,7 +477,7 @@ body {
 .receipt-final-row .final-amount {
   font-size: 28px;
   font-weight: 800;
-  color: var(--primary);
+  color: #E76F5F;
 }
 
 .btn-pay-action {
