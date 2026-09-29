@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash
 import enum
 import uuid
+import json
 from pybo import db
 
 class User(db.Model):

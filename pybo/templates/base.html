@@ -8,7 +8,7 @@
     </title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+          href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
         <div class="header-container">
 
             <div class="logo-area">
-                <h1 class="logo">🟠길마중</h1>
+                <a href="{{ url_for('main.index') }}" class=>🟠길마중</a>
                 <span class="slogan">오늘, 더 특별한 여행</span>
             </div>
 
@@ -71,9 +71,6 @@
     </header>
 
 
-    <!-- =================================
-         페이지별 내용
-         ================================= -->
 
     {% block content %}
     {% endblock %}
