@@ -318,11 +318,11 @@ body {
     display: inline-block;
     margin-top: 10px;
     padding: 8px 24px;
-    color: #fff;
+    color: #4A7C8F;
     font-size: 10px;
     font-weight: 600;
     text-decoration: none;
-    background-color: #4A7C8F;
+    background-color: #fff;
     border: 1px solid #CED4DA;
     border-radius: 20px;      /* 🎯 예시 화면처럼 양 끝이 둥글고 예쁜 타원형 알약 스타일로 마감 */
     cursor: pointer;
@@ -331,20 +331,20 @@ body {
 
 .signup-button:hover {
     color: #fff;
-    background-color: #E0AA3E;
-    border-color: #ADB5BD;
+    background-color: #1D3557;
+    border-color: #FAF8F5;
 }
 
 .login-policy {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 17px;
+    gap: 10px;
+    margin-top: 80px;
     padding: 7px;
     border: 1px dotted #E6F2FF;
     background: #fafbfd;
     color: #999;
-    font-size: 7px;
+    font-size: 8px;
 }
 
 

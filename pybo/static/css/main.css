@@ -69,10 +69,27 @@ button,input {
     flex-shrink: 0;
 }
 
+.logo-area a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333333;
+    gap: 8px;
+    cursor: pointer;
+    font-family:'NexonLv1Gothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF Light.woff') format('woff');
+    font-weight: 700;
+    font-size: x-large;
+}
+
+.logo-area span {
+    margin-top: 10px;
+    cursor: default;
+    font-size: x-small;
+}
 .logo-circle {
     width: 18px;
     height: 18px;
-    background-color: #A64C4D;
     border-radius: 50%;
     display: inline-block;
 }
@@ -86,7 +103,7 @@ button,input {
 
 .slogan {
     font-size: 0.75rem;
-    color: #999999;
+    color: #2B2D42;
     margin-left: 5px;
 }
 
@@ -98,16 +115,55 @@ button,input {
     flex: 1;
 }
 
-.utility-menu {
+.top-util-menu {
     display: flex;
-    gap: 18px;
-    font-size: 0.8rem;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 10px 20px;
+    font-family:'NexonLv1Gothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF Light.woff') format('woff');
+    font-size: 13px;
+    color: #2B2D42;
 }
 
-.utility-menu a {
+.top-util-menu .util-link {
+    color: #2B2D42;
     text-decoration: none;
-    color: #212529;
     font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.top-util-menu .util-link:hover {
+    color: #2B2D42;
+    text-decoration: underline;
+}
+
+.top-util-menu .logout-btn {
+    color: #2B2D42;
+}
+
+.top-util-menu .util-divider {
+    color: #2B2D42;
+    font-size: 11px;
+}
+
+.top-util-menu .util-user-name {
+    font-weight: bold;
+    color: #1E3A5F;
+}
+
+.top-util-menu .lang-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: #2B2D42;
+}
+
+.top-util-menu .arrow-down {
+    font-size: 9px;
+    color: #2B2D42;
 }
 
 .nav-search-line {
@@ -197,7 +253,7 @@ button,input {
     position: relative;
     width: 100%;
     height: 450px;
-    background-image: url('./img/image2.jpg');
+    background-image: url('../img/image2.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -910,10 +966,11 @@ button,input {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
+    font-size: xx-small;
 }
 
 .footer-links {
-    font-size: 0.82rem;
+    font-size: 10px;
     color: #1D3557;
     margin-bottom: 25px;
     display: flex;
@@ -940,7 +997,7 @@ button,input {
 
 .company-info {
     flex: 2.5;
-    font-size: 0.72rem;
+    font-size: 10px;
     color: #2B2D42;
     line-height: 1.7;
 }
@@ -950,7 +1007,7 @@ button,input {
 }
 
 .company-info span {
-    margin-right: 12px;
+    margin-right: 3px;
 }
 
 .btn-check-info {
@@ -966,14 +1023,14 @@ button,input {
 }
 
 .cs-phone-line .highlight {
-    font-size: 0.85rem;
+    font-size: 14px;
     color: #212529;
     margin-left: 2px;
 }
 
 .escrow-info {
     flex: 1;
-    font-size: 0.7rem;
+    font-size: 10px;
     color: #999999;
     border-left: 1px solid #e9ecef;
     padding-left: 20px;
@@ -981,7 +1038,7 @@ button,input {
 }
 
 .escrow-info h5 {
-    font-size: 0.75rem;
+    font-size: 12px;
     color: #212529;
     margin-bottom: 6px;
     font-weight: bold;
@@ -1005,14 +1062,14 @@ button,input {
 }
 
 .footer-notice li {
-    font-size: 0.68rem;
+    font-size: 10px;
     color: #1E3A5F;
     line-height: 1.6;
     margin-bottom: 4px;
 }
 
 .footer-copyright {
-    font-size: 0.72rem;
+    font-size: 12px;
     color: #212529;
     font-weight: bold;
     letter-spacing: 0.5px;

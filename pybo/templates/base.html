@@ -8,7 +8,7 @@
     </title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+          href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
 <body>
@@ -17,16 +17,29 @@
         <div class="header-container">
 
             <div class="logo-area">
-                <h1 class="logo">🟠길마중</h1>
+                <a href="{{ url_for('main.index') }}" class=>🟠길마중</a>
                 <span class="slogan">오늘, 더 특별한 여행</span>
             </div>
 
             <div class="header-right-block">
+                <div class="top-util-menu">
+                    {% if g.user %}
+                        <!-- 로그인 성공 시 상태 노출 -->
+                        <span class="util-user-name">👤 {{ g.user.name }}님</span>
+                        <a href="{{ url_for('auth.logout') }}" class="util-link logout-btn">로그아웃</a>
+                    {% else %}
+                        <!-- 비로그인 상태일 때 노출 -->
+                        <a href="{{ url_for('auth.login') }}" class="util-link">로그인</a>
+                    {% endif %}
 
-                <div class="utility-menu">
-                    <a href="{{ url_for('main.login') }}">로그인</a>
-                    <a href="#">고객센터</a>
-                    <a href="#">🌐 한국어 ▾</a>
+                    <span class="util-divider">|</span>
+                    <a href="#" class="util-link">고객센터</a>
+
+                    <span class="util-divider">|</span>
+                    <div class="lang-dropdown">
+                        <span class="util-text">🌐 한국어</span>
+                        <span class="arrow-down">▼</span>
+                    </div>
                 </div>
 
                 <div class="nav-search-line">
@@ -66,9 +79,6 @@
     </header>
 
 
-    <!-- =================================
-         페이지별 내용
-         ================================= -->
 
     {% block content %}
     {% endblock %}
