@@ -24,7 +24,6 @@
             <div class="header-right-block">
                <div class="top-util-menu">
                     {% if g.user %}
-                        <!-- 로그인 성공 시 상태 노출 -->
                         <span class="util-user-name">👤 {{ g.user.name }}님</span>
                         <a href="{{ url_for('auth.logout') }}" class="util-link logout-btn">로그아웃</a>
                     {% else %}
@@ -44,7 +43,7 @@
                     <nav class="main-nav">
 
                         <div class="nav-links">
-                            <div class="nav-item"><a href="{{ url_for('main_product') }}">여행 ▾</a></div>
+                            <div class="nav-item"><a href="{{ url_for('main.main_product') }}">여행 ▾</a></div>
                             <div class="nav-item"><a href="#">추천 <span class="badge">N</span> ▾</a></div>
                             <div class="nav-item"><a href="#">후기</a></div>
                             <div class="nav-item"><a href="#">QnA</a></div>
