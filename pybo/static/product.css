@@ -11,48 +11,15 @@
     padding: 0 20px;
 }
 
+#slider{
+    margin-bottom: 30px;
+}
+
 .carousel-item{
     width: 100%;
-    height: 500px;
+    height: 450px;
     background-size: 100%;
     overflow: hidden;
-}
-
-.slide-btn{
-    width: 800px;
-    height: 50px;
-}
-
-/*슬라이드 밑 nav*/
-#slider > nav{
-    width: 100%;
-    height: 50px;
-    background-color: #FAF8F5;
-    opacity: 0.9;
-    margin-bottom: 20px;
-    position: relative;
-    top: -50px;
-}
-#slider > nav > .container-fluid{
-    height: 50px;
-    width: 600px;
-    color: white;
-    align-items: center;
-}
-
-.navbar-brand{
-    width: 100px;
-    height: 50px;
-    background-color: #FAF8F5;
-    color: #212529;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-}
-
-.navbar-brand:not(.active):hover {
-    background-color: #1D3557;
-    color: white;
 }
 
 /* 지도 */
@@ -148,14 +115,16 @@
     margin-top: 30px;
 }
 /*스와이퍼*/
-#carouselExample:first-child{
-    height: 320px;
+#carouselExample{
+    height: 300px;
     margin: 20px;
+    overflow: hidden;
 }
 
-#carouselExample:last-child{
+#mini{
     height: 80px;
-    width: 25%;
+    margin: 20px;
+    display: flex;
 }
 
 #recommend{
