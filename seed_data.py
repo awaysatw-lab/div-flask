@@ -592,9 +592,28 @@ def seed_database():
                     content=content,
                     rating=rating
                 )
+                db.session.add(review)
         else:
             product.image_urls = json_urls
             product.image_url = first_img
+            # ◀ [추가] 기존 상품 리뷰 자동 생성 (중복 방지 체크 포함)
+            # 만약 해당 상품에 작성된 리뷰가 하나도 없는 경우에만 실행
+            existing_review_exists = Review.query.filter_by(product_id=product.id).first()
+            if not existing_review_exists:
+                num_reviews = random.randint(1, 3)
+                for idx in range(num_reviews):
+                    reviewer = created_users[(idx + product.id) % len(created_users)]
+                    title, content = sample_review_comments[(idx + product.id) % len(sample_review_comments)]
+                    rating = 5 if idx == 0 else random.choice([4, 5])
+                    
+                    review = Review(
+                        user_id=reviewer.id,
+                        product_id=product.id,
+                        title=f"[{product.region}] {title}",
+                        content=content,
+                        rating=rating
+                    )
+                    db.session.add(review)
     db.session.commit()
     total_count = TourProduct.query.count()
     print(f"[Seed] 성공! 총 {total_count}개 관광 상품 데이터가 적재되었습니다.")

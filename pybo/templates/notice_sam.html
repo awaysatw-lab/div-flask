@@ -76,54 +76,97 @@
             padding: 0 20px;
             flex: 1;
         }
+        
         .page-title {
             font-size: 28px;
             margin-bottom: 30px;
             font-weight: 700;
-            border-bottom: 2px solid #333;
-            padding-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #0066cc;
         }
 
-        /* 3. 공지사항 목록 (Notice List Table) */
-        .notice-table {
+        /* 🌟 슬라이서 (카테고리 필터 탭) 스타일 */
+        .slicer-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .slicer-btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .slicer-btn:hover {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+        .slicer-btn.active {
+            background-color: #0066cc;
+            border-color: #0066cc;
+            color: #fff;
+        }
+
+        /* 공지사항 게시판 스타일 */
+        .board-table {
             width: 100%;
             border-collapse: collapse;
             background-color: #fff;
-            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .notice-table th, .notice-table td {
-            padding: 15px;
+        .board-table th, .board-table td {
+            padding: 15px 10px;
             text-align: center;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #eee;
         }
-        .notice-table th {
-            background-color: #f5f7fa;
+        .board-table th {
+            background-color: #f4f4f4;
             font-weight: 600;
-            border-top: 1px solid #333;
+            border-top: 2px solid #0066cc;
         }
-        .notice-table td.title {
+        .board-table td.title {
             text-align: left;
-            font-weight: 500;
+            padding-left: 20px;
         }
-        .notice-table td.title a:hover {
+        .board-table td.title a:hover {
             text-decoration: underline;
             color: #0066cc;
         }
-        .badge-notice {
-            background-color: #E76F5F;
-            color: #fff;
-            padding: 2px 8px;
+        
+        /* 카테고리별 배지 스타일 */
+        .badge {
+            padding: 3px 8px;
             border-radius: 3px;
             font-size: 12px;
             font-weight: bold;
+            display: inline-block;
+            margin-right: 5px;
         }
+        .badge.notice { background-color: #ff4d4d; color: #fff; }
+        .badge.event { background-color: #28a745; color: #fff; }
+        .badge.service { background-color: #17a2b8; color: #fff; }
 
-        /* 페이징 (Pagination) */
+        /* 페이지네이션 */
         .pagination {
             display: flex;
             justify-content: center;
             list-style: none;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .pagination li {
             margin: 0 5px;
@@ -133,157 +176,163 @@
             padding: 8px 12px;
             border: 1px solid #ddd;
             background-color: #fff;
-            border-radius: 3px;
             font-size: 14px;
+            border-radius: 3px;
+            transition: all 0.2s;
         }
-        .pagination li.active a {
+        .pagination li.active a, .pagination li a:hover {
             background-color: #0066cc;
             color: #fff;
             border-color: #0066cc;
         }
 
-        /* 4. 푸터 (Footer) */
+        /* 푸터 (Footer) */
         .footer {
             background-color: #333;
             color: #ccc;
-            padding: 40px 20px;
+            padding: 30px 20px;
             margin-top: auto;
             font-size: 14px;
         }
-        .footer-content {
+        .footer-inner {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
         }
-        .footer-links a {
-            margin-right: 20px;
+        .footer-logo {
+            font-size: 20px;
+            font-weight: bold;
             color: #fff;
+            margin-bottom: 10px;
         }
-        .footer-info {
-            margin-top: 15px;
-            line-height: 1.6;
-        }
-        .copyright {
-            margin-top: 15px;
-            color: #888;
-            font-size: 12px;
+
+        /* 반응형 스타일 조정 */
+        @media (max-width: 768px) {
+            .board-table th:nth-child(1), .board-table td:nth-child(1),
+            .board-table th:nth-child(4), .board-table td:nth-child(4) {
+                display: none;
+            }
+            .header, .footer-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            .utill-menu a {
+                margin: 0 10px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. 헤더 영역 -->
+    <!-- 헤더 -->
     <header class="header">
-        <div class="logo">K-Tour Connect</div>
+        <div class="logo">대한민국 구석구석</div>
         <div class="utill-menu">
             <a href="#">로그인</a>
             <a href="#">회원가입</a>
-            <a href="#">English</a>
+            <a href="#">고객센터</a>
         </div>
     </header>
 
-    <!-- 2. 네비게이션 영역 -->
+    <!-- 네비게이션 -->
     <nav class="nav">
         <ul class="nav-menu">
             <li><a href="#">홈</a></li>
-            <li><a href="#">여행지 소개</a></li>
-            <li><a href="#">축제/행사</a></li>
-            <li><a href="#">여행 가이드</a></li>
+            <li><a href="#">여행지</a></li>
+            <li><a href="#">코스추천</a></li>
             <li class="active"><a href="#">공지사항</a></li>
         </ul>
     </nav>
 
-    <!-- 메인 컨텐츠 및 3. 공지사항 목록 영역 -->
+    <!-- 메인 컨텐츠 -->
     <main class="container">
         <h2 class="page-title">공지사항</h2>
         
-        <table class="notice-table">
+        <!-- 🌟 슬라이서 (카테고리 필터 버튼 그룹) -->
+        <div class="slicer-container">
+            <button class="slicer-btn active" data-filter="all">전체</button>
+            <button class="slicer-btn" data-filter="notice">중요공지</button>
+            <button class="slicer-btn" data-filter="event">이벤트</button>
+            <button class="slicer-btn" data-filter="service">서비스안내</button>
+        </div>
+        
+        <table class="board-table">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 60%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+            </colgroup>
             <thead>
                 <tr>
-                    <th style="width: 8%;">번호</th>
-                    <th style="width: 57%;">제목</th>
-                    <th style="width: 15%;">작성일</th>
-                    <th style="width: 10%;">조회수</th>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- 상단 고정 공지 -->
-                <tr>
-                    <td><span class="badge-notice">공지</span></td>
-                    <td class="title"><a href="#">[중요] 시스템 점검에 따른 여행 예약 서비스 일시 중단 안내</a></td>
-                    <td>2026-09-28</td>
+            <tbody id="board-content">
+                <!-- data-category 속성으로 분류 지정 -->
+                <tr data-category="notice">
+                    <td><span class="badge notice">공지</span></td>
+                    <td class="title"><a href="#">[필독] 시스템 정기 점검에 따른 서비스 일시 중단 안내</a></td>
+                    <td>2026-10-01</td>
                     <td>1,245</td>
                 </tr>
-                <tr>
-                    <td><span class="badge-notice">공지</span></td>
-                    <td class="title"><a href="#">[이벤트] 가을 맞이 국내 숙박 할인 쿠폰 지급 이벤트 (선착순)</a></td>
-                    <td>2026-09-25</td>
-                    <td>3,890</td>
-                </tr>
-                <!-- 일반 공지 목록 -->
-                <tr>
-                    <td>5</td>
-                    <td class="title"><a href="#">전라남도 지역 축제 셔틀버스 운행 시간표 변경 안내</a></td>
-                    <td>2026-09-24</td>
-                    <td>452</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td class="title"><a href="#">[발표] 8월 베스트 포토 후기 작성자 경품 당첨자 발표</a></td>
-                    <td>2026-09-20</td>
-                    <td>612</td>
-                </tr>
-                <tr>
+                <tr data-category="event">
                     <td>3</td>
-                    <td class="title"><a href="#">경복궁 야간 관람 예매 방식 변경 안내</a></td>
-                    <td>2026-09-15</td>
-                    <td>1,805</td>
+                    <td class="title"><span class="badge event">이벤트</span><a href="#">가을철 맞이 전국의 아름다운 단풍길 추천 이벤트 당첨자 발표</a></td>
+                    <td>2026-09-28</td>
+                    <td>432</td>
                 </tr>
-                <tr>
+                <tr data-category="service">
                     <td>2</td>
-                    <td class="title"><a href="#">제주도 렌터카 제휴 업체 가격 비교 서비스 오픈 안내</a></td>
-                    <td>2026-09-10</td>
-                    <td>930</td>
+                    <td class="title"><span class="badge service">서비스</span><a href="#">대한민국 구석구석 앱 버전 업그레이드 안내 (v3.2.0)</a></td>
+                    <td>2026-09-25</td>
+                    <td>512</td>
                 </tr>
-                <tr>
+                <tr data-category="service">
                     <td>1</td>
-                    <td class="title"><a href="#">K-Tour Connect 서비스 공식 론칭 안내</a></td>
-                    <td>2026-09-01</td>
-                    <td>2,341</td>
+                    <td class="title"><span class="badge service">서비스</span><a href="#">신규 제휴 가맹점 등록 및 할인 혜택 변경 안내</a></td>
+                    <td>2026-09-20</td>
+                    <td>310</td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- 페이징 영역 -->
+        <!-- 페이지네이션 -->
         <ul class="pagination">
             <li><a href="#">&lt;</a></li>
             <li class="active"><a href="#">1</a></li>
             <li><a href="#">2</a></li>
             <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
             <li><a href="#">&gt;</a></li>
         </ul>
     </main>
 
-    <!-- 4. 푸터 영역 -->
+    <!-- 푸터 -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="#">이용약관</a>
-                <a href="#"><strong>개인정보처리방침</strong></a>
-                <a href="#">고객센터</a>
-                <a href="#">찾아오시는 길</a>
+        <div class="footer-inner">
+            <div>
+                <div class="footer-logo">대한민국 구석구석</div>
+                <p>Copyright © 한국관광공사 All rights reserved.</p>
             </div>
-            <div class="footer-info">
-                <p>(우) 06132 서울특별시 강남구 테헤란로 | 대표자: 홍길동</p>
-                <p>사업자등록번호: 123-45-67890 | 통신판매업신고: 제 2026-서울강남-0000호</p>
-                <p class="copyright">&copy; 2026 K-Tour Connect. All rights reserved.</p>
+            <div>
+                <p>이용약관 | 개인정보처리방침</p>
             </div>
         </div>
     </footer>
 
-</body>
-</html>
+    <!-- 🌟 슬라이서 제어 스크립트 -->
+    <script>
+        document.querySelectorAll('.slicer-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // 1. 활성화 버튼 스타일 변경
+                document.querySelectorAll('.slicer-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // 2. 데이터 필터링 기능 작동
