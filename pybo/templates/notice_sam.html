@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 | 대한민국 구석구석 여행</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        a {
+            text-shadow: none;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 1. 헤더 (Header) */
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .utill-menu a {
+            margin-left: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 2. 네비게이션 (Navigation) */
+        .nav {
+            background-color: #0066cc;
+            overflow: hidden;
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-menu li a {
+            display: block;
+            padding: 15px 20px;
+            color: #fff;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        .nav-menu li a:hover, .nav-menu li.active a {
+            background-color: #004da0;
+        }
+
+        /* 메인 컨텐츠 영역 */
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #0066cc;
+        }
+
+        /* 🌟 슬라이서 (카테고리 필터 탭) 스타일 */
+        .slicer-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .slicer-btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .slicer-btn:hover {
+            border-color: #0066cc;
+            color: #0066cc;
+        }
+        .slicer-btn.active {
+            background-color: #0066cc;
+            border-color: #0066cc;
+            color: #fff;
+        }
+
+        /* 공지사항 게시판 스타일 */
+        .board-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .board-table th, .board-table td {
+            padding: 15px 10px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        .board-table th {
+            background-color: #f4f4f4;
+            font-weight: 600;
+            border-top: 2px solid #0066cc;
+        }
+        .board-table td.title {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .board-table td.title a:hover {
+            text-decoration: underline;
+            color: #0066cc;
+        }
+        
+        /* 카테고리별 배지 스타일 */
+        .badge {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .badge.notice { background-color: #ff4d4d; color: #fff; }
+        .badge.event { background-color: #28a745; color: #fff; }
+        .badge.service { background-color: #17a2b8; color: #fff; }
+
+        /* 페이지네이션 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-top: 30px;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination li a {
+            display: block;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            font-size: 14px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        .pagination li.active a, .pagination li a:hover {
+            background-color: #0066cc;
+            color: #fff;
+            border-color: #0066cc;
+        }
+
+        /* 푸터 (Footer) */
+        .footer {
+            background-color: #333;
+            color: #ccc;
+            padding: 30px 20px;
+            margin-top: auto;
+            font-size: 14px;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .footer-logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        /* 반응형 스타일 조정 */
+        @media (max-width: 768px) {
+            .board-table th:nth-child(1), .board-table td:nth-child(1),
+            .board-table th:nth-child(4), .board-table td:nth-child(4) {
+                display: none;
+            }
+            .header, .footer-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            .utill-menu a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="logo">대한민국 구석구석</div>
+        <div class="utill-menu">
+            <a href="#">로그인</a>
+            <a href="#">회원가입</a>
+            <a href="#">고객센터</a>
+        </div>
+    </header>
+
+    <!-- 네비게이션 -->
+    <nav class="nav">
+        <ul class="nav-menu">
+            <li><a href="#">홈</a></li>
+            <li><a href="#">여행지</a></li>
+            <li><a href="#">코스추천</a></li>
+            <li class="active"><a href="#">공지사항</a></li>
+        </ul>
+    </nav>
+
+    <!-- 메인 컨텐츠 -->
+    <main class="container">
+        <h2 class="page-title">공지사항</h2>
+        
+        <!-- 🌟 슬라이서 (카테고리 필터 버튼 그룹) -->
+        <div class="slicer-container">
+            <button class="slicer-btn active" data-filter="all">전체</button>
+            <button class="slicer-btn" data-filter="notice">중요공지</button>
+            <button class="slicer-btn" data-filter="event">이벤트</button>
+            <button class="slicer-btn" data-filter="service">서비스안내</button>
+        </div>
+        
+        <table class="board-table">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 60%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody id="board-content">
+                <!-- data-category 속성으로 분류 지정 -->
+                <tr data-category="notice">
+                    <td><span class="badge notice">공지</span></td>
+                    <td class="title"><a href="#">[필독] 시스템 정기 점검에 따른 서비스 일시 중단 안내</a></td>
+                    <td>2026-10-01</td>
+                    <td>1,245</td>
+                </tr>
+                <tr data-category="event">
+                    <td>3</td>
+                    <td class="title"><span class="badge event">이벤트</span><a href="#">가을철 맞이 전국의 아름다운 단풍길 추천 이벤트 당첨자 발표</a></td>
+                    <td>2026-09-28</td>
+                    <td>432</td>
+                </tr>
+                <tr data-category="service">
+                    <td>2</td>
+                    <td class="title"><span class="badge service">서비스</span><a href="#">대한민국 구석구석 앱 버전 업그레이드 안내 (v3.2.0)</a></td>
+                    <td>2026-09-25</td>
+                    <td>512</td>
+                </tr>
+                <tr data-category="service">
+                    <td>1</td>
+                    <td class="title"><span class="badge service">서비스</span><a href="#">신규 제휴 가맹점 등록 및 할인 혜택 변경 안내</a></td>
+                    <td>2026-09-20</td>
+                    <td>310</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 페이지네이션 -->
+        <ul class="pagination">
+            <li><a href="#">&lt;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">&gt;</a></li>
+        </ul>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-logo">대한민국 구석구석</div>
+                <p>Copyright © 한국관광공사 All rights reserved.</p>
+            </div>
+            <div>
+                <p>이용약관 | 개인정보처리방침</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 🌟 슬라이서 제어 스크립트 -->
+    <script>
+        document.querySelectorAll('.slicer-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // 1. 활성화 버튼 스타일 변경
+                document.querySelectorAll('.slicer-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // 2. 데이터 필터링 기능 작동

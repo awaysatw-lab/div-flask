@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    {% if popular_products %}
+    <div id="best" class="row mt-5">
+        <h2 class="text-center pb-2">베스트 후기</h2>
+        {% for product, review_count in popular_products[:4] %}
+            <div class="col-md-3">
+                <div class="card">
+                  <img src="{{ product.image_url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+
+{#                    <p class="card-text">{{product.description }}</p>#}
+                    <p class="text-end">
+                      <span class="badge text-bg-danger">{{ review_count }}</span>
+                    </p>
+                    <a href="{{ url_for('review.detail', product_id=product.id) }}" class="btn btn-primary">자세히 보기</a>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div id="best" class="row">
+        작성한 리뷰가 없습니다
+    </div>
+    {% endif %}
+
+    {% if latest_products %}
+    <div id="best" class="row mt-5">
+        <h2 class="text-center pb-2">최신 후기</h2>
+        {% for product, review_count, latest_review_date in latest_products[:4] %}
+            <div class="col-md-3">
+                <div class="card">
+                  <img src="{{ product.image_url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+{#                    <p class="card-text">{{product.description }}</p>#}
+                    <p class="text-end">
+                      <span class="badge text-bg-danger">{{ review_count }}</span>
+                    </p>
+                    <a href="{{ url_for('review.detail', product_id=product.id) }}" class="btn btn-primary">자세히 보기</a>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div id="best" class="row">
+        작성한 리뷰가 없습니다
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+    

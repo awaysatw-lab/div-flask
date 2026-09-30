@@ -194,3 +194,4 @@ class Payment(db.Model):
     transaction_id = db.Column(db.String(100), unique=True, nullable=False)
     status = db.Column(db.String(20), default='SUCCESS') # SUCCESS, FAILED, CANCELLED
     paid_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
