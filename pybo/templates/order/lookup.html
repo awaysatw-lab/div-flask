@@ -19,6 +19,17 @@
     </p>
   </div>
 
+  <!-- 알림 및 플래시 메시지 -->
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}" style="padding: 14px 18px; border-radius: 10px; margin-bottom: 24px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+         {% if category == 'success' %}background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0;
+         {% elif category == 'danger' %}background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca;
+         {% else %}background-color: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;{% endif %}">
+      <span>{% if category == 'success' %}✅{% elif category == 'danger' %}⚠️{% else %}ℹ️{% endif %}</span>
+      <span>{{ message }}</span>
+    </div>
+  {% endfor %}
+
   {% if is_member %}
     <!-- ==================== [1. 로그인 회원 화면] ==================== -->
     <div class="member-lookup-container">
@@ -107,6 +118,9 @@
                     </h3>
 
                     <div class="summary-bottom-line">
+                      {% if o.travel_date %}
+                        <span class="meta-item">여행일: <strong style="color: #2563eb;">📅 {{ o.travel_date }}</strong></span>
+                      {% endif %}
                       <span class="meta-item">인원: <strong>{{ item.quantity if item else 1 }}명</strong></span>
                       <span class="meta-item">권역: <strong>{{ item.product.region if (item and item.product) else '-' }}</strong></span>
                       <span class="meta-price">

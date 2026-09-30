@@ -21,7 +21,12 @@
           <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-thumb" onerror="this.src='/static/img/default-tour.jpg'">
           <div class="product-info">
             <h4>{{ product.name }}</h4>
-            <p class="text-muted" style="font-size: 13px;">권역: {{ product.region }} | 예약 인원: <strong>{{ headcount }}명</strong></p>
+            <p class="text-muted" style="font-size: 13px;">
+              권역: {{ product.region }} | 예약 인원: <strong>{{ headcount }}명</strong>
+              {% if travel_date %}
+                | 여행 날짜: <strong style="color: #2563eb;">📅 {{ travel_date }}</strong>
+              {% endif %}
+            </p>
             <p class="text-muted" style="font-size: 13px;">예약자: {{ reserver_name }} ({{ reserver_phone }})</p>
           </div>
         </div>
@@ -88,6 +93,7 @@
         >
           <input type="hidden" name="product_id" value="{{ product.id }}">
           <input type="hidden" name="headcount" value="{{ headcount }}">
+          <input type="hidden" name="travel_date" value="{{ travel_date }}">
           <input type="hidden" name="reserver_name" value="{{ reserver_name }}">
           <input type="hidden" name="reserver_phone" value="{{ reserver_phone }}">
           <input type="hidden" name="reserver_email" value="{{ reserver_email }}">

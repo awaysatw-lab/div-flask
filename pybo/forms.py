@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, EmailField, IntegerField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange
 from pybo.models import User
+from datetime import datetime, timedelta, date
 import re
 
 
@@ -90,6 +91,11 @@ class OrderReserveForm(FlaskForm):
         Length(max=120, message='이메일 주소는 120자 이내로 입력해 주세요.')
     ])
 
+    # 여행 날짜 (오늘 이후 2주일 이내 선택)
+    travel_date = StringField('여행 날짜', validators=[
+        DataRequired('여행 날짜를 선택해 주세요.')
+    ])
+
     # 필수 약관 동의 (국내여행 특별약관, 개인정보 제3자 제공, 민감정보 수집)
     agree_special = BooleanField('국내여행 특별약관 동의', validators=[
         DataRequired('국내여행 특별약관[필수]에 동의하셔야 예약을 진행하실 수 있습니다.')
@@ -109,6 +115,25 @@ class OrderReserveForm(FlaskForm):
     def __init__(self, *args, is_member=False, **kwargs):
         super(OrderReserveForm, self).__init__(*args, **kwargs)
         self.is_member = is_member
+
+    def validate_travel_date(self, field):
+        """여행 날짜 검증: 오늘 이후부터 2주일(14일) 이내만 허용"""
+        val = (field.data or '').strip()
+        if not val:
+            raise ValidationError('여행 날짜는 필수 입력 항목입니다.')
+        try:
+            selected_date = datetime.strptime(val, '%Y-%m-%d').date()
+        except ValueError:
+            raise ValidationError('올바른 날짜 형식(YYYY-MM-DD)을 입력해 주세요.')
+
+        today = datetime.now().date()
+        min_date = today + timedelta(days=1)
+        max_date = today + timedelta(days=14)
+
+        if selected_date < min_date:
+            raise ValidationError('여행 날짜는 오늘 이후(내일)부터 선택 가능합니다.')
+        if selected_date > max_date:
+            raise ValidationError(f'여행 날짜는 오늘 기준 2주일 이내({max_date.strftime("%Y-%m-%d")}까지)만 선택 가능합니다.')
 
     def validate_guest_name(self, field):
         """비회원 예약 시 예약자 성함 필수 검증"""
