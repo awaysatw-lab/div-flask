@@ -4,38 +4,28 @@
 
 {% block content %}
 
-<div class="wide-banner-container">
-
-    <section class="main-banner-full">
-
+<section class="main-banner-full" id="mainBanner" style="background-image: url('{{ url_for('static', filename='img/slide1.jpg') }}');">
         <div class="banner-overlay"></div>
-
         <div class="banner-content-wrap">
-
             <div class="banner-text">
-
-                <h2>
+                <h2 id="bannerTitle">
                     추억이 물드는<br>
                     가을 여행
                 </h2>
-
-                <p>
+                <p id="bannerDesc">
                     일상에서 벗어나<br>
-                    가울 추천 여행
+                    가을 추천 여행
                 </p>
-
                 <div class="banner-arrows">
-                    〈 1 / 8 〉
+                    <span class="arrow-btn" id="prevBanner">〈</span>
+                    <span id="bannerArrowText">1 / 6</span>
+                    <span class="arrow-btn" id="nextBanner">〉</span>
                 </div>
-
             </div>
-
         </div>
 
     </section>
-
 </div>
-
 
 <!-- =========================================================
      메인 콘텐츠
