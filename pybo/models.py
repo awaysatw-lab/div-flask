@@ -177,6 +177,17 @@ class Order(db.Model):
     @property
     def final_amount(self):
         return (self.original_amount or 0) - (self.discount_amount or 0)
+
+    @property
+    def is_past_travel_date(self):
+        """이용일이 지났는지 여부 판별 (오늘 이전 날짜인 경우 True)"""
+        if not self.travel_date:
+            return False
+        try:
+            t_date = datetime.strptime(self.travel_date.strip(), '%Y-%m-%d').date()
+            return t_date < datetime.now().date()
+        except Exception:
+            return False
     
 class OrderItem(db.Model):
     __tablename__ = 'order_items'

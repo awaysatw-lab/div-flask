@@ -379,3 +379,44 @@ def detail(order_no):
     )
 
 
+@bp.route("/cancel/<order_no>", methods=['POST'])
+def cancel(order_no):
+    """예약 및 결제 취소 (주문 삭제)
+    - 로그인 사용자: 본인의 주문인지 확인
+    - 비로그인(게스트): guest_name 일치 여부 확인
+    - 이용일(travel_date)이 지난 경우 취소 불가
+    - 정상 검증 시 Order (및 cascade 연관 데이터) 삭제 처리
+    """
+    order = Order.query.filter_by(order_no=order_no).first()
+    if not order:
+        flash('존재하지 않는 주문 번호입니다.', 'danger')
+        return redirect(url_for('order.lookup'))
+
+    # 이용일 경과 여부 검증
+    if order.is_past_travel_date:
+        flash(f'여행 이용일({order.travel_date})이 지난 주문은 결제를 취소할 수 없습니다.', 'danger')
+        return redirect(url_for('order.lookup'))
+
+    is_member, logged_user = check_is_member()
+
+    # 권한 검증
+    if order.user_id:
+        # 회원 주문인 경우 로그인 본인 확인
+        if not (is_member and logged_user and order.user_id == logged_user.id):
+            flash('해당 주문을 취소할 권한이 없습니다.', 'danger')
+            return redirect(url_for('order.lookup'))
+    else:
+        # 비회원 주문인 경우 게스트 성명 검증
+        guest_name = request.form.get('guest_name', '').strip()
+        if not guest_name or (order.guest_name and order.guest_name.strip() != guest_name):
+            flash('예약자 성함이 일치하지 않아 취소할 수 없습니다.', 'danger')
+            return redirect(url_for('order.lookup'))
+
+    cancelled_order_no = order.order_no
+    db.session.delete(order)
+    db.session.commit()
+
+    flash(f'주문번호 {cancelled_order_no}의 예약 및 결제가 성공적으로 취소(삭제)되었습니다.', 'success')
+    return redirect(url_for('order.lookup'))
+
+
