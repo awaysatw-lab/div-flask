@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>가입 완료</title>
+</head>
+<body>
+    <script>
+        alert("회원가입이 성공적으로 완료되었습니다! 🎉");
+        if (window.opener && !window.opener.closed) {
+            window.opener.location.href = "{{ url_for('main.index') }}";
+        }
+        window.close();
+    </script>
+</body>
+</html>
