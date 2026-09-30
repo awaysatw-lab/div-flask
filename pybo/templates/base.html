@@ -2,22 +2,18 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-
-    <title>
-        {% block title %}길마중 - 오늘, 더 특별한 여행{% endblock %}
-    </title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/main.css') }}">
+    <title>{% block title %}길마중 - 오늘, 더 특별한 여행{% endblock %}</title>
+    {# bootstrap css#}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
     <header class="site-header">
         <div class="header-container">
 
             <div class="logo-area">
-                <a href="{{ url_for('main.index') }}" class=>🟠길마중</a>
+                <a href="{{ url_for('main.index') }}" class="logo-link">🟠길마중</a>
                 <span class="slogan">오늘, 더 특별한 여행</span>
             </div>
 
@@ -29,6 +25,8 @@
                     {% else %}
                         <a href="{{ url_for('auth.login') }}" class="util-link">로그인</a>
                     {% endif %}
+                    <span class="util-divider">|</span>
+                    <a href="{{ url_for('order.lookup') }}" class="util-link">예약확인</a>
                     <span class="util-divider">|</span>
                     <a href="#" class="util-link">고객센터</a>
                     <span class="util-divider">|</span>
@@ -43,7 +41,7 @@
                     <nav class="main-nav">
 
                         <div class="nav-links">
-                            <div class="nav-item"><a href="{{ url_for('main.main_product') }}">여행 ▾</a></div>
+                            <div class="nav-item"><a href="{{ url_for('product.main_product') }}">여행 ▾</a></div>
                             <div class="nav-item"><a href="#">추천 <span class="badge">N</span> ▾</a></div>
                             <div class="nav-item"><a href="#">후기</a></div>
                             <div class="nav-item"><a href="#">QnA</a></div>
@@ -223,9 +221,10 @@
 
     </footer>
 
+    {# bootstrap js#}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- 기존 main.js -->
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 </html>

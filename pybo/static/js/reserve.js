@@ -247,10 +247,55 @@ document.addEventListener('DOMContentLoaded', function() {
     el.style.display = (el.style.display === 'block') ? 'none' : 'block';
   };
 
-  // 폼 제출 시 필수 약관 체크 여부 검증
+  // 여행 날짜 (오늘 이후 2주일만 가능) 설정 및 유효성 검증
+  const travelDateInput = document.getElementById('travel_date');
+  if (travelDateInput) {
+    const today = new Date();
+    const minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const formatDate = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+    const minStr = formatDate(minDate);
+    const maxStr = formatDate(maxDate);
+
+    travelDateInput.min = minStr;
+    travelDateInput.max = maxStr;
+
+    if (!travelDateInput.value || travelDateInput.value < minStr || travelDateInput.value > maxStr) {
+      travelDateInput.value = minStr;
+    }
+
+    const dateNoticeEl = document.getElementById('dateRangeNotice');
+    if (dateNoticeEl) {
+      dateNoticeEl.innerText = `${minStr} ~ ${maxStr}`;
+    }
+
+    travelDateInput.addEventListener('change', function() {
+      if (this.value < minStr || this.value > maxStr) {
+        alert(`여행 날짜는 오늘 이후(${minStr})부터 2주일 이내(${maxStr})의 날짜만 선택 가능합니다.`);
+        this.value = minStr;
+      }
+    });
+  }
+
+  // 폼 제출 시 필수 약관 및 여행 날짜 유효성 검증
   const form = document.getElementById('reserveForm');
   if (form) {
     form.addEventListener('submit', function(e) {
+      if (travelDateInput) {
+        const val = travelDateInput.value;
+        const minVal = travelDateInput.min;
+        const maxVal = travelDateInput.max;
+        if (!val || val < minVal || val > maxVal) {
+          e.preventDefault();
+          alert(`여행 날짜는 오늘 이후(${minVal})부터 2주일 이내(${maxVal})의 날짜만 선택 가능합니다.`);
+          travelDateInput.focus();
+          return;
+        }
+      }
+
       const requiredTerms = document.querySelectorAll('.term-required');
       let allRequiredChecked = true;
       let firstUnchecked = null;
