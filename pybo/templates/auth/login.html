@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}
+길마중 - 로그인
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<div class="login-page">
+    <div class="login-image">
+        <img src="{{ url_for('static', filename='img/login-bg.png') }}" alt="길마중 여행">
+    </div>
+
+    <div class="login-intro">
+        <p class="intro-small">지금, 떠나기 좋은 순간</p>
+        <h1>일상이 여행이 되는<br>특별한 경험</h1>
+        <p class="intro-description">
+            전통의 아름다움과<br>
+            새로운 세상을 만나는 여행,<br>
+            길마중과 함께하세요.
+        </p>
+    </div>
+
+    <div class="login-box">
+        <div class="login-logo">
+            <div class="logo-mark">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <h2>길마중</h2>
+            <p>길마중에 오신 것을 환영합니다.</p>
+            <small>지금 바로 특별한 여행을 시작해보세요.</small>
+        </div>
+
+        {% include 'auth/errors.html' %}
+
+         <form class="login-form" method="POST" novalidate action="{{ url_for('auth.login') }}">
+            {{ form.csrf_token }}
+            <div class="input-box">
+                <span class="input-icon">♙</span>
+                <input
+                    type="text"
+                    id="user_id"
+                    name="user_id"
+                    placeholder="아이디를 입력해주세요"
+                    autocomplete="username"
+                    value="{{ form.user_id.data or '' }}"
+                    required
+                >
+            </div>
+            <div class="input-box">
+                <span class="input-icon">♧</span>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="비밀번호를 입력해주세요"
+                    autocomplete="current-password"
+                    required
+                >
+                <button type="button" class="password-view" id="passwordView">◉</button>
+            </div>
+
+                        <div class="login-options">
+                <label>
+                    <input type="checkbox" id="remember_id" name="remember_id">
+                    <span>아이디 저장</span>
+                </label>
+                <div class="find-links">
+                    <a href="#" id="openFindId">아이디 찾기</a>
+                    <span>|</span>
+                    <a href="#" id="openFindPw">비밀번호 찾기</a>
+                </div>
+            </div>
+            <div id="findIdModal" class="modal-overlay">
+                <div class="modal-window">
+                    <div class="modal-header">
+                        <h3>🔍 아이디 찾기</h3>
+                        <button type="button" class="modal-close-btn" id="closeFindId">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-desc">가입 시 등록한 이름과 이메일 주소를 입력해 주세요.</p>
+                        <input type="text" id="find_id_name" class="modal-input" placeholder="이름을 입력하세요" required>
+                        <input type="email" id="find_id_email" class="modal-input spacing-bottom" placeholder="이메일 주소를 입력하세요" required>
+
+                        <div id="findIdMessage" class="modal-check-message"></div>
+
+                        <button type="button" id="btnSubmitFindId" class="login-button modal-btn">아이디 찾기</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="findPwModal" class="modal-overlay">
+                <div class="modal-window">
+                    <div class="modal-header">
+                        <h3>🔒 비밀번호 찾기</h3>
+                        <button type="button" class="modal-close-btn" id="closeFindPw">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-desc">가입하신 아이디와 이메일 주소를 입력하시면 임시 비밀번호를 발송해 드립니다.</p>
+                        <input type="text" id="find_pw_id" class="modal-input" placeholder="아이디를 입력하세요" required>
+                        <input type="email" id="find_pw_email" class="modal-input spacing-bottom" placeholder="이메일 주소를 입력하세요" required>
+
+                        <div id="findPwMessage" class="modal-check-message"></div>
+
+                        <button type="button" id="btnSubmitFindPw" class="login-button modal-btn">임시 비밀번호 발급</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="login-button">로그인</button>
+        </form>
+
+        <div class="login-divider">
+            <span>또는</span>
+        </div>
+
+        <div class="social-login">
+            <button type="button" class="social-button naver"><span>N</span>네이버 로그인</button>
+            <button type="button" class="social-button kakao"><span>●</span>카카오 로그인</button>
+            <button type="button" class="social-button google"><span>G</span>구글 로그인</button>
+        </div>
+
+        <div class="signup-prompt">
+            아직 회원이 아니신가요?<br>
+            <div class="signup--button">
+                <a href="{{ url_for('auth.signup') }}" class="signup-button" onclick="openSignupPopup(event, this)">회원가입</a>
+            </div>
+        </div>
+
+        <div class="login-policy">
+            <span>TIP</span>
+            <p>처음 방문하셨나요? <a href="#" id="openTerms">이용약관</a>을 확인해주세요.</p>
+        </div>
+    </div>
+</div>
+
+<div id="termsModal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="modal-header">
+            <h3>📜 길마중 이용약관</h3>
+            <button type="button" class="modal-close-btn" id="closeTerms">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p><strong>제 1조 (목적)</strong><br>본 약관은 (주)길마중투어가 제공하는 패키지 여행 서비스의 이용 조건 및 절차에 관한 사항을 규정함을 목적으로 합니다.</p><br>
+            <p><strong>제 2조 (회원의 의무)</strong><br>회원은 가입 시 실명 및 정확한 이메일, 연락처 정보를 제공해야 하며, 예약 내용의 확인 및 변경 시 당사에 고지할 의무가 있습니다.</p><br>
+            <p><strong>제 3조 (취소 및 환불)</strong><br>국외/국내 여행 표준약관에 의거하여, 출발일 기준 취소 시점에 따라 소정의 취소 수수료가 부과될 수 있습니다.</p><br>
+            <p><strong>제 4조 (개인정보 보호)</strong><br>당사는 회원의 개인정보를 안전하게 보호하며, 수집된 정보는 여행 예약 및 안내 목적으로만 활용됩니다.</p>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+<script>
+    window.findIdUrl = "{{ url_for('auth.find_id') }}";
+    window.findPwUrl = "{{ url_for('auth.find_pw') }}";
+</script>
+
+
+{% endblock %}

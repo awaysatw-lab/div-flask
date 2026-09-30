@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash
 import enum
 import uuid
+import json
 from pybo import db
 
 class User(db.Model):
@@ -157,6 +158,9 @@ class Order(db.Model):
     agree_sensitive = db.Column(db.Boolean, default=True, nullable=False)   # 민감정보 수집 및 이용 동의 [필수]
     agree_location = db.Column(db.Boolean, default=False, nullable=False)   # 위치 정보 이용 동의 [선택]
     
+    # 여행 출발 지정일 (오늘 이후 2주일 이내)
+    travel_date = db.Column(db.String(20), nullable=True)
+
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
@@ -173,6 +177,17 @@ class Order(db.Model):
     @property
     def final_amount(self):
         return (self.original_amount or 0) - (self.discount_amount or 0)
+
+    @property
+    def is_past_travel_date(self):
+        """이용일이 지났는지 여부 판별 (오늘 이전 날짜인 경우 True)"""
+        if not self.travel_date:
+            return False
+        try:
+            t_date = datetime.strptime(self.travel_date.strip(), '%Y-%m-%d').date()
+            return t_date < datetime.now().date()
+        except Exception:
+            return False
     
 class OrderItem(db.Model):
     __tablename__ = 'order_items'

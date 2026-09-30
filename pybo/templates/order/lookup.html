@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+
+{% block title %}예약 확인 및 조회 - 대한민국 구석구석{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lookup.css') }}">
+
+<div class="container page-content">
+  
+  <!-- 페이지 헤더 -->
+  <div class="page-header">
+    <h1>예약 확인 및 조회</h1>
+    <p>
+      {% if is_member %}
+        <strong>{{ logged_user.name }}</strong> 회원님의 예약 내역입니다. 최신 예약순으로 정렬되며, 항목을 클릭하시면 상세 예약 정보를 확인하실 수 있습니다.
+      {% else %}
+        비회원으로 예약하신 경우 예약자 성함과 주문번호를 입력하시면 예약 상세 정보를 확인하실 수 있습니다.
+      {% endif %}
+    </p>
+  </div>
+
+  <!-- 알림 및 플래시 메시지 -->
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}" style="padding: 14px 18px; border-radius: 10px; margin-bottom: 24px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+         {% if category == 'success' %}background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0;
+         {% elif category == 'danger' %}background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca;
+         {% else %}background-color: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;{% endif %}">
+      <span>{% if category == 'success' %}✅{% elif category == 'danger' %}⚠️{% else %}ℹ️{% endif %}</span>
+      <span>{{ message }}</span>
+    </div>
+  {% endfor %}
+
+  {% if is_member %}
+    <!-- ==================== [1. 로그인 회원 화면] ==================== -->
+    <div class="member-lookup-container">
+      
+      <!-- 회원 상태 바 -->
+      <div class="user-status-bar">
+        <div class="user-meta">
+          <span class="user-avatar">👤</span>
+          <div>
+            <strong>{{ logged_user.name }}</strong> 님 환영합니다!
+            <span class="text-muted" style="font-size: 13px; margin-left: 6px;">({{ logged_user.email }})</span>
+          </div>
+        </div>
+        <div class="user-actions">
+          <span class="count-tag">총 <strong>{{ orders|length }}</strong>건의 예약</span>
+          <a href="{{ url_for('auth.logout') }}" class="btn-sub-link">로그아웃</a>
+        </div>
+      </div>
+
+      {% if detail_order %}
+        <!-- 특정 주문 상세 보기 모드인 경우 상단에 상세 카드 노출 -->
+        <div class="selected-detail-banner">
+          <span>📋 선택하신 주문번호 <strong>{{ detail_order.order_no }}</strong>의 상세 정보입니다.</span>
+          <a href="{{ url_for('order.lookup') }}" class="btn-back-list">&lt; 전체 목록으로 보기</a>
+        </div>
+
+        {% with order=detail_order %}
+          {% include 'order/_detail_card.html' %}
+        {% endwith %}
+
+        <div style="margin-top: 24px; text-align: center;">
+          <a href="{{ url_for('order.lookup') }}" class="btn-outline-back">
+            &lt; 전체 예약 목록으로 돌아가기
+          </a>
+        </div>
+
+      {% else %}
+
+        {% if orders|length == 0 %}
+          <!-- 예약 내역 없음 -->
+          <div class="empty-state-box">
+            <span class="empty-icon">🏖️</span>
+            <h3>예약된 여행 상품 내역이 없습니다.</h3>
+            <p>다양한 국내 여행 패키지를 둘러보시고 특별한 힐링 여행을 떠나보세요!</p>
+            <a href="/" class="btn-primary-action">추천 여행 상품 둘러보기</a>
+          </div>
+        {% else %}
+          <!-- 예약 목록 (최신순 정렬) -->
+          <div class="reservation-list" id="reservationList">
+            {% for o in orders %}
+              {% set item = o.items.first() %}
+              <div class="order-list-card" id="orderCard_{{ o.order_no }}">
+                
+                <!-- 카드 요약 헤더 (클릭 시 토글) -->
+                <div class="card-summary-row" onclick="toggleOrderDetail('{{ o.order_no }}')">
+                  
+                  <!-- 상품 썸네일 -->
+                  {% if item and item.product %}
+                    <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" class="card-thumb" onerror="this.src='/static/img/default-tour.jpg'">
+                  {% else %}
+                    <div class="card-thumb-placeholder">여행</div>
+                  {% endif %}
+
+                  <!-- 요약 메타 정보 -->
+                  <div class="card-summary-info">
+                    <div class="summary-top-line">
+                      <span class="order-date">{{ o.created_at.strftime('%Y.%m.%d %H:%M') }}</span>
+                      <span class="order-num-text">주문번호: {{ o.order_no }}</span>
+                      <span class="badge-status status-{{ o.status|lower }}">
+                        {% if o.status == 'COMPLETED' %}
+                          예약 확정
+                        {% elif o.status == 'PENDING' %}
+                          결제 대기
+                        {% else %}
+                          예약 취소
+                        {% endif %}
+                      </span>
+                    </div>
+
+                    <h3 class="product-name">
+                      {% if item and item.product %}
+                        {{ item.product.name }}
+                      {% else %}
+                        여행 상품
+                      {% endif %}
+                    </h3>
+
+                    <div class="summary-bottom-line">
+                      {% if o.travel_date %}
+                        <span class="meta-item">여행일: <strong style="color: #2563eb;">📅 {{ o.travel_date }}</strong></span>
+                      {% endif %}
+                      <span class="meta-item">인원: <strong>{{ item.quantity if item else 1 }}명</strong></span>
+                      <span class="meta-item">권역: <strong>{{ item.product.region if (item and item.product) else '-' }}</strong></span>
+                      <span class="meta-price">
+                        최종 결제 금액: <strong>{{ "{:,}".format(o.payment.paid_amount if o.payment else o.final_amount) }}원</strong>
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- 펼치기/접기 버튼 -->
+                  <div class="expand-btn-wrap">
+                    <button type="button" class="btn-expand" id="expandBtn_{{ o.order_no }}">
+                      상세 정보 <span>▼</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- 아코디언 상세 영역 (숨김/펼침) -->
+                <div class="accordion-detail-content" id="detailWrap_{{ o.order_no }}" style="display: none;">
+                  <div class="accordion-inner">
+                    {% with order=o %}
+                      {% include 'order/_detail_card.html' %}
+                    {% endwith %}
+                  </div>
+                </div>
+
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+      {% endif %}
+
+    </div>
+
+  {% else %}
+    <!-- ==================== [2. 비회원 예약 조회 화면] ==================== -->
+    <div class="guest-lookup-container">
+      
+      {% if detail_order %}
+        <!-- 비회원 예약 조회 성공 시: 로그인 상세와 100% 동일한 상세 카드 표시 -->
+        <div class="guest-result-header">
+          <div class="result-title">
+            <span class="check-icon">✓</span>
+            <div>
+              <h3>예약 조회 성공</h3>
+              <p>입력하신 정보와 일치하는 예약 내역을 불러왔습니다.</p>
+            </div>
+          </div>
+          <a href="{{ url_for('order.lookup') }}" class="btn-retry-search">다른 예약 조회하기</a>
+        </div>
+
+        {% with order=detail_order %}
+          {% include 'order/_detail_card.html' %}
+        {% endwith %}
+
+        <div style="margin-top: 28px; text-align: center;">
+          <a href="{{ url_for('order.lookup') }}" class="btn-outline-back">
+            &lt; 비회원 예약 조회 화면으로 돌아가기
+          </a>
+        </div>
+
+      {% else %}
+        <!-- 비회원 조회 입력 폼 -->
+        <div class="guest-search-card">
+          <div class="guest-search-header">
+            <span class="search-icon">🔎</span>
+            <h2>비회원 예약 내역 조회</h2>
+            <p>예약 시 기재하신 <strong>예약자 성함</strong>과 <strong>주문번호</strong>를 입력해주세요.</p>
+          </div>
+
+          {% if error_msg %}
+            <div class="alert-error-box">
+              <span>⚠️</span>
+              <div>{{ error_msg }}</div>
+            </div>
+          {% endif %}
+
+          <form action="{{ url_for('order.lookup') }}" method="POST" class="guest-search-form" id="guestSearchForm">
+            <div class="form-group">
+              <label for="guest_name" class="form-label">예약자 성함 *</label>
+              <input type="text" id="guest_name" name="guest_name" value="{{ guest_name or '' }}" required class="form-control" placeholder="예약 시 입력하신 성명">
+            </div>
+
+            <div class="form-group">
+              <label for="order_no" class="form-label">주문번호 *</label>
+              <input type="text" id="order_no" name="order_no" value="{{ order_no or '' }}" required class="form-control" placeholder="예: ORD-20260923085033-2725D1">
+            </div>
+
+            <button type="submit" class="btn-search-submit">
+              예약 내역 조회하기 &gt;
+            </button>
+          </form>
+
+          <!-- 빠른 테스트 편의를 위한 샘플 주문번호 클릭 입력 바 -->
+          <div class="test-helper-card">
+            <span class="helper-badge">💡 빠른 테스트 입력</span>
+            <p>DB에 등록된 샘플 예약 정보로 원클릭 조회해보세요:</p>
+            <div class="sample-buttons">
+              <button type="button" class="btn-sample-fill" onclick="fillSample('테스트고객', 'ORD-20260923085033-2725D1')">
+                테스트고객 (ORD-20260923085033-2725D1)
+              </button>
+              <button type="button" class="btn-sample-fill" onclick="fillSample('테스트고객', 'ORD-20260923084617-62642E')">
+                테스트고객 (ORD-20260923084617-62642E)
+              </button>
+            </div>
+          </div>
+
+          <!-- 로그인 유도 링크 -->
+          <div class="login-switch-footer">
+            <span>회원으로 예약하셨나요?</span>
+            <a href="{{ url_for('auth.login') }}">회원 로그인 후 예약 확인하기 &gt;</a>
+          </div>
+        </div>
+
+      {% endif %}
+
+    </div>
+  {% endif %}
+
+</div>
+
+<!-- 분리된 전용 JavaScript 로드 -->
+<script src="{{ url_for('static', filename='js/lookup.js') }}"></script>
+{% endblock %}
