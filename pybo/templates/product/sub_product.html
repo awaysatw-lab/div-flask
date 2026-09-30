@@ -89,11 +89,23 @@
                 <div id="people">
                     {% if g.user %}
                     <h5>🛒 회원 일반 구매</h5>
-                    <p>수량/인원: 1</p>
-                    <button onclick="location.href=`{{ url_for('order.reserve') }}`"> 회원 바로 구매하기(할인가 {{ (product.original_price * (1 - product.member_discount_rate))|int }}원)</button>
+                    <div>
+                        <p>수량/인원: </p>
+                        <div class="stepper-btn-group">
+                            <button type="button" class="btn-step" onclick="changeHeadcount(-1)">-</button>
+                            <input type="number" id="headcountInput" value="{{ headcount }}" min="1" max="20" class="headcount-input" readonly>
+                            <button type="button" class="btn-step" onclick="changeHeadcount(1)">+</button>
+                        </div>
+                    </div>
+                    <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 회원 바로 구매하기(할인가 {{ (product.original_price * (1 - product.member_discount_rate))|int }}원)</button>
                     {% else %}
                     <h5>🛒 비회원 일반 구매</h5>
-                    <p>수량/인원: 1</p>
+                    <p>수량/인원:</p>
+                    <div class="stepper-btn-group">
+                        <button type="button" class="btn-step" onclick="changeHeadcount(-1)">-</button>
+                        <input type="number" id="headcountInput" value="{{ headcount }}" min="1" max="20" class="headcount-input" readonly>
+                        <button type="button" class="btn-step" onclick="changeHeadcount(1)">+</button>
+                    </div>
                     <button onclick="location.href=`{{ url_for('order.reserve') }}`"> 비회원 바로 구매하기(정가 {{ product.original_price }}원)</button>
                     {% endif %}
                 </div>

@@ -135,7 +135,7 @@
                             </div>
                             <div>
                                 <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-primary">상세보기</a>
-                                <a href="{{ url_for('order.reserve') }}" class="btn btn-primary">구매</a>
+                                <a href="{{ url_for('order.reserve', product_id=product.id) }}" class="btn btn-primary">구매</a>
                             </div>
                         </div>
                     </div>

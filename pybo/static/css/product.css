@@ -283,6 +283,14 @@
     border-radius: 10px;
 }
 
+#people > div{
+    display: flex;
+}
+#people > div > p{
+    margin-right: 10px;
+}
+
+
 #people>button{
     width: 100%;
     height: 40px;
