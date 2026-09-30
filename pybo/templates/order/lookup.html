@@ -34,7 +34,7 @@
         </div>
         <div class="user-actions">
           <span class="count-tag">총 <strong>{{ orders|length }}</strong>건의 예약</span>
-          <a href="{{ url_for('order.logout') }}" class="btn-sub-link">로그아웃</a>
+          <a href="{{ url_for('auth.logout') }}" class="btn-sub-link">로그아웃</a>
         </div>
       </div>
 
@@ -217,7 +217,7 @@
           <!-- 로그인 유도 링크 -->
           <div class="login-switch-footer">
             <span>회원으로 예약하셨나요?</span>
-            <a href="{{ url_for('order.login') }}">회원 로그인 후 예약 확인하기 &gt;</a>
+            <a href="{{ url_for('auth.login') }}">회원 로그인 후 예약 확인하기 &gt;</a>
           </div>
         </div>
 

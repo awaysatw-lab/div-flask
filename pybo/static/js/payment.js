@@ -1,4 +1,4 @@
-// payment.js - PortOne V2 1,000원 결제 연동 스크립트
+// payment.js - PortOne V2 결제 연동 스크립트
 
 document.addEventListener('DOMContentLoaded', function() {
   const paymentForm = document.getElementById('paymentForm');
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!paymentForm) return;
 
+  const defaultBtnText = payBtnMain ? payBtnMain.innerText.trim() : '결제하기';
+
   function setButtonsState(disabled, text) {
     allPayButtons.forEach(btn => {
       btn.disabled = disabled;
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /**
-   * PortOne V2 SDK 1,000원 테스트 결제 요청 함수
+   * PortOne V2 SDK 결제 요청 함수 (정상 금액 결제)
    * @param {Object} options 파라미터 오버라이드 객체 (선택)
    */
   async function requestPayment(options = {}) {
@@ -38,8 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
       : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
     const paymentId = options.paymentId || `payment-${uuid}`;
 
-    // 항상 1,000원으로 고정 호출
-    const totalAmount = options.totalAmount !== undefined ? options.totalAmount : 1000;
+    // 정상 결제 금액 산출 (전달받은 옵션값 또는 폼의 data-total-amount 정상 결제 금액 적용)
+    const rawTotalAmount = options.totalAmount !== undefined 
+      ? options.totalAmount 
+      : (paymentForm.dataset.totalAmount || document.getElementById('formPaidAmount')?.value);
+    const totalAmount = parseInt(rawTotalAmount, 10) || 0;
+
     const orderName = options.orderName || paymentForm.dataset.orderName || "테스트 상품 결제";
     const payMethod = options.payMethod || "CARD";
 
@@ -90,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // 결제창 닫힘, 취소 또는 실패 시
       if (response && response.code != null) {
         alert(`결제가 취소되었거나 승인에 실패하였습니다.\n[사유] ${response.message || response.code}`);
-        setButtonsState(false, '1,000원 결제하기 (PortOne)');
+        setButtonsState(false, defaultBtnText);
         return;
       }
 
@@ -108,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         portoneTxIdEl.value = (response && response.txId) ? response.txId : ((response && response.paymentId) ? response.paymentId : paymentId);
       }
       if (formPaidAmountEl) {
-        formPaidAmountEl.value = totalAmount; // 1000
+        formPaidAmountEl.value = totalAmount;
       }
 
       // 서버의 /order/pay/complete 로 주문 저장 처리
@@ -117,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (error) {
       console.error('[PortOne] 결제 처리 에러:', error);
       alert(`결제 처리 중 오류가 발생했습니다: ${error.message || error}`);
-      setButtonsState(false, '1,000원 결제하기 (PortOne)');
+      setButtonsState(false, defaultBtnText);
     }
   });
 });

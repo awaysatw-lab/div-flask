@@ -1,8 +1,9 @@
 # pybo/forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp
+from wtforms import StringField, PasswordField, EmailField, IntegerField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange
 from pybo.models import User
+import re
 
 
 # =========================================================================
@@ -51,6 +52,9 @@ class UserCreateForm(FlaskForm):
             raise ValidationError('이미 등록된 전화번호입니다.')
 
 
+# =========================================================================
+# 2. 로그인 검증 폼 (UserLoginForm)
+# =========================================================================
 class UserLoginForm(FlaskForm):
     user_id = StringField('아이디', validators=[
         DataRequired('아이디를 입력해 주세요.')
@@ -58,3 +62,74 @@ class UserLoginForm(FlaskForm):
     password = PasswordField('비밀번호', validators=[
         DataRequired('비밀번호를 입력해 주세요.')
     ])
+
+
+# =========================================================================
+# 3. 여행 상품 예약 검증 폼 (OrderReserveForm)
+# =========================================================================
+class OrderReserveForm(FlaskForm):
+    product_id = IntegerField('상품 ID', validators=[
+        DataRequired('예약하실 여행 상품 정보가 올바르지 않습니다.')
+    ])
+
+    headcount = IntegerField('예약 인원수', default=1, validators=[
+        DataRequired('예약 인원수를 입력해 주세요.'),
+        NumberRange(min=1, max=20, message='예약 인원은 1명 이상 20명 이하이어야 합니다.')
+    ])
+
+    # 비회원(Guest) 예약자 정보 (비회원 예약 시 필수)
+    guest_name = StringField('예약자 성함', validators=[
+        Length(max=80, message='예약자 성함은 80자 이내로 입력해 주세요.')
+    ])
+
+    guest_phone = StringField('휴대폰 번호', validators=[
+        Length(max=30, message='휴대폰 번호는 30자 이내로 입력해 주세요.')
+    ])
+
+    guest_email = EmailField('이메일 주소', validators=[
+        Length(max=120, message='이메일 주소는 120자 이내로 입력해 주세요.')
+    ])
+
+    # 필수 약관 동의 (국내여행 특별약관, 개인정보 제3자 제공, 민감정보 수집)
+    agree_special = BooleanField('국내여행 특별약관 동의', validators=[
+        DataRequired('국내여행 특별약관[필수]에 동의하셔야 예약을 진행하실 수 있습니다.')
+    ])
+
+    agree_privacy = BooleanField('개인정보 제3자 제공동의', validators=[
+        DataRequired('개인정보 제3자 제공동의[필수]에 동의하셔야 예약을 진행하실 수 있습니다.')
+    ])
+
+    agree_sensitive = BooleanField('민감정보 수집 및 이용 동의', validators=[
+        DataRequired('민감정보 수집 및 이용 동의[필수]에 동의하셔야 예약을 진행하실 수 있습니다.')
+    ])
+
+    # 선택 약관 동의 (위치 정보 이용 동의)
+    agree_location = BooleanField('위치 정보 이용 동의')
+
+    def __init__(self, *args, is_member=False, **kwargs):
+        super(OrderReserveForm, self).__init__(*args, **kwargs)
+        self.is_member = is_member
+
+    def validate_guest_name(self, field):
+        """비회원 예약 시 예약자 성함 필수 검증"""
+        if not self.is_member and not (field.data and field.data.strip()):
+            raise ValidationError('비회원 예약 시 예약자 성함은 필수 입력 항목입니다.')
+
+    def validate_guest_phone(self, field):
+        """비회원 예약 시 휴대폰 번호 필수 검증"""
+        if not self.is_member and not (field.data and field.data.strip()):
+            raise ValidationError('비회원 예약 시 휴대폰 번호는 필수 입력 항목입니다.')
+
+    def validate_guest_email(self, field):
+        """비회원 예약 시 이메일 주소 및 형식 필수 검증"""
+        if not self.is_member:
+            val = (field.data or '').strip()
+            if not val:
+                raise ValidationError('비회원 예약 시 이메일 주소는 필수 입력 항목입니다.')
+            if not re.match(r'^[^@]+@[^@]+\.[^@]+$', val):
+                raise ValidationError('올바른 이메일 형식을 입력해 주세요.')
+
+
+# 호환성 별칭
+ReserveForm = OrderReserveForm
+

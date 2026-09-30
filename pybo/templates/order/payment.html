@@ -81,7 +81,7 @@
           data-store-id="store-7f00ba71-7aff-42b3-b1e7-2e6e2e19a745"
           data-channel-key="channel-key-8aa7da59-1180-4c4e-9723-ed30e22b7ff4"
           data-order-name="{{ product.name }}"
-          data-total-amount="1000"          
+          data-total-amount="{{ total_final }}"          
           data-reserver-name="{{ reserver_name }}"
           data-reserver-phone="{{ reserver_phone }}"
           data-reserver-email="{{ reserver_email }}"
@@ -99,7 +99,7 @@
           <input type="hidden" name="payment_method" value="CARD">
           <input type="hidden" name="portone_payment_id" id="portonePaymentId" value="">
           <input type="hidden" name="portone_tx_id" id="portoneTxId" value="">
-          <input type="hidden" name="paid_amount" id="formPaidAmount" value="1000">
+          <input type="hidden" name="paid_amount" id="formPaidAmount" value="{{ total_final }}">
 
           <div class="final-amount-box">
             <!-- 금액 상세 요약 -->
@@ -141,7 +141,7 @@
             </div>
 
             <button type="submit" class="btn-pay-main" id="btnPayMain">
-              결제하기
+              {{ "{:,}".format(total_final) }}원 결제하기 (PortOne)
             </button>
 
             <a href="{{ url_for('order.reserve', product_id=product.id, headcount=headcount) }}" class="btn-back-link">
