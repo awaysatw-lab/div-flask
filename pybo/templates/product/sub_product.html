@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='product.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.css"/>
 
@@ -81,7 +81,6 @@
                     <p>수량/인원: 1</p>
                     <button> 비회원 바로 구매하기(정가 49,000원)</button>
                 </div>
-                <botton></botton>
                 <div id="log-discount">
                     <div>💡로그인 시 10% 특별할인 적용 / 44,100원에 이용 가능!</div>
                     <div>
@@ -129,7 +128,7 @@
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">상세일정</div>
             <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                 <div class="ratio ratio-16x9">
-                    <iframe src="https://map.kakao.com/"></iframe>
+                    <iframe style="border:0" loading="lazy" allowfullscreen src="https://www.google.com/maps?q=문경새재&output=embed">></iframe>
                 </div>
             </div>
             <div class="tab-pane fade" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab" tabindex="0">출발 전 정보?</div>
@@ -193,6 +192,18 @@
                 <p>(비회원은 후기 읽기만 가능합니다.)</p>
             </div>
         </div>
+        <div id="detail_star">
+            <div>⭐ 5.0 </div>
+            <div>
+                <div>일정 5</div>
+                <div>가이드 5</div>
+                <div>교통 5</div>
+                <div>숙박 5</div>
+                <div>식사 5</div>
+                <div>김*미 2026-09-16</div>
+            </div>
+        </div>
+        <div id="review_box"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

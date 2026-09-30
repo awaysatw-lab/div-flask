@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대한민국 구석구석 - 여행 Q&A</title>
+    <style>
+        /* 기본 리셋 및 폰트 설정 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
+        body { background-color: #f8f9fa; color: #333; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* 1. 헤더 (Header) */
+        .header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; sticky: top; }
+        .logo { font-size: 24px; font-weight: bold; color: #007bff; }
+        .user-menu a { margin-left: 15px; font-size: 14px; color: #666; }
+
+        /* 메인 컨테이너 */
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+
+        /* 2. 검색창 & 타이틀 세션 (Search Bar) */
+        .search-section { text-align: center; margin-bottom: 40px; }
+        .search-section h1 { font-size: 28px; margin-bottom: 20px; color: #222; }
+        .search-box { position: relative; max-width: 600px; margin: 0 auto; }
+        .search-box input { width: 100%; padding: 15px 20px; font-size: 16px; border: 2px solid #007bff; border-radius: 30px; outline: none; box-shadow: 0 4px 6px rgba(0,123,255,0.1); }
+        .search-box button { position: absolute; right: 5px; top: 5px; background-color: #007bff; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        .search-box button:hover { background-color: #0056b3; }
+
+        /* 3. 네비게이션 (Navigation - 카테고리 탭) */
+        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #e9ecef; padding-bottom: 10px; }
+        .tab-item { padding: 10px 20px; font-size: 15px; font-weight: 500; color: #666; cursor: pointer; border-radius: 20px; transition: all 0.2s; }
+        .tab-item.active { background-color: #007bff; color: white; font-weight: bold; }
+        .tab-item:hover:not(.active) { background-color: #e9ecef; color: #333; }
+
+        /* 상단 버튼 영역 (질문 유도 조치) */
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .list-count { font-size: 14px; color: #666; }
+        
+        /* 5. 버튼창 (Action Button) - 질문 등록 유도 액션 버튼 */
+        .btn-write { background-color: #E76F5F; color: white; border: none; padding: 12px 24px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 5px; box-shadow: 0 4px 10px rgba(255,71,87,0.3); transition: all 0.2s; }
+        .btn-write:hover { background-color: #E76F5F; transform: translateY(-2px); }
+
+        /* 4. 리스트 (Q&A List) */
+        .qa-list { background-color: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
+        .qa-item { padding: 20px; border-bottom: 1px solid #f1f3f5; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.2s; cursor: pointer; }
+        .qa-item:last-child { border-bottom: none; }
+        .qa-item:hover { background-color: #f8f9fa; }
+        
+        .qa-content { flex: 1; padding-right: 20px; }
+        .qa-tags { display: flex; gap: 5px; margin-bottom: 8px; }
+        .tag { font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .tag.status-done { background-color: #e3faf2; color: #0ca678; }
+        .tag.status-wait { background-color: #fff0f6; color: #d6336c; }
+        .tag.category { background-color: #e8f4ff; color: #1c7ed6; }
+        
+        .qa-title { font-size: 16px; font-weight: 600; color: #212529; margin-bottom: 6px; line-height: 1.4; }
+        .qa-info { font-size: 13px; color: #868e96; }
+        .qa-info span { margin-right: 12px; }
+
+        .qa-stats { display: flex; gap: 15px; text-align: center; font-size: 13px; color: #495057; }
+        .stat-box span { display: block; font-size: 16px; font-weight: bold; color: #212529; }
+        .stat-box.answer span { color: #007bff; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 헤더 영역 -->
+    <header class="header">
+        <div class="logo">📱 QnA</div>
+        <nav class="user-menu">
+            <a href="#">여행지 찾기</a>
+            <a href="#">코스추천</a>
+            <a href="#" style="font-weight: bold; color: #1D3557;">여행Q&A</a>
+            <a href="#">로그인</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <!-- 2. 검색창 영역 -->
+        <section class="search-section">
+            <h1>국내 여행 중 궁금한 점을 풀어보세요!</h1>
+            <div class="search-box">
+                <input type="text" placeholder="예: 제주도 2박 3일 뚜벅이 코스 추천해주세요">
+                <button type="button">검색</button>
+            </div>
+        </section>
+
+        <!-- 3. 네비게이션 영역 (카테고리 필터) -->
+        <nav class="nav-tabs">
+            <div class="tab-item active">전체 질문</div>
+            <div class="tab-item">코스/일정</div>
+            <div class="tab-item">맛집/카페</div>
+            <div class="tab-item">교통/숙박</div>
+            <div class="tab-item">축제/명소</div>
+        </nav>
+
+        <!-- 리스트 헤더 및 5. 질문 등록 버튼창 -->
+        <div class="list-header">
+            <div class="list-count">총 <strong>1,248</strong>개의 답변을 기다리는 질문이 있습니다.</div>
+            <button class="btn-write">✏️ 질문하기</button>
+        </div>
+
+        <!-- 4. 리스트 영역 (샘플 질문 데이터) -->
+        <div class="qa-list">
+            
+            <!-- 샘플 1 -->
+            <div class="qa-item">
+                <div class="qa-content">
+                    <div class="qa-tags">
+                        <span class="tag status-done">답변완료</span>
+                        <span class="tag category">코스/일정</span>
+                    </div>
+                    <div class="qa-title">부모님 모시고 갈 만한 경주 2박 3일 힐링 코스 짜주실 분 계신가요?</div>
+                    <div class="qa-info">
+                        <span>작성자: 길동이</span>
+                        <span>방금 전</span>
+                        <span>조회 24</span>
+                    </div>
+                </div>
+                <div class="qa-stats">
+                    <div class="stat-box answer"><span>3</span>답변</div>
+                    <div class="stat-box"><span>5</span>추천</div>
+                </div>
+            </div>
+
+            <!-- 샘플 2 -->
+            <div class="qa-item">
+                <div class="qa-content">
+                    <div class="qa-tags">
+                        <span class="tag status-wait">답변대기</span>
+                        <span class="tag category">맛집/카페</span>
+                    </div>
+                    <div class="qa-title">부산 광안리 근처에 혼밥하기 좋고 바다 잘 보이는 횟집이나 식당 있을까요?</div>
+                    <div class="qa-info">
+                        <span>작성자: 여행조아</span>
+                        <span>15분 전</span>
+                        <span>조회 12</span>
+                    </div>
+                </div>
+                <div class="qa-stats">
+                    <div class="stat-box"><span>0</span>답변</div>
+                    <div class="stat-box"><span>1</span>추천</div>
+                </div>
+            </div>
+
+            <!-- 샘플 3 -->
+            <div class="qa-item">
+                <div class="qa-content">
+                    <div class="qa-tags">
+                        <span class="tag status-done">답변완료</span>
+                        <span class="tag category">교통/숙박</span>
+                    </div>
+                    <div class="qa-title">뚜벅이 대학생 4명이서 여수 여행 가는데 숙소 위치는 어디가 제일 편할까요?</div>
+                    <div class="qa-info">
+                        <span>작성자: 청춘여행</span>
+                        <span>1시간 전</span>
+                        <span>조회 89</span>
+                    </div>
+                </div>
+                <div class="qa-stats">
+                    <div class="stat-box answer"><span>7</span>답변</div>
+                    <div class="stat-box"><span>12</span>추천</div>
+                </div>
+            </div>
+
+            <!-- 샘플 4 -->
+            <div class="qa-item">
+                <div class="qa-content">
+                    <div class="qa-tags">
+                        <span class="tag status-done">답변완료</span>
+                        <span class="tag category">축제/명소</span>
+                    </div>
+                    <div class="qa-title">이번 주말에 강원도 속초 서핑하러 가는데 파도 상황이나 날씨 어떤가요?</div>
+                    <div class="qa-info">
+                        <span>작성자: 서퍼블루</span>
+                        <span>3시간 전</span>
+                        <span>조회 142</span>
+                    </div>
+                </div>
+                <div class="qa-stats">
+                    <div class="stat-box answer"><span>4</span>답변</div>
+                    <div class="stat-box"><span>8</span>추천</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

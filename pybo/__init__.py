@@ -31,18 +31,16 @@ def create_app():
 
     from . import models
 
+    from .views import auth_views
+    app.register_blueprint(auth_views.bp)
+
     from .views import order_views
     app.register_blueprint(order_views.bp)
 
     from .views import main_views
     app.register_blueprint(main_views.bp)
 
-    @app.route('/main_product')
-    def main_product():
-        return render_template('product/main_product.html')
-
-    @app.route('/sub_product')
-    def sub_product():
-        return render_template('product/sub_product.html')
+    from .views import review_views
+    app.register_blueprint(review_views.bp)
 
     return app
