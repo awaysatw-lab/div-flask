@@ -43,4 +43,7 @@ def create_app():
     from .views import review_views
     app.register_blueprint(review_views.bp)
 
+    from .views import product_views
+    app.register_blueprint(product_views.bp)
+
     return app

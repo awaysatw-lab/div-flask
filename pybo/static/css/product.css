@@ -110,6 +110,10 @@
 }
 
 /*상세 이동 버튼*/
+#main_right > div > .card > img{
+    height: 250px;
+}
+
 .card-body > .heart_star{
     display: flex;
     justify-content: space-between;
@@ -128,6 +132,7 @@
 }
 .card-body > .card-price > p{
     margin-top: 5px;
+    text-decoration-line: line-through;
 }
 
 .card-body > .card-price > div{
@@ -234,6 +239,7 @@
 
 #sub-right>p{
     font-size: 12pt;
+    color: #2B2D42;
 }
 
 #purchase{
@@ -255,9 +261,14 @@
     left: 15px;
 }
 
-.p-right{
-    position: relative;
+#purchase > div > p{
+    color: #999999;
 }
+
+#purchase > div > p:last-child{
+    text-decoration-line: line-through;
+}
+
 #purchase>div>h6{
     font-size: 14pt;
     font-weight: 500;
@@ -359,6 +370,11 @@
 .infomation > h5{
     margin: 50px 0 10px;
     font-weight: 700;
+}
+
+.infomation > p{
+    color: #2B2D42;
+    padding: 2px;
 }
 
 #log-ad{

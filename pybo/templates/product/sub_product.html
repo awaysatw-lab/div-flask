@@ -12,22 +12,22 @@
             <div id="sub-left">
                 <div id="four-slide">
                     <div id="carouselExample" class="carousel slide">
-                        <div>
-                        <div class="carousel-inner">
+
+                        <div class="carousel-inner ">
                             <div class="carousel-item active">
-                                <img src="static/img/tours/product_01_1.jpg" class="d-block w-100" alt="">
+                                <img src="{{ product.image_urls }}" class="d-block w-100" alt="">
                             </div>
                             <div class="carousel-item">
-                                <img src="static/img/tours/product_01_2.jpg" class="d-block w-100" alt="">
+                                <img src="{{ url_for('static', filename='img/tours/product_01_2.jpg') }}" class="d-block w-100" alt="">
                             </div>
                             <div class="carousel-item">
-                                <img src="static/img/tours/product_01_3.jpg" class="d-block w-100" alt="">
+                                <img src="{{ url_for('static', filename='img/tours/product_01_3.jpg') }}" class="d-block w-100" alt="">
                             </div>
                             <div class="carousel-item">
-                                <img src="static/img/tours/product_01_4.jpg" class="d-block w-100" alt="">
+                                <img src="{{ url_for('static', filename='img/tours/product_01_4.jpg') }}" class="d-block w-100" alt="">
                             </div>
                         </div>
-                        </div>
+
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
@@ -38,18 +38,24 @@
                         </button>
                     </div>
                     <div id="mini">
-                        <img src="static/img/tours/product_01_1.jpg" class="d-block w-100" alt="">
-                        <img src="static/img/tours/product_01_2.jpg" class="d-block w-100" alt="">
-                        <img src="static/img/tours/product_01_3.jpg" class="d-block w-100" alt="">
-                        <img src="static/img/tours/product_01_4.jpg" class="d-block w-100" alt="">
+
+                        <img src="{{ url_for('static', filename=product.image_urls[0]) }}" class="d-block w-100" alt="">
+                        <img src="{{ url_for('static', filename='img/tours/product_01_2.jpg') }}" class="d-block w-100" alt="">
+                        <img src="{{ url_for('static', filename='img/tours/product_01_3.jpg') }}" class="d-block w-100" alt="">
+                        <img src="{{ url_for('static', filename='img/tours/product_01_4.jpg') }}" class="d-block w-100" alt="">
+
                     </div>
                 </div>
 
                 <div>
                     <!-- 슬라이드 밑-->
                     <div id="recommend">
-                        <p id="heart">❤️580명이 추천했습니다! 이 여행 상품이 마음에 드셨다면 추천해주세요</p>
-                        <button id="heart-log">추천하기<br>(로그인 필요)</button>
+                        <p id="heart">❤️{{ product.recommendation_count }}명이 추천했습니다! 이 여행 상품이 마음에 드셨다면 추천해주세요</p>
+                        {% if g.user %}
+                        <button id="heart-log">추천<br>하기</button>
+                        {% else %}
+                        <button id="heart-log" onclick="location.href=`{{ url_for('auth.login') }}`">추천하기<br>(로그인 필요)</button>
+                        {% endif %}
                     </div>
                     <button class="white-btn">1:1문의</button>
                     <button class="white-btn">❤️</button>
@@ -62,32 +68,45 @@
             </div>
             <!-- 오른쪽 -->
             <div id="sub-right">
-                <h3>문경새재 황톳길 맨발 트레킹& 오미자 와인동굴 투어(제목)</h3>
+                <h3>{{ product.name }}</h3>
                 <p>⭐별점 후기 3건</p>
-                <p>영남대로 과거길 문경새재 흙길을 맨발로 걸으며 자연을 느끼고, 와인터널에서 붉은 오미자 스파클링 와인을 시음합니다.(간략한 소개)</p>
+                <p>{{ product.description }}</p>
                 <!-- 가격표시 -->
                 <div id="purchase">
                     <div>
                         <p class="p-left">일반 정상가</p>
-                        <p class="p-right">49,000원</p>
+                        <p class="p-right">{{ product.original_price }}원</p>
                     </div>
                     <div>
                         <h6 class="p-left">판매금액</h6>
-                        <h6 class="p-right">49,000원</h6>
+                        {% if g.user %}
+                        <h6 class="p-right">{{ (product.original_price * (1 - product.member_discount_rate))|int }}원</h6>
+                        {% else %}
+                        <h6 class="p-right">{{ product.original_price }}원</h6>
+                        {% endif %}
                     </div>
                 </div>
                 <div id="people">
+                    {% if g.user %}
+                    <h5>🛒 회원 일반 구매</h5>
+                    <p>수량/인원: 1</p>
+                    <button onclick="location.href=`{{ url_for('order.reserve') }}`"> 회원 바로 구매하기(할인가 {{ (product.original_price * (1 - product.member_discount_rate))|int }}원)</button>
+                    {% else %}
                     <h5>🛒 비회원 일반 구매</h5>
                     <p>수량/인원: 1</p>
-                    <button> 비회원 바로 구매하기(정가 49,000원)</button>
+                    <button onclick="location.href=`{{ url_for('order.reserve') }}`"> 비회원 바로 구매하기(정가 {{ product.original_price }}원)</button>
+                    {% endif %}
                 </div>
+                {% if g.user %}
+                {% else %}
                 <div id="log-discount">
-                    <div>💡로그인 시 10% 특별할인 적용 / 44,100원에 이용 가능!</div>
+                    <div>💡로그인 시 {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 / {{ (product.original_price * (1 - product.member_discount_rate))|int }}원에 이용 가능!</div>
                     <div>
-                        <button>로그인하고 할인 결제</button>
-                        <button>간편 회원가입</button>
+                        <button onclick="location.href=`{{ url_for('auth.login') }}`">로그인하고 할인 결제</button>
+                        <button onclick="location.href=`{{ url_for('auth.signup') }}`">간편 회원가입</button>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -124,7 +143,7 @@
             </li>
         </ul>
         <div class="tab-content 2-100" id="myTabContent">
-            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">상품설명 내용</div>
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">{{ product.description }}</div>
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">상세일정</div>
             <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                 <div class="ratio ratio-16x9">
@@ -177,8 +196,8 @@
                 <p>회원 가입 즉시 관광 상품 10~20% 및 숙박 시설 우대 할인이 자동 적용됩니다.</p>
             </div>
             <div>
-                <button>로그인</button>
-                <button>회원가입</button>
+                <button onclick="location.href=`{{ url_for('auth.login') }}`">로그인</button>
+                <button onclick="location.href=`{{ url_for('auth.signup') }}`">회원가입</button>
             </div>
         </div>
     </div>
@@ -203,7 +222,10 @@
                 <div>김*미 2026-09-16</div>
             </div>
         </div>
-        <div id="review_box"></div>
+        <div id="review_box">
+            리뷰들 들어올 곳
+            {{ product.sample_review_comments }}
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
