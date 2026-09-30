@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_login import current_user
 from pybo import db
 from pybo.models import TourProduct, User, Order, OrderItem, Payment
+from pybo.forms import OrderReserveForm
 
 bp = Blueprint('order', __name__, url_prefix='/order')
 
@@ -65,8 +66,18 @@ def reserve():
         'subtotal_final': total_final
     }]
 
+    form = OrderReserveForm(
+        is_member=is_member,
+        product_id=product.id,
+        headcount=headcount,
+        guest_name=logged_user.name if (is_member and logged_user) else '',
+        guest_phone=logged_user.phone if (is_member and logged_user) else '',
+        guest_email=logged_user.email if (is_member and logged_user) else ''
+    )
+
     return render_template(
         'order/reserve.html',
+        form=form,
         product=product,
         items=items_to_checkout,
         headcount=headcount,
@@ -85,37 +96,36 @@ def reserve():
 @bp.route("/payment", methods=['POST'])
 def payment():
     """예약 정보 및 여행객 목록 수신 후 결제 화면으로 이동"""
-    product_id = request.form.get('product_id', type=int)
-    headcount = request.form.get('headcount', 1, type=int)
-    if headcount < 1:
-        headcount = 1
-
-    product = TourProduct.query.get_or_404(product_id)
     is_member, logged_user = check_is_member()
+    form = OrderReserveForm(is_member=is_member)
 
-    # 필수 약관 동의 서버 사이드 검증
-    agree_special_val = request.form.get('agree_special') in ['1', 'on', 'true', 'True']
-    agree_privacy_val = request.form.get('agree_privacy') in ['1', 'on', 'true', 'True']
-    agree_sensitive_val = request.form.get('agree_sensitive') in ['1', 'on', 'true', 'True']
-    agree_location_val = request.form.get('agree_location') in ['1', 'on', 'true', 'True']
-    
-    if not (agree_special_val and agree_privacy_val and agree_sensitive_val):
-        flash('필수 약관(국내여행 특별약관, 개인정보 제3자 제공, 민감정보 수집)에 모두 동의해주셔야 합니다.', 'danger')
-        return redirect(url_for('order.reserve', product_id=product.id, headcount=headcount))
+    # WTForms 기반 예약 폼 검증 (FlaskForm validate_on_submit)
+    if not form.validate_on_submit():
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(error, 'danger')
+        product_id = request.form.get('product_id', type=int) or 1
+        headcount = request.form.get('headcount', 1, type=int) or 1
+        return redirect(url_for('order.reserve', product_id=product_id, headcount=headcount))
+
+    product = TourProduct.query.get_or_404(form.product_id.data)
+    headcount = form.headcount.data or 1
+
+    # 검증 완료된 약관 동의 값
+    agree_special_val = bool(form.agree_special.data)
+    agree_privacy_val = bool(form.agree_privacy.data)
+    agree_sensitive_val = bool(form.agree_sensitive.data)
+    agree_location_val = bool(form.agree_location.data)
 
     # 예약자 정보 수집
-    guest_name = request.form.get('guest_name', '').strip()
-    guest_phone = request.form.get('guest_phone', '').strip()
-    guest_email = request.form.get('guest_email', '').strip()
-
     if is_member and logged_user:
         reserver_name = logged_user.name
         reserver_phone = logged_user.phone
         reserver_email = logged_user.email
     else:
-        reserver_name = guest_name or '비회원 고객'
-        reserver_phone = guest_phone
-        reserver_email = guest_email
+        reserver_name = (form.guest_name.data or '').strip() or '비회원 고객'
+        reserver_phone = (form.guest_phone.data or '').strip()
+        reserver_email = (form.guest_email.data or '').strip()
 
     # 여행객별 상세 정보 목록 수집 (이름, 남/여, 전화번호, 생년월일)
     names = request.form.getlist('traveler_name[]')
