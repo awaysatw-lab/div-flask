@@ -1,117 +1,95 @@
-{% extends 'base.html' %}
-{% block title %}길마중 - 회원가입{% endblock %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>길마중 - 회원가입</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+</head>
+<body>
 
-{% block content %}
-<div class="signup-container" style="max-width: 450px; margin: 50px auto; padding: 30px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-family: 'Malgun Gothic', dotum, sans-serif;">
-
-    <h3 style="text-align: center; color: #0d6efd; margin-bottom: 25px; font-weight: bold;">✈️ 패키지 여행 회원가입</h3>
-
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-danger" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 14px;">
-        ⚠️ {{ message }}
-    </div>
-    {% endfor %}
-
-    <form method="post" id="signupForm">
-        {{ form.csrf_token }}
-
-        <!-- 아이디 입력란 ([변경] 중복확인 버튼 배치를 위해 flex 구조 적용) -->
-        <div class="form-group" style="margin-bottom: 18px;">
-            <label for="user_id" style="display: block; font-weight: bold; margin-bottom: 6px; color: #333;">아이디</label>
-            <div style="display: flex; gap: 8px;">
-                <!-- 한글 입력을 방지하기 위한 oninput 스크립트 추가 -->
-                <input type="text" id="user_id" name="user_id" style="flex: 1; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box;" placeholder="영문, 숫자 4~25자" value="{{ request.form['user_id'] or '' }}" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" required>
-                <button type="button" id="btnCheckId" style="padding: 10px 15px; background-color: #6c757d; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; white-space: nowrap;">중복확인</button>
+<div class="signup-wrapper">
+    <div class="signup-container">
+        <div class="logo-placeholder">
+            <div class="logo-bars">
+                <div class="bar bar1"></div>
+                <div class="bar bar2"></div>
+                <div class="bar bar3"></div>
+                <div class="bar bar4"></div>
+                <div class="logo-pin"></div>
             </div>
-            <!-- 중복확인 상태 메시지 출력 공간 -->
-            <div id="idCheckMessage" style="font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
         </div>
 
-        <!-- 이름 입력란 -->
-        <div class="form-group" style="margin-bottom: 18px;">
-            <label for="name" style="display: block; font-weight: bold; margin-bottom: 6px; color: #333;">이름</label>
-            <input type="text" id="name" name="name" style="width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box;" placeholder="실명 입력 (예약 확인용)" value="{{ request.form['name'] or '' }}" required>
+        <h2>회원가입</h2>
+        <div class="welcome-text">
+            길마중에 오신 것을 환영합니다.<br>
+            간편 가입하고 전 상품 우대 혜택을 누려보세요.
         </div>
 
-        <!-- 이메일 입력란 -->
-        <div class="form-group" style="margin-bottom: 18px;">
-            <label for="email" style="display: block; font-weight: bold; margin-bottom: 6px; color: #333;">이메일 주소</label>
-            <input type="email" id="email" name="email" style="width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box;" placeholder="example@email.com" value="{{ request.form['email'] or '' }}" required>
+        <div class="benefit-banner">
+            <span class="benefit-tag">회원 혜택</span>
+            <span class="benefit-text">전 상품 <strong>10~20% 특별 할인</strong> 및 추천 숙소 연계 예약</span>
         </div>
 
-        <!-- 전화번호 입력란 -->
-        <div class="form-group" style="margin-bottom: 18px;">
-            <label for="phone" style="display: block; font-weight: bold; margin-bottom: 6px; color: #333;">전화번호</label>
-            <input type="text" id="phone" name="phone" style="width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box;" placeholder="010-XXXX-XXXX" value="{{ request.form['phone'] or '' }}" required>
+        {% include 'auth/errors.html' %}
+
+        <form method="post" id="signupForm" novalidate>
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ form.csrf_token._value() }}">
+            <div class="input-group">
+                <div class="id-input-wrapper">
+                    <div class="id-input-inner">
+                        <i class="fa-regular fa-user input-icon"></i>
+                        <input type="text" id="user_id" name="user_id" placeholder="로그인 아이디 (4~25자)" value="{{ form.user_id.data or '' }}" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" required>
+                    </div>
+                    <button type="button" id="btnCheckId" class="btn-check-id">중복확인</button>
+                </div>
+                <div id="idCheckMessage" class="check-message"></div>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-user-check input-icon"></i>
+                <input type="text" id="name" name="name" placeholder="실명 또는 사용자 이름" value="{{ form.name.data or '' }}" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-regular fa-envelope input-icon"></i>
+                <input type="email" id="email" name="email" placeholder="이메일 주소 (예: user@example.com)" value="{{ form.email.data or '' }}" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-mobile-screen-button input-icon"></i>
+                <input type="text" id="phone" name="phone" placeholder="휴대폰 번호 (예: 010-1234-5678)" value="{{ form.phone.data or '' }}" required>
+            </div>
+
+            <div class="password-row">
+                <div class="input-group">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" placeholder="비밀번호" required>
+                    <i class="fa-regular fa-eye toggle-password" data-target="password"></i>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-shield-halved input-icon"></i>
+                    <input type="password" id="password_confirm" name="password_confirm" placeholder="비밀번호 확인" required>
+                    <i class="fa-regular fa-eye toggle-password" data-target="password_confirm"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">회원가입 완료하기</button>
+        </form>
+
+        <div class="divider-container">
+            <span class="divider-text">또는</span>
         </div>
 
-        <!-- 비밀번호 입력란 -->
-        <div class="form-group" style="margin-bottom: 18px;">
-            <label for="password" style="display: block; font-weight: bold; margin-bottom: 6px; color: #333;">비밀번호</label>
-            <input type="password" id="password" name="password" style="width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box;" placeholder="비밀번호 설정" required>
-        </div>
-
-        <!-- 비밀번호 확인 입력란 -->
-        <div class="form-group" style="margin-bottom: 28px;">
-            <label for="password_confirm" style="display: block; font-weight: bold; margin-bottom: 6px; color: #333;">비밀번호 확인</label>
-            <input type="password" id="password_confirm" name="password_confirm" style="width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; box-sizing: border-box;" placeholder="비밀번호 다시 입력" required>
-        </div>
-
-        <button type="submit" style="width: 100%; padding: 14px; background-color: #0d6efd; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;">동의하고 가입하기</button>
-    </form>
+        <div class="login-prompt">이미 계정이 있으신가요?</div>
+        <button type="button" id="btnGoToLogin" class="btn-login">로그인하기 &gt;</button>
+    </div>
 </div>
 
-<!-- 비동기 중복 검사를 위한 JavaScript 처리 (Ajax) -->
 <script>
-let isIdChecked = false; // 중복 확인 완료 여부 플래그
-
-document.getElementById('btnCheckId').addEventListener('click', function() {
-    const userId = document.getElementById('user_id').value.trim();
-    const messageEl = document.getElementById('idCheckMessage');
-
-    if(!userId) {
-        alert('아이디를 먼저 입력해 주세요.');
-        return;
-    }
-
-    // Flask 백엔드로 비동기 POST 요청 송신
-    fetch("{{ url_for('auth.check_id') }}", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ user_id: userId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.status === 'success') {
-            messageEl.style.color = "green";
-            messageEl.innerText = "✓ " + data.message;
-            isIdChecked = true; // 가입 허용 상태 전환
-        } else {
-            messageEl.style.color = "red";
-            messageEl.innerText = "✕ " + data.message;
-            isIdChecked = false;
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        alert('중복 확인 중 오류가 발생했습니다.');
-    });
-});
-
-// 아이디 입력창의 값이 바뀌면 중복확인을 다시 하도록 리셋
-document.getElementById('user_id').addEventListener('input', function() {
-    isIdChecked = false;
-    document.getElementById('idCheckMessage').innerText = "";
-});
-
-// [최종 가입 전 방어 세팅] 중복확인을 안 눌렀다면 제출 막기
-document.getElementById('signupForm').addEventListener('submit', function(e) {
-    if(!isIdChecked) {
-        e.preventDefault(); // 폼 전송 중단
-        alert('아이디 중복확인을 반드시 수행해 주세요.');
-    }
-});
+    window.checkIdUrl = "{{ url_for('auth.check_id') }}";
 </script>
-{% endblock %}
+<script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+</body>
+</html>

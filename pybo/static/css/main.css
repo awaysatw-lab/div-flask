@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. 기본 초기화
+   초기화
    ========================================================================== */
 
 * {
@@ -43,20 +43,20 @@ button,input {
 }
 
 /* ==========================================================================
-   2. 헤더
+   헤더
    ========================================================================== */
 
 .site-header {
     width: 100%;
+    height: 80px;
     background-color: #faf8f5;
     border-bottom: 1px solid #F6F4EE;
 }
-
 .header-container {
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 15px 20px;
+    padding: 0px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,8 +64,8 @@ button,input {
 
 .logo-area {
     display: flex;
-    align-items: center;
-    gap: 8px;
+    margin-top: 15px;
+    gap: 2px;
     flex-shrink: 0;
 }
 
@@ -76,14 +76,12 @@ button,input {
     color: #333333;
     gap: 8px;
     cursor: pointer;
-    font-family:'NexonLv1Gothic';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF Light.woff') format('woff');
     font-weight: 700;
     font-size: x-large;
 }
 
 .logo-area span {
-    margin-top: 10px;
+    margin-top: 15px;
     cursor: default;
     font-size: x-small;
 }
@@ -111,7 +109,6 @@ button,input {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 12px;
     flex: 1;
 }
 
@@ -120,9 +117,7 @@ button,input {
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
-    padding: 10px 20px;
-    font-family:'NexonLv1Gothic';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF Light.woff') format('woff');
+    padding: 10px 2px;
     font-size: 13px;
     color: #2B2D42;
 }
@@ -213,7 +208,7 @@ button,input {
 
 .header-search-input {
     width: 100%;
-    padding: 8px 12px 8px 15px;
+    padding: 5px 15px 5px 20px;
     background: transparent;
     border: none;
     outline: none;
@@ -229,7 +224,7 @@ button,input {
 .header-search-btn {
     background: transparent;
     border: none;
-    font-size: 1rem;
+    font-size: 15px;
     padding: 0 10px;
     cursor: pointer;
     color: #212529;
@@ -239,7 +234,7 @@ button,input {
 }
 
 /* ==========================================================================
-   4. 메인 배너
+   메인 슬라이드
    ========================================================================== */
 
 .wide-banner-container {
@@ -317,23 +312,8 @@ button,input {
 }
 
 /* ==========================================================================
-   4. 공통 콘텐츠 섹션
+   지역별 / 테마별
    ========================================================================== */
-
-.content-section {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    border-bottom: 1px solid #F6F4EE;
-}
-
-.content-section + .content-section {
-    margin-top: 50px;
-}
-
-/* =========================
-   지역 / 테마 여행 정보
-   ========================= */
 
 .region-category {
     width: 100%;
@@ -458,69 +438,8 @@ button,input {
     margin-top: 15px;
 }
 
-@media (max-width: 900px) {
-
-    .region-list {
-        gap: 18px;
-    }
-
-    .icon-item {
-        width: 90px;
-    }
-
-    .circle-img {
-        width: 82px;
-        height: 82px;
-    }
-
-    .icon-item > span {
-        font-size: 13px;
-    }
-}
-
-
-@media (max-width: 700px) {
-    .region-list {
-        flex-wrap: wrap;
-        row-gap: 25px;
-    }
-    .theme-list {
-        gap: 40px;
-    }
-}
-
-
-@media (max-width: 480px) {
-    .tab-buttons {
-        gap: 8px;
-    }
-
-    .tab-btn {
-        min-width: 130px;
-        height: 40px;
-        padding: 0 15px;
-        font-size: 13px;
-    }
-
-    .region-list {
-        gap: 18px 25px;
-    }
-
-    .icon-item {
-        width: 80px;
-    }
-
-    .circle-img {
-        width: 72px;
-        height: 72px;
-    }
-
-    .icon-item > span {
-        font-size: 12px;
-    }
-}
 /* ==========================================================================
-   M타임딜
+   타임딜
    ========================================================================== */
 
 .time-deal {
@@ -552,10 +471,6 @@ button,input {
         minmax(0, 1fr);
     gap: 30px;
 }
-
-/* ==========================================================================
-   메인 타임딜 카드
-   ========================================================================== */
 
 .main-deal-card {
     min-width: 0;
@@ -615,10 +530,6 @@ button,input {
 .badge.orange {
     background-color: #E0AA3E;
 }
-
-/* ==========================================================================
-   11. 메인 딜 내용
-   ========================================================================== */
 
 .main-deal-card .deal-info {
     min-width: 0;
@@ -681,10 +592,6 @@ button,input {
     font-weight: 900;
     color: #E76F5F;
 }
-
-/* ==========================================================================
-   12. 서브 타임딜
-   ========================================================================== */
 
 .sub-deal-list {
     min-width: 0;
@@ -772,9 +679,8 @@ button,input {
     color: #DE3E41;
 }
 
-
 /* ==========================================================================
-   13. 여행 후기
+   후기
    ========================================================================== */
 
 .travel-reviews {
@@ -858,9 +764,8 @@ button,input {
     cursor: pointer;
 }
 
-
 /* ==========================================================================
-   14. 공지사항 / 고객센터
+   공지사항
    ========================================================================== */
 
 .info-footer-box-wrap {
@@ -918,8 +823,6 @@ button,input {
     text-decoration: underline;
 }
 
-
-/* 고객센터 */
 .cs-box {
     flex: 1;
     min-width: 0;
@@ -927,6 +830,10 @@ button,input {
     background-color: transparent;
     border-radius: 0;
 }
+
+/* ==========================================================================
+   고객센터
+   ========================================================================== */
 
 .cs-box h4 {
     font-size: 1.1rem;
@@ -950,7 +857,7 @@ button,input {
 
 
 /* ==========================================================================
-   15. Footer
+   푸터
    ========================================================================== */
 
 .site-footer {
@@ -1074,9 +981,72 @@ button,input {
     font-weight: bold;
     letter-spacing: 0.5px;
 }
+
 /* ==========================================================================
-   16. 반응형
+   반응형
    ========================================================================== */
+
+@media (max-width: 900px) {
+
+    .region-list {
+        gap: 18px;
+    }
+
+    .icon-item {
+        width: 90px;
+    }
+
+    .circle-img {
+        width: 82px;
+        height: 82px;
+    }
+
+    .icon-item > span {
+        font-size: 13px;
+    }
+}
+
+
+@media (max-width: 700px) {
+    .region-list {
+        flex-wrap: wrap;
+        row-gap: 25px;
+    }
+    .theme-list {
+        gap: 40px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .tab-buttons {
+        gap: 8px;
+    }
+
+    .tab-btn {
+        min-width: 130px;
+        height: 40px;
+        padding: 0 15px;
+        font-size: 13px;
+    }
+
+    .region-list {
+        gap: 18px 25px;
+    }
+
+    .icon-item {
+        width: 80px;
+    }
+
+    .circle-img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .icon-item > span {
+        font-size: 12px;
+    }
+}
 
 @media (max-width: 991px) {
     .content-container {
