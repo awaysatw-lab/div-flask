@@ -1,4 +1,5 @@
 from flask import render_template, Blueprint
+from pybo.models import TourProduct
 
 from pybo import db
 from pybo.models import User, TourProduct, Review

@@ -592,9 +592,28 @@ def seed_database():
                     content=content,
                     rating=rating
                 )
+                db.session.add(review)
         else:
             product.image_urls = json_urls
             product.image_url = first_img
+            # ◀ [추가] 기존 상품 리뷰 자동 생성 (중복 방지 체크 포함)
+            # 만약 해당 상품에 작성된 리뷰가 하나도 없는 경우에만 실행
+            existing_review_exists = Review.query.filter_by(product_id=product.id).first()
+            if not existing_review_exists:
+                num_reviews = random.randint(1, 3)
+                for idx in range(num_reviews):
+                    reviewer = created_users[(idx + product.id) % len(created_users)]
+                    title, content = sample_review_comments[(idx + product.id) % len(sample_review_comments)]
+                    rating = 5 if idx == 0 else random.choice([4, 5])
+                    
+                    review = Review(
+                        user_id=reviewer.id,
+                        product_id=product.id,
+                        title=f"[{product.region}] {title}",
+                        content=content,
+                        rating=rating
+                    )
+                    db.session.add(review)
     db.session.commit()
     total_count = TourProduct.query.count()
 
@@ -702,6 +721,7 @@ def seed_database():
             'agree_privacy': True,
             'agree_sensitive': True,
             'agree_location': True,
+            'travel_date': '2026-10-06',
             'created_at': datetime(2026, 9, 23, 7, 30, 35),
             'payment_method': 'CARD',
             'paid_amount': 130000,
@@ -723,6 +743,7 @@ def seed_database():
             'agree_privacy': True,
             'agree_sensitive': True,
             'agree_location': True,
+            'travel_date': '2026-09-25',
             'created_at': datetime(2026, 9, 23, 8, 42, 2),
             'payment_method': 'CARD',
             'paid_amount': 130000,
@@ -745,6 +766,7 @@ def seed_database():
             'agree_privacy': True,
             'agree_sensitive': True,
             'agree_location': True,
+            'travel_date': '2026-09-26',
             'created_at': datetime(2026, 9, 23, 8, 46, 17),
             'payment_method': 'CARD',
             'paid_amount': 130000,
@@ -766,6 +788,7 @@ def seed_database():
             'agree_privacy': True,
             'agree_sensitive': True,
             'agree_location': True,
+            'travel_date': '2026-10-04',
             'created_at': datetime(2026, 9, 23, 8, 50, 33),
             'payment_method': 'CARD',
             'paid_amount': 130000,
@@ -788,6 +811,7 @@ def seed_database():
             'agree_privacy': True,
             'agree_sensitive': True,
             'agree_location': True,
+            'travel_date': '2026-10-08',
             'created_at': datetime(2026, 9, 28, 11, 20, 0),
             'payment_method': 'CARD',
             'paid_amount': 1000,       # PortOne 테스트 결제 금액 (1,000원)
@@ -810,6 +834,7 @@ def seed_database():
             'agree_privacy': True,
             'agree_sensitive': True,
             'agree_location': False,
+            'travel_date': '2026-10-10',
             'created_at': datetime(2026, 9, 28, 15, 30, 0),
             'payment_method': 'CARD',
             'paid_amount': 40500,
@@ -852,6 +877,7 @@ def seed_database():
                 agree_privacy=o_info.get('agree_privacy', True),
                 agree_sensitive=o_info.get('agree_sensitive', True),
                 agree_location=o_info.get('agree_location', False),
+                travel_date=o_info.get('travel_date', '2026-10-05'),
                 created_at=o_info.get('created_at', datetime.now(timezone.utc))
             )
             db.session.add(order)
@@ -888,6 +914,7 @@ def seed_database():
             order.agree_privacy = o_info.get('agree_privacy', True)
             order.agree_sensitive = o_info.get('agree_sensitive', True)
             order.agree_location = o_info.get('agree_location', False)
+            order.travel_date = o_info.get('travel_date', '2026-10-05')
             if 'created_at' in o_info:
                 order.created_at = o_info['created_at']
 
