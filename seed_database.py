@@ -852,6 +852,7 @@ def seed_database():
                 agree_privacy=o_info.get('agree_privacy', True),
                 agree_sensitive=o_info.get('agree_sensitive', True),
                 agree_location=o_info.get('agree_location', False),
+                travel_date=o_info.get('travel_date', '2026-10-05'),
                 created_at=o_info.get('created_at', datetime.now(timezone.utc))
             )
             db.session.add(order)
@@ -888,6 +889,7 @@ def seed_database():
             order.agree_privacy = o_info.get('agree_privacy', True)
             order.agree_sensitive = o_info.get('agree_sensitive', True)
             order.agree_location = o_info.get('agree_location', False)
+            order.travel_date = o_info.get('travel_date', '2026-10-05')
             if 'created_at' in o_info:
                 order.created_at = o_info['created_at']
 

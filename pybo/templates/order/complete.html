@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/complete.css') }}">
 
 <div class="complete-container">
-  <div class="check-icon">🎉</div>
   <h1>예약 및 결제가 완료되었습니다!</h1>
   <p class="sub-msg">예약 확인 안내가 등록하신 연락처/이메일로 발송되었습니다.</p>
 
@@ -19,6 +18,12 @@
       <span class="info-label">예약 상품</span>
       <span class="info-val">{{ product.name }}</span>
     </div>
+    {% if order.travel_date or travel_date %}
+    <div class="info-row">
+      <span class="info-label">여행 날짜</span>
+      <span class="info-val" style="color: var(--primary); font-weight: 700;">📅 {{ order.travel_date or travel_date }}</span>
+    </div>
+    {% endif %}
     <div class="info-row">
       <span class="info-label">예약 인원</span>
       <span class="info-val">{{ headcount }}명</span>

@@ -158,6 +158,9 @@ class Order(db.Model):
     agree_sensitive = db.Column(db.Boolean, default=True, nullable=False)   # 민감정보 수집 및 이용 동의 [필수]
     agree_location = db.Column(db.Boolean, default=False, nullable=False)   # 위치 정보 이용 동의 [선택]
     
+    # 여행 출발 지정일 (오늘 이후 2주일 이내)
+    travel_date = db.Column(db.String(20), nullable=True)
+
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships

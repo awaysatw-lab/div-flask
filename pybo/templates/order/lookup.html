@@ -107,6 +107,9 @@
                     </h3>
 
                     <div class="summary-bottom-line">
+                      {% if o.travel_date %}
+                        <span class="meta-item">여행일: <strong style="color: #2563eb;">📅 {{ o.travel_date }}</strong></span>
+                      {% endif %}
                       <span class="meta-item">인원: <strong>{{ item.quantity if item else 1 }}명</strong></span>
                       <span class="meta-item">권역: <strong>{{ item.product.region if (item and item.product) else '-' }}</strong></span>
                       <span class="meta-price">

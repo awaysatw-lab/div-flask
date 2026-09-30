@@ -32,6 +32,9 @@
             <span class="product-region-tag">📍 {{ item.product.region }}</span>
             <h3 class="product-title">{{ item.product.name }}</h3>
             <div class="product-meta-row">
+              {% if order.travel_date %}
+                <span>여행 날짜: <strong style="color: #2563eb;">📅 {{ order.travel_date }}</strong></span>
+              {% endif %}
               <span>예약 인원: <strong>{{ item.quantity }}명</strong></span>
               <span>1인 기준 적용가: <strong>{{ "{:,}".format(item.unit_price) }}원</strong></span>
             </div>

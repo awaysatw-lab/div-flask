@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, redirect, url_for, session, g, flash
 from flask_login import current_user
 from pybo import db
@@ -66,10 +67,15 @@ def reserve():
         'subtotal_final': total_final
     }]
 
+    today = datetime.now().date()
+    min_date = (today + timedelta(days=1)).strftime('%Y-%m-%d')
+    max_date = (today + timedelta(days=14)).strftime('%Y-%m-%d')
+
     form = OrderReserveForm(
         is_member=is_member,
         product_id=product.id,
         headcount=headcount,
+        travel_date=min_date,
         guest_name=logged_user.name if (is_member and logged_user) else '',
         guest_phone=logged_user.phone if (is_member and logged_user) else '',
         guest_email=logged_user.email if (is_member and logged_user) else ''
@@ -81,6 +87,8 @@ def reserve():
         product=product,
         items=items_to_checkout,
         headcount=headcount,
+        min_date=min_date,
+        max_date=max_date,
         is_member=is_member,
         logged_user=logged_user,
         unit_original_price=unit_original_price,
@@ -116,6 +124,9 @@ def payment():
     agree_privacy_val = bool(form.agree_privacy.data)
     agree_sensitive_val = bool(form.agree_sensitive.data)
     agree_location_val = bool(form.agree_location.data)
+
+    # 여행 날짜
+    travel_date = (form.travel_date.data or '').strip()
 
     # 예약자 정보 수집
     if is_member and logged_user:
@@ -167,6 +178,7 @@ def payment():
         'order/payment.html',
         product=product,
         headcount=headcount,
+        travel_date=travel_date,
         is_member=is_member,
         logged_user=logged_user,
         reserver_name=reserver_name,
@@ -193,6 +205,7 @@ def pay_complete():
     product_id = request.form.get('product_id', type=int)
     headcount = request.form.get('headcount', 1, type=int)
     payment_method = request.form.get('payment_method', 'CARD')
+    travel_date = request.form.get('travel_date', '').strip()
 
     product = TourProduct.query.get_or_404(product_id)
     is_member, logged_user = check_is_member()
@@ -235,7 +248,8 @@ def pay_complete():
         agree_special=agree_special,
         agree_privacy=agree_privacy,
         agree_sensitive=agree_sensitive,
-        agree_location=agree_location
+        agree_location=agree_location,
+        travel_date=travel_date
     )
     db.session.add(order)
     db.session.flush()
@@ -271,6 +285,7 @@ def pay_complete():
         order=order,
         product=product,
         headcount=headcount,
+        travel_date=travel_date,
         travelers=travelers,
         payment_method=payment_method,
         total_final=actual_paid,
