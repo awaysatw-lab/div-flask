@@ -16,6 +16,8 @@ erDiagram
     tour_products ||--o{ order_items : "주문 항목 포함"
     orders ||--|{ order_items : "주문 상세 항목"
     orders ||--o| payments : "결제 정보"
+    orders ||--o| order_accommodations : "연계 숙박 예약 (0..1)"
+    accommodations ||--o{ order_accommodations : "숙박 예약 연계"
 
     users {
         int id PK "고유 ID (자동 증가)"
@@ -72,6 +74,7 @@ erDiagram
         boolean agree_privacy "개인정보 제3자 제공동의 [필수]"
         boolean agree_sensitive "민감정보 수집 및 이용 동의 [필수]"
         boolean agree_location "위치 정보 이용 동의 [선택]"
+        varchar travel_date "여행 출발 예정일 (20)"
         datetime created_at "주문 일시 (UTC)"
     }
 
@@ -93,22 +96,48 @@ erDiagram
         varchar status "결제 상태 (SUCCESS, FAILED, CANCELLED)"
         datetime paid_at "결제 완료 일시 (UTC)"
     }
+
+    accommodations {
+        int id PK "숙소 고유 ID"
+        varchar name "숙소명 (150)"
+        varchar category "숙소 분류 (호텔, 민박)"
+        varchar region "지역 권역 (50)"
+        varchar location "위치 및 상세주소 (255)"
+        int price_per_night "1박 이용 금액 (원)"
+        varchar image_url "숙소 대표 이미지 경로 (255)"
+        text description "숙소 소개 (선택)"
+        float rating "평점 (기본 4.8)"
+        datetime created_at "등록 일시 (UTC)"
+    }
+
+    order_accommodations {
+        int id PK "숙박 예약 고유 ID"
+        int order_id FK "주문 ID"
+        int accommodation_id FK "숙소 ID"
+        int nights "숙박 일수 (기본 1박)"
+        int price_per_night "1박 결제 금액 (원)"
+        int total_price "총 숙박 금액 (원)"
+        varchar check_in_date "체크인 일자 (20)"
+        datetime created_at "예약 일시 (UTC)"
+    }
 ```
 
 ---
 
 ## 2. 테이블 간 관계 정의 (Relationships)
 
-| 부모 테이블 (Parent)        | 자식 테이블 (Child) | 관계 차수 (Cardinality) | 외래키 (Foreign Key)         | 삭제 정책 (On Delete) | 비고                                           |
-| :-------------------------- | :------------------ | :---------------------: | :--------------------------- | :-------------------- | :--------------------------------------------- |
-| **`users`**         | `orders`          |    `1 : N` (0..N)    | `orders.user_id`           | `CASCADE`           | 비회원 주문 지원 (`user_id`가 `NULL` 가능) |
-| **`users`**         | `reviews`         |    `1 : N` (0..N)    | `reviews.user_id`          | `CASCADE`           | 회원 탈퇴 시 작성한 리뷰 자동 삭제             |
-| **`users`**         | `product_likes`   |    `1 : N` (0..N)    | `product_likes.user_id`    | `CASCADE`           | 복합 고유키로 1인 1상품 1회 추천 제한          |
-| **`tour_products`** | `reviews`         |    `1 : N` (0..N)    | `reviews.product_id`       | `CASCADE`           | 상품 삭제 시 리뷰 연쇄 삭제                    |
-| **`tour_products`** | `product_likes`   |    `1 : N` (0..N)    | `product_likes.product_id` | `CASCADE`           | 상품 삭제 시 추천 내역 연쇄 삭제               |
-| **`tour_products`** | `order_items`     |    `1 : N` (0..N)    | `order_items.product_id`   | `RESTRICT`          | 주문 이력 보존을 위해 상품 삭제 제한           |
-| **`orders`**        | `order_items`     |    `1 : N` (1..N)    | `order_items.order_id`     | `CASCADE`           | 주문 삭제 시 주문 상세 항목 연쇄 삭제          |
-| **`orders`**        | `payments`        |    `1 : 1` (0..1)    | `payments.order_id`        | `CASCADE`           | `order_id`에 Unique 제약조건 부여 (1:1 보장) |
+| 부모 테이블 (Parent)        | 자식 테이블 (Child)     | 관계 차수 (Cardinality) | 외래키 (Foreign Key)                   | 삭제 정책 (On Delete) | 비고                                           |
+| :-------------------------- | :---------------------- | :---------------------: | :------------------------------------- | :-------------------- | :--------------------------------------------- |
+| **`users`**         | `orders`              |     `1 : N` (0..N)      | `orders.user_id`                     | `CASCADE`             | 비회원 주문 지원 (`user_id`가 `NULL` 가능)   |
+| **`users`**         | `reviews`             |     `1 : N` (0..N)      | `reviews.user_id`                    | `CASCADE`             | 회원 탈퇴 시 작성한 리뷰 자동 삭제             |
+| **`users`**         | `product_likes`       |     `1 : N` (0..N)      | `product_likes.user_id`              | `CASCADE`             | 복합 고유키로 1인 1상품 1회 추천 제한          |
+| **`tour_products`** | `reviews`             |     `1 : N` (0..N)      | `reviews.product_id`                 | `CASCADE`             | 상품 삭제 시 리뷰 연쇄 삭제                    |
+| **`tour_products`** | `product_likes`       |     `1 : N` (0..N)      | `product_likes.product_id`           | `CASCADE`             | 상품 삭제 시 추천 내역 연쇄 삭제               |
+| **`tour_products`** | `order_items`         |     `1 : N` (0..N)      | `order_items.product_id`             | `RESTRICT`            | 주문 이력 보존을 위해 상품 삭제 제한           |
+| **`orders`**        | `order_items`         |     `1 : N` (1..N)      | `order_items.order_id`               | `CASCADE`             | 주문 삭제 시 주문 상세 항목 연쇄 삭제          |
+| **`orders`**        | `payments`            |     `1 : 1` (0..1)      | `payments.order_id`                  | `CASCADE`             | `order_id`에 Unique 제약조건 부여 (1:1 보장)   |
+| **`orders`**        | `order_accommodations`|     `1 : 1` (0..1)      | `order_accommodations.order_id`      | `CASCADE`             | 주문당 선택적 숙박 연계 예약 (회원 전용)       |
+| **`accommodations`**| `order_accommodations`|     `1 : N` (0..N)      | `order_accommodations.accommodation_id`| `RESTRICT`          | 숙소 예약 이력 보존을 위해 숙소 삭제 제한      |
 
 ---
 
@@ -204,6 +233,7 @@ erDiagram
 | `agree_privacy`   | 제3자 제공 동의    | `BOOLEAN`      | NOT NULL                    | `True (1)`  | 개인정보 제3자 제공동의`[필수]`                 |
 | `agree_sensitive` | 민감정보 수집 동의 | `BOOLEAN`      | NOT NULL                    | `True (1)`  | 민감정보 수집 및 이용 동의`[필수]`              |
 | `agree_location`  | 위치정보 이용 동의 | `BOOLEAN`      | NOT NULL                    | `False (0)` | 위치 정보 이용 동의`[선택]`                     |
+| `travel_date`     | 여행 출발 예정일   | `VARCHAR(20)`  | NULLABLE                    | -             | 예약 여행 출발 예정일 (`YYYY-MM-DD`, 2주 이내)   |
 | `created_at`      | 주문 생성일시      | `DATETIME`     | -                           | `UTC NOW`   | 주문 일시                                         |
 
 ---
@@ -242,6 +272,44 @@ erDiagram
 
 ---
 
+### 3.8. `accommodations` (숙박 시설 테이블)
+
+- **설명**: 전국 6개 권역별 연계 호텔 및 민박 숙박 시설 정보 및 1박 요금 관리
+- **SQLAlchemy 모델**: `Accommodation`
+
+| 컬럼명              | 논리명        | 데이터 타입      | 제약 조건          | 기본값      | 설명                                                    |
+| :------------------ | :------------ | :--------------- | :----------------- | :---------- | :------------------------------------------------------ |
+| `id`              | 숙소 고유번호 | `INTEGER`      | PK, AUTO_INCREMENT | -           | 내부 식별자                                             |
+| `name`            | 숙소명        | `VARCHAR(150)` | NOT NULL, INDEX    | -           | 호텔 또는 민박 상호명                                   |
+| `category`        | 숙소 분류     | `VARCHAR(30)`  | NOT NULL, INDEX    | -           | `호텔`, `민박`                                        |
+| `region`          | 권역          | `VARCHAR(50)`  | NOT NULL, INDEX    | -           | 서울/경기, 전라, 충청, 강원, 경북, 제주                 |
+| `location`        | 위치 및 주소  | `VARCHAR(255)` | NOT NULL           | -           | 숙소 도로명 주소 및 위치 안내                           |
+| `price_per_night` | 1박 요금      | `INTEGER`      | NOT NULL           | -           | 1박 기준 이용 금액 (원)                                 |
+| `image_url`       | 대표 이미지   | `VARCHAR(255)` | NOT NULL           | -           | 숙소 썸네일 경로 (`/static/img/accomodation/...`)       |
+| `description`     | 숙소 소개     | `TEXT`         | NULLABLE           | -           | 숙소 특징 및 편의시설 안내                              |
+| `rating`          | 평점          | `FLOAT`        | -                  | `4.8`     | 사용자 만족도 별점 (최대 5.0)                           |
+| `created_at`      | 등록 일시     | `DATETIME`     | -                  | `UTC NOW` | 숙소 데이터 등록 일시                                   |
+
+---
+
+### 3.9. `order_accommodations` (주문 연계 숙박 예약 상세 테이블)
+
+- **설명**: 회원 예약 시 관광 상품과 연계하여 함께 결제된 숙박 예약 상세 정보
+- **SQLAlchemy 모델**: `OrderAccommodation`
+
+| 컬럼명               | 논리명           | 데이터 타입     | 제약 조건                                | 기본값      | 설명                                                    |
+| :------------------- | :--------------- | :-------------- | :--------------------------------------- | :---------- | :------------------------------------------------------ |
+| `id`               | 예약 상세 고유ID | `INTEGER`     | PK, AUTO_INCREMENT                       | -           | 내부 식별자                                             |
+| `order_id`         | 주문 ID          | `INTEGER`     | FK (`orders.id`), NOT NULL              | -           | 부모 주문 식별자 (주문 삭제 시 연쇄 삭제)               |
+| `accommodation_id` | 숙소 ID          | `INTEGER`     | FK (`accommodations.id`), NOT NULL      | -           | 예약 대상 숙박 시설 식별자                              |
+| `nights`           | 숙박 일수        | `INTEGER`     | NOT NULL                                 | `1`       | 숙박 박수 (기본 1박)                                    |
+| `price_per_night`  | 1박 결제 금액    | `INTEGER`     | NOT NULL                                 | -           | 주문 확정 시점 숙소 1박 요금 (원)                      |
+| `total_price`      | 총 숙박 요금     | `INTEGER`     | NOT NULL                                 | -           | `nights` × `price_per_night` (원)                     |
+| `check_in_date`    | 체크인 날짜      | `VARCHAR(20)` | NULLABLE                                 | -           | 투숙 시작일 (`YYYY-MM-DD`, 여행 출발일과 연동)          |
+| `created_at`       | 생성 일시        | `DATETIME`    | -                                        | `UTC NOW` | 숙박 예약 생성 일시                                     |
+
+---
+
 ## 4. 비즈니스 로직 및 무결성 규칙 (Business Rules)
 
 1. **회원 / 비회원 예약 지원**
@@ -251,9 +319,16 @@ erDiagram
    - 결제 진행 시 필수 동의 3건(`agree_special`, `agree_privacy`, `agree_sensitive`)은 반드시 `True`여야 결제가 허용됩니다.
    - `agree_location`(위치정보 이용)은 선택 사항으로 주문 시점 사용자의 선택 값에 따라 저장됩니다.
 3. **금액 계산 일관성**
-   - `Order.final_amount` = `original_amount` - `discount_amount`
+   - 주문 총 정가(`original_amount`) = (관광상품 단가 × 수량) + (숙박 요금, 회원 선택 시).
+   - 실 결제 금액(`Order.final_amount`) = `original_amount` - `discount_amount`.
    - `Payment.paid_amount`는 `Order.final_amount`와 일치해야 정상 결제로 승인됩니다.
-4. **캐스케이드(Cascade) 삭제 정책**
+4. **회원 전용 연계 숙박 예약 (호텔/민박)**
+   - 회원으로 예약 진행 시 동일 권역의 숙박 시설(호텔/민박) 중 1곳을 선택하여 패키지와 함께 원스톱 결제가 가능합니다.
+   - 선택된 숙소 정보는 `order_accommodations`에 기록되며, 주문 상세 조회 및 결제 완료 시 함께 표시됩니다.
+5. **여행 출발일 및 예약 취소 정책**
+   - 주문 생성 시 여행 출발일(`travel_date`)이 오늘 기준 14일 이내의 날짜로 지정됩니다.
+   - 여행 이용일이 당일 또는 이미 지난 경우(`is_past_travel_date == True`) 예약 상세에서 '취소 불가'로 표시되며 결제 취소 요청이 차단됩니다.
+6. **캐스케이드(Cascade) 삭제 정책**
    - 회원 탈퇴 시 해당 회원의 추천(`product_likes`), 리뷰(`reviews`), 주문 내역(`orders`)은 연쇄 삭제(`CASCADE`) 처리됩니다.
-   - 주문 삭제 시 연계된 주문 상세(`order_items`)와 결제 정보(`payments`) 역시 연쇄 삭제(`CASCADE`)됩니다.
-   - 여행 상품(`tour_products`) 삭제 시 과거 결제/주문 이력 보존을 위해 `order_items`의 상품 참조는 보호됩니다.
+   - 주문 삭제 시 연계된 주문 상세(`order_items`), 숙박 예약(`order_accommodations`), 결제 정보(`payments`) 역시 연쇄 삭제(`CASCADE`)됩니다.
+   - 여행 상품(`tour_products`) 및 숙박 시설(`accommodations`) 삭제 시 과거 결제/주문 이력 보존을 위해 자식 테이블의 상품/숙소 참조는 보호(`RESTRICT`)됩니다.
