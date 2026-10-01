@@ -33,9 +33,9 @@ def seed_database():
             #db.session.add(cart)
         created_users.append(user)
 
-    # 3. 6대 권역별 총 36개 추천 관광 상품 정의 (권역당 6개씩, 관광지별 4개 고화질 이미지 슬라이드)
+    # 3. 6대 권역별 총 96개 추천 관광 상품 정의 (권역당 16개씩, 관광지별 4개 고화질 이미지 슬라이드)
     products_data = [
-        # --- [1] 서울/경기 (6개) ---
+        # --- [1] 서울/경기 (16개) ---
         {
             'name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
             'description': '사계절 아름다운 야생화와 정원이 펼쳐진 수목원과 북한강을 가로지르는 남이섬에서 즐기는 수도권 최고의 낭만 힐링 코스.',
@@ -549,6 +549,558 @@ def seed_database():
                 '/static/img/tours/product_36_3.jpg',
                 '/static/img/tours/product_36_4.jpg'
             ]
+        },
+
+        # --- 추가 상품: [1] 서울/경기 추가 (10개) ---
+        {
+            'name': '양평 두물머리 물안개 & 세미원 연꽃정원 감성 산책',
+            'description': '남한강과 북한강이 만나는 두물머리의 수려한 자연경관과 세미원의 연꽃 배다리를 거니는 당일 힐링 코스.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 48000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 640,
+            'image_urls': ['/static/img/tours/product_01_1.jpg', '/static/img/tours/product_01_2.jpg', '/static/img/tours/product_01_3.jpg', '/static/img/tours/product_01_4.jpg']
+        },
+        {
+            'name': '파주 헤이리 예술마을 & 임진각 평화누리 바람언덕 투어',
+            'description': '감각적인 갤러리와 카페가 가득한 문화예술마을 헤이리와 평화의 소망을 담은 바람개비 언덕 탐방.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 52000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 780,
+            'image_urls': ['/static/img/tours/product_02_1.jpg', '/static/img/tours/product_02_2.jpg', '/static/img/tours/product_02_3.jpg', '/static/img/tours/product_02_4.jpg']
+        },
+        {
+            'name': '화성 융건릉 솔숲 산책 & 제부도 서해랑 케이블카 낙조',
+            'description': '정조의 효심이 깃든 유네스코 세계유산 융건릉 숲길과 바다 위를 가로지르는 서해랑 케이블카 노을 뷰.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 58000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 590,
+            'image_urls': ['/static/img/tours/product_03_1.jpg', '/static/img/tours/product_03_2.jpg', '/static/img/tours/product_03_3.jpg', '/static/img/tours/product_03_4.jpg']
+        },
+        {
+            'name': '용인 한국민속촌 전통문화 체험 & 에버랜드 불꽃축제',
+            'description': '조선시대 가옥과 전통 공연을 오감으로 체험하고 환상적인 야간 퍼레이드와 불꽃축제를 만끽하는 코스.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 85000,
+            'member_discount_rate': 0.20,
+            'recommendation_count': 1120,
+            'image_urls': ['/static/img/tours/product_04_1.jpg', '/static/img/tours/product_04_2.jpg', '/static/img/tours/product_04_3.jpg', '/static/img/tours/product_04_4.jpg']
+        },
+        {
+            'name': '안성 안성맞춤랜드 천문과학관 & 팜랜드 목장 체험',
+            'description': '드넓은 초원에서 귀여운 동물들과 교감하고 밤하늘 별자리를 관측하는 온가족 감성 힐링 여행.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 42000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 430,
+            'image_urls': ['/static/img/tours/product_05_1.jpg', '/static/img/tours/product_05_2.jpg', '/static/img/tours/product_05_3.jpg', '/static/img/tours/product_05_4.jpg']
+        },
+        {
+            'name': '광주 남한산성 성곽길 트레킹 & 행궁 역사 기행',
+            'description': '사계절 빼어난 경관을 자랑하는 호국의 성지 남한산성을 따라 걷고 유서 깊은 남한산성 행궁을 둘러보는 힐링 투어.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 39000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 510,
+            'image_urls': ['/static/img/tours/product_06_1.jpg', '/static/img/tours/product_06_2.jpg', '/static/img/tours/product_06_3.jpg', '/static/img/tours/product_06_4.jpg']
+        },
+        {
+            'name': '인천 차이나타운 먹거리 투어 & 월미바다열차 오션뷰',
+            'description': '개항장 근대역사문화거리와 이국적인 차이나타운을 맛보고 국내 최장 도심형 모노레일을 즐기는 코스.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 36000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 670,
+            'image_urls': ['/static/img/tours/product_01_2.jpg', '/static/img/tours/product_01_3.jpg', '/static/img/tours/product_01_4.jpg', '/static/img/tours/product_01_1.jpg']
+        },
+        {
+            'name': '연천 재인폭포 출렁다리 & 전곡리 선사유적지 탐방',
+            'description': '한탄강 지질공원의 비경 재인폭포 주상절리와 구석기 시대 인류의 발자취를 찾아 떠나는 생태 역사 여행.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 45000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 490,
+            'image_urls': ['/static/img/tours/product_02_2.jpg', '/static/img/tours/product_02_3.jpg', '/static/img/tours/product_02_4.jpg', '/static/img/tours/product_02_1.jpg']
+        },
+        {
+            'name': '이천 도예마을 도자 체험 & 설봉공원 호수 산책',
+            'description': '흙을 빚어 나만의 도자기를 만들어보고 고즈넉한 설봉호수와 설봉산 숲길을 여유롭게 거니는 웰니스 투어.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 49000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 380,
+            'image_urls': ['/static/img/tours/product_03_2.jpg', '/static/img/tours/product_03_3.jpg', '/static/img/tours/product_03_4.jpg', '/static/img/tours/product_03_1.jpg']
+        },
+        {
+            'name': '시흥 갯골생태공원 흔들전망대 & 오이도 빨강등대 노을',
+            'description': '옛 염전의 정취가 살아있는 드넓은 갯골과 서해 바다 낙조가 눈부신 오이도 수산시장 미식 코스.',
+            'region': RegionEnum.SEOUL_GYEONGGI.value,
+            'original_price': 38000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 620,
+            'image_urls': ['/static/img/tours/product_04_2.jpg', '/static/img/tours/product_04_3.jpg', '/static/img/tours/product_04_4.jpg', '/static/img/tours/product_04_1.jpg']
+        },
+
+        # --- 추가 상품: [2] 강원 추가 (10개) ---
+        {
+            'name': '대관령 양떼목장 초원 산책 & 월정사 전나무숲길 명상',
+            'description': '푸른 알프스를 닮은 대관령 구릉 초지와 천년고찰 오대산 월정사의 울창한 전나무 숲길 힐링.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 68000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 950,
+            'image_urls': ['/static/img/tours/product_07_1.jpg', '/static/img/tours/product_07_2.jpg', '/static/img/tours/product_07_3.jpg', '/static/img/tours/product_07_4.jpg']
+        },
+        {
+            'name': '인제 자작나무숲 힐링 트레킹 & 원대리 산촌 웰빙 밥상',
+            'description': '순백의 자작나무 숲속에서 맑은 피톤치드를 듬뿍 마시고 강원도 산나물 건강 밥상을 즐기는 자연 여행.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 62000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 880,
+            'image_urls': ['/static/img/tours/product_08_1.jpg', '/static/img/tours/product_08_2.jpg', '/static/img/tours/product_08_3.jpg', '/static/img/tours/product_08_4.jpg']
+        },
+        {
+            'name': '동해 무릉계곡 베틀바위 산성길 & 추암 촛대바위 일출',
+            'description': '한국의 장가계라 불리는 기암절벽 베틀바위 절경과 동해안 최고의 일출 명소 추암 해변을 잇는 코스.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 72000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 740,
+            'image_urls': ['/static/img/tours/product_09_1.jpg', '/static/img/tours/product_09_2.jpg', '/static/img/tours/product_09_3.jpg', '/static/img/tours/product_09_4.jpg']
+        },
+        {
+            'name': '양양 낙산사 해수관음상 해안 절경 & 하조대 전망대',
+            'description': '동해 푸른 파도가 절벽에 부딪히는 천년고찰 낙산사와 기암괴석 소나무가 어우러진 하조대 바다 산책.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 59000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 810,
+            'image_urls': ['/static/img/tours/product_10_1.jpg', '/static/img/tours/product_10_2.jpg', '/static/img/tours/product_10_3.jpg', '/static/img/tours/product_10_4.jpg']
+        },
+        {
+            'name': '고성 통일전망대 DMZ 평화누리 & 화진포 호수 별장',
+            'description': '금강산과 동해 바다가 한눈에 들어오는 한반도 최북단 전망대와 고요한 석호 화진포 역사 둘레길.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 65000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 670,
+            'image_urls': ['/static/img/tours/product_11_1.jpg', '/static/img/tours/product_11_2.jpg', '/static/img/tours/product_11_3.jpg', '/static/img/tours/product_11_4.jpg']
+        },
+        {
+            'name': '삼척 환선굴 대자연 석회동굴 & 맹방 명사십리 드라이브',
+            'description': '5억 년 전 태고의 신비를 간직한 동양 최대 크기의 석회동굴 환선굴과 은빛 백사장의 낭만 드라이브.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 69000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 590,
+            'image_urls': ['/static/img/tours/product_12_1.jpg', '/static/img/tours/product_12_2.jpg', '/static/img/tours/product_12_3.jpg', '/static/img/tours/product_12_4.jpg']
+        },
+        {
+            'name': '철원 고석정 꽃밭 & 한탄강 주상절리 잔도길 트레킹',
+            'description': '현무암 협곡 절벽을 따라 허공을 걷는 스릴 넘치는 잔도길과 계절마다 만개하는 고석정 꽃길.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 63000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 820,
+            'image_urls': ['/static/img/tours/product_07_2.jpg', '/static/img/tours/product_07_3.jpg', '/static/img/tours/product_07_4.jpg', '/static/img/tours/product_07_1.jpg']
+        },
+        {
+            'name': '홍천 수타사 산소길 생태숲 & 알파카월드 숲속 힐링',
+            'description': '천년고찰 수타사를 둘러싼 공기 맑은 숲길 산책과 순수하고 사랑스러운 알파카들과의 특별한 교감.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 57000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 640,
+            'image_urls': ['/static/img/tours/product_08_2.jpg', '/static/img/tours/product_08_3.jpg', '/static/img/tours/product_08_4.jpg', '/static/img/tours/product_08_1.jpg']
+        },
+        {
+            'name': '영월 한반도지형 뗏목 체험 & 별마로천문대 은하수 관측',
+            'description': '서강 물줄기가 빚어낸 오묘한 한반도 형상 지형과 봉래산 정상에서 쏟아지는 밤하늘 별빛 투어.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 66000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 770,
+            'image_urls': ['/static/img/tours/product_09_2.jpg', '/static/img/tours/product_09_3.jpg', '/static/img/tours/product_09_4.jpg', '/static/img/tours/product_09_1.jpg']
+        },
+        {
+            'name': '태백 검룡소 한강발원지 트레킹 & 바람의언덕 풍력발전',
+            'description': '514km 한강의 시작점 검룡소의 원시 자연과 매봉산 고랭지 배추밭 풍력발전기 능선 뷰.',
+            'region': RegionEnum.GANGWON.value,
+            'original_price': 55000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 530,
+            'image_urls': ['/static/img/tours/product_10_2.jpg', '/static/img/tours/product_10_3.jpg', '/static/img/tours/product_10_4.jpg', '/static/img/tours/product_10_1.jpg']
+        },
+
+        # --- 추가 상품: [3] 충청 추가 (10개) ---
+        {
+            'name': '공주 무령왕릉 백제역사유적 & 공산성 금강 달빛 야경',
+            'description': '찬란했던 백제 웅진시대의 왕릉군을 살펴보고 금강 물결을 따라 은은하게 빛나는 공산성을 걷는 역사 기행.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 49000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 610,
+            'image_urls': ['/static/img/tours/product_13_1.jpg', '/static/img/tours/product_13_2.jpg', '/static/img/tours/product_13_3.jpg', '/static/img/tours/product_13_4.jpg']
+        },
+        {
+            'name': '부여 궁남지 연꽃 둘레길 & 백제문화단지 사비궁 야경',
+            'description': '현존하는 우리나라 최초의 인공 정원 궁남지와 백제 왕궁을 웅장하게 재현한 사비궁 탐방.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 53000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 580,
+            'image_urls': ['/static/img/tours/product_14_1.jpg', '/static/img/tours/product_14_2.jpg', '/static/img/tours/product_14_3.jpg', '/static/img/tours/product_14_4.jpg']
+        },
+        {
+            'name': '서산 해미읍성 성곽길 산책 & 용현리 마애여래삼존상',
+            'description': '조선시대 읍성의 원형이 잘 보존된 해미읍성의 잔디마당과 백제의 미소로 불리는 바위 불상 답사.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 45000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 490,
+            'image_urls': ['/static/img/tours/product_15_1.jpg', '/static/img/tours/product_15_2.jpg', '/static/img/tours/product_15_3.jpg', '/static/img/tours/product_15_4.jpg']
+        },
+        {
+            'name': '보령 대천해수욕장 짚트랙 & 개화예술공원 조각정원',
+            'description': '서해안 대표 명사십리 대천 바다 위를 가르는 공중 짚트랙과 숲속 미술관 및 온실 화원 힐링.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 58000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 720,
+            'image_urls': ['/static/img/tours/product_16_1.jpg', '/static/img/tours/product_16_2.jpg', '/static/img/tours/product_16_3.jpg', '/static/img/tours/product_16_4.jpg']
+        },
+        {
+            'name': '괴산 산막이옛길 유람선 & 칠성면 숲속 트레킹',
+            'description': '괴산호의 비경을 따라 복원된 옛길을 걷고 친환경 유람선에 몸을 실어 산수화를 감상하는 웰니스 여행.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 48000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 540,
+            'image_urls': ['/static/img/tours/product_17_1.jpg', '/static/img/tours/product_17_2.jpg', '/static/img/tours/product_17_3.jpg', '/static/img/tours/product_17_4.jpg']
+        },
+        {
+            'name': '제천 청풍호 옥순봉 출렁다리 & 카약 어드벤처',
+            'description': '청풍호반의 문화유산과 옥순봉 기암절벽을 눈앞에서 마주하며 호수 위를 건너는 명품 출렁다리.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 62000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 690,
+            'image_urls': ['/static/img/tours/product_18_1.jpg', '/static/img/tours/product_18_2.jpg', '/static/img/tours/product_18_3.jpg', '/static/img/tours/product_18_4.jpg']
+        },
+        {
+            'name': '예산 예당호 출렁다리 음악분수 & 수덕사 덕숭산 산책',
+            'description': '국내 최장급 호수 출렁다리와 야간 레이저 음악분수, 그리고 백제 고찰 수덕사의 단아한 고즈넉함.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 46000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 630,
+            'image_urls': ['/static/img/tours/product_13_2.jpg', '/static/img/tours/product_13_3.jpg', '/static/img/tours/product_13_4.jpg', '/static/img/tours/product_13_1.jpg']
+        },
+        {
+            'name': '진천 농다리 천년 돌다리 & 초평호 하늘다리 미르숲',
+            'description': '고려 초기에 축조되어 천 년을 버텨온 신비로운 돌다리 농다리와 초평호 물안개 둘레길.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 41000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 460,
+            'image_urls': ['/static/img/tours/product_14_2.jpg', '/static/img/tours/product_14_3.jpg', '/static/img/tours/product_14_4.jpg', '/static/img/tours/product_14_1.jpg']
+        },
+        {
+            'name': '영동 와인터널 미식 투어 & 월류봉 달빛 석천계곡',
+            'description': '포도와 와인의 고장 영동에서 즐기는 와인 시음과 한 폭의 산수화 같은 월류봉 봉우리 비경.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 55000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 520,
+            'image_urls': ['/static/img/tours/product_15_2.jpg', '/static/img/tours/product_15_3.jpg', '/static/img/tours/product_15_4.jpg', '/static/img/tours/product_15_1.jpg']
+        },
+        {
+            'name': '태안 천리포수목원 서해 바다정원 & 신두리 해안사구',
+            'description': '1만 6천여 종의 식물이 서해 바다와 어우러진 수목원과 한국 유일의 신비로운 모래언덕 사구 탐험.',
+            'region': RegionEnum.CHUNGCHEONG.value,
+            'original_price': 59000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 780,
+            'image_urls': ['/static/img/tours/product_16_2.jpg', '/static/img/tours/product_16_3.jpg', '/static/img/tours/product_16_4.jpg', '/static/img/tours/product_16_1.jpg']
+        },
+
+        # --- 추가 상품: [4] 전라 추가 (10개) ---
+        {
+            'name': '여수 오동도 동백숲길 & 해상케이블카 돌산대교 야경',
+            'description': '푸른 바다 위 동백나무가 빼곡한 오동도와 바다를 건너는 케이블카에서 감상하는 여수 밤바다.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 72000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1180,
+            'image_urls': ['/static/img/tours/product_19_1.jpg', '/static/img/tours/product_19_2.jpg', '/static/img/tours/product_19_3.jpg', '/static/img/tours/product_19_4.jpg']
+        },
+        {
+            'name': '순천만국가정원 사계절 플라워 & 순천만습지 갈대숲',
+            'description': '전 세계 정원을 모아놓은 대한민국 1호 국가정원과 황금빛 갈대밭이 끝없이 펼쳐지는 갯벌 생태 투어.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 65000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1050,
+            'image_urls': ['/static/img/tours/product_20_1.jpg', '/static/img/tours/product_20_2.jpg', '/static/img/tours/product_20_3.jpg', '/static/img/tours/product_20_4.jpg']
+        },
+        {
+            'name': '보성 녹차밭 대한다원 힐링 & 율포솔밭해변 해수녹차탕',
+            'description': '초록빛 물결이 굽이치는 삼나무 숲속 차밭과 득량만 청정 해변에서 즐기는 피로회복 웰빙 코스.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 58000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 820,
+            'image_urls': ['/static/img/tours/product_21_1.jpg', '/static/img/tours/product_21_2.jpg', '/static/img/tours/product_21_3.jpg', '/static/img/tours/product_21_4.jpg']
+        },
+        {
+            'name': '담양 죽녹원 대나무숲 테라피 & 메타프로방스 문화마을',
+            'description': '댓잎 사각거리는 청량한 죽림욕 산책과 이국적인 유럽풍 카페 마을에서 즐기는 감성 휴식.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 54000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 910,
+            'image_urls': ['/static/img/tours/product_22_1.jpg', '/static/img/tours/product_22_2.jpg', '/static/img/tours/product_22_3.jpg', '/static/img/tours/product_22_4.jpg']
+        },
+        {
+            'name': '전주 한옥마을 경기전 태조어진 & 자만벽화마을 산책',
+            'description': '700여 채 한옥 골목길에서 한복을 입고 경기전 조선왕조 역사를 느끼며 맛있는 길거리 미식 여행.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 49000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 1100,
+            'image_urls': ['/static/img/tours/product_23_1.jpg', '/static/img/tours/product_23_2.jpg', '/static/img/tours/product_23_3.jpg', '/static/img/tours/product_23_4.jpg']
+        },
+        {
+            'name': '신안 퍼플섬 반월박지도 보랏빛 다리 & 자은도 백길해변',
+            'description': '온 마을과 다리가 보라색으로 물든 이색 섬 투어와 분계 해변의 드넓은 백사장을 거니는 힐링.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 63000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 760,
+            'image_urls': ['/static/img/tours/product_24_1.jpg', '/static/img/tours/product_24_2.jpg', '/static/img/tours/product_24_3.jpg', '/static/img/tours/product_24_4.jpg']
+        },
+        {
+            'name': '남원 광한루원 춘향사랑정원 & 지리산 뱀사골 단풍계곡',
+            'description': '성춘향과 이몽룡의 사랑이 깃든 누각과 지리산 청정 계곡의 옥빛 물웅덩이를 따라 걷는 코스.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 57000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 640,
+            'image_urls': ['/static/img/tours/product_19_2.jpg', '/static/img/tours/product_19_3.jpg', '/static/img/tours/product_19_4.jpg', '/static/img/tours/product_19_1.jpg']
+        },
+        {
+            'name': '목포 해상케이블카 유달산 횡단 & 근대역사문화거리',
+            'description': '유달산 기암절벽과 고하도 바다를 넘나드는 국내 최장 케이블카와 목포 개항장 역사 투어.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 68000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 830,
+            'image_urls': ['/static/img/tours/product_20_2.jpg', '/static/img/tours/product_20_3.jpg', '/static/img/tours/product_20_4.jpg', '/static/img/tours/product_20_1.jpg']
+        },
+        {
+            'name': '완도 완도타워 다도해 뷰 & 신지명사십리 힐링 비치',
+            'description': '다도해 청정 해상국립공원이 파노라마로 펼쳐지는 완도타워와 은빛 모래밭 해양치유 산책.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 61000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 560,
+            'image_urls': ['/static/img/tours/product_21_2.jpg', '/static/img/tours/product_21_3.jpg', '/static/img/tours/product_21_4.jpg', '/static/img/tours/product_21_1.jpg']
+        },
+        {
+            'name': '고흥 나로우주센터 과학관 & 쑥섬 바다 비밀정원',
+            'description': '대한민국 우주 항공의 산실 나로우주센터와 야생화 만발한 바다 위 비밀정원 쑥섬 여행.',
+            'region': RegionEnum.JEONLA.value,
+            'original_price': 66000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 610,
+            'image_urls': ['/static/img/tours/product_22_2.jpg', '/static/img/tours/product_22_3.jpg', '/static/img/tours/product_22_4.jpg', '/static/img/tours/product_22_1.jpg']
+        },
+
+        # --- 추가 상품: [5] 경북 추가 (10개) ---
+        {
+            'name': '경주 불국사 석굴암 신라천년 & 첨성대 동궁과월지 야경',
+            'description': '유네스코 세계문화유산 신라 불교 예술의 정수와 야경이 아름다운 동궁과 월지 야간 투어.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 75000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1250,
+            'image_urls': ['/static/img/tours/product_25_1.jpg', '/static/img/tours/product_25_2.jpg', '/static/img/tours/product_25_3.jpg', '/static/img/tours/product_25_4.jpg']
+        },
+        {
+            'name': '안동 하회마을 부용대 나룻배 & 만휴정 원림 답사',
+            'description': '600년 전통의 풍산 류씨 집성촌 고택 마을과 부용대 절벽, 낙동강변의 그림 같은 정자 탐방.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 58000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 840,
+            'image_urls': ['/static/img/tours/product_26_1.jpg', '/static/img/tours/product_26_2.jpg', '/static/img/tours/product_26_3.jpg', '/static/img/tours/product_26_4.jpg']
+        },
+        {
+            'name': '포항 호미곶 상생의손 해맞이 & 스페이스워크 환호공원',
+            'description': '한반도 최동단 호미곶 바다 위 청동 손 조형물과 롤러코스터처럼 하늘을 걷는 스페이스워크 체험.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 62000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 990,
+            'image_urls': ['/static/img/tours/product_27_1.jpg', '/static/img/tours/product_27_2.jpg', '/static/img/tours/product_27_3.jpg', '/static/img/tours/product_27_4.jpg']
+        },
+        {
+            'name': '청송 주왕산 주산지 물안개 & 대전사 기암 협곡',
+            'description': '물속에 잠긴 왕버들이 신비로운 분위기를 자아내는 주산지와 기암절벽 웅장한 주왕산 국립공원.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 59000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 720,
+            'image_urls': ['/static/img/tours/product_28_1.jpg', '/static/img/tours/product_28_2.jpg', '/static/img/tours/product_28_3.jpg', '/static/img/tours/product_28_4.jpg']
+        },
+        {
+            'name': '문경 문경새재 황톳길 맨발걷기 & 오픈세트장 사극체험',
+            'description': '영남과 한양을 잇던 과거길 조령 삼관문 흙길을 맨발로 걷고 조선시대 드라마 촬영장을 둘러보는 코스.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 52000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 810,
+            'image_urls': ['/static/img/tours/product_29_1.jpg', '/static/img/tours/product_29_2.jpg', '/static/img/tours/product_29_3.jpg', '/static/img/tours/product_29_4.jpg']
+        },
+        {
+            'name': '영주 부석사 무량수전 배흘림기둥 & 소수서원 선비마을',
+            'description': '소백산맥 봉우리들이 파도치는 절경의 부석사와 우리나라 최초의 사액서원에서 배우는 선비정신.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 54000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 690,
+            'image_urls': ['/static/img/tours/product_30_1.jpg', '/static/img/tours/product_30_2.jpg', '/static/img/tours/product_30_3.jpg', '/static/img/tours/product_30_4.jpg']
+        },
+        {
+            'name': '울진 불영사 계곡 드라이브 & 덕구온천 족욕 테라피',
+            'description': '한국의 그랜드캐니언 불영계곡의 푸른 물줄기와 국내 유일의 자연용출 덕구온천 힐링.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 67000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 540,
+            'image_urls': ['/static/img/tours/product_25_2.jpg', '/static/img/tours/product_25_3.jpg', '/static/img/tours/product_25_4.jpg', '/static/img/tours/product_25_1.jpg']
+        },
+        {
+            'name': '영덕 블루로드 해맞이공원 바다산책 & 강구항 대게 미식',
+            'description': '동해안 푸른 바다를 따라 조성된 해안 둘레길과 영덕 축산항 강구항의 풍성한 대게 미식.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 79000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 860,
+            'image_urls': ['/static/img/tours/product_26_2.jpg', '/static/img/tours/product_26_3.jpg', '/static/img/tours/product_26_4.jpg', '/static/img/tours/product_26_1.jpg']
+        },
+        {
+            'name': '봉화 백두대간 수목원 호랑이숲 & 분천역 산타마을',
+            'description': '아시아 최대 규모의 국립수목원에서 백두산 호랑이를 만나고 동화 같은 산타마을의 낭만 기차역.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 61000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 630,
+            'image_urls': ['/static/img/tours/product_27_2.jpg', '/static/img/tours/product_27_3.jpg', '/static/img/tours/product_27_4.jpg', '/static/img/tours/product_27_1.jpg']
+        },
+        {
+            'name': '군위 화본역 레트로 감성 & 한밤마을 돌담길 산책',
+            'description': '네티즌이 뽑은 가장 아름다운 간이역 화본역과 제주도를 닮은 제주식 돌담이 이어진 한밤마을.',
+            'region': RegionEnum.GYEONGBUK.value,
+            'original_price': 46000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 510,
+            'image_urls': ['/static/img/tours/product_28_2.jpg', '/static/img/tours/product_28_3.jpg', '/static/img/tours/product_28_4.jpg', '/static/img/tours/product_28_1.jpg']
+        },
+
+        # --- 추가 상품: [6] 제주 추가 (10개) ---
+        {
+            'name': '제주 우도 성산일출봉 유람선 & 서빈백사 산호해변 투어',
+            'description': '에메랄드빛 바다와 하얀 홍조단괴 백사장이 눈부신 섬 속의 섬 우도 일주 여행.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 78000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1350,
+            'image_urls': ['/static/img/tours/product_31_1.jpg', '/static/img/tours/product_31_2.jpg', '/static/img/tours/product_31_3.jpg', '/static/img/tours/product_31_4.jpg']
+        },
+        {
+            'name': '서귀포 주상절리대 해안 절벽 & 천지연폭포 아열대 숲',
+            'description': '거대한 육각형 주상절리 바위 절벽에 부서지는 하얀 파도와 야경이 환상적인 천지연폭포.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 62000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1140,
+            'image_urls': ['/static/img/tours/product_32_1.jpg', '/static/img/tours/product_32_2.jpg', '/static/img/tours/product_32_3.jpg', '/static/img/tours/product_32_4.jpg']
+        },
+        {
+            'name': '구좌 세화해변 비취빛 바다 & 비자림 천년숲길 피톤치드',
+            'description': '수령 500~800년 된 비자나무 수천 그루가 자생하는 태고의 숲과 아기자기한 세화 카페거리.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 69000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1220,
+            'image_urls': ['/static/img/tours/product_33_1.jpg', '/static/img/tours/product_33_2.jpg', '/static/img/tours/product_33_3.jpg', '/static/img/tours/product_33_4.jpg']
+        },
+        {
+            'name': '한림 협재해수욕장 비양도 뷰 & 금능 으뜸원해변 산책',
+            'description': '은빛 모래와 비취빛 바다 너머로 비양도가 손에 잡힐 듯한 서쪽 최고의 노을 명소.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 58000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 1290,
+            'image_urls': ['/static/img/tours/product_34_1.jpg', '/static/img/tours/product_34_2.jpg', '/static/img/tours/product_34_3.jpg', '/static/img/tours/product_34_4.jpg']
+        },
+        {
+            'name': '조천 사려니숲길 삼나무 명상 & 산굼부리 억새 분화구',
+            'description': '신성한 숲 사려니의 피톤치드 흙길을 걷고 가을빛 은빛 억새가 장관을 이루는 거대 분화구.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 65000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1080,
+            'image_urls': ['/static/img/tours/product_35_1.jpg', '/static/img/tours/product_35_2.jpg', '/static/img/tours/product_35_3.jpg', '/static/img/tours/product_35_4.jpg']
+        },
+        {
+            'name': '애월 한담해안산책로 투명카약 & 곽지과물해변 노을',
+            'description': '깎아지른 해안 절벽을 따라 굽이치는 바다 산책로와 바닥이 훤히 보이는 투명 카약 체험.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 72000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1190,
+            'image_urls': ['/static/img/tours/product_36_1.jpg', '/static/img/tours/product_36_2.jpg', '/static/img/tours/product_36_3.jpg', '/static/img/tours/product_36_4.jpg']
+        },
+        {
+            'name': '표선 성읍민속마을 전통초가 & 제주민속촌 문화체험',
+            'description': '제주 옛 산간마을의 가옥과 풍속이 생생히 살아있는 민속마을에서 즐기는 전통 제주 밥상.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 53000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 840,
+            'image_urls': ['/static/img/tours/product_31_2.jpg', '/static/img/tours/product_31_3.jpg', '/static/img/tours/product_31_4.jpg', '/static/img/tours/product_31_1.jpg']
+        },
+        {
+            'name': '중문 엉덩물계곡 유채꽃밭 & 여미지식물원 온실 투어',
+            'description': '계곡을 가득 메운 샛노란 꽃밭과 전 세계 희귀 열대식물을 관람할 수 있는 식물원 힐링.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 61000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 920,
+            'image_urls': ['/static/img/tours/product_32_2.jpg', '/static/img/tours/product_32_3.jpg', '/static/img/tours/product_32_4.jpg', '/static/img/tours/product_32_1.jpg']
+        },
+        {
+            'name': '서귀포 정방폭포 해안 절경 & 올레시장 미식투어',
+            'description': '폭포수가 바다로 직접 떨어지는 동양 유일의 해안폭포와 활기찬 전통시장의 맛있는 야식.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 56000,
+            'member_discount_rate': 0.10,
+            'recommendation_count': 1020,
+            'image_urls': ['/static/img/tours/product_33_2.jpg', '/static/img/tours/product_33_3.jpg', '/static/img/tours/product_33_4.jpg', '/static/img/tours/product_33_1.jpg']
+        },
+        {
+            'name': '안덕 카멜리아힐 동백수목원 & 산방산 용머리해안',
+            'description': '전 세계 500여 종의 동백꽃이 피어나는 정원과 수천만 년 세월이 빚어낸 해안 사암 절벽.',
+            'region': RegionEnum.JEJU.value,
+            'original_price': 67000,
+            'member_discount_rate': 0.15,
+            'recommendation_count': 1130,
+            'image_urls': ['/static/img/tours/product_34_2.jpg', '/static/img/tours/product_34_3.jpg', '/static/img/tours/product_34_4.jpg', '/static/img/tours/product_34_1.jpg']
         }
     ]
     sample_review_comments = [
