@@ -112,6 +112,9 @@ class OrderReserveForm(FlaskForm):
     # 선택 약관 동의 (위치 정보 이용 동의)
     agree_location = BooleanField('위치 정보 이용 동의')
 
+    # 연관 숙박 상품 ID (회원 선택 시 옵션)
+    accommodation_id = IntegerField('연계 숙박 상품 ID')
+
     def __init__(self, *args, is_member=False, **kwargs):
         super(OrderReserveForm, self).__init__(*args, **kwargs)
         self.is_member = is_member
