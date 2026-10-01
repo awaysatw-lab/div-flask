@@ -1,5 +1,6 @@
-from flask import Blueprint, url_for, render_template, request, flash, redirect, session, g, jsonify
+from flask import Blueprint, url_for, render_template, request, flash, redirect, session, g, jsonify, render_template
 from werkzeug.security import check_password_hash, generate_password_hash
+from authlib.integrations.flask_client import OAuth
 
 
 from pybo import db
@@ -168,3 +169,97 @@ def find_pw():
         db.session.rollback()
         print(f"비밀번호 찾기 백엔드 에러: {str(e)}")
         return jsonify({'status': 'fail', 'message': '시스템 통신 에러가 발생했습니다.'}), 500
+
+oauth = OAuth()
+
+# 1. 🌐 구글 OAuth 설정 (공식 주소 반영)
+google = oauth.register(
+    name='google',
+    client_id='발급받은_구글_클라이언트_://googleusercontent.com',
+    client_secret='발급받은_구글_클라이언트_보안_비밀번호',
+    access_token_url='https://googleapis.com',
+    authorize_url='https://google.com',
+    api_base_url='https://googleapis.com',
+    userinfo_endpoint='https://googleapis.com',
+    client_kwargs={'scope': 'openid email profile'},
+)
+
+# 2. 🟢 네이버 OAuth 설정 (공식 주소 반영)
+naver = oauth.register(
+    name='naver',
+    client_id='네이버에서_발급받은_클라이언트_ID',
+    client_secret='네이버에서_발급받은_비밀번호',
+    access_token_url='https://naver.com',
+    authorize_url='https://naver.com',
+    api_base_url='https://naver.com',
+    client_kwargs={
+        'token_endpoint_auth_method': 'client_secret_post',
+    }
+)
+
+# 3. 🟡 카카오 OAuth 설정 (공식 주소 반영)
+kakao = oauth.register(
+    name='kakao',
+    client_id='카카오에서_발급받은_REST_API_키',
+    client_secret='카카오에서_발급받은_보안_비밀구절(선택사항)',
+    access_token_url='https://kakao.com',
+    authorize_url='https://kakao.com',
+    api_base_url='https://kakao.com',
+)
+
+# ==========================================
+#  1. 구글(Google) 로그인 라우트
+# ==========================================
+@bp.route('/login/google')
+def google_login():
+    redirect_uri = url_for('auth.google_callback', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+@bp.route('/login/google/callback')
+def google_callback():
+    token = google.authorize_access_token()
+    user_info = google.get('userinfo').json()
+
+    # 세션에 유저 이메일 저장 (로그인 완료 처리)
+    session['user_id'] = user_info.get('email')
+    session['user_name'] = user_info.get('name')
+    return redirect(url_for('main.index'))
+
+# ==========================================
+#  2. 네이버(Naver) 로그인 라우트
+# ==========================================
+@bp.route('/login/naver')
+def naver_login():
+    redirect_uri = url_for('auth.naver_callback', _external=True)
+    return naver.authorize_redirect(redirect_uri)
+
+@bp.route('/login/naver/callback')
+def naver_callback():
+    token = naver.authorize_access_token()
+    # 네이버는 response 라는 키 안에 유저 프로필 정보가 담겨 있습니다.
+    user_info = naver.get('').json().get('response', {})
+
+    session['user_id'] = user_info.get('email')
+    session['user_name'] = user_info.get('name')
+    return redirect(url_for('main.index'))
+
+# ==========================================
+#  3. 카카오(Kakao) 로그인 라우트
+# ==========================================
+@bp.route('/login/kakao')
+def kakao_login():
+    redirect_uri = url_for('auth.kakao_callback', _external=True)
+    return kakao.authorize_redirect(redirect_uri)
+
+@bp.route('/login/kakao/callback')
+def kakao_callback():
+    token = kakao.authorize_access_token()
+    user_info = kakao.get('').json()
+
+    # 카카오는 kakao_account 정보 안에 이메일과 프로필이 있습니다.
+    kakao_account = user_info.get('kakao_account', {})
+    profile = kakao_account.get('profile', {})
+
+    session['user_id'] = kakao_account.get('email')
+    session['user_name'] = profile.get('nickname')
+    return redirect(url_for('main.index'))
