@@ -1222,3 +1222,25 @@ button,input {
     }
 }
 
+/* ==========================================================================
+   숙소 카테고리 뱃지 공통 스타일
+   ========================================================================== */
+.badge-cat-hotel {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+.badge-cat-minbak {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: #dcfce7;
+    color: #15803d;
+}
+

@@ -181,7 +181,7 @@ class Order(db.Model):
 
     # Relationships
     items = db.relationship('OrderItem', backref='order', lazy='dynamic', cascade='all, delete-orphan')
-    #accommodations = db.relationship('OrderAccommodation', backref='order', lazy='dynamic', cascade='all, delete-orphan')
+    accommodations = db.relationship('OrderAccommodation', backref='order', lazy='dynamic', cascade='all, delete-orphan')
     payment = db.relationship('Payment', backref='order', uselist=False, cascade='all, delete-orphan')
 
     @classmethod
@@ -221,6 +221,14 @@ class Order(db.Model):
         if prod:
             return prod.get_nearby_products(limit=6)
         return TourProduct.query.order_by(TourProduct.recommendation_count.desc(), TourProduct.id.asc()).limit(6).all()
+
+    @property
+    def accommodation_booking(self):
+        """주문에 포함된 연계 숙박 예약 정보 (단일 건 또는 None)"""
+        try:
+            return self.accommodations.first()
+        except Exception:
+            return None
     
 class OrderItem(db.Model):
     __tablename__ = 'order_items'
@@ -242,4 +250,41 @@ class Payment(db.Model):
     transaction_id = db.Column(db.String(100), unique=True, nullable=False)
     status = db.Column(db.String(20), default='SUCCESS') # SUCCESS, FAILED, CANCELLED
     paid_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+
+class Accommodation(db.Model):
+    __tablename__ = 'accommodations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False, index=True)      # 숙소명
+    category = db.Column(db.String(30), nullable=False, index=True)   # 호텔 / 민박
+    region = db.Column(db.String(50), nullable=False, index=True)     # 권역 (RegionEnum 값)
+    location = db.Column(db.String(255), nullable=False)              # 장소 및 상세 주소
+    price_per_night = db.Column(db.Integer, nullable=False)           # 1박 요금
+    image_url = db.Column(db.String(255), nullable=False)             # 이미지 경로 (/static/img/accomodation/...)
+    description = db.Column(db.Text, nullable=True)                   # 숙소 특징 / 한줄 소개
+    rating = db.Column(db.Float, default=4.8)                         # 평점
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def __repr__(self):
+        return f"<Accommodation [{self.category}] {self.name} ({self.region})>"
+
+
+class OrderAccommodation(db.Model):
+    __tablename__ = 'order_accommodations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id', ondelete='CASCADE'), nullable=False)
+    accommodation_id = db.Column(db.Integer, db.ForeignKey('accommodations.id'), nullable=False)
+    nights = db.Column(db.Integer, default=1, nullable=False)         # 숙박 일수 (기본 1박)
+    price_per_night = db.Column(db.Integer, nullable=False)           # 결제 시점 1박 요금
+    total_price = db.Column(db.Integer, nullable=False)               # 총 숙박 요금 (nights * price_per_night)
+    check_in_date = db.Column(db.String(20), nullable=True)           # 체크인 날짜
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationships
+    accommodation = db.relationship('Accommodation', backref='order_bookings')
+
+    def __repr__(self):
+        return f"<OrderAccommodation order_id={self.order_id} acc_id={self.accommodation_id}>"
 

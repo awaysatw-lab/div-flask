@@ -1505,9 +1505,17 @@ def seed_database():
     total_orders = Order.query.count()
     print(f"[Seed] 성공! 총 {total_count}개 관광 상품 및 {total_orders}개 주문/결제 데이터가 적재되었습니다.")
 
+    # 연관 숙박 (호텔/민박 120건) 적재
+    try:
+        from seed_accommodations_data import seed_accommodations
+        seed_accommodations()
+    except Exception as e:
+        print(f"[Seed] 숙박 데이터 적재 중 오류: {e}")
+
 if __name__ == '__main__':
     app = create_app()
     with app.app_context():
          seed_database()
+
 
 

@@ -59,7 +59,8 @@
 /* 최종 결제 금액 메인 섹션 */
 .final-amount-box { display: flex; flex-direction: column; gap: 16px; }
 .amount-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: var(--bg-gray); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px 18px; }
-@media (max-width: 680px) { .amount-detail-grid { grid-template-columns: 1fr; gap: 8px; } }
+.amount-detail-grid.has-acc { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 680px) { .amount-detail-grid, .amount-detail-grid.has-acc { grid-template-columns: 1fr; gap: 8px; } }
 .amount-detail-item { display: flex; flex-direction: column; gap: 4px; }
 .amount-detail-item .detail-label { font-size: 13px; color: var(--text-muted); }
 .amount-detail-item .detail-val { font-size: 16px; font-weight: 700; color: var(--text-main); }

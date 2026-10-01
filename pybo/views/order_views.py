@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, redirect, url_for, session, g, flash
 from flask_login import current_user
 from pybo import db
-from pybo.models import TourProduct, User, Order, OrderItem, Payment
+from pybo.models import TourProduct, User, Order, OrderItem, Payment, Accommodation, OrderAccommodation
 from pybo.forms import OrderReserveForm
 
 bp = Blueprint('order', __name__, url_prefix='/order')
@@ -71,6 +71,15 @@ def reserve():
     min_date = (today + timedelta(days=1)).strftime('%Y-%m-%d')
     max_date = (today + timedelta(days=14)).strftime('%Y-%m-%d')
 
+    # 연관 숙박 (호텔/민박) 조회 (회원인 경우만 해당 권역 숙소 조회)
+    accommodations = []
+    hotels = []
+    minbaks = []
+    if is_member:
+        accommodations = Accommodation.query.filter_by(region=product.region).order_by(Accommodation.category.desc(), Accommodation.price_per_night.asc()).all()
+        hotels = [a for a in accommodations if a.category == '호텔']
+        minbaks = [a for a in accommodations if a.category == '민박']
+
     form = OrderReserveForm(
         is_member=is_member,
         product_id=product.id,
@@ -97,7 +106,10 @@ def reserve():
         total_original=total_original,
         total_discount=total_discount,
         total_final=total_final,
-        direct_product_id=product.id
+        direct_product_id=product.id,
+        accommodations=accommodations,
+        hotels=hotels,
+        minbaks=minbaks
     )
 
 
@@ -165,14 +177,27 @@ def payment():
             'birth': t_birth or '-'
         })
 
+    # 연관 숙박 상품 확인 (회원인 경우만 적용)
+    accommodation_id = request.form.get('accommodation_id', type=int)
+    selected_accommodation = None
+    accommodation_price = 0
+    if is_member and accommodation_id:
+        selected_accommodation = Accommodation.query.get(accommodation_id)
+        if selected_accommodation:
+            accommodation_price = selected_accommodation.price_per_night
+
     # 결제 금액 계산
     unit_original_price = product.original_price
     unit_discount = product.get_discount_amount(is_member=is_member)
     unit_final_price = product.get_discounted_price(is_member=is_member)
 
-    total_original = unit_original_price * headcount
-    total_discount = unit_discount * headcount
-    total_final = unit_final_price * headcount
+    tour_original = unit_original_price * headcount
+    tour_discount = unit_discount * headcount
+    tour_final = unit_final_price * headcount
+
+    total_original = tour_original + accommodation_price
+    total_discount = tour_discount
+    total_final = tour_final + accommodation_price
 
     return render_template(
         'order/payment.html',
@@ -193,6 +218,11 @@ def payment():
         unit_original_price=unit_original_price,
         unit_discount=unit_discount,
         unit_final_price=unit_final_price,
+        tour_original=tour_original,
+        tour_discount=tour_discount,
+        tour_final=tour_final,
+        selected_accommodation=selected_accommodation,
+        accommodation_price=accommodation_price,
         total_original=total_original,
         total_discount=total_discount,
         total_final=total_final
@@ -209,6 +239,15 @@ def pay_complete():
 
     product = TourProduct.query.get_or_404(product_id)
     is_member, logged_user = check_is_member()
+
+    # 연관 숙박 상품 확인
+    accommodation_id = request.form.get('accommodation_id', type=int)
+    selected_accommodation = None
+    accommodation_price = 0
+    if is_member and accommodation_id:
+        selected_accommodation = Accommodation.query.get(accommodation_id)
+        if selected_accommodation:
+            accommodation_price = selected_accommodation.price_per_night
 
     reserver_name = request.form.get('reserver_name', '')
     reserver_phone = request.form.get('reserver_phone', '')
@@ -228,9 +267,13 @@ def pay_complete():
 
     unit_final_price = product.get_discounted_price(is_member=is_member)
     unit_discount = product.get_discount_amount(is_member=is_member)
-    total_original = product.original_price * headcount
-    total_discount = unit_discount * headcount
-    total_final = unit_final_price * headcount
+    tour_original = product.original_price * headcount
+    tour_discount = unit_discount * headcount
+    tour_final = unit_final_price * headcount
+
+    total_original = tour_original + accommodation_price
+    total_discount = tour_discount
+    total_final = tour_final + accommodation_price
 
     # 실제 결제된 금액 (테스트 1,000원 결제 또는 정상 결제액)
     actual_paid = int(paid_amount_str) if (paid_amount_str and paid_amount_str.isdigit()) else total_final
@@ -263,6 +306,18 @@ def pay_complete():
     )
     db.session.add(order_item)
 
+    # 숙박 예약 레코드 저장
+    if selected_accommodation:
+        order_acc = OrderAccommodation(
+            order_id=order.id,
+            accommodation_id=selected_accommodation.id,
+            nights=1,
+            price_per_night=selected_accommodation.price_per_night,
+            total_price=selected_accommodation.price_per_night,
+            check_in_date=travel_date
+        )
+        db.session.add(order_acc)
+
     # PortOne 고유 payment_id / tx_id 우선 저장
     tx_id = portone_payment_id or portone_tx_id or f"TX-{order_no}"
     payment = Payment(
@@ -289,7 +344,8 @@ def pay_complete():
         travelers=travelers,
         payment_method=payment_method,
         total_final=actual_paid,
-        portone_payment_id=portone_payment_id or portone_tx_id
+        portone_payment_id=portone_payment_id or portone_tx_id,
+        selected_accommodation=selected_accommodation
     )
 
 
