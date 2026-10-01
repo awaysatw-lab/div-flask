@@ -78,17 +78,29 @@
     </div>
 
     <div id="underslide">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">전체</a>
-                <a class="navbar-brand" href="#">수도권</a>
-                <a class="navbar-brand" href="#">강원권</a>
-                <a class="navbar-brand" href="#">충청권</a>
-                <a class="navbar-brand" href="#">경상권</a>
-                <a class="navbar-brand" href="#">전라권</a>
-                <a class="navbar-brand" href="#">제주권</a>
-            </div>
-        </nav>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-all" type="button" role="tab" aria-controls="pills-all" aria-selected="true">전체</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-sudo" type="button" role="tab" aria-controls="pills-sudo" aria-selected="false">수도권</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-gang" type="button" role="tab" aria-controls="pills-gang" aria-selected="false">강원권</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-cheong" type="button" role="tab" aria-controls="pills-cheong" aria-selected="false">충청권</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-geong" type="button" role="tab" aria-controls="pills-geong" aria-selected="false">경상권</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-jeon" type="button" role="tab" aria-controls="pills-jeon" aria-selected="false">전라권</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-jeju" type="button" role="tab" aria-controls="pills-jeju" aria-selected="false">제주권</button>
+            </li>
+        </ul>
     </div>
 
     <div class="wide1">
@@ -110,37 +122,14 @@
                 </div>
             </div>
             <!-- 오른쪽 구역 -->
-            <div id="main_right">
-                <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3 row-gap-4">
-                    {% for product in products %}
-                    <div class="card"  style="min-height: 400px; display: block !important;">
-                        <img src="{{ product.image_url }}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <div class="heart_star">
-                                <p>❤️{{ "{:,}".format(product.recommendation_count) }}</p>
-                                <p>⭐5.0</p>
-                            </div>
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.description }}</p>
-                            <div class="card-price">
-                                <p>{{ "{:,}".format(product.original_price) }}원</p>
-                                <div>
-                                    {% if g.user %}
-                                    <h5>{{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원</h5>
-                                    {% else %}
-                                    <h5>{{ "{:,}".format(product.original_price) }}원</h5>
-                                    {% endif %}
-                                    <p>(회원가입 시 {{ "{:,}".format(product.member_discount_rate * 100)|int }}% 할인)</p>
-                                </div>
-                            </div>
-                            <div>
-                                <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-primary">상세보기</a>
-                                <a href="{{ url_for('order.reserve', product_id=product.id) }}" class="btn btn-primary">구매</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab" tabindex="0">{% include '/product/main_product_nav.html' %}</div>
+                <div class="tab-pane fade" id="pills-sudo" role="tabpanel" aria-labelledby="pills-sudo-tab" tabindex="0">{% include '/product/main_product_nav.html' %}</div>
+                <div class="tab-pane fade" id="pills-gang" role="tabpanel" aria-labelledby="pills-gang-tab" tabindex="0">{% include '/product/main_product_nav.html' %}</div>
+                <div class="tab-pane fade" id="pills-chung" role="tabpanel" aria-labelledby="pills-chung-tab" tabindex="0">{% include '/product/main_product_nav.html' %}</div>
+                <div class="tab-pane fade" id="pills-geong" role="tabpanel" aria-labelledby="pills-geong-tab" tabindex="0">{% include '/product/main_product_nav.html' %}</div>
+                <div class="tab-pane fade" id="pills-jeon" role="tabpanel" aria-labelledby="pills-jeon-tab" tabindex="0">{% include '/product/main_product_nav.html' %}</div>
+                <div class="tab-pane fade" id="pills-jeju" role="tabpanel" aria-labelledby="pills-jeju-tab" tabindex="0">{% include '/product/main_product_nav.html' %}</div>
             </div>
         </div>
     </div>
