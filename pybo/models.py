@@ -290,6 +290,8 @@ class OrderAccommodation(db.Model):
 
 #타임딜 참고
 class TimeDeal(db.Model):
+    __tablename__ = 'time_deal'
+
     id = db.Column(db.Integer, primary_key=True)
     product_type = db.Column(db.String(10), nullable=False, default='sub')  # 'main'(큰 카드) 또는 'sub'(우측 작은 카드)
     airline = db.Column(db.String(50), nullable=False)  # 예: [아시아나항공], [이스타항공]
