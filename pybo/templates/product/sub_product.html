@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.css"/>
-
 
     <!--구역1-->
     <div class="wide1">
@@ -12,22 +9,13 @@
             <div id="sub-left">
                 <div id="four-slide">
                     <div id="carouselExample" class="carousel slide">
-
                         <div class="carousel-inner ">
-                            <div class="carousel-item active">
-                                <img src="{{ product.image_urls }}" class="d-block w-100" alt="">
+                            {% for img_url in product.image_urls %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img src="{{ img_url }}" class="d-block w-100" alt="">
                             </div>
-                            <div class="carousel-item">
-                                <img src="{{ url_for('static', filename='img/tours/product_01_2.jpg') }}" class="d-block w-100" alt="">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="{{ url_for('static', filename='img/tours/product_01_3.jpg') }}" class="d-block w-100" alt="">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="{{ url_for('static', filename='img/tours/product_01_4.jpg') }}" class="d-block w-100" alt="">
-                            </div>
+                            {% endfor %}
                         </div>
-
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
@@ -38,19 +26,16 @@
                         </button>
                     </div>
                     <div id="mini">
-
-                        <img src="{{ url_for('static', filename=product.image_urls[0]) }}" class="d-block w-100" alt="">
-                        <img src="{{ url_for('static', filename='img/tours/product_01_2.jpg') }}" class="d-block w-100" alt="">
-                        <img src="{{ url_for('static', filename='img/tours/product_01_3.jpg') }}" class="d-block w-100" alt="">
-                        <img src="{{ url_for('static', filename='img/tours/product_01_4.jpg') }}" class="d-block w-100" alt="">
-
+                        {% for img_url in product.image_urls %}
+                            <img src="{{ img_url }}" class="d-block w-100" alt="">
+                        {% endfor %}
                     </div>
                 </div>
 
                 <div>
                     <!-- 슬라이드 밑-->
                     <div id="recommend">
-                        <p id="heart">❤️{{ product.recommendation_count }}명이 추천했습니다! 이 여행 상품이 마음에 드셨다면 추천해주세요</p>
+                        <p id="heart">❤️{{ "{:,}".format(product.recommendation_count) }}명이 추천했습니다! 이 여행 상품이 마음에 드셨다면 추천해주세요</p>
                         {% if g.user %}
                         <button id="heart-log">추천<br>하기</button>
                         {% else %}
@@ -75,44 +60,41 @@
                 <div id="purchase">
                     <div>
                         <p class="p-left">일반 정상가</p>
-                        <p class="p-right">{{ product.original_price }}원</p>
+                        <p class="p-right">{{ "{:,}".format(product.original_price) }}원</p>
                     </div>
                     <div>
                         <h6 class="p-left">판매금액</h6>
                         {% if g.user %}
-                        <h6 class="p-right">{{ (product.original_price * (1 - product.member_discount_rate))|int }}원</h6>
+                        <h6 class="p-right">{{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원</h6>
                         {% else %}
-                        <h6 class="p-right">{{ product.original_price }}원</h6>
+                        <h6 class="p-right">{{ "{:,}".format(product.original_price) }}원</h6>
                         {% endif %}
                     </div>
                 </div>
                 <div id="people">
                     {% if g.user %}
                     <h5>🛒 회원 일반 구매</h5>
+                    {% else %}
+                    <h5>🛒 비회원 일반 구매</h5>
+                    {% endif %}
                     <div>
                         <p>수량/인원: </p>
-                        <div class="stepper-btn-group">
+                        <div>
                             <button type="button" class="btn-step" onclick="changeHeadcount(-1)">-</button>
                             <input type="number" id="headcountInput" value="{{ headcount }}" min="1" max="20" class="headcount-input" readonly>
                             <button type="button" class="btn-step" onclick="changeHeadcount(1)">+</button>
                         </div>
                     </div>
-                    <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 회원 바로 구매하기(할인가 {{ (product.original_price * (1 - product.member_discount_rate))|int }}원)</button>
+                    {% if g.user %}
+                    <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 회원 바로 구매하기(할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원)</button>
                     {% else %}
-                    <h5>🛒 비회원 일반 구매</h5>
-                    <p>수량/인원:</p>
-                    <div class="stepper-btn-group">
-                        <button type="button" class="btn-step" onclick="changeHeadcount(-1)">-</button>
-                        <input type="number" id="headcountInput" value="{{ headcount }}" min="1" max="20" class="headcount-input" readonly>
-                        <button type="button" class="btn-step" onclick="changeHeadcount(1)">+</button>
-                    </div>
-                    <button onclick="location.href=`{{ url_for('order.reserve') }}`"> 비회원 바로 구매하기(정가 {{ product.original_price }}원)</button>
+                    <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 비회원 바로 구매하기(정가 {{ "{:,}".format(product.original_price) }}원)</button>
                     {% endif %}
                 </div>
                 {% if g.user %}
                 {% else %}
                 <div id="log-discount">
-                    <div>💡로그인 시 {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 / {{ (product.original_price * (1 - product.member_discount_rate))|int }}원에 이용 가능!</div>
+                    <div>💡로그인 시 {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 / {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원에 이용 가능!</div>
                     <div>
                         <button onclick="location.href=`{{ url_for('auth.login') }}`">로그인하고 할인 결제</button>
                         <button onclick="location.href=`{{ url_for('auth.signup') }}`">간편 회원가입</button>
@@ -142,10 +124,10 @@
     <div class="wide1">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" style="color: #212529">상품설명</button>
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" style="color: #212529">상세일정</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="color: #212529">상세일정</button>
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="color: #212529">숙소안내</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="color: #212529">지도보기</button>
@@ -155,11 +137,11 @@
             </li>
         </ul>
         <div class="tab-content 2-100" id="myTabContent">
-            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">{{ product.description }}</div>
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">상세일정</div>
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">상세일정</div>
+            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">숙소안내</div>
             <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                 <div class="ratio ratio-16x9">
-                    <iframe style="border:0" loading="lazy" allowfullscreen src="https://www.google.com/maps?q=문경새재&output=embed">></iframe>
+                    <iframe style="border:0" loading="lazy" allowfullscreen src="https://www.google.com/maps?q={{ product.name }}&output=embed">></iframe>
                 </div>
             </div>
             <div class="tab-pane fade" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab" tabindex="0">출발 전 정보?</div>
@@ -223,24 +205,26 @@
                 <p>(비회원은 후기 읽기만 가능합니다.)</p>
             </div>
         </div>
-        <div id="detail_star">
-            <div>⭐ 5.0 </div>
-            <div>
-                <div>일정 5</div>
-                <div>가이드 5</div>
-                <div>교통 5</div>
-                <div>숙박 5</div>
-                <div>식사 5</div>
-                <div>김*미 2026-09-16</div>
+        <div id="review_w">
+            <div id="detail_star">
+                <div>⭐ 5.0 </div>
+                <div>
+                    <div>일정 5</div>
+                    <div>가이드 5</div>
+                    <div>교통 5</div>
+                    <div>숙박 5</div>
+                    <div>식사 5</div>
+                    <div>김*미 2026-09-16</div>
+                </div>
             </div>
-        </div>
-        <div id="review_box">
-            리뷰들 들어올 곳
-            {{ product.sample_review_comments }}
+            <p>"다른 여행사보다 회원 할인율이 높아서 기분 좋게 다녀왔습니다. 강력 추천합니다!"</p>
+            <div id="more">
+                <div>더보기</div>
+                <div>답글</div>
+            </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/reserve.js') }}"></script>
 
 {% endblock %}
