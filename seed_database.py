@@ -1,8 +1,8 @@
 import json
 import random
 from datetime import datetime, timezone, timedelta
-from pybo import create_app,db
-from pybo.models import User,TourProduct, RegionEnum, Review
+from pybo import create_app, db
+from pybo.models import User, TourProduct, RegionEnum, Review, Order, OrderItem, Payment
 
 def seed_database():
     users_data = [
@@ -616,7 +616,334 @@ def seed_database():
                     db.session.add(review)
     db.session.commit()
     total_count = TourProduct.query.count()
-    print(f"[Seed] 성공! 총 {total_count}개 관광 상품 데이터가 적재되었습니다.")
+
+    # 4. 상품 구매 정보 (주문/결제) Seed 데이터 정의
+    #    - 비회원(Guest) 상태로 생성/수정된 주문 정보
+    #    - 로그인 회원(Member) 상태로 생성/수정된 주문 정보
+    orders_data = [
+        # --- [1] 비회원(Guest) 상태 주문 데이터 ---
+        {
+            'order_no': 'ORD-20260923064809-E3DB20',
+            'user_username': None,
+            'guest_name': '테스트고객',
+            'guest_email': 'test@example.com',
+            'guest_phone': '010-9999-8888',
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': False,
+            'created_at': datetime(2026, 9, 23, 6, 48, 9),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923064809-E3DB20',
+            'paid_at': datetime(2026, 9, 23, 6, 48, 9)
+        },
+        {
+            'order_no': 'ORD-20260923070325-0162C6',
+            'user_username': None,
+            'guest_name': '테스트고객',
+            'guest_email': 'test@example.com',
+            'guest_phone': '010-9999-8888',
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': False,
+            'created_at': datetime(2026, 9, 23, 7, 3, 25),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923070325-0162C6',
+            'paid_at': datetime(2026, 9, 23, 7, 3, 25)
+        },
+        {
+            'order_no': 'ORD-20260923072042-46A2A0',
+            'user_username': None,
+            'guest_name': '테스트고객',
+            'guest_email': 'test@example.com',
+            'guest_phone': '010-9999-8888',
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': True,
+            'created_at': datetime(2026, 9, 23, 7, 20, 42),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923072042-46A2A0',
+            'paid_at': datetime(2026, 9, 23, 7, 20, 42)
+        },
+        {
+            'order_no': 'ORD-20260923073004-063037',
+            'user_username': None,
+            'guest_name': '테스트고객',
+            'guest_email': 'test@example.com',
+            'guest_phone': '010-9999-8888',
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': True,
+            'created_at': datetime(2026, 9, 23, 7, 30, 4),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923073004-063037',
+            'paid_at': datetime(2026, 9, 23, 7, 30, 4)
+        },
+        {
+            'order_no': 'ORD-20260923073035-79D59A',
+            'user_username': None,
+            'guest_name': '테스트고객',
+            'guest_email': 'test@example.com',
+            'guest_phone': '010-9999-8888',
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': True,
+            'created_at': datetime(2026, 9, 23, 7, 30, 35),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923073035-79D59A',
+            'paid_at': datetime(2026, 9, 23, 7, 30, 35)
+        },
+        {
+            'order_no': 'ORD-20260923084202-B6D072',
+            'user_username': None,
+            'guest_name': '테스트고객',
+            'guest_email': 'test@example.com',
+            'guest_phone': '010-9999-8888',
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': True,
+            'created_at': datetime(2026, 9, 23, 8, 42, 2),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923084202-B6D072',
+            'paid_at': datetime(2026, 9, 23, 8, 42, 2)
+        },
+        # --- [2] 로그인 회원(Member) 상태 주문 데이터 ---
+        {
+            'order_no': 'ORD-20260923084617-62642E',
+            'user_username': 'hong',
+            'guest_name': None,
+            'guest_email': None,
+            'guest_phone': None,
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': True,
+            'created_at': datetime(2026, 9, 23, 8, 46, 17),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923084617-62642E',
+            'paid_at': datetime(2026, 9, 23, 8, 46, 17)
+        },
+        {
+            'order_no': 'ORD-20260923085033-2725D1',
+            'user_username': 'hong',
+            'guest_name': None,
+            'guest_email': None,
+            'guest_phone': None,
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 0,
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': True,
+            'created_at': datetime(2026, 9, 23, 8, 50, 33),
+            'payment_method': 'CARD',
+            'paid_amount': 130000,
+            'transaction_id': 'TX-ORD-20260923085033-2725D1',
+            'paid_at': datetime(2026, 9, 23, 8, 50, 33)
+        },
+        # 회원 우대 할인(15%) 및 PortOne 테스트 결제(1,000원) 적용 최신 주문 (hong)
+        {
+            'order_no': 'ORD-20260928112000-HONG01',
+            'user_username': 'hong',
+            'guest_name': None,
+            'guest_email': None,
+            'guest_phone': None,
+            'product_name': '가평 아침고요수목원 & 남이섬 메타세쿼이아 낭만 힐링',
+            'quantity': 2,
+            'original_amount': 130000,
+            'discount_amount': 19500,  # 15% 회원할인 적용 (인당 9,750원 할인)
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': True,
+            'created_at': datetime(2026, 9, 28, 11, 20, 0),
+            'payment_method': 'CARD',
+            'paid_amount': 1000,       # PortOne 테스트 결제 금액 (1,000원)
+            'transaction_id': 'payment-8aa7da59-1180-4c4e-9723-ed30e22b7ff4',
+            'paid_at': datetime(2026, 9, 28, 11, 20, 5)
+        },
+        # 회원 우대 할인(10%) 적용 주문 (traveler_kim)
+        {
+            'order_no': 'ORD-20260928153000-KIM001',
+            'user_username': 'traveler_kim',
+            'guest_name': None,
+            'guest_email': None,
+            'guest_phone': None,
+            'product_name': '수원 화성 성곽길 달빛 투어 & 플라잉 수원 열기구 체험',
+            'quantity': 1,
+            'original_amount': 45000,
+            'discount_amount': 4500,   # 10% 회원할인 적용
+            'status': 'COMPLETED',
+            'agree_special': True,
+            'agree_privacy': True,
+            'agree_sensitive': True,
+            'agree_location': False,
+            'created_at': datetime(2026, 9, 28, 15, 30, 0),
+            'payment_method': 'CARD',
+            'paid_amount': 40500,
+            'transaction_id': 'TX-ORD-20260928153000-KIM001',
+            'paid_at': datetime(2026, 9, 28, 15, 30, 5)
+        }
+    ]
+
+    for o_info in orders_data:
+        order = Order.query.filter_by(order_no=o_info['order_no']).first()
+
+        # 상품 조회 (이름으로 매칭, 없으면 1번 상품)
+        product = TourProduct.query.filter_by(name=o_info['product_name']).first()
+        if not product:
+            product = TourProduct.query.first()
+
+        # 회원 조회 (로그인 회원의 경우)
+        user = None
+        if o_info['user_username']:
+            user = User.query.filter_by(user_id=o_info['user_username']).first()
+
+        user_id_val = user.id if user else None
+        qty = o_info.get('quantity', 1)
+        orig_amt = o_info['original_amount']
+        disc_amt = o_info['discount_amount']
+        unit_price = (orig_amt - disc_amt) // qty if qty > 0 else orig_amt
+        discount_applied = disc_amt // qty if qty > 0 else 0
+
+        if not order:
+            order = Order(
+                order_no=o_info['order_no'],
+                user_id=user_id_val,
+                guest_name=o_info.get('guest_name'),
+                guest_email=o_info.get('guest_email'),
+                guest_phone=o_info.get('guest_phone'),
+                original_amount=orig_amt,
+                discount_amount=disc_amt,
+                status=o_info.get('status', 'COMPLETED'),
+                agree_special=o_info.get('agree_special', True),
+                agree_privacy=o_info.get('agree_privacy', True),
+                agree_sensitive=o_info.get('agree_sensitive', True),
+                agree_location=o_info.get('agree_location', False),
+                created_at=o_info.get('created_at', datetime.now(timezone.utc))
+            )
+            db.session.add(order)
+            db.session.flush()
+
+            order_item = OrderItem(
+                order_id=order.id,
+                product_id=product.id,
+                quantity=qty,
+                unit_price=unit_price,
+                discount_applied=discount_applied
+            )
+            db.session.add(order_item)
+
+            payment = Payment(
+                order_id=order.id,
+                payment_method=o_info.get('payment_method', 'CARD'),
+                paid_amount=o_info.get('paid_amount', orig_amt - disc_amt),
+                transaction_id=o_info['transaction_id'],
+                status='SUCCESS',
+                paid_at=o_info.get('paid_at', o_info.get('created_at', datetime.now(timezone.utc)))
+            )
+            db.session.add(payment)
+        else:
+            # 기존 주문 정보 업데이트 (멱등성 보장)
+            order.user_id = user_id_val
+            order.guest_name = o_info.get('guest_name')
+            order.guest_email = o_info.get('guest_email')
+            order.guest_phone = o_info.get('guest_phone')
+            order.original_amount = orig_amt
+            order.discount_amount = disc_amt
+            order.status = o_info.get('status', 'COMPLETED')
+            order.agree_special = o_info.get('agree_special', True)
+            order.agree_privacy = o_info.get('agree_privacy', True)
+            order.agree_sensitive = o_info.get('agree_sensitive', True)
+            order.agree_location = o_info.get('agree_location', False)
+            if 'created_at' in o_info:
+                order.created_at = o_info['created_at']
+
+            item = order.items.first()
+            if not item:
+                item = OrderItem(
+                    order_id=order.id,
+                    product_id=product.id,
+                    quantity=qty,
+                    unit_price=unit_price,
+                    discount_applied=discount_applied
+                )
+                db.session.add(item)
+            else:
+                item.product_id = product.id
+                item.quantity = qty
+                item.unit_price = unit_price
+                item.discount_applied = discount_applied
+
+            if not order.payment:
+                payment = Payment(
+                    order_id=order.id,
+                    payment_method=o_info.get('payment_method', 'CARD'),
+                    paid_amount=o_info.get('paid_amount', orig_amt - disc_amt),
+                    transaction_id=o_info['transaction_id'],
+                    status='SUCCESS',
+                    paid_at=o_info.get('paid_at', order.created_at)
+                )
+                db.session.add(payment)
+            else:
+                order.payment.payment_method = o_info.get('payment_method', 'CARD')
+                order.payment.paid_amount = o_info.get('paid_amount', orig_amt - disc_amt)
+                order.payment.status = 'SUCCESS'
+
+    db.session.commit()
+    total_orders = Order.query.count()
+    print(f"[Seed] 성공! 총 {total_count}개 관광 상품 및 {total_orders}개 주문/결제 데이터가 적재되었습니다.")
 
 if __name__ == '__main__':
     app = create_app()
