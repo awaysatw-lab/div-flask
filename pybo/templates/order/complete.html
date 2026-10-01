@@ -4,6 +4,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/complete.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nearby_slide.css') }}">
 
 <div class="complete-container">
   <h1>예약 및 결제가 완료되었습니다!</h1>
@@ -88,5 +89,10 @@
       </iframe>
     </div>
   </div>
+
+  <!-- 연관된 근처 관광지 추천 슬라이드 -->
+  {% with order=order, product=product, carousel_id='nearbySlide_complete' %}
+    {% include 'order/_nearby_slide.html' %}
+  {% endwith %}
 </div>
 {% endblock %}

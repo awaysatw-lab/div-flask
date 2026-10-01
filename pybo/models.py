@@ -109,6 +109,22 @@ class TourProduct(db.Model):
             self.image_urls = urls
             self.image_url = urls
 
+    def get_nearby_products(self, limit=6):
+        """동일 권역(근처)의 다른 관광 상품 목록 조회 (부족할 경우 전체 추천순으로 보충)"""
+        nearby = TourProduct.query.filter(
+            TourProduct.region == self.region,
+            TourProduct.id != self.id
+        ).order_by(TourProduct.recommendation_count.desc(), TourProduct.id.asc()).limit(limit).all()
+
+        if len(nearby) < limit:
+            existing_ids = [self.id] + [p.id for p in nearby]
+            extra = TourProduct.query.filter(
+                ~TourProduct.id.in_(existing_ids)
+            ).order_by(TourProduct.recommendation_count.desc(), TourProduct.id.asc()).limit(limit - len(nearby)).all()
+            nearby.extend(extra)
+
+        return nearby
+
     def __repr__(self):
         return f"<TourProduct {self.name} ({self.region})>"
     
@@ -188,6 +204,23 @@ class Order(db.Model):
             return t_date < datetime.now().date()
         except Exception:
             return False
+
+    @property
+    def primary_product(self):
+        """주문의 대표 관광 상품 반환"""
+        try:
+            item = self.items.first()
+            return item.product if item else None
+        except Exception:
+            return None
+
+    @property
+    def nearby_products(self):
+        """주문된 관광 상품과 연관된 근처 관광지 목록 반환"""
+        prod = self.primary_product
+        if prod:
+            return prod.get_nearby_products(limit=6)
+        return TourProduct.query.order_by(TourProduct.recommendation_count.desc(), TourProduct.id.asc()).limit(6).all()
     
 class OrderItem(db.Model):
     __tablename__ = 'order_items'

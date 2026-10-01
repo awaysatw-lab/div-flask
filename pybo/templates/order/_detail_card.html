@@ -169,7 +169,14 @@
       </div>
     </div>
 
-    <!-- 5. 예약 취소 및 결제 취소 관리 -->
+    <!-- 5. 연관된 근처 추천 관광지 (슬라이드) -->
+    <div class="detail-section" style="padding-bottom: 24px;">
+      {% with order=order, carousel_id='nearbySlide_' ~ order.order_no %}
+        {% include 'order/_nearby_slide.html' %}
+      {% endwith %}
+    </div>
+
+    <!-- 6. 예약 취소 및 결제 취소 관리 -->
     <div class="detail-section detail-cancel-section">
       <div class="cancel-flex-wrapper">
         <div class="cancel-info-col">
