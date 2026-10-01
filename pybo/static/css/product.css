@@ -45,24 +45,22 @@
 }
 
 /*슬라이드 밑 nav*/
-#underslide > nav{
-    width: 100%;
-    height: 50px;
-    opacity: 0.9;
-    margin-bottom: 20px;
-    position: relative;
-    top: 0px;
-}
-#underslide > nav > .container-fluid{
-    height: 50px;
+#underslide > #pills-tab{
     width: 600px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+#pills-tab > li{
+    height: 40px;
+    width: 80px;
     color: white;
     align-items: center;
 }
 
-.navbar-brand{
-    width: 100px;
-    height: 50px;
+#pills-tab > li > button{
+    width: 80px;
+    height: 40px;
     background-color: #FAF8F5;
     color: #212529;
     border-radius: 10px;
@@ -70,7 +68,12 @@
     justify-content: center;
 }
 
-.navbar-brand:not(.active):hover {
+#pills-tab > li > button.active {
+    background-color: #1D3557;
+    color: white;
+}
+
+#pills-tab > li > button:not(.active):hover {
     background-color: #1D3557;
     color: white;
 }
@@ -164,8 +167,6 @@
     color: #ffffff;
     border-color: #E76F5F;
 }
-
-
 
 /*sub*/
 #sub_wide1-1{
