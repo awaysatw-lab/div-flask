@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 return;
             }
 
-            const requestUrl = window.checkIdUrl || '/auth/check_id';
+            const requestUrl = (btnCheckId && btnCheckId.dataset.url) || window.checkIdUrl || '/auth/check_id';
             const csrfInput = document.getElementById('csrf_token');
             const csrfToken = csrfInput ? csrfInput.value : '';
 

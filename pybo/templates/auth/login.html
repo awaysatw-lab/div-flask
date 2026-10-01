@@ -88,7 +88,7 @@
 
                         <div id="findIdMessage" class="modal-check-message"></div>
 
-                        <button type="button" id="btnSubmitFindId" class="login-button modal-btn">아이디 찾기</button>
+                        <button type="button" id="btnSubmitFindId" class="login-button modal-btn" data-url="{{ url_for('auth.find_id') }}">아이디 찾기</button>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@
 
                         <div id="findPwMessage" class="modal-check-message"></div>
 
-                        <button type="button" id="btnSubmitFindPw" class="login-button modal-btn">임시 비밀번호 발급</button>
+                        <button type="button" id="btnSubmitFindPw" class="login-button modal-btn" data-url="{{ url_for('auth.find_pw') }}">임시 비밀번호 발급</button>
                     </div>
                 </div>
             </div>
@@ -154,10 +154,4 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-<script>
-    window.findIdUrl = "{{ url_for('auth.find_id') }}";
-    window.findPwUrl = "{{ url_for('auth.find_pw') }}";
-</script>
-
-
 {% endblock %}

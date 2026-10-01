@@ -42,7 +42,7 @@
                         <i class="fa-regular fa-user input-icon"></i>
                         <input type="text" id="user_id" name="user_id" placeholder="로그인 아이디 (4~25자)" value="{{ form.user_id.data or '' }}" oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" required>
                     </div>
-                    <button type="button" id="btnCheckId" class="btn-check-id">중복확인</button>
+                    <button type="button" id="btnCheckId" class="btn-check-id" data-url="{{ url_for('auth.check_id') }}">중복확인</button>
                 </div>
                 <div id="idCheckMessage" class="check-message"></div>
             </div>
@@ -87,9 +87,6 @@
     </div>
 </div>
 
-<script>
-    window.checkIdUrl = "{{ url_for('auth.check_id') }}";
-</script>
 <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
 </body>
 </html>
