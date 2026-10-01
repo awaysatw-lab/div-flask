@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const bannerText = document.getElementById('bannerArrowText');
     const prevBtn = document.getElementById('prevBanner');
     const nextBtn = document.getElementById('nextBanner');
+    const titleElement = document.querySelector('.banner-text h2');
+    const textLength = titleElement.textContent.trim().length;
 
     const slides = [
         { img: '/static/img/slide1.jpg', title: '추억이 물드는<br>가을 여행', desc: '일상에서 벗어나<br>수도권 추천 여행' },
