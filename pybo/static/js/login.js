@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
         signupBtn.addEventListener('click', function(e) {
             e.preventDefault();
             const popupWidth = 460;
-            const popupHeight = 720;
+            const popupHeight = 580;
             const left = window.screenX + (window.outerWidth - popupWidth) / 2;
             const top = window.screenY + (window.outerHeight - popupHeight) / 2;
             const windowFeatures = `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`;
