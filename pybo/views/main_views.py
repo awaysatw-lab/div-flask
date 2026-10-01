@@ -4,20 +4,30 @@ from datetime import datetime
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
-@bp.route('/')
-def index():
-    # 데이터베이스에서 필요한 모든 데이터를 한 번에 가져옵니다.
-    review_list = Review.query.order_by(Review.created_at.desc()).all()
-    main_deal = TimeDeal.query.filter_by(product_type='main').first()
-    sub_deals = TimeDeal.query.filter_by(product_type='sub').limit(2).all()
 
-    # 렌더링할 메인 템플릿 파일이 index.html인지 travel_package.html인지 프로젝트에 맞게 지정하세요.
-    # 여기서는 기존 메인 템플릿 이름인 'index.html'로 통합 전달합니다.
-    return render_template('index.html',
-                           review_list=review_list,
-                           main_deal=main_deal,
-                           sub_deals=sub_deals,
-                           now=datetime.now())
+def get_common_context():
+    review_list = Review.query.order_by(Review.created_at.desc()).all()
+    all_deals = TimeDeal.query.all()
+    print(f"=== 현재 DB에서 가져온 타임딜 개수: {len(all_deals)}개 ===")
+
+    main_deal = all_deals[0] if len(all_deals) > 0 else None
+    sub_deals = all_deals[1:] if len(all_deals) > 1 else []
+
+    return {
+        'review_list': review_list,
+        'main_deal': main_deal,
+        'sub_deals': sub_deals,
+        'now': datetime.now()
+    }
+
+# ==========================================
+# 메인 페이지 및 타임딜 목록
+# ==========================================
+@bp.route('/')
+@bp.route('/', endpoint='index')
+def deal_list():
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 # ==========================================
@@ -25,45 +35,53 @@ def index():
 # ==========================================
 @bp.route('/main')
 def main():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 @bp.route('/autumn-detail')
 def autumn_detail():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 # ==========================================
-# 지역 아이콘 상품
+# 지역 아이콘 상품 (에러 방지를 위해 메인 데이터 공유)
 # ==========================================
 @bp.route('/region/seoul')
 def region_seoul():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 @bp.route('/region/gangwon')
 def region_gangwon():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 @bp.route('/region/chungcheong')
 def region_chungcheong():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 @bp.route('/region/gyeongsang')
 def region_gyeongsang():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 @bp.route('/region/jeolla')
 def region_jeolla():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 @bp.route('/region/jeju')
 def region_jeju():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 # ==========================================
@@ -71,12 +89,14 @@ def region_jeju():
 # ==========================================
 @bp.route('/theme/resort')
 def theme_resort():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 @bp.route('/theme/experience')
 def theme_experience():
-    return render_template('index.html')
+    context = get_common_context()
+    return render_template('index.html', **context)
 
 
 # ==========================================
@@ -95,7 +115,7 @@ def review_detail(review_id):
 
 
 # ==========================================
-# ⭕ 2. 타임딜 상품 상세 페이지 (중복 제거 후 동적 매핑만 유지)
+#  타임딜 상품 상세 페이지
 # ==========================================
 @bp.route('/deal/detail/<int:deal_id>/')
 def deal_detail(deal_id):
