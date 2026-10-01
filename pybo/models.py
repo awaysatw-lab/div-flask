@@ -109,6 +109,22 @@ class TourProduct(db.Model):
             self.image_urls = urls
             self.image_url = urls
 
+    def get_nearby_products(self, limit=6):
+        """동일 권역(근처)의 다른 관광 상품 목록 조회 (부족할 경우 전체 추천순으로 보충)"""
+        nearby = TourProduct.query.filter(
+            TourProduct.region == self.region,
+            TourProduct.id != self.id
+        ).order_by(TourProduct.recommendation_count.desc(), TourProduct.id.asc()).limit(limit).all()
+
+        if len(nearby) < limit:
+            existing_ids = [self.id] + [p.id for p in nearby]
+            extra = TourProduct.query.filter(
+                ~TourProduct.id.in_(existing_ids)
+            ).order_by(TourProduct.recommendation_count.desc(), TourProduct.id.asc()).limit(limit - len(nearby)).all()
+            nearby.extend(extra)
+
+        return nearby
+
     def __repr__(self):
         return f"<TourProduct {self.name} ({self.region})>"
     
@@ -158,11 +174,14 @@ class Order(db.Model):
     agree_sensitive = db.Column(db.Boolean, default=True, nullable=False)   # 민감정보 수집 및 이용 동의 [필수]
     agree_location = db.Column(db.Boolean, default=False, nullable=False)   # 위치 정보 이용 동의 [선택]
     
+    # 여행 출발 지정일 (오늘 이후 2주일 이내)
+    travel_date = db.Column(db.String(20), nullable=True)
+
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     items = db.relationship('OrderItem', backref='order', lazy='dynamic', cascade='all, delete-orphan')
-    #accommodations = db.relationship('OrderAccommodation', backref='order', lazy='dynamic', cascade='all, delete-orphan')
+    accommodations = db.relationship('OrderAccommodation', backref='order', lazy='dynamic', cascade='all, delete-orphan')
     payment = db.relationship('Payment', backref='order', uselist=False, cascade='all, delete-orphan')
 
     @classmethod
@@ -174,6 +193,42 @@ class Order(db.Model):
     @property
     def final_amount(self):
         return (self.original_amount or 0) - (self.discount_amount or 0)
+
+    @property
+    def is_past_travel_date(self):
+        """이용일이 지났는지 여부 판별 (오늘 이전 날짜인 경우 True)"""
+        if not self.travel_date:
+            return False
+        try:
+            t_date = datetime.strptime(self.travel_date.strip(), '%Y-%m-%d').date()
+            return t_date < datetime.now().date()
+        except Exception:
+            return False
+
+    @property
+    def primary_product(self):
+        """주문의 대표 관광 상품 반환"""
+        try:
+            item = self.items.first()
+            return item.product if item else None
+        except Exception:
+            return None
+
+    @property
+    def nearby_products(self):
+        """주문된 관광 상품과 연관된 근처 관광지 목록 반환"""
+        prod = self.primary_product
+        if prod:
+            return prod.get_nearby_products(limit=6)
+        return TourProduct.query.order_by(TourProduct.recommendation_count.desc(), TourProduct.id.asc()).limit(6).all()
+
+    @property
+    def accommodation_booking(self):
+        """주문에 포함된 연계 숙박 예약 정보 (단일 건 또는 None)"""
+        try:
+            return self.accommodations.first()
+        except Exception:
+            return None
     
 class OrderItem(db.Model):
     __tablename__ = 'order_items'
@@ -195,4 +250,57 @@ class Payment(db.Model):
     transaction_id = db.Column(db.String(100), unique=True, nullable=False)
     status = db.Column(db.String(20), default='SUCCESS') # SUCCESS, FAILED, CANCELLED
     paid_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+
+class Accommodation(db.Model):
+    __tablename__ = 'accommodations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150), nullable=False, index=True)      # 숙소명
+    category = db.Column(db.String(30), nullable=False, index=True)   # 호텔 / 민박
+    region = db.Column(db.String(50), nullable=False, index=True)     # 권역 (RegionEnum 값)
+    location = db.Column(db.String(255), nullable=False)              # 장소 및 상세 주소
+    price_per_night = db.Column(db.Integer, nullable=False)           # 1박 요금
+    image_url = db.Column(db.String(255), nullable=False)             # 이미지 경로 (/static/img/accomodation/...)
+    description = db.Column(db.Text, nullable=True)                   # 숙소 특징 / 한줄 소개
+    rating = db.Column(db.Float, default=4.8)                         # 평점
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def __repr__(self):
+        return f"<Accommodation [{self.category}] {self.name} ({self.region})>"
+
+
+class OrderAccommodation(db.Model):
+    __tablename__ = 'order_accommodations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id', ondelete='CASCADE'), nullable=False)
+    accommodation_id = db.Column(db.Integer, db.ForeignKey('accommodations.id'), nullable=False)
+    nights = db.Column(db.Integer, default=1, nullable=False)         # 숙박 일수 (기본 1박)
+    price_per_night = db.Column(db.Integer, nullable=False)           # 결제 시점 1박 요금
+    total_price = db.Column(db.Integer, nullable=False)               # 총 숙박 요금 (nights * price_per_night)
+    check_in_date = db.Column(db.String(20), nullable=True)           # 체크인 날짜
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationships
+    accommodation = db.relationship('Accommodation', backref='order_bookings')
+
+    def __repr__(self):
+        return f"<OrderAccommodation order_id={self.order_id} acc_id={self.accommodation_id}>"
+
+#타임딜 참고
+class TimeDeal(db.Model):
+    __tablename__ = 'time_deal'
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_type = db.Column(db.String(10), nullable=False, default='sub')  # 'main'(큰 카드) 또는 'sub'(우측 작은 카드)
+    airline = db.Column(db.String(50), nullable=False)  # 예: [아시아나항공], [이스타항공]
+    title = db.Column(db.String(200), nullable=False)  # 예: 호주 시드니 | 멜버른 6/7일
+    hashtags = db.Column(db.String(200))  # 예: #오페라하우스 내부 #시드니타워
+    description = db.Column(db.Text)  # 예: 도시의 낭만과 대자연의 호흡...
+    price = db.Column(db.Integer, nullable=False)  # 가격 (숫자로 저장)
+    end_date = db.Column(db.DateTime, nullable=False)  # 마감 시간 (디데이 계산용)
+    image_file = db.Column(db.String(100), nullable=False)  # 이미지 파일명 (예: sydney.jpg)
+    badge1 = db.Column(db.String(50))  # 태그/배지 1 (예: 블루마운틴 시닉4콤보)
+    badge2 = db.Column(db.String(50))  # 태그/배지 2 (예: 시드니타워)
 

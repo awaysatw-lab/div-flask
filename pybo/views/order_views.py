@@ -1,8 +1,10 @@
 import json
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, redirect, url_for, session, g, flash
 from flask_login import current_user
 from pybo import db
-from pybo.models import TourProduct, User, Order, OrderItem, Payment
+from pybo.models import TourProduct, User, Order, OrderItem, Payment, Accommodation, OrderAccommodation
+from pybo.forms import OrderReserveForm
 
 bp = Blueprint('order', __name__, url_prefix='/order')
 
@@ -65,11 +67,37 @@ def reserve():
         'subtotal_final': total_final
     }]
 
+    today = datetime.now().date()
+    min_date = (today + timedelta(days=1)).strftime('%Y-%m-%d')
+    max_date = (today + timedelta(days=14)).strftime('%Y-%m-%d')
+
+    # 연관 숙박 (호텔/민박) 조회 (회원인 경우만 해당 권역 숙소 조회)
+    accommodations = []
+    hotels = []
+    minbaks = []
+    if is_member:
+        accommodations = Accommodation.query.filter_by(region=product.region).order_by(Accommodation.category.desc(), Accommodation.price_per_night.asc()).all()
+        hotels = [a for a in accommodations if a.category == '호텔']
+        minbaks = [a for a in accommodations if a.category == '민박']
+
+    form = OrderReserveForm(
+        is_member=is_member,
+        product_id=product.id,
+        headcount=headcount,
+        travel_date=min_date,
+        guest_name=logged_user.name if (is_member and logged_user) else '',
+        guest_phone=logged_user.phone if (is_member and logged_user) else '',
+        guest_email=logged_user.email if (is_member and logged_user) else ''
+    )
+
     return render_template(
         'order/reserve.html',
+        form=form,
         product=product,
         items=items_to_checkout,
         headcount=headcount,
+        min_date=min_date,
+        max_date=max_date,
         is_member=is_member,
         logged_user=logged_user,
         unit_original_price=unit_original_price,
@@ -78,44 +106,49 @@ def reserve():
         total_original=total_original,
         total_discount=total_discount,
         total_final=total_final,
-        direct_product_id=product.id
+        direct_product_id=product.id,
+        accommodations=accommodations,
+        hotels=hotels,
+        minbaks=minbaks
     )
 
 
 @bp.route("/payment", methods=['POST'])
 def payment():
     """예약 정보 및 여행객 목록 수신 후 결제 화면으로 이동"""
-    product_id = request.form.get('product_id', type=int)
-    headcount = request.form.get('headcount', 1, type=int)
-    if headcount < 1:
-        headcount = 1
-
-    product = TourProduct.query.get_or_404(product_id)
     is_member, logged_user = check_is_member()
+    form = OrderReserveForm(is_member=is_member)
 
-    # 필수 약관 동의 서버 사이드 검증
-    agree_special_val = request.form.get('agree_special') in ['1', 'on', 'true', 'True']
-    agree_privacy_val = request.form.get('agree_privacy') in ['1', 'on', 'true', 'True']
-    agree_sensitive_val = request.form.get('agree_sensitive') in ['1', 'on', 'true', 'True']
-    agree_location_val = request.form.get('agree_location') in ['1', 'on', 'true', 'True']
-    
-    if not (agree_special_val and agree_privacy_val and agree_sensitive_val):
-        flash('필수 약관(국내여행 특별약관, 개인정보 제3자 제공, 민감정보 수집)에 모두 동의해주셔야 합니다.', 'danger')
-        return redirect(url_for('order.reserve', product_id=product.id, headcount=headcount))
+    # WTForms 기반 예약 폼 검증 (FlaskForm validate_on_submit)
+    if not form.validate_on_submit():
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(error, 'danger')
+        product_id = request.form.get('product_id', type=int) or 1
+        headcount = request.form.get('headcount', 1, type=int) or 1
+        return redirect(url_for('order.reserve', product_id=product_id, headcount=headcount))
+
+    product = TourProduct.query.get_or_404(form.product_id.data)
+    headcount = form.headcount.data or 1
+
+    # 검증 완료된 약관 동의 값
+    agree_special_val = bool(form.agree_special.data)
+    agree_privacy_val = bool(form.agree_privacy.data)
+    agree_sensitive_val = bool(form.agree_sensitive.data)
+    agree_location_val = bool(form.agree_location.data)
+
+    # 여행 날짜
+    travel_date = (form.travel_date.data or '').strip()
 
     # 예약자 정보 수집
-    guest_name = request.form.get('guest_name', '').strip()
-    guest_phone = request.form.get('guest_phone', '').strip()
-    guest_email = request.form.get('guest_email', '').strip()
-
     if is_member and logged_user:
         reserver_name = logged_user.name
         reserver_phone = logged_user.phone
         reserver_email = logged_user.email
     else:
-        reserver_name = guest_name or '비회원 고객'
-        reserver_phone = guest_phone
-        reserver_email = guest_email
+        reserver_name = (form.guest_name.data or '').strip() or '비회원 고객'
+        reserver_phone = (form.guest_phone.data or '').strip()
+        reserver_email = (form.guest_email.data or '').strip()
 
     # 여행객별 상세 정보 목록 수집 (이름, 남/여, 전화번호, 생년월일)
     names = request.form.getlist('traveler_name[]')
@@ -144,19 +177,33 @@ def payment():
             'birth': t_birth or '-'
         })
 
+    # 연관 숙박 상품 확인 (회원인 경우만 적용)
+    accommodation_id = request.form.get('accommodation_id', type=int)
+    selected_accommodation = None
+    accommodation_price = 0
+    if is_member and accommodation_id:
+        selected_accommodation = Accommodation.query.get(accommodation_id)
+        if selected_accommodation:
+            accommodation_price = selected_accommodation.price_per_night
+
     # 결제 금액 계산
     unit_original_price = product.original_price
     unit_discount = product.get_discount_amount(is_member=is_member)
     unit_final_price = product.get_discounted_price(is_member=is_member)
 
-    total_original = unit_original_price * headcount
-    total_discount = unit_discount * headcount
-    total_final = unit_final_price * headcount
+    tour_original = unit_original_price * headcount
+    tour_discount = unit_discount * headcount
+    tour_final = unit_final_price * headcount
+
+    total_original = tour_original + accommodation_price
+    total_discount = tour_discount
+    total_final = tour_final + accommodation_price
 
     return render_template(
         'order/payment.html',
         product=product,
         headcount=headcount,
+        travel_date=travel_date,
         is_member=is_member,
         logged_user=logged_user,
         reserver_name=reserver_name,
@@ -171,6 +218,11 @@ def payment():
         unit_original_price=unit_original_price,
         unit_discount=unit_discount,
         unit_final_price=unit_final_price,
+        tour_original=tour_original,
+        tour_discount=tour_discount,
+        tour_final=tour_final,
+        selected_accommodation=selected_accommodation,
+        accommodation_price=accommodation_price,
         total_original=total_original,
         total_discount=total_discount,
         total_final=total_final
@@ -183,9 +235,19 @@ def pay_complete():
     product_id = request.form.get('product_id', type=int)
     headcount = request.form.get('headcount', 1, type=int)
     payment_method = request.form.get('payment_method', 'CARD')
+    travel_date = request.form.get('travel_date', '').strip()
 
     product = TourProduct.query.get_or_404(product_id)
     is_member, logged_user = check_is_member()
+
+    # 연관 숙박 상품 확인
+    accommodation_id = request.form.get('accommodation_id', type=int)
+    selected_accommodation = None
+    accommodation_price = 0
+    if is_member and accommodation_id:
+        selected_accommodation = Accommodation.query.get(accommodation_id)
+        if selected_accommodation:
+            accommodation_price = selected_accommodation.price_per_night
 
     reserver_name = request.form.get('reserver_name', '')
     reserver_phone = request.form.get('reserver_phone', '')
@@ -205,9 +267,13 @@ def pay_complete():
 
     unit_final_price = product.get_discounted_price(is_member=is_member)
     unit_discount = product.get_discount_amount(is_member=is_member)
-    total_original = product.original_price * headcount
-    total_discount = unit_discount * headcount
-    total_final = unit_final_price * headcount
+    tour_original = product.original_price * headcount
+    tour_discount = unit_discount * headcount
+    tour_final = unit_final_price * headcount
+
+    total_original = tour_original + accommodation_price
+    total_discount = tour_discount
+    total_final = tour_final + accommodation_price
 
     # 실제 결제된 금액 (테스트 1,000원 결제 또는 정상 결제액)
     actual_paid = int(paid_amount_str) if (paid_amount_str and paid_amount_str.isdigit()) else total_final
@@ -225,7 +291,8 @@ def pay_complete():
         agree_special=agree_special,
         agree_privacy=agree_privacy,
         agree_sensitive=agree_sensitive,
-        agree_location=agree_location
+        agree_location=agree_location,
+        travel_date=travel_date
     )
     db.session.add(order)
     db.session.flush()
@@ -238,6 +305,18 @@ def pay_complete():
         discount_applied=unit_discount
     )
     db.session.add(order_item)
+
+    # 숙박 예약 레코드 저장
+    if selected_accommodation:
+        order_acc = OrderAccommodation(
+            order_id=order.id,
+            accommodation_id=selected_accommodation.id,
+            nights=1,
+            price_per_night=selected_accommodation.price_per_night,
+            total_price=selected_accommodation.price_per_night,
+            check_in_date=travel_date
+        )
+        db.session.add(order_acc)
 
     # PortOne 고유 payment_id / tx_id 우선 저장
     tx_id = portone_payment_id or portone_tx_id or f"TX-{order_no}"
@@ -261,10 +340,12 @@ def pay_complete():
         order=order,
         product=product,
         headcount=headcount,
+        travel_date=travel_date,
         travelers=travelers,
         payment_method=payment_method,
         total_final=actual_paid,
-        portone_payment_id=portone_payment_id or portone_tx_id
+        portone_payment_id=portone_payment_id or portone_tx_id,
+        selected_accommodation=selected_accommodation
     )
 
 
@@ -352,5 +433,46 @@ def detail(order_no):
         is_member=is_member,
         logged_user=logged_user
     )
+
+
+@bp.route("/cancel/<order_no>", methods=['POST'])
+def cancel(order_no):
+    """예약 및 결제 취소 (주문 삭제)
+    - 로그인 사용자: 본인의 주문인지 확인
+    - 비로그인(게스트): guest_name 일치 여부 확인
+    - 이용일(travel_date)이 지난 경우 취소 불가
+    - 정상 검증 시 Order (및 cascade 연관 데이터) 삭제 처리
+    """
+    order = Order.query.filter_by(order_no=order_no).first()
+    if not order:
+        flash('존재하지 않는 주문 번호입니다.', 'danger')
+        return redirect(url_for('order.lookup'))
+
+    # 이용일 경과 여부 검증
+    if order.is_past_travel_date:
+        flash(f'여행 이용일({order.travel_date})이 지난 주문은 결제를 취소할 수 없습니다.', 'danger')
+        return redirect(url_for('order.lookup'))
+
+    is_member, logged_user = check_is_member()
+
+    # 권한 검증
+    if order.user_id:
+        # 회원 주문인 경우 로그인 본인 확인
+        if not (is_member and logged_user and order.user_id == logged_user.id):
+            flash('해당 주문을 취소할 권한이 없습니다.', 'danger')
+            return redirect(url_for('order.lookup'))
+    else:
+        # 비회원 주문인 경우 게스트 성명 검증
+        guest_name = request.form.get('guest_name', '').strip()
+        if not guest_name or (order.guest_name and order.guest_name.strip() != guest_name):
+            flash('예약자 성함이 일치하지 않아 취소할 수 없습니다.', 'danger')
+            return redirect(url_for('order.lookup'))
+
+    cancelled_order_no = order.order_no
+    db.session.delete(order)
+    db.session.commit()
+
+    flash(f'주문번호 {cancelled_order_no}의 예약 및 결제가 성공적으로 취소(삭제)되었습니다.', 'success')
+    return redirect(url_for('order.lookup'))
 
 

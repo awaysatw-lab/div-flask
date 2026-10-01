@@ -32,6 +32,9 @@
             <span class="product-region-tag">📍 {{ item.product.region }}</span>
             <h3 class="product-title">{{ item.product.name }}</h3>
             <div class="product-meta-row">
+              {% if order.travel_date %}
+                <span>여행 날짜: <strong style="color: #2563eb;">📅 {{ order.travel_date }}</strong></span>
+              {% endif %}
               <span>예약 인원: <strong>{{ item.quantity }}명</strong></span>
               <span>1인 기준 적용가: <strong>{{ "{:,}".format(item.unit_price) }}원</strong></span>
             </div>
@@ -41,6 +44,34 @@
         <p class="text-muted">상품 정보를 불러올 수 없습니다.</p>
       {% endif %}
     </div>
+
+    {# 1-2. 연계 숙박 예약 정보 (존재할 경우 표시) #}
+    {% set acc_booking = order.accommodation_booking %}
+    {% if acc_booking and acc_booking.accommodation %}
+    <div class="detail-section">
+      <h4 class="section-title">
+        🏨 연계 숙박 예약 정보
+        {% if acc_booking.accommodation.category == '호텔' %}
+          <span class="badge-cat-hotel">호텔</span>
+        {% else %}
+          <span class="badge-cat-minbak">민박</span>
+        {% endif %}
+      </h4>
+      <div class="detail-product-box" style="background: #f8fbff; border: 1px solid #bfdbfe;">
+        <img src="{{ acc_booking.accommodation.image_url }}" alt="{{ acc_booking.accommodation.name }}" class="product-thumb" onerror="this.src='/static/img/default-tour.jpg'">
+        <div class="product-info-col">
+          <span class="product-region-tag">📍 {{ acc_booking.accommodation.region }}</span>
+          <h3 class="product-title">{{ acc_booking.accommodation.name }}</h3>
+          <p style="font-size: 13px; color: #64748b; margin-bottom: 6px;">{{ acc_booking.accommodation.location }}</p>
+          <div class="product-meta-row">
+            <span>체크인: <strong style="color: #2563eb;">📅 {{ acc_booking.check_in_date or order.travel_date or '-' }}</strong></span>
+            <span>숙박 일수: <strong>{{ acc_booking.nights }}박</strong></span>
+            <span>1박 요금: <strong>{{ "{:,}".format(acc_booking.price_per_night) }}원</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
     <!-- 2. 예약자 정보 -->
     <div class="detail-section">
@@ -83,10 +114,21 @@
       <h4 class="section-title">3. 결제 및 금액 상세 내역</h4>
       
       <div class="price-breakdown-box">
-        <div class="price-row">
-          <span>정상 상품 총액 ({{ item.quantity if item else 1 }}명)</span>
-          <span>{{ "{:,}".format(order.original_amount) }}원</span>
-        </div>
+        {% if acc_booking and acc_booking.accommodation %}
+          <div class="price-row">
+            <span>관광 여행 상품 금액 ({{ item.quantity if item else 1 }}명)</span>
+            <span>{{ "{:,}".format(order.original_amount - acc_booking.total_price) }}원</span>
+          </div>
+          <div class="price-row" style="color: #2563eb; font-weight: 600;">
+            <span>연계 숙박 요금 ([{{ acc_booking.accommodation.category }}] {{ acc_booking.accommodation.name }})</span>
+            <span>+ {{ "{:,}".format(acc_booking.total_price) }}원</span>
+          </div>
+        {% else %}
+          <div class="price-row">
+            <span>정상 상품 총액 ({{ item.quantity if item else 1 }}명)</span>
+            <span>{{ "{:,}".format(order.original_amount) }}원</span>
+          </div>
+        {% endif %}
         <div class="price-row discount-row">
           <span>
             {% if order.user %}
@@ -163,6 +205,50 @@
         {% else %}
           <span class="terms-tag opt-out">- 위치 정보 이용 [선택 미동의]</span>
         {% endif %}
+      </div>
+    </div>
+
+    <!-- 5. 연관된 근처 추천 관광지 (슬라이드) -->
+    <div class="detail-section" style="padding-bottom: 24px;">
+      {% with order=order, carousel_id='nearbySlide_' ~ order.order_no %}
+        {% include 'order/_nearby_slide.html' %}
+      {% endwith %}
+    </div>
+
+    <!-- 6. 예약 취소 및 결제 취소 관리 -->
+    <div class="detail-section detail-cancel-section">
+      <div class="cancel-flex-wrapper">
+        <div class="cancel-info-col">
+          <h4 class="cancel-title">
+            <span>⚙️ 예약 및 결제 관리</span>
+          </h4>
+          <p class="cancel-desc">
+            {% if order.is_past_travel_date %}
+              <span class="text-danger font-semibold">※ 여행 출발일({{ order.travel_date }})이 지난 예약은 규정상 결제 취소가 불가합니다.</span>
+            {% else %}
+              여행 출발일 전까지 예약을 취소하실 수 있습니다. 취소 시 결제 내역과 예약 데이터가 완전히 삭제됩니다.
+            {% endif %}
+          </p>
+        </div>
+
+        <div class="cancel-btn-col">
+          {% if order.is_past_travel_date %}
+            <button type="button" class="btn-order-cancel disabled" disabled title="여행 이용일이 지나 취소가 불가합니다.">
+              취소불가
+            </button>
+          {% else %}
+            <form action="{{ url_for('order.cancel', order_no=order.order_no) }}" method="POST"
+                  onsubmit="return confirm('정말로 주문번호 [{{ order.order_no }}] 예약을 취소하시겠습니까?\n취소 시 결제 내역과 주문 정보가 즉시 삭제됩니다.');"
+                  style="display: inline;">
+              {% if not order.user %}
+                <input type="hidden" name="guest_name" value="{{ order.guest_name or '' }}">
+              {% endif %}
+              <button type="submit" class="btn-order-cancel active">
+                결제 취소
+              </button>
+            </form>
+          {% endif %}
+        </div>
       </div>
     </div>
 

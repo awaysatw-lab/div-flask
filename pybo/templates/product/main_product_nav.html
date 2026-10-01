@@ -1,0 +1,30 @@
+<div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3 row-gap-4">
+    {% for product in products %}
+        <div class="card"  style="min-height: 400px; display: block !important;">
+            <img src="{{ product.image_url }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <div class="heart_star">
+                    <p>❤️{{ "{:,}".format(product.recommendation_count) }}</p>
+                    <p>⭐5.0</p>
+                </div>
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <div class="card-price">
+                    <p>{{ "{:,}".format(product.original_price) }}원</p>
+                    <div>
+                        {% if g.user %}
+                            <h5>{{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원</h5>
+                        {% else %}
+                            <h5>{{ "{:,}".format(product.original_price) }}원</h5>
+                        {% endif %}
+                        <p>(회원가입 시 {{ "{:,}".format(product.member_discount_rate * 100)|int }}% 할인)</p>
+                    </div>
+                </div>
+                <div>
+                    <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-primary">상세보기</a>
+                    <a href="{{ url_for('order.reserve', product_id=product.id) }}" class="btn btn-primary">구매</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

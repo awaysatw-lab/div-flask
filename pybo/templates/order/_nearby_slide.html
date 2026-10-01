@@ -1,0 +1,63 @@
+{# pybo/templates/order/_nearby_slide.html - 연관된 근처 관광지 추천 슬라이드 컴포넌트 #}
+{% set track_id = carousel_id|default('nearbyTrack_' ~ (order.order_no if order else 'complete')) %}
+{% set items = nearby_items|default(order.nearby_products if order else (product.get_nearby_products() if product else [])) %}
+{% set reg_name = target_region|default(product.region if product else (order.primary_product.region if (order and order.primary_product) else '')) %}
+
+{% if items and items|length > 0 %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nearby_slide.css') }}">
+
+<div class="nearby-slide-section">
+  <div class="nearby-section-header">
+    <h4 class="nearby-section-title">
+      <span>🏞️ 연관된 근처 추천 관광지</span>
+      {% if reg_name %}
+        <span class="nearby-region-pill">📍 {{ reg_name }} 권역</span>
+      {% endif %}
+    </h4>
+    <span class="text-muted small">함께 둘러보기 좋은 인근 인기 명소를 확인해보세요</span>
+  </div>
+
+  <div class="nearby-slider-wrapper">
+    <button type="button" class="nearby-slider-btn prev-btn" onclick="slideNearbyTrack('{{ track_id }}', -1)" aria-label="이전 관광지">
+      &#8249;
+    </button>
+
+    <div class="nearby-slider-track" id="{{ track_id }}">
+      {% for item in items %}
+        <div class="nearby-slide-card">
+          <div class="nearby-thumb-wrap">
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="nearby-thumb-img" onerror="this.src='/static/img/default-tour.jpg'">
+            <span class="nearby-thumb-badge">📍 {{ item.region }}</span>
+            <span class="nearby-thumb-rec">❤️ {{ item.recommendation_count }}</span>
+          </div>
+
+          <div class="nearby-card-body">
+            <div>
+              <h5 class="nearby-card-title" title="{{ item.name }}">{{ item.name }}</h5>
+              <p class="nearby-card-desc" title="{{ item.description }}">{{ item.description }}</p>
+            </div>
+
+            <div>
+              <div class="nearby-price-row">
+                <span class="nearby-price-label">예상 상품가</span>
+                <span class="nearby-price-val">1인 {{ "{:,}".format(item.original_price) }}원</span>
+              </div>
+
+              <div class="nearby-card-actions">
+                <a href="{{ url_for('product.sub_product', product_id=item.id) }}" class="nearby-btn-sub">상세보기</a>
+                <a href="{{ url_for('order.reserve', product_id=item.id) }}" class="nearby-btn-main">예약하기</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <button type="button" class="nearby-slider-btn next-btn" onclick="slideNearbyTrack('{{ track_id }}', 1)" aria-label="다음 관광지">
+      &#8250;
+    </button>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/nearby_slide.js') }}"></script>
+{% endif %}

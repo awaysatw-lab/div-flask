@@ -58,11 +58,60 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSummary(currentHeadcount);
   };
 
+  // 연관 숙박 선택 상태
+  let selectedAccPrice = 0;
+  let selectedAccName = '';
+  let selectedAccCategory = '';
+
+  // 숙소 카테고리 필터링 (전역 window 바인딩)
+  window.filterAcc = function(category, btn) {
+    const tabs = document.querySelectorAll('.btn-acc-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.acc-card');
+    cards.forEach(card => {
+      const cardCat = card.dataset.category;
+      if (category === 'all' || cardCat === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  };
+
+  // 숙소 선택 변경 핸들러 (전역 window 바인딩)
+  window.handleAccSelect = function(radio) {
+    const noneCard = document.getElementById('accCard_none');
+    const allCards = document.querySelectorAll('.acc-card');
+
+    if (!radio.value) {
+      // 숙소 선택 안 함
+      selectedAccPrice = 0;
+      selectedAccName = '';
+      selectedAccCategory = '';
+      if (noneCard) noneCard.classList.add('selected');
+      allCards.forEach(c => c.classList.remove('selected'));
+    } else {
+      // 특정 숙소 선택
+      if (noneCard) noneCard.classList.remove('selected');
+      allCards.forEach(c => c.classList.remove('selected'));
+      const parentCard = radio.closest('.acc-card');
+      if (parentCard) parentCard.classList.add('selected');
+
+      selectedAccPrice = parseInt(radio.dataset.price, 10) || 0;
+      selectedAccName = radio.dataset.name || '';
+      selectedAccCategory = radio.dataset.category || '';
+    }
+
+    updateSummary(currentHeadcount);
+  };
+
   // 금액 요약 갱신
   function updateSummary(count) {
-    const totalOrig = originalPricePerPerson * count;
+    const totalOrig = (originalPricePerPerson * count) + selectedAccPrice;
     const totalDisc = discountPerPerson * count;
-    const totalFin = finalPricePerPerson * count;
+    const totalFin = (finalPricePerPerson * count) + selectedAccPrice;
 
     const summaryOrig = document.getElementById('summaryOriginal');
     if (summaryOrig) summaryOrig.innerText = totalOrig.toLocaleString() + '원';
@@ -73,6 +122,20 @@ document.addEventListener('DOMContentLoaded', function() {
         discEl.innerText = '- ' + totalDisc.toLocaleString() + '원';
       } else {
         discEl.innerText = '0원 (비회원 정가)';
+      }
+    }
+
+    // 숙박 요금 행 표시/숨김
+    const accCol = document.getElementById('summaryAccCol');
+    const accNameEl = document.getElementById('summaryAccName');
+    const accPriceEl = document.getElementById('summaryAccPrice');
+    if (accCol && accNameEl && accPriceEl) {
+      if (selectedAccPrice > 0) {
+        accCol.style.display = 'flex';
+        accNameEl.innerText = `[${selectedAccCategory}] ${selectedAccName}`;
+        accPriceEl.innerText = `+ ${selectedAccPrice.toLocaleString()}원`;
+      } else {
+        accCol.style.display = 'none';
       }
     }
 
@@ -247,10 +310,55 @@ document.addEventListener('DOMContentLoaded', function() {
     el.style.display = (el.style.display === 'block') ? 'none' : 'block';
   };
 
-  // 폼 제출 시 필수 약관 체크 여부 검증
+  // 여행 날짜 (오늘 이후 2주일만 가능) 설정 및 유효성 검증
+  const travelDateInput = document.getElementById('travel_date');
+  if (travelDateInput) {
+    const today = new Date();
+    const minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+    const maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const formatDate = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+    const minStr = formatDate(minDate);
+    const maxStr = formatDate(maxDate);
+
+    travelDateInput.min = minStr;
+    travelDateInput.max = maxStr;
+
+    if (!travelDateInput.value || travelDateInput.value < minStr || travelDateInput.value > maxStr) {
+      travelDateInput.value = minStr;
+    }
+
+    const dateNoticeEl = document.getElementById('dateRangeNotice');
+    if (dateNoticeEl) {
+      dateNoticeEl.innerText = `${minStr} ~ ${maxStr}`;
+    }
+
+    travelDateInput.addEventListener('change', function() {
+      if (this.value < minStr || this.value > maxStr) {
+        alert(`여행 날짜는 오늘 이후(${minStr})부터 2주일 이내(${maxStr})의 날짜만 선택 가능합니다.`);
+        this.value = minStr;
+      }
+    });
+  }
+
+  // 폼 제출 시 필수 약관 및 여행 날짜 유효성 검증
   const form = document.getElementById('reserveForm');
   if (form) {
     form.addEventListener('submit', function(e) {
+      if (travelDateInput) {
+        const val = travelDateInput.value;
+        const minVal = travelDateInput.min;
+        const maxVal = travelDateInput.max;
+        if (!val || val < minVal || val > maxVal) {
+          e.preventDefault();
+          alert(`여행 날짜는 오늘 이후(${minVal})부터 2주일 이내(${maxVal})의 날짜만 선택 가능합니다.`);
+          travelDateInput.focus();
+          return;
+        }
+      }
+
       const requiredTerms = document.querySelectorAll('.term-required');
       let allRequiredChecked = true;
       let firstUnchecked = null;
