@@ -3,196 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>대한민국 구석구석 - 여행 Q&A</title>
+    <title>대한민국 구석구석 - 여행 Q&A 상세보기</title>
     <style>
-        /* 기본 리셋 및 폰트 설정 */
+        /* 기본 리셋 및 폰트 설정 (기존 양식 유지) */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
         body { background-color: #f8f9fa; color: #333; line-height: 1.6; }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* 1. 헤더 (Header) */
+        /* 1. 헤더 (기존 양식 일치) */
         .header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .logo { font-size: 24px; font-weight: bold; color: #007bff; }
         .user-menu a { margin-left: 15px; font-size: 14px; color: #666; }
+        .user-menu a:hover { color: #007bff; }
 
         /* 메인 컨테이너 */
         .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
 
-        /* 2. 검색창 & 타이틀 세션 (Search Bar) */
-        .search-section { text-align: center; margin-bottom: 40px; }
-        .search-section h1 { font-size: 28px; margin-bottom: 20px; color: #222; }
-        .search-box { position: relative; max-width: 600px; margin: 0 auto; }
-        .search-box input { width: 100%; padding: 15px 20px; font-size: 16px; border: 2px solid #007bff; border-radius: 30px; outline: none; box-shadow: 0 4px 6px rgba(0,123,255,0.1); }
-        .search-box button { position: absolute; right: 5px; top: 5px; background-color: #007bff; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; }
-        .search-box button:hover { background-color: #0056b3; }
+        /* 공통 배지 스타일 (기존 양식 일치) */
+        .category-badge { background-color: #e3f2fd; color: #0d47a1; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 12px; display: inline-block; }
+        .status-badge { font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 12px; display: inline-block; }
+        .status-badge.solved { background-color: #e8f5e9; color: #1b5e20; }
+        .status-badge.pending { background-color: #fff3e0; color: #e65100; }
 
-        /* 3. 네비게이션 (Navigation - 카테고리 탭) */
-        .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #e9ecef; padding-bottom: 15px; }
-        .tab-item { padding: 10px 20px; font-size: 15px; font-weight: 500; color: #666; cursor: pointer; border-radius: 20px; transition: all 0.2s; }
-        .tab-item:hover { background-color: #e9ecef; color: #333; }
-        .tab-item.active { background-color: #007bff; color: white; font-weight: bold; }
+        /* 목록으로 버튼 */
+        .action-options { display: flex; justify-content: flex-start; margin-bottom: 20px; }
+        .btn-list { background-color: #6c757d; color: white; padding: 8px 16px; font-size: 14px; font-weight: bold; border-radius: 6px; transition: background 0.2s; }
+        .btn-list:hover { background-color: #5a6268; }
 
-        /* 4. 질문 추가 작성 폼 */
-        .write-section { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .write-section h3 { font-size: 18px; color: #222; margin-bottom: 15px; font-weight: bold; }
-        
-        .form-row { display: flex; gap: 10px; margin-bottom: 12px; }
-        .form-select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 14px; background-color: #fff; }
-        .form-select:focus, .form-input:focus, .form-textarea:focus { border-color: #007bff; }
-        .form-input { flex: 1; padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 14px; }
-        
-        .form-textarea { width: 100%; height: 100px; padding: 15px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none; font-size: 14px; resize: none; margin-bottom: 15px; }
-        
-        .form-submit-btn { width: 100%; background-color: #333; color: #fff; border: none; padding: 12px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .form-submit-btn:hover { background-color: #007bff; }
+        /* 2. 질문 상세 영역 */
+        .view-qa-card { background-color: #ffffff; padding: 30px; border-radius: 8px; border: 1px solid #e9ecef; box-shadow: 0 2px 8px rgba(0,0,0,0.02); margin-bottom: 30px; }
+        .view-qa-meta-top { display: flex; gap: 8px; margin-bottom: 15px; }
+        .view-qa-title { font-size: 24px; font-weight: bold; color: #222; margin-bottom: 15px; line-height: 1.4; }
+        .view-qa-info { font-size: 13px; color: #999; display: flex; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid #f1f3f5; margin-bottom: 20px; }
+        .view-qa-content { font-size: 16px; color: #444; line-height: 1.8; min-height: 150px; white-space: pre-wrap; }
 
-        /* 5. Q&A 리스트 섹션 */
-        .qa-list { display: flex; flex-direction: column; gap: 15px; }
-        .qa-card { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-        .qa-card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
-        
-        .qa-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-        .badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
-        .badge.waiting { background-color: #fff3cd; color: #856404; }
-        .badge.completed { background-color: #d4edda; color: #155724; }
-        .qa-region { font-size: 13px; color: #6c757d; }
-        
-        .qa-title { font-size: 18px; font-weight: bold; color: #212529; margin-bottom: 8px; line-height: 1.4; }
-        .qa-excerpt { font-size: 14px; color: #495057; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; }
-        
-        .qa-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 12px; border-top: 1px solid #f1f3f5; font-size: 13px; color: #868e96; }
-        .qa-info { display: flex; gap: 15px; }
+        /* 3. 답변 레이블 섹션 */
+        .answer-section-title { font-size: 18px; font-weight: bold; color: #222; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .answer-count { color: #007bff; }
+
+        /* 4. 답변 리스트 영역 */
+        .answer-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        .answer-item { background-color: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        .answer-item.expert-reply { border-left: 4px solid #28a745; }
+        .answer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .answer-user { font-weight: bold; color: #333; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+        .expert-badge { background-color: #e8f5e9; color: #28a745; font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .answer-date { font-size: 13px; color: #999; }
+        .answer-content { font-size: 15px; color: #444; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px; }
+
+        /* [추가] 답변 추천(좋아요) 영역 스타일 */
+        .answer-footer { display: flex; justify-content: flex-end; padding-top: 10px; border-top: 1px dashed #f1f3f5; }
+        .btn-like { background-color: #ffffff; color: #dc3545; border: 1px solid #f8d7da; padding: 6px 12px; font-size: 13px; font-weight: 500; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+        .btn-like:hover { background-color: #fff5f5; border-color: #dc3545; }
+        .btn-like.liked { background-color: #dc3545; color: white; border-color: #dc3545; }
+
+        /* 5. 답변 쓰기 폼 영역 */
+        .answer-form-card { background-color: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #e9ecef; }
+        .answer-form-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 12px; }
+        .answer-textarea-box { position: relative; margin-bottom: 15px; }
+
+        /* 비로그인 안내 메시지 오버레이용 스타일 */
+        .answer-textarea-box textarea { width: 100%; height: 120px; padding: 15px; font-size: 15px; border: 1px solid #ced4da; border-radius: 6px; outline: none; resize: none; transition: border-color 0.2s; }
+        .answer-textarea-box textarea:focus { border-color: #007bff; }
+
+        /* [추가] 로그인 제한 안내 멘트 효과 */
+        .answer-textarea-box textarea::placeholder { color: #adb5bd; }
+        .answer-textarea-box.disabled-box textarea { background-color: #f1f3f5; cursor: not-allowed; }
+
+        .answer-submit-box { display: flex; justify-content: flex-end; }
+        .btn-submit-answer { background-color: #007bff; color: white; border: none; padding: 12px 24px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .btn-submit-answer:hover { background-color: #0056b3; }
+        .btn-submit-answer:disabled { background-color: #ced4da; cursor: not-allowed; }
+
+        /* 6. 푸터 (기존 양식 일치) */
+        .footer { background-color: #343a40; color: #fff; text-align: center; padding: 20px; font-size: 14px; margin-top: 60px; }
     </style>
 </head>
 <body>
 
-    <!-- 헤더 영역 -->
+    <!-- 1. 헤더 -->
     <header class="header">
         <div class="logo">대한민국 구석구석</div>
         <nav class="user-menu">
-            <a href="#">로그인</a>
+            <!-- 테스트를 위해 임의로 비로그인 상태라고 가정합니다 -->
+            <a href="#" id="nav-login">로그인</a>
             <a href="#">회원가입</a>
-            <a href="#">마이페이지</a>
+            <a href="#">고객센터</a>
         </nav>
     </header>
 
-    <!-- 메인 컨텐츠 영역 -->
+    <!-- 메인 콘텐츠 영역 -->
     <main class="container">
-        
-        <!-- 검색 섹션 -->
-        <section class="search-section">
-            <h1>국내 여행지에 대해 무엇이든 물어보세요!</h1>
-            <div class="search-box">
-                <input type="text" placeholder="지역명, 축제, 맛집 등 키워드를 입력하세요.">
-                <button type="button">검색</button>
+
+        <!-- 상단 옵션바 -->
+        <div class="action-options">
+            <a href="#" class="btn-list">← 목록으로</a>
+        </div>
+
+        <!-- 2. Q&A 질문 본문 상세 보기 -->
+        <section class="view-qa-card">
+            <div class="view-qa-meta-top">
+                <span class="category-badge">맛집/카페</span>
+                <span class="status-badge solved">답변완료</span>
             </div>
+            <h1 class="view-qa-title">이번 주말에 부모님 모시고 여수 가는데 하모샤브샤브 맛집 추천해주세요!</h1>
+            <div class="view-qa-info">
+                <span><strong>작성자:</strong> 길동이</span>
+                <span><strong>등록일:</strong> 2026-10-01</span>
+                <span><strong>조회수:</strong> 124</span>
+            </div>
+            <div class="view-qa-content">안녕하세요! 이번 주말에 효도 여행으로 부모님을 모시고 여수에 방문할 예정입니다.
+여수에 가면 하모 샤브샤브(갯장어)를 꼭 먹어봐야 한다고 해서 맛집을 찾고 있습니다.
+
+부모님께서 비린 음식을 잘 못 드셔서 깔끔하고 육수가 깊은 곳이었으면 좋겠고, 창밖으로 바다 뷰가 보이면 더 좋을 것 같습니다. 현지인 분들이나 다녀오신 분들의 진솔한 추천 부탁드립니다!</div>
         </section>
 
-        <!-- 카테고리 탭 네비게이션 -->
-        <nav class="nav-tabs" id="categoryTabs">
-            <div class="tab-item active">전체</div>
-            <div class="tab-item">코스 추천</div>
-            <div class="tab-item">맛집/카페</div>
-            <div class="tab-item">숙박/교통</div>
-            <div class="tab-item">축제/명소</div>
-        </nav>
+        <!-- 3. 답변 섹션 타이틀 -->
+        <div class="answer-section-title">
+            <span>등록된 답변</span>
+            <span class="answer-count">2개</span>
+        </div>
 
-        <!-- 질문 등록 폼 섹션 -->
-        <section class="write-section">
-            <h3>궁금한 점 질문하기</h3>
-            <form id="qaForm">
-                <div class="form-row">
-                    <select class="form-select" id="formRegion" required>
-                        <option value="">지역 선택</option>
-                        <option value="서울">서울</option>
-                        <option value="경기">경기</option>
-                        <option value="강원">강원</option>
-                        <option value="충청">충청</option>
-                        <option value="전라">전라</option>
-                        <option value="경상">경상</option>
-                        <option value="제주">제주</option>
-                    </select>
-                    <input type="text" class="form-input" id="formTitle" placeholder="질문 제목을 입력하세요 (예: 부산 2박3일 일정 봐주세요!)" required>
+        <!-- 4. 답변 리스트 -->
+        <section class="answer-list">
+            <!-- 답변 1 -->
+            <article class="answer-item expert-reply">
+                <div class="answer-header">
+                    <div class="answer-user">
+                        <span>여수여행가이드</span>
+                        <span class="expert-badge">현지 전문가</span>
+                    </div>
+                    <span class="answer-date">2026-10-01 14:20</span>
                 </div>
-                <textarea class="form-textarea" id="formContent" placeholder="원하시는 여행 스타일, 일정, 동반자 정보 등을 자세히 적어주시면 더 좋은 답변을 얻을 수 있습니다." required></textarea>
-                <button type="submit" class="form-submit-btn">질문 등록하기</button>
+                <div class="answer-content">부모님 모시고 가신다면 국동항 근처의 식당가를 추천합니다.
+특히 현지인들도 자주 찾는 '경도회관'이나 '당머리 첫집' 라인은 갯장어가 매우 신선하고 비린내가 전혀 나지 않는 깔끔한 육수를 제공합니다.
+
+대부분 통창 너머로 바다가 보이기 때문에 부모님과 함께 눈과 입이 모두 즐거운 식사가 되실 겁니다. 밑반찬으로 나오는 돌게장도 일품입니다!</div>
+                <!-- [추가] 추천 버튼 탑재 영역 -->
+                <div class="answer-footer">
+                    <button type="button" class="btn-like" onclick="handleLike(this)">
+                        <span>❤️</span> 추천 <span class="like-count">12</span>
+                    </button>
+                </div>
+            </article>
+
+            <!-- 답변 2 -->
+            <article class="answer-item">
+                <div class="answer-header">
+                    <div class="answer-user">
+                        <span>여수밤바다</span>
+                    </div>
+                    <span class="answer-date">2026-10-01 15:05</span>
+                </div>
+                <div class="answer-content">저도 저번 달에 가족 여행으로 다녀왔는데, 여수 소호동 쪽 '하모하모' 식당도 깔끔하고 괜찮았어요! 인테리어가 깔끔해서 부모님이 엄청 좋아하셨습니다. 즐거운 여행 되세요.</div>
+                <!-- [추가] 추천 버튼 탑재 영역 -->
+                <div class="answer-footer">
+                    <button type="button" class="btn-like" onclick="handleLike(this)">
+                        <span>❤️</span> 추천 <span class="like-count">4</span>
+                    </button>
+                </div>
+            </article>
+        </section>
+
+        <!-- 5. 답변 작성 폼 -->
+        <section class="answer-form-card">
+            <h2 class="answer-form-title">답변 작성하기</h2>
+            <form id="commentForm" action="#" method="POST">
+                <!-- 비로그인 상태 효과 제어를 위한 다이내믹 박스 구성 -->
+                <div class="answer-textarea-box disabled-box" id="textareaContainer" onclick="checkAuth()">
+                    <textarea id="answerTextarea" placeholder="로그인 후 이용하실 수 있습니다. 클릭하면 로그인 페이지로 이동합니다." readonly required></textarea>
+                </div>
+                <div class="answer-submit-box">
+                    <button type="submit" id="submitBtn" class="btn-submit-answer" disabled>답변 등록</button>
+                </div>
             </form>
         </section>
 
-        <!-- Q&A 게시글 리스트 리스트 -->
-        <section class="qa-list" id="qaList">
-            
-            <!-- 기본 게시글 1 -->
-            <article class="qa-card">
-                <div class="qa-header">
-                    <span class="badge completed">답변완료</span>
-                    <span class="qa-region">강원 춘천시</span>
-                </div>
-                <h2 class="qa-title">뚜벅이 혼자 떠나는 춘천 1박 2일 코스 추천해주세요!</h2>
-                <p class="qa-excerpt">ITX 청춘 열차 타고 남춘천역이나 춘천역으로 갈 예정입니다. 차 없이 대중교통이나 도보로 다니기 좋은 힐링 명소와 닭갈비 맛집 동선 짜주실 분 계신가요?</p>
-                <div class="qa-footer">
-                    <div class="qa-info">
-                        <span>작성자: 여행조아</span>
-                        <span>조회수 142</span>
-                    </div>
-                    <span>2시간 전</span>
-                </div>
-            </article>
-
-            <!-- 기본 게시글 2 (끊겼던 부분 복구 완료) -->
-            <article class="qa-card">
-                <div class="qa-header">
-                    <span class="badge waiting">답변대기</span>
-                    <span class="qa-region">제주 서귀포시</span>
-                </div>
-                <h2 class="qa-title">10월 중순 제주도 억새 보러 가기 좋은 오름 명소 어디인가요?</h2>
-                <p class="qa-excerpt">부모님 모시고 효도 여행 가는데 산굼부리 외에도 경사가 완만하면서 억새 풍경이 멋진 오름이 있는지 궁금합니다. 주차가 편리한 곳이면 더 좋겠어요.</p>
-                <div class="qa-footer">
-                    <div class="qa-info">
-                        <span>작성자: 제주행</span>
-                        <span>조회수 45</span>
-                    </div>
-                    <span>5시간 전</span>
-                </div>
-            </article>
-
-        </section>
     </main>
 
-    <!-- 인터랙션 스크립트 -->
+    <!-- 6. 푸터 -->
+    <footer class="footer">
+        <p>&copy; 2026 대한민국 구석구석 여행 Q&A. All rights reserved.</p>
+    </footer>
+
+    <!-- 자바스크립트 비즈니스 로직 추가 -->
     <script>
-        // 1. 카테고리 탭 클랙시 액티브 디자인 전환
-        const tabs = document.querySelectorAll('#categoryTabs .tab-item');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-            });
-        });
-
-        // 2. 질문 폼 제출 시 상단 리스트에 동적 카드 생성 기능
-        document.getElementById('qaForm').addEventListener('submit', function(e) {
-            e.preventDefault(); 
-            
-            const region = document.getElementById('formRegion').value;
-            const title = document.getElementById('formTitle').value;
-            const content = document.getElementById('formContent').value;
-            const qaList = document.getElementById('qaList');
-
-            // 동적 article 노드 생성
-            const newCard = document.createElement('article');
-            newCard.classList.add('qa-card');
-            newCard.innerHTML = `
-                <div class="qa-header">
-                    <span class="badge waiting">답변대기</span>
-                    <span class="qa-region">${region}</span>
-                </div>
-                <h2 class="qa-title">${title}</h2>
-                <p class="qa-excerpt">${content}</p>
-                <div class="qa-footer">
-                    <div class="qa-info">
-                        <span>작성자: 익명사용자</span>
-                        <span>조회수 0</span>
-                    </div>
-                    <span>방금 전</span>
