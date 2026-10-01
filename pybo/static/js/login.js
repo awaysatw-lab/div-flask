@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function() {
         signupBtn.addEventListener('click', function(e) {
             e.preventDefault();
             const popupWidth = 460;
-            const popupHeight = 720;
+            const popupHeight = 580;
             const left = window.screenX + (window.outerWidth - popupWidth) / 2;
             const top = window.screenY + (window.outerHeight - popupHeight) / 2;
             const windowFeatures = `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`;
@@ -73,7 +73,8 @@ document.addEventListener("DOMContentLoaded", function() {
             messageEl.style.color = "orange";
             messageEl.innerText = "⏳ 데이터베이스 조회 중...";
 
-            fetch(window.findIdUrl || '/auth/find_id', {
+            const targetUrl = (btnSubmitFindId && btnSubmitFindId.dataset.url) || window.findIdUrl || '/auth/find_id';
+            fetch(targetUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "X-CSRFToken": csrfToken },
                 body: JSON.stringify({ name: nameVal, email: emailVal })
@@ -112,7 +113,8 @@ document.addEventListener("DOMContentLoaded", function() {
             messageEl.style.color = "orange";
             messageEl.innerText = "⏳ 임시 비밀번호 발급 및 메일 전송 중...";
 
-            fetch(window.findPwUrl || '/auth/find_pw', {
+            const targetUrl = (btnSubmitFindPw && btnSubmitFindPw.dataset.url) || window.findPwUrl || '/auth/find_pw';
+            fetch(targetUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "X-CSRFToken": csrfToken },
                 body: JSON.stringify({ user_id: idVal, email: emailVal })

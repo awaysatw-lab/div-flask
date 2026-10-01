@@ -288,3 +288,19 @@ class OrderAccommodation(db.Model):
     def __repr__(self):
         return f"<OrderAccommodation order_id={self.order_id} acc_id={self.accommodation_id}>"
 
+#타임딜 참고
+class TimeDeal(db.Model):
+    __tablename__ = 'time_deal'
+
+    id = db.Column(db.Integer, primary_key=True)
+    product_type = db.Column(db.String(10), nullable=False, default='sub')  # 'main'(큰 카드) 또는 'sub'(우측 작은 카드)
+    airline = db.Column(db.String(50), nullable=False)  # 예: [아시아나항공], [이스타항공]
+    title = db.Column(db.String(200), nullable=False)  # 예: 호주 시드니 | 멜버른 6/7일
+    hashtags = db.Column(db.String(200))  # 예: #오페라하우스 내부 #시드니타워
+    description = db.Column(db.Text)  # 예: 도시의 낭만과 대자연의 호흡...
+    price = db.Column(db.Integer, nullable=False)  # 가격 (숫자로 저장)
+    end_date = db.Column(db.DateTime, nullable=False)  # 마감 시간 (디데이 계산용)
+    image_file = db.Column(db.String(100), nullable=False)  # 이미지 파일명 (예: sydney.jpg)
+    badge1 = db.Column(db.String(50))  # 태그/배지 1 (예: 블루마운틴 시닉4콤보)
+    badge2 = db.Column(db.String(50))  # 태그/배지 2 (예: 시드니타워)
+
