@@ -30,6 +30,26 @@
             <p class="text-muted" style="font-size: 13px;">예약자: {{ reserver_name }} ({{ reserver_phone }})</p>
           </div>
         </div>
+
+        {% if selected_accommodation %}
+        <!-- 연계 숙박 예약 요약 박스 -->
+        <div style="margin-top: 14px; padding: 14px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; display: flex; align-items: center; gap: 14px;">
+          <img src="{{ selected_accommodation.image_url }}" alt="{{ selected_accommodation.name }}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #bfdbfe;" onerror="this.src='/static/img/default-tour.jpg'">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 3px;">
+              {% if selected_accommodation.category == '호텔' %}
+                <span class="badge-cat-hotel">호텔</span>
+              {% else %}
+                <span class="badge-cat-minbak">민박</span>
+              {% endif %}
+              <h5 style="margin: 0; font-size: 15px; font-weight: 700; color: #0f172a;">{{ selected_accommodation.name }}</h5>
+            </div>
+            <p style="margin: 0; font-size: 12px; color: #475569;">
+              📍 {{ selected_accommodation.location }} | 1박 요금: <strong style="color: #2563eb;">{{ "{:,}".format(selected_accommodation.price_per_night) }}원</strong>
+            </p>
+          </div>
+        </div>
+        {% endif %}
       </div>
 
       <!-- 2. 여행객 명단 확인 -->
@@ -85,7 +105,7 @@
         <form id="paymentForm" action="{{ url_for('order.pay_complete') }}" method="POST"
           data-store-id="store-7f00ba71-7aff-42b3-b1e7-2e6e2e19a745"
           data-channel-key="channel-key-8aa7da59-1180-4c4e-9723-ed30e22b7ff4"
-          data-order-name="{{ product.name }}"
+          data-order-name="{{ product.name }}{% if selected_accommodation %} + [{{ selected_accommodation.category }}] {{ selected_accommodation.name }}{% endif %}"
           data-total-amount="{{ total_final }}"          
           data-reserver-name="{{ reserver_name }}"
           data-reserver-phone="{{ reserver_phone }}"
@@ -98,6 +118,7 @@
           <input type="hidden" name="reserver_phone" value="{{ reserver_phone }}">
           <input type="hidden" name="reserver_email" value="{{ reserver_email }}">
           <input type="hidden" name="travelers_json" value="{{ travelers_json }}">
+          <input type="hidden" name="accommodation_id" value="{{ selected_accommodation.id if selected_accommodation else '' }}">
           <input type="hidden" name="agree_special" value="{{ '1' if agree_special else '0' }}">
           <input type="hidden" name="agree_privacy" value="{{ '1' if agree_privacy else '0' }}">
           <input type="hidden" name="agree_sensitive" value="{{ '1' if agree_sensitive else '0' }}">
@@ -109,10 +130,10 @@
 
           <div class="final-amount-box">
             <!-- 금액 상세 요약 -->
-            <div class="amount-detail-grid">
+            <div class="amount-detail-grid {% if selected_accommodation %}has-acc{% endif %}">
               <div class="amount-detail-item">
-                <span class="detail-label">정상 상품 금액 ({{ headcount }}명)</span>
-                <span class="detail-val">{{ "{:,}".format(total_original) }}원</span>
+                <span class="detail-label">여행 상품 금액 ({{ headcount }}명)</span>
+                <span class="detail-val">{{ "{:,}".format(tour_original if tour_original else total_original) }}원</span>
               </div>
               <div class="amount-detail-item">
                 <span class="detail-label">
@@ -130,9 +151,15 @@
                   {% endif %}
                 </span>
               </div>
+              {% if selected_accommodation %}
               <div class="amount-detail-item">
-                <span class="detail-label">주문 기준 총액</span>
-                <span class="detail-val">{{ "{:,}".format(total_final) }}원</span>
+                <span class="detail-label">연계 숙박 ({{ selected_accommodation.category }})</span>
+                <span class="detail-val" style="color: #2563eb;">+ {{ "{:,}".format(accommodation_price) }}원</span>
+              </div>
+              {% endif %}
+              <div class="amount-detail-item">
+                <span class="detail-label">최종 결제 금액</span>
+                <span class="detail-val" style="color: var(--accent);">{{ "{:,}".format(total_final) }}원</span>
               </div>
             </div>
 
