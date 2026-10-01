@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
@@ -18,11 +18,9 @@ db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
 
 def create_app():
-
     app = Flask(__name__)
     app.config.from_object(config)
 
-    # ORM
     db.init_app(app)
     if app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite'):
         migrate.init_app(app, db, render_as_batch=True)
@@ -45,5 +43,9 @@ def create_app():
 
     from .views import product_views
     app.register_blueprint(product_views.bp)
+
+    from .timedealseed import seed_time_deals
+    with app.app_context():
+        seed_time_deals()
 
     return app

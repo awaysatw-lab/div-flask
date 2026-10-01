@@ -4,6 +4,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/lookup.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nearby_slide.css') }}">
 
 <div class="container page-content">
   
@@ -21,10 +22,7 @@
 
   <!-- 알림 및 플래시 메시지 -->
   {% for category, message in get_flashed_messages(with_categories=true) %}
-    <div class="alert alert-{{ category }}" style="padding: 14px 18px; border-radius: 10px; margin-bottom: 24px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px;
-         {% if category == 'success' %}background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0;
-         {% elif category == 'danger' %}background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca;
-         {% else %}background-color: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;{% endif %}">
+    <div class="alert alert-{{ category }} lookup-alert" role="alert">
       <span>{% if category == 'success' %}✅{% elif category == 'danger' %}⚠️{% else %}ℹ️{% endif %}</span>
       <span>{{ message }}</span>
     </div>

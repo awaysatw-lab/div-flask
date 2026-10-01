@@ -4,564 +4,303 @@
 
 {% block content %}
 
-<section class="main-banner-full" id="mainBanner" style="background-image: url('{{ url_for('static', filename='img/slide1.jpg') }}');">
-        <div class="banner-overlay"></div>
-        <div class="banner-content-wrap">
-            <div class="banner-text">
-                <h2 id="bannerTitle">
-                    추억이 물드는<br>
-                    가을 여행
-                </h2>
-                <p id="bannerDesc">
-                    일상에서 벗어나<br>
-                    가을 추천 여행
-                </p>
-                <div class="banner-arrows">
-                    <span class="arrow-btn" id="prevBanner">〈</span>
-                    <span id="bannerArrowText">1 / 6</span>
-                    <span class="arrow-btn" id="nextBanner">〉</span>
-                </div>
+<!-- =========================================================
+     메인 배너 (슬라이드)
+     ========================================================= -->
+
+<section class="main-banner-full" id="mainBanner"
+         onclick="location.href='{{ url_for('main.autumn_detail') }}'"
+         style="background-image: url('{{ url_for('static', filename='img/slide1.jpg') }}'); cursor: pointer;">
+
+    <div class="banner-overlay"></div>
+    <div class="banner-content-wrap">
+        <div class="banner-text" onclick="event.stopPropagation();" style="cursor: default;">
+            <h2 id="bannerTitle">
+                추억이 물드는<br>
+                가을 여행
+            </h2>
+            <p id="bannerDesc">
+                일상에서 벗어나<br>
+                가을 추천 여행
+            </p>
+            <div class="banner-arrows" onclick="event.stopPropagation();">
+                <span class="arrow-btn" id="prevBanner" style="cursor: pointer;">〈</span>
+                <span id="bannerArrowText">1 / 6</span>
+                <span class="arrow-btn" id="nextBanner" style="cursor: pointer;">〉</span>
             </div>
         </div>
-
-    </section>
-</div>
-
-<!-- =========================================================
-     메인 콘텐츠
-     ========================================================= -->
-<main class="content-container">
-
+    </div>
+</section>
 
 <!-- =====================================================
      지역별 / 테마별 여행 정보
      ===================================================== -->
-<section class="region-category">
 
-    <!-- =========================
-         탭 버튼
-         ========================= -->
-    <div class="tab-buttons">
-
-        <button type="button"
-                class="tab-btn active"
-                data-tab="region">
-            지역별 여행 정보
-        </button>
-
-        <button type="button"
-                class="tab-btn"
-                data-tab="theme">
-            테마별 여행 정보
-        </button>
-
-    </div>
-
-
-    <!-- =========================
-         지역별 여행 정보
-         ========================= -->
-    <div class="travel-tab-content active"
-         id="region-tab">
-
-        <div class="icon-list region-list">
-
-            <!-- 수도권 -->
-            <div class="icon-item">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/seoul.png') }}"
-                         alt="수도권 여행">
-                </div>
-                <span>수도권</span>
-            </div>
-
-
-            <!-- 강원권 -->
-            <div class="icon-item">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/gangwon.png') }}"
-                         alt="강원권 여행">
-                </div>
-                <span>강원권</span>
-            </div>
-
-
-            <!-- 충청권 -->
-            <div class="icon-item">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/chungcheong.png') }}"
-                         alt="충청권 여행">
-                </div>
-                <span>충청권</span>
-            </div>
-
-
-            <!-- 경상권 -->
-            <div class="icon-item">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/gyeongsang.png') }}"
-                         alt="경상권 여행">
-                </div>
-                <span>경상권</span>
-            </div>
-
-
-            <!-- 전라권 -->
-            <div class="icon-item">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/jeolla.png') }}"
-                         alt="전라권 여행">
-                </div>
-                <span>전라권</span>
-            </div>
-
-
-            <!-- 제주권 -->
-            <div class="icon-item">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/jeju.png') }}"
-                         alt="제주권 여행">
-                </div>
-                <span>제주권</span>
-            </div>
-
+<main class="content-container">
+    <section class="region-category">
+        <div class="tab-buttons">
+            <button type="button" class="tab-btn active" data-tab="region">지역별 여행 정보</button>
+            <button type="button" class="tab-btn" data-tab="theme">테마별 여행 정보</button>
         </div>
 
+        <!-- =========================
+             지역별 여행 정보
+             ========================= -->
 
-        <!-- 지역별 버튼 -->
-        <div class="more-btn-wrap">
-
-            <button type="button"
-                    class="btn-content-more">
-                지역별 여행 정보 보러가기
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- =========================
-         테마별 여행 정보
-         ========================= -->
-    <div class="travel-tab-content"
-         id="theme-tab">
-
-        <div class="icon-list theme-list">
-
-            <!-- 휴양지 -->
-            <div class="icon-item theme-item">
-
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/resort.png') }}"
-                         alt="휴양지 여행">
-                </div>
-
-                <span>휴양지</span>
-
+        <div class="travel-tab-content active" id="region-tab">
+            <div class="icon-list region-list">
+                <a href="{{ url_for('main.region_seoul') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/seoul.png') }}" alt="수도권 여행">
+                    </div>
+                    <span>수도권</span>
+                </a>
+                <a href="{{ url_for('main.region_gangwon') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/gangwon.png') }}" alt="강원권 여행">
+                    </div>
+                    <span>강원권</span>
+                </a>
+                <a href="{{ url_for('main.region_chungcheong') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/chungcheong.png') }}" alt="충청권 여행">
+                    </div>
+                    <span>충청권</span>
+                </a>
+                <a href="{{ url_for('main.region_gyeongsang') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/gyeongsang.png') }}" alt="경상권 여행">
+                    </div>
+                    <span>경상권</span>
+                </a>
+                <a href="{{ url_for('main.region_jeolla') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/jeolla.png') }}" alt="전라권 여행">
+                    </div>
+                    <span>전라권</span>
+                </a>
+                <a href="{{ url_for('main.region_jeju') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/jeju.png') }}" alt="제주권 여행">
+                    </div>
+                    <span>제주권</span>
+                </a>
             </div>
-
-
-            <!-- 체험 -->
-            <div class="icon-item theme-item">
-
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/experience.png') }}"
-                         alt="체험 여행">
-                </div>
-
-                <span>체험</span>
-
+            <div class="more-btn-wrap">
+                <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('main.index') }}'">
+                    지역별 여행 정보 보러가기
+                </button>
             </div>
-
         </div>
 
+        <!-- =========================
+             테마별 여행 정보
+             ========================= -->
 
-        <!-- 테마별 버튼 -->
-        <div class="more-btn-wrap">
-
-            <button type="button"
-                    class="btn-content-more">
-                테마별 여행 정보 보러가기
-            </button>
-
+        <div class="travel-tab-content" id="theme-tab">
+            <div class="icon-list theme-list">
+                <a href="{{ url_for('main.theme_resort') }}" class="icon-item theme-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/resort.png') }}" alt="휴양지 여행">
+                    </div>
+                    <span>휴양지</span>
+                </a>
+                <a href="{{ url_for('main.theme_experience') }}" class="icon-item theme-item" style="text-decoration: none; color: inherit;">
+                    <div class="circle-img">
+                        <img src="{{ url_for('static', filename='img/experience.png') }}" alt="체험 여행">
+                    </div>
+                    <span>체험</span>
+                </a>
+            </div>
+            <div class="more-btn-wrap">
+                <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('main.index') }}'">
+                    테마별 여행 정보 보러가기
+                </button>
+            </div>
         </div>
-
-    </div>
-
+    </section>
 </section>
 
-</section>
     <!-- =====================================================
          M타임딜
          ===================================================== -->
+
     <section class="time-deal">
-
         <div class="deal-header">
-
             <h3>⏰ M타임딜</h3>
-
-            <p class="subtitle">
-                오늘의 득템 찬스! 날마다 새로운 핫딜 라인업!
-            </p>
-
+            <p class="subtitle">오늘의 득템 찬스! 날마다 새로운 핫딜 라인업!</p>
         </div>
-
 
         <div class="deal-container">
 
-
             <!-- =================================================
-                 메인 딜
+                 메인 딜 (왼쪽 큰 카드)
                  ================================================= -->
-            <div class="main-deal-card">
-
-                <div
-                    class="main-img-area"
-                    style="background-image: url('./img/sydney.jpg');"
-                >
-
+            {% if main_deal %}
+            <a href="{{ url_for('main.deal_detail', deal_id=main_deal.id) }}" class="main-deal-card" style="text-decoration: none; color: inherit; display: block;">
+                <div class="main-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ main_deal.image_file) }}');">
                     <div class="badge-group">
-
-                        <span class="badge blue">
-                            블루마운틴 시닉4콤보
-                        </span>
-
-                        <span class="badge green">
-                            시드니타워
-                        </span>
-
+                        {% if main_deal.badge1 %}<span class="badge blue">{{ main_deal.badge1 }}</span>{% endif %}
+                        {% if main_deal.badge2 %}<span class="badge green">{{ main_deal.badge2 }}</span>{% endif %}
                     </div>
-
                 </div>
-
 
                 <div class="deal-info">
-
                     <div class="timer-banner">
-
-                        <span class="clock-icon">
-                            ⏱️
-                        </span>
-
-                        <span class="time-text">
+                        <span class="clock-icon">⏱️</span>
+                        <!-- 실시간 타이머 스크립트 연동을 위해 id와 data 속성 부여 -->
+                        <span class="time-text" id="mainTimer" data-endtime="{{ main_deal.end_date.strftime('%Y-%m-%dT%H:%M:%S') }}">
                             4일 08:51:36 남았습니다.
                         </span>
-
                     </div>
 
-
-                    <h4 class="product-title">
-                        [아시아나항공] 호주 시드니 | 멜버른 6/7일
-                    </h4>
-
-
-                    <p class="hashtags">
-                        #오페라하우스 내부
-                        #블루마운틴 시닉
-                        #포트스테판 사막썰매
-                        #돌핀크루즈 #...
-                    </p>
-
-
-                    <p class="product-desc">
-                        도시의 낭만과 대자연의 호흡,
-                        한 번에 만나는 호주 🦘
-                    </p>
-
-
+                    <h4 class="product-title"><strong>{{ main_deal.airline }}</strong> {{ main_deal.title }}</h4>
+                    <p class="hashtags">{{ main_deal.hashtags }}</p>
+                    <p class="product-desc">{{ main_deal.description }}</p>
                     <div class="price-line">
-
-                        <span class="price">
-                            1,649,000원
-                        </span>
-
-                        부터~
-
+                        <span class="price"><strong>{{ "{:,}".format(main_deal.price) }}</strong>원</span> 부터~
                     </div>
-
                 </div>
-
+            </a>
+            {% else %}
+            <div class="main-deal-card no-deal" style="display:flex; align-items:center; justify-content:center; background:#f9f9f9; color:#999;">
+                진행 중인 메인 타임딜이 없습니다.
             </div>
-
-
+            {% endif %}
 
             <!-- =================================================
-                 서브 딜
+                 서브 딜 (오른쪽 작은 카드 리스트)
                  ================================================= -->
             <div class="sub-deal-list">
-
-
-                <!-- 마나도 -->
-                <div class="sub-card">
-
-                    <div
-                        class="sub-img-area"
-                        style="background-image: url('./img/danang.jpg');"
-                    >
-
-                        <span class="d-day-badge">
-                            D-3
-                        </span>
-
-
-                        <div class="badge-group sub-badges">
-
-                            <span class="badge black">
-                                나인mile랜드
-                            </span>
-
-                            <span class="badge red">
-                                부나켄 호핑투어
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="sub-card-text">
-
-                        <p class="title">
-
-                            <span class="d-day-inline">
+                {% if sub_deals %}
+                    {% for deal in sub_deals %}
+                    <a href="{{ url_for('main.deal_detail', deal_id=deal.id) }}" class="sub-card" style="text-decoration: none; color: inherit; display: flex;">
+                        <div class="sub-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ deal.image_file) }}'); position: relative;">
+                            <!-- D-Day 표시 (가상으로 D-3 고정 혹은 계산식 적용) -->
+                            <span class="d-day-badge" style="position:absolute; top:10px; right:10px; background:#ffb703; color:#fff; padding:2px 8px; border-radius:10px; font-size:12px; font-weight:bold;">
                                 D-3
                             </span>
-
-                            [이스타항공] 마나도 5일 -
-                            NDC리조트 VS 베스트웨스턴 🐬
-
-                        </p>
-
-
-                        <div class="sub-price-line">
-
-                            <span class="price">
-                                629,000원
-                            </span>
-
-                            부터~
-
                         </div>
 
-                    </div>
-
-                </div>
-
-
-
-                <!-- 도야마 -->
-                <div class="sub-card">
-
-                    <div
-                        class="sub-img-area"
-                        style="background-image: url('./img/toyama.jpg');"
-                    >
-
-                        <span class="d-day-badge">
-                            D-3
-                        </span>
-
-
-                        <div class="badge-group sub-badges">
-
-                            <span class="badge navy">
-                                도야마 직항
-                            </span>
-
-                            <span class="badge orange">
-                                호시노리조트 증정
-                            </span>
-
+                        <div class="sub-deal-info" style="padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <div class="sub-badge-group" style="margin-bottom: 5px;">
+                                    {% if deal.badge1 %}<span class="badge" style="background:#e63946; color:#fff; font-size:11px; padding:2px 6px; border-radius:4px; margin-right:4px;">{{ deal.badge1 }}</span>{% endif %}
+                                    {% if deal.badge2 %}<span class="badge" style="background:#457b9d; color:#fff; font-size:11px; padding:2px 6px; border-radius:4px;">{{ deal.badge2 }}</span>{% endif %}
+                                </div>
+                                <h5 class="sub-product-title" style="font-size:14px; margin: 5px 0; color:#333;">
+                                    <span style="color:#e63946; font-weight:bold;">{{ deal.airline }}</span> {{ deal.title }}
+                                </h5>
+                            </div>
+                            <div class="sub-price-line" style="text-align: right;">
+                                <span class="sub-price" style="font-weight: bold; color:#e63946; font-size:16px;">{{ "{:,}".format(deal.price) }}원</span> 부터~
+                            </div>
                         </div>
-
+                    </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="sub-card no-deal" style="display:flex; align-items:center; justify-content:center; background:#f9f9f9; color:#999; height:100%;">
+                        진행 중인 서브 타임딜이 없습니다.
                     </div>
-
-
-                    <div class="sub-card-text">
-
-                        <p class="title">
-                            [진에어] 도야마/알펜루트
-                            온천 4/5일
-                        </p>
-
-
-                        <div class="sub-price-line">
-
-                            <span class="price">
-                                1,699,000원
-                            </span>
-
-                            부터~
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+                {% endif %}
             </div>
-
         </div>
-
     </section>
-
-
 
     <!-- =====================================================
          여행후기
          ===================================================== -->
-    <section class="travel-reviews">
 
-        <h3>
-            ✍️ 여행후기
-        </h3>
+<section class="travel-reviews">
 
+    <h3>
+        ✍️ 여행후기
+    </h3>
+    <div class="review-wrapper">
 
-        <div class="review-wrapper">
+        <!-- 로그인 상태에 따른 흐림 효과 분기 처리 -->
+        <div class="review-grid {% if not g.user %}blurred{% endif %}">
 
-            <div class="review-grid blurred">
+            <!-- [핵심 수정] 백엔드에서 넘어온 review_list 데이터가 실제로 존재할 때만 카드를 그립니다 -->
+            {% if review_list %}
 
-
-                <div class="review-card">
-
+                {% for review in review_list %}
+                <a href="{{ url_for('main.review_detail', review_id=review.id) }}" class="review-card" style="text-decoration: none; color: inherit;">
                     <div class="thumb"></div>
+                    <!-- DB에 저장된 실제 후기 제목 출력 -->
+                    <p>{{ review.subject }}</p>
+                </a>
+                {% endfor %}
 
-                    <p>
-                        환상에서 현실이 되는 여행
-                    </p>
+            {% else %}
 
-                </div>
-
-
-                <div class="review-card">
-
-                    <div class="thumb"></div>
-
-                    <p>
-                        쉽게 말하지 않는 사진 꿀팁
-                    </p>
-
-                </div>
-
-
-                <div class="review-card">
-
-                    <div class="thumb"></div>
-
-                    <p>
-                        구석구석 국내여행
-                    </p>
-
-                </div>
-
-
-                <div class="review-card">
-
-                    <div class="thumb"></div>
-
-                    <p>
-                        기억에 남는 해외여행
-                    </p>
-
-                </div>
-
-
-                <div class="review-card">
-
-                    <div class="thumb"></div>
-
-                    <p>
-                        겨울 바다 명소 베스트
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class ="auth-overlay">
-                <p>
-                    회원 가입 후 여행 후기를 확인해보세요.
+                <p class="no-reviews" style="grid-column: 1 / -1; text-align: center; color: #777; padding: 100px 0 0 0; font-size: 15px;">
+                    등록된 여행 후기가 없습니다.
                 </p>
-                <a href="{{ url_for('auth.login') }}">회원가입 / 로그인</a>
-            </div>
+
+            {% endif %}
 
         </div>
 
-    </section>
+        {% if not g.user %}
+        <div class="auth-overlay">
+            <p>
+                회원 가입 후 여행 후기를 확인해보세요.
+            </p>
+            <a href="{{ url_for('auth.login') }}">회원가입 / 로그인</a>
+        </div>
+        {% endif %}
 
+        <div class="more-btn-wrap" style="margin-top: 30px; text-align: center;">
+            <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('main.review_list') }}'">
+                여행 후기 보러가기
+            </button>
+        </div>
 
+    </div>
+
+</section>
 
     <!-- =====================================================
          공지사항 / 고객센터
          ===================================================== -->
+
     <section class="info-footer-box-wrap">
-
         <div class="info-footer-inside">
-
-
             <!-- 공지사항 -->
             <div class="notice-box">
-
-                <h4>
-                    공지사항
-                </h4>
-
-
+                <h4>공지사항</h4>
                 <ul>
-
                     <li>
                         <a href="#">
                             [안내] 푸켓/치앙마이/방콕/싱가포르 패키지 상품...
                         </a>
                     </li>
-
                     <li>
                         <a href="#">
                             ★ 이번 주 히트다 히트 상품 특가전 ★
                         </a>
                     </li>
-
                     <li>
                         <a href="#">
                             [11월~1월 출발 고객] 후기 이벤트 당첨자 발표
                         </a>
                     </li>
-
                 </ul>
-
             </div>
-
-
             <!-- 고객센터 -->
             <div class="cs-box">
-
-                <h4>
-                    고객센터
-                </h4>
-
-
-                <p class="phone">
-                    1577-1233
-                </p>
-
-
+                <h4>고객센터</h4>
+                <p class="phone"> 1577-1233 </p>
                 <p class="time">
                     운영시간 | 09:00 ~ 18:00
                     (점심시간 12:00 ~ 13:00)
                     <br>
                     토/일 및 공휴일 휴무
                 </p>
-
             </div>
-
         </div>
-
     </section>
-
-
 </main>
-
 
 {% endblock %}

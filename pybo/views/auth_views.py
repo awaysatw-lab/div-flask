@@ -12,7 +12,7 @@ import string
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@bp.route('/signup', methods=('GET', 'POST'))
+@bp.route('/signup/', methods=('GET', 'POST'))
 def signup():
     form = UserCreateForm()
 
@@ -38,7 +38,7 @@ def signup():
     return render_template('auth/signup.html', form=form)
 
 
-@bp.route('/login', methods=('GET', 'POST'))
+@bp.route('/login/', methods=('GET', 'POST'))
 def login():
     form = UserLoginForm()
 

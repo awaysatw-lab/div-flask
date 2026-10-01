@@ -58,11 +58,60 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSummary(currentHeadcount);
   };
 
+  // 연관 숙박 선택 상태
+  let selectedAccPrice = 0;
+  let selectedAccName = '';
+  let selectedAccCategory = '';
+
+  // 숙소 카테고리 필터링 (전역 window 바인딩)
+  window.filterAcc = function(category, btn) {
+    const tabs = document.querySelectorAll('.btn-acc-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.acc-card');
+    cards.forEach(card => {
+      const cardCat = card.dataset.category;
+      if (category === 'all' || cardCat === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  };
+
+  // 숙소 선택 변경 핸들러 (전역 window 바인딩)
+  window.handleAccSelect = function(radio) {
+    const noneCard = document.getElementById('accCard_none');
+    const allCards = document.querySelectorAll('.acc-card');
+
+    if (!radio.value) {
+      // 숙소 선택 안 함
+      selectedAccPrice = 0;
+      selectedAccName = '';
+      selectedAccCategory = '';
+      if (noneCard) noneCard.classList.add('selected');
+      allCards.forEach(c => c.classList.remove('selected'));
+    } else {
+      // 특정 숙소 선택
+      if (noneCard) noneCard.classList.remove('selected');
+      allCards.forEach(c => c.classList.remove('selected'));
+      const parentCard = radio.closest('.acc-card');
+      if (parentCard) parentCard.classList.add('selected');
+
+      selectedAccPrice = parseInt(radio.dataset.price, 10) || 0;
+      selectedAccName = radio.dataset.name || '';
+      selectedAccCategory = radio.dataset.category || '';
+    }
+
+    updateSummary(currentHeadcount);
+  };
+
   // 금액 요약 갱신
   function updateSummary(count) {
-    const totalOrig = originalPricePerPerson * count;
+    const totalOrig = (originalPricePerPerson * count) + selectedAccPrice;
     const totalDisc = discountPerPerson * count;
-    const totalFin = finalPricePerPerson * count;
+    const totalFin = (finalPricePerPerson * count) + selectedAccPrice;
 
     const summaryOrig = document.getElementById('summaryOriginal');
     if (summaryOrig) summaryOrig.innerText = totalOrig.toLocaleString() + '원';
@@ -73,6 +122,20 @@ document.addEventListener('DOMContentLoaded', function() {
         discEl.innerText = '- ' + totalDisc.toLocaleString() + '원';
       } else {
         discEl.innerText = '0원 (비회원 정가)';
+      }
+    }
+
+    // 숙박 요금 행 표시/숨김
+    const accCol = document.getElementById('summaryAccCol');
+    const accNameEl = document.getElementById('summaryAccName');
+    const accPriceEl = document.getElementById('summaryAccPrice');
+    if (accCol && accNameEl && accPriceEl) {
+      if (selectedAccPrice > 0) {
+        accCol.style.display = 'flex';
+        accNameEl.innerText = `[${selectedAccCategory}] ${selectedAccName}`;
+        accPriceEl.innerText = `+ ${selectedAccPrice.toLocaleString()}원`;
+      } else {
+        accCol.style.display = 'none';
       }
     }
 
