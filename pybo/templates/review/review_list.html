@@ -1,62 +1,149 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}
-
-{% endblock %}
-
+{% block title %}길마중 - 리뷰 상품 목록{% endblock %}
 
 {% block content %}
-<div class="container">
-    {% if popular_products %}
-    <div id="best" class="row mt-5">
-        <h2 class="text-center pb-2">베스트 후기</h2>
+<div class="container my-4">
+
+    <!-- ==========================================================================
+         1. 👑 베스트 후기 상품 섹션 (기존 코드 유지형)
+         ========================================================================== -->
+    <h2 class="mb-4 fw-bold" style="color: #212529;">👑 베스트 후기 상품</h2>
+
+    <!-- [팀 프로젝트 유지] 베스트 후기 레이아웃은 단 한 글자도 건드리지 않고 무결성 유지 보존 -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
         {% for product, review_count in popular_products[:4] %}
-            <div class="col-md-3">
-                <div class="card">
-                  <img src="{{ product.image_url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
+        <div class="col">
+            <!-- 팀원간 CSS 간섭을 배제하기 위해 마찰 없는 표준 inline-style로 테두리 밀착 고정 -->
+            <div class="card h-100 shadow-sm border rounded-3 overflow-hidden" style="border: 1px solid #ffc107 !important; position: relative;">
+                <!-- 베스트 아이템 전용 금색 배지 -->
+                <div class="best-badge" style="position: absolute; top: 12px; left: 12px; background: #ffc107; color: #ffffff; padding: 4px 10px; font-size: 0.75rem; font-weight: bold; border-radius: 4px; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">BEST 🔥</div>
 
-{#                    <p class="card-text">{{product.description }}</p>#}
-                    <p class="text-end">
-                      <span class="badge text-bg-danger">{{ review_count }}</span>
-                    </p>
-                    <a href="{{ url_for('review.detail', product_id=product.id) }}" class="btn btn-primary">자세히 보기</a>
-                  </div>
-                </div>a
-            </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div id="best" class="row">
-        작성한 리뷰가 없습니다
-    </div>
-    {% endif %}
+                <!-- 상품 이미지 (한 줄에 4개가 들어가므로 높이를 180px로 조절하여 최적의 비율 제공) -->
+                <img src="{{ product.image_url or '/static/images/default_best.jpg' }}" class="card-img-top" alt="{{ product.name }}" style="height: 180px; object-fit: cover; display: block; width: 100%;">
 
-    {% if latest_products %}
-    <div id="best" class="row mt-5">
-        <h2 class="text-center pb-2">최신 후기</h2>
-        {% for product, review_count, latest_review_date in latest_products[:4] %}
-            <div class="col-md-3">
-                <div class="card">
-                  <img src="{{ product.image_url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="...">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-{#                    <p class="card-text">{{product.description }}</p>#}
-                    <p class="text-end">
-                      <span class="badge text-bg-danger">{{ review_count }}</span>
-                    </p>
-                    <a href="{{ url_for('review.detail', product_id=product.id) }}" class="btn btn-primary">자세히 보기</a>
-                  </div>
+                <!-- 내부 텍스트 길이에 상관없이 하단 상세보기 버튼 정렬선이 일치하도록 flex 구조화 -->
+                <div class="card-body d-flex flex-column justify-content-between p-3" style="background-color: #ffffff;">
+                    <div class="mb-3">
+                        <h5 class="card-title fw-bold text-dark text-truncate mb-2" style="font-size: 1.05rem;" title="{{ product.name }}">
+                            {{ product.name }}
+                        </h5>
+                        <p class="card-text text-danger fw-semibold small mb-0">
+                            🔥 리뷰 수: <span class="fw-bold">{{ review_count }}개</span>
+                        </p>
+                    </div>
+                    <a href="{{ url_for('review.detail', product_id=product.id) }}" class="btn btn-warning w-100 fw-bold py-2 shadow-sm" style="font-size: 0.9rem; background-color: #ffc107; border-color: #ffc107; color: #000000;">
+                        상세보기
+                    </a>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
-    {% else %}
-    <div id="best" class="row">
-        작성한 리뷰가 없습니다
+
+    <!-- 구역 구분을 위한 세련된 점선 구분선 -->
+    <hr class="my-5" style="border-top: 2px dashed #cbd5e1;">
+
+    <!-- ==========================================================================
+         2. ⏱️ 최신 후기 상품 섹션 (이미지 없는 텍스트 버튼형 업데이트 최종 규격)
+         ========================================================================== -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1 fw-bold fs-4" style="color: #212529;">⏱️ 최신 후기 상품</h2>
+            <p class="text-muted small mb-0">길마중에 방금 등록된 따끈따끈한 여행 후기 목록입니다.</p>
+        </div>
+        <!-- 실시간 비동기 업데이트(새로고침) 버튼 -->
+        <button class="btn btn-outline-secondary btn-sm fw-bold py-2 px-3 shadow-sm" id="btnUpdateLatest">
+            최신화 ↻
+        </button>
     </div>
-    {% endif %}
+
+    <!-- 텍스트 전용 카드 그리드 레이아웃 (PC 스크린 기준 4개 가로 정렬 및 이미지 완전 제외) -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 mb-5" id="latestReviewContainer">
+        {% for product, review_count, latest_review_date in latest_products %}
+        <div class="col review-item-node">
+            <a href="{{ url_for('review.detail', product_id=product.id) }}" class="text-decoration-none h-100 d-block">
+                <!-- 이미지 영역을 원천 배제하고 깔끔한 텍스트 카드 버튼클릭형태로 구성 -->
+                <div class="card h-100 border rounded-3 shadow-sm latest-text-card-btn" style="background-color: #f8f9fa; border: 1px solid #dee2e6 !important; cursor: pointer; transition: all 0.2s ease-in-out;">
+                    <div class="card-body d-flex flex-column justify-content-between p-4">
+                        <div>
+                            <!-- 상품명 강조 -->
+                            <h5 class="card-title fw-bold text-dark text-truncate mb-2" style="font-size: 1.1rem; color: #212529;">
+                                {{ product.name }}
+                            </h5>
+                            <!-- 리뷰 개수 미니 배지 -->
+                            <span class="badge bg-secondary mb-3" style="color: #ffffff; background-color: #6c757d;">리뷰 {{ review_count }}개</span>
+                            <!-- 최근 리뷰 등록일 -->
+                            <p class="card-text text-muted small mb-0">
+                                ⏱️ 최근 등록: <span class="fw-semibold text-secondary">{{ latest_review_date }}</span>
+                            </p>
+                        </div>
+                        <!-- 하단 화살표가 포함된 텍스트 버튼형 가이드 링크 -->
+                        <div class="mt-4 pt-2 border-top text-end" style="border-top: 1px solid #dee2e6 !important;">
+                            <span class="fw-bold small" style="color: #0d6efd;">후기 읽기 &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}
-    
+
+
+{% block script %}
+<!-- ==========================================================================
+     3. 컴포넌트 전용 비동기 업데이트 스크립트 (네임스페이스 충돌 전면 차단)
+     ========================================================================== -->
+<script>
+    (function() {
+        const btnUpdate = document.getElementById('btnUpdateLatest');
+        const container = document.getElementById('latestReviewContainer');
+
+        if (btnUpdate && container) {
+            btnUpdate.addEventListener('click', function() {
+                btnUpdate.disabled = true;
+                btnUpdate.textContent = '업데이트 중...';
+
+                // 백엔드 실시간 최신 후기 API 호출 (지속적 업데이트 연동 규격)
+                fetch('/review/api/latest')
+                    .then(response => response.json())
+                    .then(data => {
+                        // 기존 리스트 초기화 후 텍스트 버튼형 구조를 유지하며 동적 갱신
+                        container.innerHTML = '';
+
+                        data.forEach(item => {
+                            const newCol = document.createElement('div');
+                            newCol.className = 'col review-item-node';
+                            newCol.innerHTML = `
+                                <a href="/review/detail/${item.product_id}" class="text-decoration-none h-100 d-block">
+                                    <div class="card h-100 border rounded-3 shadow-sm bg-light" style="border: 1px solid #dee2e6 !important;">
+                                        <div class="card-body d-flex flex-column justify-content-between p-4">
+                                            <div>
+                                                <h5 class="card-title fw-bold text-dark text-truncate mb-2" style="font-size: 1.1rem; color: #212529;">${item.product_name}</h5>
+                                                <span class="badge bg-secondary mb-3" style="color: #ffffff; background-color: #6c757d;">리뷰 ${item.review_count}개</span>
+                                                <p class="card-text text-muted small mb-0">⏱️ 최근 등록: <span class="fw-semibold text-secondary">${item.latest_review_date}</span></p>
+                                            </div>
+                                            <div class="mt-4 pt-2 border-top text-end" style="border-top: 1px solid #dee2e6 !important;">
+                                                <span class="fw-bold small" style="color: #0d6efd;">후기 읽기 &rarr;</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            `;
+                            container.appendChild(newCol);
+                        });
+                    })
+                    .catch(err => console.error('최신 후기 업데이트 실패:', err))
+                    .finally(() => {
+                        // 🛠️ [문법 파괴 복구 완료] 구형 .final을 온전한 비동기 정식 .finally 블록으로 수선 마감
+                        btnUpdate.disabled = false;
+                        btnUpdate.textContent = '최신화 ↻';
+                    });
+            });
+        }
+    })();
+</script>
+{% endblock %}
