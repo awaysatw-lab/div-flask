@@ -47,6 +47,9 @@ def create_app():
     from .views import product_views
     app.register_blueprint(product_views.bp)
 
+    from .views import customer_views
+    app.register_blueprint(customer_views.bp)
+
     from .timedealseed import seed_time_deals
     with app.app_context():
         seed_time_deals()
