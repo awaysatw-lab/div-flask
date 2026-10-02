@@ -73,39 +73,62 @@
     </div>
     {% endif %}
 
-    <!-- 2. 예약자 정보 -->
+    <!-- 2. 예약자 정보 & 주관 여행사 상세 정보 -->
     <div class="mb-4 pb-3 border-bottom">
-      <h4 class="h6 fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+      <h4 class="h6 fw-bold text-dark mb-3 d-flex align-items-center justify-content-between">
         <span>2. 예약자 정보</span>
         {% if order.user %}
-          <span class="badge bg-primary-subtle text-primary border border-primary-subtle">회원 예약</span>
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle">회원 예약 ({{ order.user.user_id }})</span>
         {% else %}
           <span class="badge bg-secondary-subtle text-secondary border">비회원 예약</span>
         {% endif %}
       </h4>
-      <div class="row g-2">
-        <div class="col-12 col-sm-6 col-md-3">
+      <!-- 예약자 정보 (이름 3칸, 전화번호 3칸, 이메일 6칸 -> 큰 화면 1줄) -->
+      <div class="row g-2 mb-3">
+        <div class="col-12 col-md-3">
           <div class="p-2 bg-light rounded-2 border">
-            <span class="text-muted small d-block">성명</span>
+            <span class="text-muted small d-block">성명 (이름)</span>
             <span class="fw-bold text-dark">{{ order.user.name if order.user else (order.guest_name or '미입력') }}</span>
           </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-3">
+        <div class="col-12 col-md-3">
           <div class="p-2 bg-light rounded-2 border">
-            <span class="text-muted small d-block">연락처</span>
+            <span class="text-muted small d-block">전화번호</span>
             <span class="fw-bold text-dark">{{ order.user.phone if order.user else (order.guest_phone or '미입력') }}</span>
           </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-3">
+        <div class="col-12 col-md-6">
           <div class="p-2 bg-light rounded-2 border">
             <span class="text-muted small d-block">이메일</span>
             <span class="fw-bold text-dark text-truncate d-block">{{ order.user.email if order.user else (order.guest_email or '미입력') }}</span>
           </div>
         </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="p-2 bg-light rounded-2 border">
-            <span class="text-muted small d-block">예약 계정 구분</span>
-            <span class="fw-bold text-dark">{{ ('회원 ID: ' ~ order.user.user_id) if order.user else '비회원 간편 예약' }}</span>
+      </div>
+
+      <!-- 주관 여행사 상세 정보 (동일 형식: 이름 3칸, 전화번호 3칸, 이메일 6칸 -> 큰 화면 1줄) -->
+      <div class="mt-3">
+        <div class="d-flex align-items-center justify-content-between mb-1">
+          <span class="text-muted small fw-bold">🏢 주관 여행사 상세 정보</span>
+          <span class="badge bg-light text-secondary border small">관광사업자 등록 제1993-000006호</span>
+        </div>
+        <div class="row g-2">
+          <div class="col-12 col-md-3">
+            <div class="p-2 bg-light rounded-2 border">
+              <span class="text-muted small d-block">여행사명 (이름)</span>
+              <span class="fw-bold text-dark">(주)길마중투어</span>
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <div class="p-2 bg-light rounded-2 border">
+              <span class="text-muted small d-block">전화번호 (고객센터)</span>
+              <span class="fw-bold text-primary">📞 1577-1233</span>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="p-2 bg-light rounded-2 border">
+              <span class="text-muted small d-block">이메일 및 소재지</span>
+              <span class="fw-bold text-dark text-truncate d-block">✉️ help@gilmajungtour.com <span class="text-muted fw-normal small">(경기 수원시 팔달구 권광로 146 벽산그랜드코아 401호)</span></span>
+            </div>
           </div>
         </div>
       </div>

@@ -4,3 +4,13 @@
   max-width: 860px;
   margin: 0 auto;
 }
+.btn {
+    background-color: #1D3557;
+    color: #ffffff;
+    border-color: #1D3557;
+}
+.btn:hover {
+    background-color: #585b60;
+    color: #ffffff;
+    border-color: #585b60;
+}
