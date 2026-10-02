@@ -22,13 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
    * @param {Object} options 파라미터 오버라이드 객체 (선택)
    */
   async function requestPayment(options = {}) {
-    const storeId = options.storeId 
-      || paymentForm.dataset.storeId 
-      || "store-7f00ba71-7aff-42b3-b1e7-2e6e2e19a745";
-    const channelKey = options.channelKey 
-      || paymentForm.dataset.channelKey 
-      || "channel-key-8aa7da59-1180-4c4e-9723-ed30e22b7ff4";
-    // UUID 기반 고유 결제 식별자 생성
     const uuid = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
       ? crypto.randomUUID()
       : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -46,6 +39,56 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     console.log('[PortOne Mock] 테스트 결제 정상 승인 완료:', response);
     return { response, paymentId, totalAmount, orderName };
+    // UUID 기반 주문별 고유 식별자 설정
+    // const storeId = options.storeId 
+    //   || paymentForm.dataset.storeId 
+    //   || "store-7f00ba71-7aff-42b3-b1e7-2e6e2e19a745";
+    // const channelKey = options.channelKey 
+    //   || paymentForm.dataset.channelKey 
+    //   || "channel-key-8aa7da59-1180-4c4e-9723-ed30e22b7ff4";
+
+    // const uuid = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+    //   ? crypto.randomUUID()
+    //   : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    // const paymentId = options.paymentId || `payment-${uuid}`;
+
+    // // 정상 결제 금액 산출 (전달받은 옵션값 또는 폼의 data-total-amount 정상 결제 금액 적용)
+    // const rawTotalAmount = options.totalAmount !== undefined 
+    //   ? options.totalAmount 
+    //   : (paymentForm.dataset.totalAmount || document.getElementById('formPaidAmount')?.value);
+    // const totalAmount = parseInt(rawTotalAmount, 10) || 0;
+
+    // const orderName = options.orderName || paymentForm.dataset.orderName  || "테스트 상품 결제";
+    // const payMethod = options.payMethod || "CARD";
+
+    // const reserverName = paymentForm.dataset.reserverName || '';
+    // const reserverPhone = paymentForm.dataset.reserverPhone || '';
+    // const reserverEmail = paymentForm.dataset.reserverEmail || '';
+
+    // // PortOne.requestPayment 파라미터 구성
+    // const paymentParams = {
+    //   storeId: storeId,
+    //   channelKey: channelKey,
+    //   paymentId: paymentId,
+    //   orderName: orderName,
+    //   totalAmount: totalAmount,
+    //   currency: "KRW",
+    //   payMethod: payMethod,
+    // };
+
+    // if (reserverName || reserverEmail || reserverPhone) {
+    //   paymentParams.customer = {
+    //     fullName: reserverName || '고객',
+    //     phoneNumber: reserverPhone || undefined,
+    //     email: reserverEmail || undefined,
+    //   };
+    // }
+
+    // console.log('[PortOne] requestPayment 호출 파라미터:', paymentParams);
+
+    // // PortOne V2 결제창 호출
+    // const response = await PortOne.requestPayment(paymentParams);
+    // return { response, paymentId, totalAmount, orderName };
   }
 
   // 브라우저 개발자 도구 콘솔 등에서 수동 호출 가능하도록 window에 등록

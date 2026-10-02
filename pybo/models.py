@@ -289,6 +289,7 @@ class OrderAccommodation(db.Model):
         return f"<OrderAccommodation order_id={self.order_id} acc_id={self.accommodation_id}>"
 
 #타임딜 참고
+
 class TimeDeal(db.Model):
     __tablename__ = 'time_deal'
 

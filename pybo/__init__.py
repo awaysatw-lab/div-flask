@@ -29,6 +29,9 @@ def create_app():
 
     from . import models
 
+    from pybo.views.auth_views import oauth as auth_oauth
+    auth_oauth.init_app(app)
+
     from .views import auth_views
     app.register_blueprint(auth_views.bp)
 

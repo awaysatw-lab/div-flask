@@ -119,9 +119,20 @@
         </div>
 
         <div class="social-login">
-            <button type="button" class="social-button naver"><span>N</span>네이버 로그인</button>
-            <button type="button" class="social-button kakao"><span>●</span>카카오 로그인</button>
-            <button type="button" class="social-button google"><span>G</span>구글 로그인</button>
+            <!-- 1. 네이버 로그인 버튼 -->
+            <a href="{{ url_for('auth.naver_login') }}" class="social-button naver" style="text-decoration: none;">
+                <span>N</span>네이버 로그인
+            </a>
+
+            <!-- 2. 카카오 로그인 버튼 -->
+            <a href="{{ url_for('auth.kakao_login') }}" class="social-button kakao" style="text-decoration: none;">
+                <span>K</span>카카오 로그인
+            </a>
+
+            <!-- 3. 구글 로그인 버튼 -->
+            <a href="{{ url_for('auth.google_login') }}" class="social-button google" style="text-decoration: none;">
+                <span>G</span>구글 로그인
+            </a>
         </div>
 
         <div class="signup-prompt">

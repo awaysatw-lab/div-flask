@@ -559,7 +559,12 @@ def seed_database():
             'original_price': 48000,
             'member_discount_rate': 0.15,
             'recommendation_count': 640,
-            'image_urls': ['/static/img/tours/product_01_1.jpg', '/static/img/tours/product_01_2.jpg', '/static/img/tours/product_01_3.jpg', '/static/img/tours/product_01_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_37_1.jpg',
+                '/static/img/tours/product_37_2.jpg',
+                '/static/img/tours/product_37_3.jpg',
+                '/static/img/tours/product_37_4.jpg'
+            ]
         },
         {
             'name': '파주 헤이리 예술마을 & 임진각 평화누리 바람언덕 투어',
@@ -568,7 +573,12 @@ def seed_database():
             'original_price': 52000,
             'member_discount_rate': 0.10,
             'recommendation_count': 780,
-            'image_urls': ['/static/img/tours/product_02_1.jpg', '/static/img/tours/product_02_2.jpg', '/static/img/tours/product_02_3.jpg', '/static/img/tours/product_02_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_38_1.jpg',
+                '/static/img/tours/product_38_2.jpg',
+                '/static/img/tours/product_38_3.jpg',
+                '/static/img/tours/product_38_4.jpg'
+            ]
         },
         {
             'name': '화성 융건릉 솔숲 산책 & 제부도 서해랑 케이블카 낙조',
@@ -577,7 +587,12 @@ def seed_database():
             'original_price': 58000,
             'member_discount_rate': 0.15,
             'recommendation_count': 590,
-            'image_urls': ['/static/img/tours/product_03_1.jpg', '/static/img/tours/product_03_2.jpg', '/static/img/tours/product_03_3.jpg', '/static/img/tours/product_03_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_39_1.jpg',
+                '/static/img/tours/product_39_2.jpg',
+                '/static/img/tours/product_39_3.jpg',
+                '/static/img/tours/product_39_4.jpg'
+            ]
         },
         {
             'name': '용인 한국민속촌 전통문화 체험 & 에버랜드 불꽃축제',
@@ -586,7 +601,12 @@ def seed_database():
             'original_price': 85000,
             'member_discount_rate': 0.20,
             'recommendation_count': 1120,
-            'image_urls': ['/static/img/tours/product_04_1.jpg', '/static/img/tours/product_04_2.jpg', '/static/img/tours/product_04_3.jpg', '/static/img/tours/product_04_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_40_1.jpg',
+                '/static/img/tours/product_40_2.jpg',
+                '/static/img/tours/product_40_3.jpg',
+                '/static/img/tours/product_40_4.jpg'
+            ]
         },
         {
             'name': '안성 안성맞춤랜드 천문과학관 & 팜랜드 목장 체험',
@@ -595,7 +615,12 @@ def seed_database():
             'original_price': 42000,
             'member_discount_rate': 0.10,
             'recommendation_count': 430,
-            'image_urls': ['/static/img/tours/product_05_1.jpg', '/static/img/tours/product_05_2.jpg', '/static/img/tours/product_05_3.jpg', '/static/img/tours/product_05_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_41_1.jpg',
+                '/static/img/tours/product_41_2.jpg',
+                '/static/img/tours/product_41_3.jpg',
+                '/static/img/tours/product_41_4.jpg'
+            ]
         },
         {
             'name': '광주 남한산성 성곽길 트레킹 & 행궁 역사 기행',
@@ -604,7 +629,12 @@ def seed_database():
             'original_price': 39000,
             'member_discount_rate': 0.10,
             'recommendation_count': 510,
-            'image_urls': ['/static/img/tours/product_06_1.jpg', '/static/img/tours/product_06_2.jpg', '/static/img/tours/product_06_3.jpg', '/static/img/tours/product_06_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_42_1.jpg',
+                '/static/img/tours/product_42_2.jpg',
+                '/static/img/tours/product_42_3.jpg',
+                '/static/img/tours/product_42_4.jpg'
+            ]
         },
         {
             'name': '인천 차이나타운 먹거리 투어 & 월미바다열차 오션뷰',
@@ -613,7 +643,12 @@ def seed_database():
             'original_price': 36000,
             'member_discount_rate': 0.10,
             'recommendation_count': 670,
-            'image_urls': ['/static/img/tours/product_01_2.jpg', '/static/img/tours/product_01_3.jpg', '/static/img/tours/product_01_4.jpg', '/static/img/tours/product_01_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_43_1.jpg',
+                '/static/img/tours/product_43_2.jpg',
+                '/static/img/tours/product_43_3.jpg',
+                '/static/img/tours/product_43_4.jpg'
+            ]
         },
         {
             'name': '연천 재인폭포 출렁다리 & 전곡리 선사유적지 탐방',
@@ -622,7 +657,12 @@ def seed_database():
             'original_price': 45000,
             'member_discount_rate': 0.15,
             'recommendation_count': 490,
-            'image_urls': ['/static/img/tours/product_02_2.jpg', '/static/img/tours/product_02_3.jpg', '/static/img/tours/product_02_4.jpg', '/static/img/tours/product_02_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_44_1.jpg',
+                '/static/img/tours/product_44_2.jpg',
+                '/static/img/tours/product_44_3.jpg',
+                '/static/img/tours/product_44_4.jpg'
+            ]
         },
         {
             'name': '이천 도예마을 도자 체험 & 설봉공원 호수 산책',
@@ -631,7 +671,12 @@ def seed_database():
             'original_price': 49000,
             'member_discount_rate': 0.10,
             'recommendation_count': 380,
-            'image_urls': ['/static/img/tours/product_03_2.jpg', '/static/img/tours/product_03_3.jpg', '/static/img/tours/product_03_4.jpg', '/static/img/tours/product_03_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_45_1.jpg',
+                '/static/img/tours/product_45_2.jpg',
+                '/static/img/tours/product_45_3.jpg',
+                '/static/img/tours/product_45_4.jpg'
+            ]
         },
         {
             'name': '시흥 갯골생태공원 흔들전망대 & 오이도 빨강등대 노을',
@@ -640,7 +685,12 @@ def seed_database():
             'original_price': 38000,
             'member_discount_rate': 0.10,
             'recommendation_count': 620,
-            'image_urls': ['/static/img/tours/product_04_2.jpg', '/static/img/tours/product_04_3.jpg', '/static/img/tours/product_04_4.jpg', '/static/img/tours/product_04_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_46_1.jpg',
+                '/static/img/tours/product_46_2.jpg',
+                '/static/img/tours/product_46_3.jpg',
+                '/static/img/tours/product_46_4.jpg'
+            ]
         },
 
         # --- 추가 상품: [2] 강원 추가 (10개) ---
@@ -651,7 +701,12 @@ def seed_database():
             'original_price': 68000,
             'member_discount_rate': 0.15,
             'recommendation_count': 950,
-            'image_urls': ['/static/img/tours/product_07_1.jpg', '/static/img/tours/product_07_2.jpg', '/static/img/tours/product_07_3.jpg', '/static/img/tours/product_07_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_47_1.jpg',
+                '/static/img/tours/product_47_2.jpg',
+                '/static/img/tours/product_47_3.jpg',
+                '/static/img/tours/product_47_4.jpg'
+            ]
         },
         {
             'name': '인제 자작나무숲 힐링 트레킹 & 원대리 산촌 웰빙 밥상',
@@ -660,7 +715,12 @@ def seed_database():
             'original_price': 62000,
             'member_discount_rate': 0.15,
             'recommendation_count': 880,
-            'image_urls': ['/static/img/tours/product_08_1.jpg', '/static/img/tours/product_08_2.jpg', '/static/img/tours/product_08_3.jpg', '/static/img/tours/product_08_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_48_1.jpg',
+                '/static/img/tours/product_48_2.jpg',
+                '/static/img/tours/product_48_3.jpg',
+                '/static/img/tours/product_48_4.jpg'
+            ]
         },
         {
             'name': '동해 무릉계곡 베틀바위 산성길 & 추암 촛대바위 일출',
@@ -669,7 +729,12 @@ def seed_database():
             'original_price': 72000,
             'member_discount_rate': 0.15,
             'recommendation_count': 740,
-            'image_urls': ['/static/img/tours/product_09_1.jpg', '/static/img/tours/product_09_2.jpg', '/static/img/tours/product_09_3.jpg', '/static/img/tours/product_09_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_49_1.jpg',
+                '/static/img/tours/product_49_2.jpg',
+                '/static/img/tours/product_49_3.jpg',
+                '/static/img/tours/product_49_4.jpg'
+            ]
         },
         {
             'name': '양양 낙산사 해수관음상 해안 절경 & 하조대 전망대',
@@ -678,7 +743,12 @@ def seed_database():
             'original_price': 59000,
             'member_discount_rate': 0.10,
             'recommendation_count': 810,
-            'image_urls': ['/static/img/tours/product_10_1.jpg', '/static/img/tours/product_10_2.jpg', '/static/img/tours/product_10_3.jpg', '/static/img/tours/product_10_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_50_1.jpg',
+                '/static/img/tours/product_50_2.jpg',
+                '/static/img/tours/product_50_3.jpg',
+                '/static/img/tours/product_50_4.jpg'
+            ]
         },
         {
             'name': '고성 통일전망대 DMZ 평화누리 & 화진포 호수 별장',
@@ -687,7 +757,12 @@ def seed_database():
             'original_price': 65000,
             'member_discount_rate': 0.15,
             'recommendation_count': 670,
-            'image_urls': ['/static/img/tours/product_11_1.jpg', '/static/img/tours/product_11_2.jpg', '/static/img/tours/product_11_3.jpg', '/static/img/tours/product_11_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_51_1.jpg',
+                '/static/img/tours/product_51_2.jpg',
+                '/static/img/tours/product_51_3.jpg',
+                '/static/img/tours/product_51_4.jpg'
+            ]
         },
         {
             'name': '삼척 환선굴 대자연 석회동굴 & 맹방 명사십리 드라이브',
@@ -696,7 +771,12 @@ def seed_database():
             'original_price': 69000,
             'member_discount_rate': 0.15,
             'recommendation_count': 590,
-            'image_urls': ['/static/img/tours/product_12_1.jpg', '/static/img/tours/product_12_2.jpg', '/static/img/tours/product_12_3.jpg', '/static/img/tours/product_12_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_52_1.jpg',
+                '/static/img/tours/product_52_2.jpg',
+                '/static/img/tours/product_52_3.jpg',
+                '/static/img/tours/product_52_4.jpg'
+            ]
         },
         {
             'name': '철원 고석정 꽃밭 & 한탄강 주상절리 잔도길 트레킹',
@@ -705,7 +785,12 @@ def seed_database():
             'original_price': 63000,
             'member_discount_rate': 0.10,
             'recommendation_count': 820,
-            'image_urls': ['/static/img/tours/product_07_2.jpg', '/static/img/tours/product_07_3.jpg', '/static/img/tours/product_07_4.jpg', '/static/img/tours/product_07_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_53_1.jpg',
+                '/static/img/tours/product_53_2.jpg',
+                '/static/img/tours/product_53_3.jpg',
+                '/static/img/tours/product_53_4.jpg'
+            ]
         },
         {
             'name': '홍천 수타사 산소길 생태숲 & 알파카월드 숲속 힐링',
@@ -714,7 +799,12 @@ def seed_database():
             'original_price': 57000,
             'member_discount_rate': 0.10,
             'recommendation_count': 640,
-            'image_urls': ['/static/img/tours/product_08_2.jpg', '/static/img/tours/product_08_3.jpg', '/static/img/tours/product_08_4.jpg', '/static/img/tours/product_08_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_54_1.jpg',
+                '/static/img/tours/product_54_2.jpg',
+                '/static/img/tours/product_54_3.jpg',
+                '/static/img/tours/product_54_4.jpg'
+            ]
         },
         {
             'name': '영월 한반도지형 뗏목 체험 & 별마로천문대 은하수 관측',
@@ -723,7 +813,12 @@ def seed_database():
             'original_price': 66000,
             'member_discount_rate': 0.15,
             'recommendation_count': 770,
-            'image_urls': ['/static/img/tours/product_09_2.jpg', '/static/img/tours/product_09_3.jpg', '/static/img/tours/product_09_4.jpg', '/static/img/tours/product_09_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_55_1.jpg',
+                '/static/img/tours/product_55_2.jpg',
+                '/static/img/tours/product_55_3.jpg',
+                '/static/img/tours/product_55_4.jpg'
+            ]
         },
         {
             'name': '태백 검룡소 한강발원지 트레킹 & 바람의언덕 풍력발전',
@@ -732,7 +827,12 @@ def seed_database():
             'original_price': 55000,
             'member_discount_rate': 0.10,
             'recommendation_count': 530,
-            'image_urls': ['/static/img/tours/product_10_2.jpg', '/static/img/tours/product_10_3.jpg', '/static/img/tours/product_10_4.jpg', '/static/img/tours/product_10_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_56_1.jpg',
+                '/static/img/tours/product_56_2.jpg',
+                '/static/img/tours/product_56_3.jpg',
+                '/static/img/tours/product_56_4.jpg'
+            ]
         },
 
         # --- 추가 상품: [3] 충청 추가 (10개) ---
@@ -743,7 +843,12 @@ def seed_database():
             'original_price': 49000,
             'member_discount_rate': 0.15,
             'recommendation_count': 610,
-            'image_urls': ['/static/img/tours/product_13_1.jpg', '/static/img/tours/product_13_2.jpg', '/static/img/tours/product_13_3.jpg', '/static/img/tours/product_13_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_57_1.jpg',
+                '/static/img/tours/product_57_2.jpg',
+                '/static/img/tours/product_57_3.jpg',
+                '/static/img/tours/product_57_4.jpg'
+            ]
         },
         {
             'name': '부여 궁남지 연꽃 둘레길 & 백제문화단지 사비궁 야경',
@@ -752,7 +857,12 @@ def seed_database():
             'original_price': 53000,
             'member_discount_rate': 0.15,
             'recommendation_count': 580,
-            'image_urls': ['/static/img/tours/product_14_1.jpg', '/static/img/tours/product_14_2.jpg', '/static/img/tours/product_14_3.jpg', '/static/img/tours/product_14_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_58_1.jpg',
+                '/static/img/tours/product_58_2.jpg',
+                '/static/img/tours/product_58_3.jpg',
+                '/static/img/tours/product_58_4.jpg'
+            ]
         },
         {
             'name': '서산 해미읍성 성곽길 산책 & 용현리 마애여래삼존상',
@@ -761,7 +871,12 @@ def seed_database():
             'original_price': 45000,
             'member_discount_rate': 0.10,
             'recommendation_count': 490,
-            'image_urls': ['/static/img/tours/product_15_1.jpg', '/static/img/tours/product_15_2.jpg', '/static/img/tours/product_15_3.jpg', '/static/img/tours/product_15_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_59_1.jpg',
+                '/static/img/tours/product_59_2.jpg',
+                '/static/img/tours/product_59_3.jpg',
+                '/static/img/tours/product_59_4.jpg'
+            ]
         },
         {
             'name': '보령 대천해수욕장 짚트랙 & 개화예술공원 조각정원',
@@ -770,7 +885,12 @@ def seed_database():
             'original_price': 58000,
             'member_discount_rate': 0.15,
             'recommendation_count': 720,
-            'image_urls': ['/static/img/tours/product_16_1.jpg', '/static/img/tours/product_16_2.jpg', '/static/img/tours/product_16_3.jpg', '/static/img/tours/product_16_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_60_1.jpg',
+                '/static/img/tours/product_60_2.jpg',
+                '/static/img/tours/product_60_3.jpg',
+                '/static/img/tours/product_60_4.jpg'
+            ]
         },
         {
             'name': '괴산 산막이옛길 유람선 & 칠성면 숲속 트레킹',
@@ -779,7 +899,12 @@ def seed_database():
             'original_price': 48000,
             'member_discount_rate': 0.10,
             'recommendation_count': 540,
-            'image_urls': ['/static/img/tours/product_17_1.jpg', '/static/img/tours/product_17_2.jpg', '/static/img/tours/product_17_3.jpg', '/static/img/tours/product_17_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_61_1.jpg',
+                '/static/img/tours/product_61_2.jpg',
+                '/static/img/tours/product_61_3.jpg',
+                '/static/img/tours/product_61_4.jpg'
+            ]
         },
         {
             'name': '제천 청풍호 옥순봉 출렁다리 & 카약 어드벤처',
@@ -788,7 +913,12 @@ def seed_database():
             'original_price': 62000,
             'member_discount_rate': 0.15,
             'recommendation_count': 690,
-            'image_urls': ['/static/img/tours/product_18_1.jpg', '/static/img/tours/product_18_2.jpg', '/static/img/tours/product_18_3.jpg', '/static/img/tours/product_18_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_62_1.jpg',
+                '/static/img/tours/product_62_2.jpg',
+                '/static/img/tours/product_62_3.jpg',
+                '/static/img/tours/product_62_4.jpg'
+            ]
         },
         {
             'name': '예산 예당호 출렁다리 음악분수 & 수덕사 덕숭산 산책',
@@ -797,7 +927,12 @@ def seed_database():
             'original_price': 46000,
             'member_discount_rate': 0.10,
             'recommendation_count': 630,
-            'image_urls': ['/static/img/tours/product_13_2.jpg', '/static/img/tours/product_13_3.jpg', '/static/img/tours/product_13_4.jpg', '/static/img/tours/product_13_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_63_1.jpg',
+                '/static/img/tours/product_63_2.jpg',
+                '/static/img/tours/product_63_3.jpg',
+                '/static/img/tours/product_63_4.jpg'
+            ]
         },
         {
             'name': '진천 농다리 천년 돌다리 & 초평호 하늘다리 미르숲',
@@ -806,7 +941,12 @@ def seed_database():
             'original_price': 41000,
             'member_discount_rate': 0.10,
             'recommendation_count': 460,
-            'image_urls': ['/static/img/tours/product_14_2.jpg', '/static/img/tours/product_14_3.jpg', '/static/img/tours/product_14_4.jpg', '/static/img/tours/product_14_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_64_1.jpg',
+                '/static/img/tours/product_64_2.jpg',
+                '/static/img/tours/product_64_3.jpg',
+                '/static/img/tours/product_64_4.jpg'
+            ]
         },
         {
             'name': '영동 와인터널 미식 투어 & 월류봉 달빛 석천계곡',
@@ -815,7 +955,12 @@ def seed_database():
             'original_price': 55000,
             'member_discount_rate': 0.15,
             'recommendation_count': 520,
-            'image_urls': ['/static/img/tours/product_15_2.jpg', '/static/img/tours/product_15_3.jpg', '/static/img/tours/product_15_4.jpg', '/static/img/tours/product_15_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_65_1.jpg',
+                '/static/img/tours/product_65_2.jpg',
+                '/static/img/tours/product_65_3.jpg',
+                '/static/img/tours/product_65_4.jpg'
+            ]
         },
         {
             'name': '태안 천리포수목원 서해 바다정원 & 신두리 해안사구',
@@ -824,7 +969,12 @@ def seed_database():
             'original_price': 59000,
             'member_discount_rate': 0.15,
             'recommendation_count': 780,
-            'image_urls': ['/static/img/tours/product_16_2.jpg', '/static/img/tours/product_16_3.jpg', '/static/img/tours/product_16_4.jpg', '/static/img/tours/product_16_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_66_1.jpg',
+                '/static/img/tours/product_66_2.jpg',
+                '/static/img/tours/product_66_3.jpg',
+                '/static/img/tours/product_66_4.jpg'
+            ]
         },
 
         # --- 추가 상품: [4] 전라 추가 (10개) ---
@@ -835,7 +985,12 @@ def seed_database():
             'original_price': 72000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1180,
-            'image_urls': ['/static/img/tours/product_19_1.jpg', '/static/img/tours/product_19_2.jpg', '/static/img/tours/product_19_3.jpg', '/static/img/tours/product_19_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_67_1.jpg',
+                '/static/img/tours/product_67_2.jpg',
+                '/static/img/tours/product_67_3.jpg',
+                '/static/img/tours/product_67_4.jpg'
+            ]
         },
         {
             'name': '순천만국가정원 사계절 플라워 & 순천만습지 갈대숲',
@@ -844,7 +999,12 @@ def seed_database():
             'original_price': 65000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1050,
-            'image_urls': ['/static/img/tours/product_20_1.jpg', '/static/img/tours/product_20_2.jpg', '/static/img/tours/product_20_3.jpg', '/static/img/tours/product_20_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_68_1.jpg',
+                '/static/img/tours/product_68_2.jpg',
+                '/static/img/tours/product_68_3.jpg',
+                '/static/img/tours/product_68_4.jpg'
+            ]
         },
         {
             'name': '보성 녹차밭 대한다원 힐링 & 율포솔밭해변 해수녹차탕',
@@ -853,7 +1013,12 @@ def seed_database():
             'original_price': 58000,
             'member_discount_rate': 0.10,
             'recommendation_count': 820,
-            'image_urls': ['/static/img/tours/product_21_1.jpg', '/static/img/tours/product_21_2.jpg', '/static/img/tours/product_21_3.jpg', '/static/img/tours/product_21_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_69_1.jpg',
+                '/static/img/tours/product_69_2.jpg',
+                '/static/img/tours/product_69_3.jpg',
+                '/static/img/tours/product_69_4.jpg'
+            ]
         },
         {
             'name': '담양 죽녹원 대나무숲 테라피 & 메타프로방스 문화마을',
@@ -862,7 +1027,12 @@ def seed_database():
             'original_price': 54000,
             'member_discount_rate': 0.10,
             'recommendation_count': 910,
-            'image_urls': ['/static/img/tours/product_22_1.jpg', '/static/img/tours/product_22_2.jpg', '/static/img/tours/product_22_3.jpg', '/static/img/tours/product_22_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_70_1.jpg',
+                '/static/img/tours/product_70_2.jpg',
+                '/static/img/tours/product_70_3.jpg',
+                '/static/img/tours/product_70_4.jpg'
+            ]
         },
         {
             'name': '전주 한옥마을 경기전 태조어진 & 자만벽화마을 산책',
@@ -871,7 +1041,12 @@ def seed_database():
             'original_price': 49000,
             'member_discount_rate': 0.10,
             'recommendation_count': 1100,
-            'image_urls': ['/static/img/tours/product_23_1.jpg', '/static/img/tours/product_23_2.jpg', '/static/img/tours/product_23_3.jpg', '/static/img/tours/product_23_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_71_1.jpg',
+                '/static/img/tours/product_71_2.jpg',
+                '/static/img/tours/product_71_3.jpg',
+                '/static/img/tours/product_71_4.jpg'
+            ]
         },
         {
             'name': '신안 퍼플섬 반월박지도 보랏빛 다리 & 자은도 백길해변',
@@ -880,7 +1055,12 @@ def seed_database():
             'original_price': 63000,
             'member_discount_rate': 0.15,
             'recommendation_count': 760,
-            'image_urls': ['/static/img/tours/product_24_1.jpg', '/static/img/tours/product_24_2.jpg', '/static/img/tours/product_24_3.jpg', '/static/img/tours/product_24_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_72_1.jpg',
+                '/static/img/tours/product_72_2.jpg',
+                '/static/img/tours/product_72_3.jpg',
+                '/static/img/tours/product_72_4.jpg'
+            ]
         },
         {
             'name': '남원 광한루원 춘향사랑정원 & 지리산 뱀사골 단풍계곡',
@@ -889,7 +1069,12 @@ def seed_database():
             'original_price': 57000,
             'member_discount_rate': 0.10,
             'recommendation_count': 640,
-            'image_urls': ['/static/img/tours/product_19_2.jpg', '/static/img/tours/product_19_3.jpg', '/static/img/tours/product_19_4.jpg', '/static/img/tours/product_19_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_73_1.jpg',
+                '/static/img/tours/product_73_2.jpg',
+                '/static/img/tours/product_73_3.jpg',
+                '/static/img/tours/product_73_4.jpg'
+            ]
         },
         {
             'name': '목포 해상케이블카 유달산 횡단 & 근대역사문화거리',
@@ -898,7 +1083,12 @@ def seed_database():
             'original_price': 68000,
             'member_discount_rate': 0.15,
             'recommendation_count': 830,
-            'image_urls': ['/static/img/tours/product_20_2.jpg', '/static/img/tours/product_20_3.jpg', '/static/img/tours/product_20_4.jpg', '/static/img/tours/product_20_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_74_1.jpg',
+                '/static/img/tours/product_74_2.jpg',
+                '/static/img/tours/product_74_3.jpg',
+                '/static/img/tours/product_74_4.jpg'
+            ]
         },
         {
             'name': '완도 완도타워 다도해 뷰 & 신지명사십리 힐링 비치',
@@ -907,7 +1097,12 @@ def seed_database():
             'original_price': 61000,
             'member_discount_rate': 0.10,
             'recommendation_count': 560,
-            'image_urls': ['/static/img/tours/product_21_2.jpg', '/static/img/tours/product_21_3.jpg', '/static/img/tours/product_21_4.jpg', '/static/img/tours/product_21_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_75_1.jpg',
+                '/static/img/tours/product_75_2.jpg',
+                '/static/img/tours/product_75_3.jpg',
+                '/static/img/tours/product_75_4.jpg'
+            ]
         },
         {
             'name': '고흥 나로우주센터 과학관 & 쑥섬 바다 비밀정원',
@@ -916,7 +1111,12 @@ def seed_database():
             'original_price': 66000,
             'member_discount_rate': 0.15,
             'recommendation_count': 610,
-            'image_urls': ['/static/img/tours/product_22_2.jpg', '/static/img/tours/product_22_3.jpg', '/static/img/tours/product_22_4.jpg', '/static/img/tours/product_22_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_76_1.jpg',
+                '/static/img/tours/product_76_2.jpg',
+                '/static/img/tours/product_76_3.jpg',
+                '/static/img/tours/product_76_4.jpg'
+            ]
         },
 
         # --- 추가 상품: [5] 경북 추가 (10개) ---
@@ -927,7 +1127,12 @@ def seed_database():
             'original_price': 75000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1250,
-            'image_urls': ['/static/img/tours/product_25_1.jpg', '/static/img/tours/product_25_2.jpg', '/static/img/tours/product_25_3.jpg', '/static/img/tours/product_25_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_77_1.jpg',
+                '/static/img/tours/product_77_2.jpg',
+                '/static/img/tours/product_77_3.jpg',
+                '/static/img/tours/product_77_4.jpg'
+            ]
         },
         {
             'name': '안동 하회마을 부용대 나룻배 & 만휴정 원림 답사',
@@ -936,7 +1141,12 @@ def seed_database():
             'original_price': 58000,
             'member_discount_rate': 0.10,
             'recommendation_count': 840,
-            'image_urls': ['/static/img/tours/product_26_1.jpg', '/static/img/tours/product_26_2.jpg', '/static/img/tours/product_26_3.jpg', '/static/img/tours/product_26_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_78_1.jpg',
+                '/static/img/tours/product_78_2.jpg',
+                '/static/img/tours/product_78_3.jpg',
+                '/static/img/tours/product_78_4.jpg'
+            ]
         },
         {
             'name': '포항 호미곶 상생의손 해맞이 & 스페이스워크 환호공원',
@@ -945,7 +1155,12 @@ def seed_database():
             'original_price': 62000,
             'member_discount_rate': 0.15,
             'recommendation_count': 990,
-            'image_urls': ['/static/img/tours/product_27_1.jpg', '/static/img/tours/product_27_2.jpg', '/static/img/tours/product_27_3.jpg', '/static/img/tours/product_27_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_79_1.jpg',
+                '/static/img/tours/product_79_2.jpg',
+                '/static/img/tours/product_79_3.jpg',
+                '/static/img/tours/product_79_4.jpg'
+            ]
         },
         {
             'name': '청송 주왕산 주산지 물안개 & 대전사 기암 협곡',
@@ -954,7 +1169,12 @@ def seed_database():
             'original_price': 59000,
             'member_discount_rate': 0.10,
             'recommendation_count': 720,
-            'image_urls': ['/static/img/tours/product_28_1.jpg', '/static/img/tours/product_28_2.jpg', '/static/img/tours/product_28_3.jpg', '/static/img/tours/product_28_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_80_1.jpg',
+                '/static/img/tours/product_80_2.jpg',
+                '/static/img/tours/product_80_3.jpg',
+                '/static/img/tours/product_80_4.jpg'
+            ]
         },
         {
             'name': '문경 문경새재 황톳길 맨발걷기 & 오픈세트장 사극체험',
@@ -963,7 +1183,12 @@ def seed_database():
             'original_price': 52000,
             'member_discount_rate': 0.10,
             'recommendation_count': 810,
-            'image_urls': ['/static/img/tours/product_29_1.jpg', '/static/img/tours/product_29_2.jpg', '/static/img/tours/product_29_3.jpg', '/static/img/tours/product_29_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_81_1.jpg',
+                '/static/img/tours/product_81_2.jpg',
+                '/static/img/tours/product_81_3.jpg',
+                '/static/img/tours/product_81_4.jpg'
+            ]
         },
         {
             'name': '영주 부석사 무량수전 배흘림기둥 & 소수서원 선비마을',
@@ -972,7 +1197,12 @@ def seed_database():
             'original_price': 54000,
             'member_discount_rate': 0.10,
             'recommendation_count': 690,
-            'image_urls': ['/static/img/tours/product_30_1.jpg', '/static/img/tours/product_30_2.jpg', '/static/img/tours/product_30_3.jpg', '/static/img/tours/product_30_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_82_1.jpg',
+                '/static/img/tours/product_82_2.jpg',
+                '/static/img/tours/product_82_3.jpg',
+                '/static/img/tours/product_82_4.jpg'
+            ]
         },
         {
             'name': '울진 불영사 계곡 드라이브 & 덕구온천 족욕 테라피',
@@ -981,7 +1211,12 @@ def seed_database():
             'original_price': 67000,
             'member_discount_rate': 0.15,
             'recommendation_count': 540,
-            'image_urls': ['/static/img/tours/product_25_2.jpg', '/static/img/tours/product_25_3.jpg', '/static/img/tours/product_25_4.jpg', '/static/img/tours/product_25_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_83_1.jpg',
+                '/static/img/tours/product_83_2.jpg',
+                '/static/img/tours/product_83_3.jpg',
+                '/static/img/tours/product_83_4.jpg'
+            ]
         },
         {
             'name': '영덕 블루로드 해맞이공원 바다산책 & 강구항 대게 미식',
@@ -990,7 +1225,12 @@ def seed_database():
             'original_price': 79000,
             'member_discount_rate': 0.15,
             'recommendation_count': 860,
-            'image_urls': ['/static/img/tours/product_26_2.jpg', '/static/img/tours/product_26_3.jpg', '/static/img/tours/product_26_4.jpg', '/static/img/tours/product_26_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_84_1.jpg',
+                '/static/img/tours/product_84_2.jpg',
+                '/static/img/tours/product_84_3.jpg',
+                '/static/img/tours/product_84_4.jpg'
+            ]
         },
         {
             'name': '봉화 백두대간 수목원 호랑이숲 & 분천역 산타마을',
@@ -999,7 +1239,12 @@ def seed_database():
             'original_price': 61000,
             'member_discount_rate': 0.10,
             'recommendation_count': 630,
-            'image_urls': ['/static/img/tours/product_27_2.jpg', '/static/img/tours/product_27_3.jpg', '/static/img/tours/product_27_4.jpg', '/static/img/tours/product_27_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_85_1.jpg',
+                '/static/img/tours/product_85_2.jpg',
+                '/static/img/tours/product_85_3.jpg',
+                '/static/img/tours/product_85_4.jpg'
+            ]
         },
         {
             'name': '군위 화본역 레트로 감성 & 한밤마을 돌담길 산책',
@@ -1008,7 +1253,12 @@ def seed_database():
             'original_price': 46000,
             'member_discount_rate': 0.10,
             'recommendation_count': 510,
-            'image_urls': ['/static/img/tours/product_28_2.jpg', '/static/img/tours/product_28_3.jpg', '/static/img/tours/product_28_4.jpg', '/static/img/tours/product_28_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_86_1.jpg',
+                '/static/img/tours/product_86_2.jpg',
+                '/static/img/tours/product_86_3.jpg',
+                '/static/img/tours/product_86_4.jpg'
+            ]
         },
 
         # --- 추가 상품: [6] 제주 추가 (10개) ---
@@ -1019,7 +1269,12 @@ def seed_database():
             'original_price': 78000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1350,
-            'image_urls': ['/static/img/tours/product_31_1.jpg', '/static/img/tours/product_31_2.jpg', '/static/img/tours/product_31_3.jpg', '/static/img/tours/product_31_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_87_1.jpg',
+                '/static/img/tours/product_87_2.jpg',
+                '/static/img/tours/product_87_3.jpg',
+                '/static/img/tours/product_87_4.jpg'
+            ]
         },
         {
             'name': '서귀포 주상절리대 해안 절벽 & 천지연폭포 아열대 숲',
@@ -1028,7 +1283,12 @@ def seed_database():
             'original_price': 62000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1140,
-            'image_urls': ['/static/img/tours/product_32_1.jpg', '/static/img/tours/product_32_2.jpg', '/static/img/tours/product_32_3.jpg', '/static/img/tours/product_32_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_88_1.jpg',
+                '/static/img/tours/product_88_2.jpg',
+                '/static/img/tours/product_88_3.jpg',
+                '/static/img/tours/product_88_4.jpg'
+            ]
         },
         {
             'name': '구좌 세화해변 비취빛 바다 & 비자림 천년숲길 피톤치드',
@@ -1037,7 +1297,12 @@ def seed_database():
             'original_price': 69000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1220,
-            'image_urls': ['/static/img/tours/product_33_1.jpg', '/static/img/tours/product_33_2.jpg', '/static/img/tours/product_33_3.jpg', '/static/img/tours/product_33_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_89_1.jpg',
+                '/static/img/tours/product_89_2.jpg',
+                '/static/img/tours/product_89_3.jpg',
+                '/static/img/tours/product_89_4.jpg'
+            ]
         },
         {
             'name': '한림 협재해수욕장 비양도 뷰 & 금능 으뜸원해변 산책',
@@ -1046,7 +1311,12 @@ def seed_database():
             'original_price': 58000,
             'member_discount_rate': 0.10,
             'recommendation_count': 1290,
-            'image_urls': ['/static/img/tours/product_34_1.jpg', '/static/img/tours/product_34_2.jpg', '/static/img/tours/product_34_3.jpg', '/static/img/tours/product_34_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_90_1.jpg',
+                '/static/img/tours/product_90_2.jpg',
+                '/static/img/tours/product_90_3.jpg',
+                '/static/img/tours/product_90_4.jpg'
+            ]
         },
         {
             'name': '조천 사려니숲길 삼나무 명상 & 산굼부리 억새 분화구',
@@ -1055,7 +1325,12 @@ def seed_database():
             'original_price': 65000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1080,
-            'image_urls': ['/static/img/tours/product_35_1.jpg', '/static/img/tours/product_35_2.jpg', '/static/img/tours/product_35_3.jpg', '/static/img/tours/product_35_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_91_1.jpg',
+                '/static/img/tours/product_91_2.jpg',
+                '/static/img/tours/product_91_3.jpg',
+                '/static/img/tours/product_91_4.jpg'
+            ]
         },
         {
             'name': '애월 한담해안산책로 투명카약 & 곽지과물해변 노을',
@@ -1064,7 +1339,12 @@ def seed_database():
             'original_price': 72000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1190,
-            'image_urls': ['/static/img/tours/product_36_1.jpg', '/static/img/tours/product_36_2.jpg', '/static/img/tours/product_36_3.jpg', '/static/img/tours/product_36_4.jpg']
+            'image_urls': [
+                '/static/img/tours/product_92_1.jpg',
+                '/static/img/tours/product_92_2.jpg',
+                '/static/img/tours/product_92_3.jpg',
+                '/static/img/tours/product_92_4.jpg'
+            ]
         },
         {
             'name': '표선 성읍민속마을 전통초가 & 제주민속촌 문화체험',
@@ -1073,7 +1353,12 @@ def seed_database():
             'original_price': 53000,
             'member_discount_rate': 0.10,
             'recommendation_count': 840,
-            'image_urls': ['/static/img/tours/product_31_2.jpg', '/static/img/tours/product_31_3.jpg', '/static/img/tours/product_31_4.jpg', '/static/img/tours/product_31_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_93_1.jpg',
+                '/static/img/tours/product_93_2.jpg',
+                '/static/img/tours/product_93_3.jpg',
+                '/static/img/tours/product_93_4.jpg'
+            ]
         },
         {
             'name': '중문 엉덩물계곡 유채꽃밭 & 여미지식물원 온실 투어',
@@ -1082,7 +1367,12 @@ def seed_database():
             'original_price': 61000,
             'member_discount_rate': 0.10,
             'recommendation_count': 920,
-            'image_urls': ['/static/img/tours/product_32_2.jpg', '/static/img/tours/product_32_3.jpg', '/static/img/tours/product_32_4.jpg', '/static/img/tours/product_32_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_94_1.jpg',
+                '/static/img/tours/product_94_2.jpg',
+                '/static/img/tours/product_94_3.jpg',
+                '/static/img/tours/product_94_4.jpg'
+            ]
         },
         {
             'name': '서귀포 정방폭포 해안 절경 & 올레시장 미식투어',
@@ -1091,7 +1381,12 @@ def seed_database():
             'original_price': 56000,
             'member_discount_rate': 0.10,
             'recommendation_count': 1020,
-            'image_urls': ['/static/img/tours/product_33_2.jpg', '/static/img/tours/product_33_3.jpg', '/static/img/tours/product_33_4.jpg', '/static/img/tours/product_33_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_95_1.jpg',
+                '/static/img/tours/product_95_2.jpg',
+                '/static/img/tours/product_95_3.jpg',
+                '/static/img/tours/product_95_4.jpg'
+            ]
         },
         {
             'name': '안덕 카멜리아힐 동백수목원 & 산방산 용머리해안',
@@ -1100,7 +1395,12 @@ def seed_database():
             'original_price': 67000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1130,
-            'image_urls': ['/static/img/tours/product_34_2.jpg', '/static/img/tours/product_34_3.jpg', '/static/img/tours/product_34_4.jpg', '/static/img/tours/product_34_1.jpg']
+            'image_urls': [
+                '/static/img/tours/product_96_1.jpg',
+                '/static/img/tours/product_96_2.jpg',
+                '/static/img/tours/product_96_3.jpg',
+                '/static/img/tours/product_96_4.jpg'
+            ]
         }
     ]
     sample_review_comments = [
