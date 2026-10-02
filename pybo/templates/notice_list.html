@@ -1,107 +1,175 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항 및 Q&A</title>
-
-
-    <!-- 2. 모든 스타일 시트 통합 (디자인 및 Hover 애니메이션 효과) -->
-    <style>
-        /* [스타일 1] 아코디언 질문 클릭하여 활성화되었을 때 색상 변경 */
-        .qa-section .accordion-button:not(.collapsed) {
-            background-color: var(--bs-primary-bg-subtle, #cfe2ff) !important;
-            color: var(--bs-primary-text-emphasis, #052c65) !important;
-        }
-
-        /* [스타일 2] 카드 버튼 기본 상태: 부드러운 전환 효과(Transition) 설정 */
-        .review-text-btn-card {
-            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
-        }
-
-        /* [스타일 3] 카드 버튼 Hover 상태: 마우스 올렸을 때 색상 변경 및 3px 공중 부양 */
-        .review-text-btn-card:hover {
-            background-color: var(--bs-gray-200, #e9ecef) !important;
-            border-color: var(--bs-border-color-translucent, #cbd5e1) !important;
-            transform: translateY(-3px) !important;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <!-- 3. [독립 컴포넌트] 자주 묻는 질문 (Q&A) 섹션 HTML -->
-    <section class="qa-section my-5 p-3">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="h3 mb-0 fw-bold">🙋‍♂️ 자주 묻는 질문 (Q&A)</h2>
-            <!-- 질문 더보기 버튼 (Hover 효과를 위해 클래스명 결합 완료) -->
-            <button class="btn btn-primary fw-bold review-text-btn-card" id="btnLoadMoreQA">질문 더보기 ↻</button>
+<!-- ==========================================================================
+     1. 📢 중요 공지사항 (Notice) 섹션
+     ========================================================================== -->
+<section class="notice-custom-section my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div>
+            <h2 class="mb-1 fw-bold fs-4" style="color: #212529;">📢 중요 공지사항</h2>
+            <p class="text-muted small mb-0">길마중 여행의 새로운 소식과 긴급 안내를 확인하세요.</p>
         </div>
+        <!-- 지속적 업데이트를 위한 동적 추가 버튼 -->
+        <button class="btn btn-outline-dark btn-sm fw-bold py-2 px-3 shadow-sm review-text-btn-card" id="btnLoadMoreNotice">
+            공지사항 더보기 ↻
+        </button>
+    </div>
 
-        <!-- 부트스트랩 아코디언 (고유 ID 지정으로 기능 충돌 방지) -->
-        <div class="accordion shadow-sm rounded-3" id="faqAccordion">
-            <!-- 기본 질문 1 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        Q1. 예약 취소 및 환불 규정은 어떻게 되나요?
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary" style="line-height: 1.6;">
-                        여행 출발 7일 전까지는 100% 전액 환불이 가능합니다. 이후 취소 시점에 따라 차등 수수료가 부과되오니 고객센터 규정을 참고해 주세요.
-                    </div>
-                </div>
-            </div>
-
-            <!-- 기본 질문 2 -->
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Q2. 가이드 투어 시 개인 준비물이 있나요?
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-secondary" style="line-height: 1.6;">
-                        도보 이동이 많으므로 편안한 운동화 착용을 권장합니다. 개인 무선 이어폰을 지참하시면 가이드 수신기 연결이 더 수월합니다.
-                    </div>
+    <!-- 부트스트랩 아코디언 기반 공지사항 (고유 ID 체계로 Q&A와 충돌 차단) -->
+    <div class="accordion shadow-sm rounded-3 overflow-hidden" id="gilmajungNoticeAccordion">
+        <!-- 기본 공지 1 -->
+        <div class="accordion-item border-light-subtle">
+            <h2 class="accordion-header" id="noticeHeadingOne">
+                <button class="accordion-button collapsed fw-semibold text-dark d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#noticeCollapseOne" aria-expanded="false" aria-controls="noticeCollapseOne">
+                    <span class="d-inline-block text-truncate me-3" style="max-width: 75%;">
+                        <span class="badge bg-danger me-2">필독</span> [안내] 가을 시즌 전용 투어 상품 오픈 및 조기 예약 할인 안내
+                    </span>
+                    <small class="text-muted ms-auto pe-3 notice-datetime">2026-10-02</small>
+                </button>
+            </h2>
+            <div id="noticeCollapseOne" class="accordion-collapse collapse" aria-labelledby="noticeHeadingOne" data-bs-parent="#gilmajungNoticeAccordion">
+                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                    안녕하세요. 길마중 투어입니다. 가을을 맞아 더 특별한 여행 패키지들이 공식 오픈되었습니다. 이번 달 15일까지 조기 예약하시는 고객님들께는 10% 추가 할인 혜택이 자동 적용되오니 많은 성원 부탁드립니다.
                 </div>
             </div>
         </div>
-    </section>
-</div>
 
-<!-- 4. 전역 스코프 오염 및 코드 충돌을 방지하기 위한 독립 스크립트 블록 -->
+        <!-- 기본 공지 2 -->
+        <div class="accordion-item border-light-subtle">
+            <h2 class="accordion-header" id="noticeHeadingTwo">
+                <button class="accordion-button collapsed fw-semibold text-dark d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#noticeCollapseTwo" aria-expanded="false" aria-controls="noticeCollapseTwo">
+                    <span class="d-inline-block text-truncate me-3" style="max-width: 75%;">
+                        <span class="badge bg-secondary me-2">안내</span> 예약 대행 서비스 일시 중단 안내 (서버 점검)
+                    </span>
+                    <small class="text-muted ms-auto pe-3 notice-datetime">2026-09-28</small>
+                </button>
+            </h2>
+            <div id="noticeCollapseTwo" class="accordion-collapse collapse" aria-labelledby="noticeHeadingTwo" data-bs-parent="#gilmajungNoticeAccordion">
+                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                    안정적인 서비스 제공을 위한 서버 정기 점검이 진행될 예정입니다. 점검 시간인 새벽 02시부터 06시까지는 실시간 예약 및 조회 서비스가 일시 제한되오니 양해 부탁드립니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="my-5" style="border-top: 2px dashed #cbd5e1;">
+
+<!-- ==========================================================================
+     2. 🙋‍♂️ 자주 묻는 질문 (Q&A) 섹션
+     ========================================================================== -->
+<section class="qa-section my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div>
+            <h2 class="mb-1 fw-bold fs-4" style="color: #212529;">🙋‍♂️ 자주 묻는 질문 (Q&A)</h2>
+            <p class="text-muted small mb-0">길마중 여행에 대해 궁금한 점을 빠르게 확인해보세요.</p>
+        </div>
+        <button class="btn btn-primary btn-sm fw-bold py-2 px-3 shadow-sm review-text-btn-card" id="btnLoadMoreQA">
+            질문 더보기 ↻
+        </button>
+    </div>
+
+    <div class="accordion shadow-sm rounded-3 overflow-hidden" id="faqAccordion">
+        <!-- 기본 질문 1 -->
+        <div class="accordion-item border-light-subtle">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Q1. 예약 취소 및 환불 규정은 어떻게 되나요?
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                    여행 출발 7일 전까지는 100% 전액 환불이 가능합니다. 이후 취소 시점에 따라 차등 수수료가 부과되오니 고객센터 규정을 참고해 주세요.
+                </div>
+            </div>
+        </div>
+
+        <!-- 기본 질문 2 -->
+        <div class="accordion-item border-light-subtle">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Q2. 가이드 투어 시 개인 준비물이 있나요?
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                    도보 이동이 많으므로 편안한 운동화 착용을 권장합니다. 개인 무선 이어폰을 지참하시면 가이드 수신기 연결이 더 수월합니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     3. 실시간 비동기 업데이트 스크립트 (독립 실행 제어 및 복원 완료)
+     ========================================================================== -->
 <script>
     (function() {
-        let qaCount = 2; // 초기 질문 개수 카운터
-        const btnLoadMore = document.getElementById('btnLoadMoreQA');
-        const accordionContainer = document.getElementById('faqAccordion');
+        // --- [A] 공지사항 동적 추가 핸들러 ---
+        let noticeCount = 2;
+        const btnNotice = document.getElementById('btnLoadMoreNotice');
+        const noticeCont = document.getElementById('gilmajungNoticeAccordion');
 
-        if (btnLoadMore && accordionContainer) {
-            btnLoadMore.addEventListener('click', function() {
-                qaCount++;
+        if (btnNotice && noticeCont) {
+            btnNotice.addEventListener('click', function() {
+                noticeCount++;
+                btnNotice.disabled = true;
+                btnNotice.textContent = '불러오는 중...';
 
-                // 새로운 질문 아이템 노드 생성
-                const newQaItem = document.createElement('div');
-                newQaItem.className = 'accordion-item';
-                newQaItem.innerHTML = `
-                    <h2 class="accordion-header" id="heading${qaCount}">
-                        <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${qaCount}" aria-expanded="false" aria-controls="collapse${qaCount}">
-                            Q${qaCount}. 지속적 업데이트 기능으로 추가된 질문입니다.
-                        </button>
-                    </h2>
-                    <div id="collapse${qaCount}" class="accordion-collapse collapse" aria-labelledby="heading${qaCount}" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body text-secondary" style="line-height: 1.6;">
-                            이 영역은 백엔드 API 연동 시 실시간(Ajax/Fetch)으로 최신 데이터를 받아와 기존 레이아웃 파괴 없이 부드럽게 누적 업데이트됩니다.
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'accordion-item border-light-subtle';
+                    item.innerHTML = `
+                        <h2 class="accordion-header" id="noticeHeadingGen${noticeCount}">
+                            <button class="accordion-button collapsed fw-semibold text-dark d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#noticeCollapseGen${noticeCount}" aria-expanded="false" aria-controls="noticeCollapseGen${noticeCount}">
+                                <span class="d-inline-block text-truncate me-3" style="max-width: 75%;">
+                                    <span class="badge bg-secondary me-2">안내</span> 실시간 추가 반영된 공지사항입니다.
+                                </span>
+                                <small class="text-muted ms-auto pe-3 notice-datetime">2026-10-02</small>
+                            </button>
+                        </h2>
+                        <div id="noticeCollapseGen${noticeCount}" class="accordion-collapse collapse" aria-labelledby="noticeHeadingGen${noticeCount}" data-bs-parent="#gilmajungNoticeAccordion">
+                            <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                                본 공지 영역은 백엔드 실시간 API 인터페이스 연동 시 레이아웃 무너짐이나 중복 간섭 현상 없이 최신 공지 목록을 순차적으로 화면에 안전 적재합니다.
+                            </div>
                         </div>
-                    </div>
-                `;
-                accordionContainer.appendChild(newQaItem);
+                    `;
+                    noticeCont.appendChild(item);
+                    btnNotice.disabled = false;
+                    btnNotice.textContent = '공지사항 더보기 ↻';
+                }, 600);
+            });
+        }
+
+        // --- [B] 자주 묻는 질문(Q&A) 동적 추가 핸들러 ---
+        let qaCount = 2;
+        const btnQA = document.getElementById('btnLoadMoreQA');
+        const qaCont = document.getElementById('faqAccordion');
+
+        if (btnQA && qaCont) {
+            btnQA.addEventListener('click', function() {
+                qaCount++;
+                btnQA.disabled = true;
+                btnQA.textContent = '불러오는 중...';
+
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = 'accordion-item border-light-subtle';
+                    item.innerHTML = `
+                        <h2 class="accordion-header" id="headingGen${qaCount}">
+                            <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseGen${qaCount}" aria-expanded="false" aria-controls="collapseGen${qaCount}">
+                                Q${qaCount}. 추가 동적 생성 질문 컨텐츠입니다.
+                            </button>
+                        </h2>
+                        <div id="collapseGen${qaCount}" class="accordion-collapse collapse" aria-labelledby="headingGen${qaCount}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                                더보기 인터페이스 제어 메커니즘을 통해 데이터베이스(DB) 내 누적 보관 중인 Q&A 데이터를 추가적인 페이지 새로고침 없이 유연하게 바인딩 처리합니다.
+                            </div>
+                        </div>
+                    `;
+                    qaCont.appendChild(item);
+                    btnQA.disabled = false;
+                    btnQA.textContent = '질문 더보기 ↻';
+                }, 600);
             });
         }
     })();
 </script>
-
-</body>
-</html>
