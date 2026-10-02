@@ -13,43 +13,57 @@
 
 #slider{
     margin-bottom: 30px;
+    background-size: cover;
+    background-position: center;
 }
 
 .carousel-item{
     width: 100%;
-    height: 450px;
+    height: 430px;
     background-size: 100%;
     overflow: hidden;
 }
 .carousel-item > div{
     position: absolute;
     margin: 0 auto;
-    padding: 10px;
-    top: 20px;
-    left: -550px;
+    padding: 20px;
+    top: 250px;
+    left: -450px;
     background-color: white;
     opacity: 0.7;
-    width: 250px;
-    height: 380px;
+    width: 400px;
+    height: 150px;
+    border-radius: 10px;
+    align-items: center;
 }
 .carousel-item > div > h5{
     color: black;
     text-align: left;
-    font-size: 20pt;
+    font-size: 15pt;
     margin-bottom: 20px;
+    font-weight: 700;
 }
 .carousel-item > div > p{
     color: black;
     text-align: left;
-    font-size: 14pt;
+    font-size: 11pt;
+    font-weight: 550;
 }
 
 /*슬라이드 밑 설명*/
 #underslide > h5{
+    width: 500px;
     height: 50px;
     padding: 10px;
     text-align: center;
     background-color: #FAF8F5;
+}
+#underslide > p{
+    height: 20px;
+    text-align: center;
+}
+#underslide > hr{
+    margin: 10px 0 30px;
 }
 
 /* 지도 */
@@ -172,21 +186,59 @@
 #sub_wide1-1{
     display: flex;
     margin-top: 30px;
+    width: 300px !important;
 }
 /*스와이퍼*/
-#carouselExample{
-    width: 95%;
-    height: 300px;
-    margin: 20px;
-    overflow: hidden;
-}
+.swiper {
+        width: 100%;
+        height: 100%;
+      }
 
-#mini{
-    width: 95%;
-    height: 80px;
-    margin: 20px;
-    display: flex;
-}
+.swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #444;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+.swiper-slide img {
+        width: 100%;
+        height: 100%;
+      }
+.swiper {
+        width: 100%;
+        height: 300px;
+      }
+
+.mySwiper2 {
+        height: 80%;
+        width: 100%;
+      }
+
+.mySwiper {
+        height: 20%;
+        padding: 10px 0;
+      }
+
+.mySwiper .swiper-slide {
+        width: 25%;
+        height: 100%;
+        opacity: 0.4;
+      }
+
+.mySwiper .swiper-slide-thumb-active {
+        opacity: 1;
+      }
+
+.swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
 
 #recommend{
     background-color: #FAF8F5;
@@ -366,6 +418,11 @@
 }
 
 #main-schedule > p{
+    font-size: 11pt;
+    margin: 5px 30px;
+}
+
+#main-schedule > h5{
     font-size: 11pt;
     margin: 5px 30px;
 }
