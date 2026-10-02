@@ -10,8 +10,18 @@ from pybo.forms import UserCreateForm, UserLoginForm
 import re
 import secrets
 import string
+import functools
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if g.user is None:
+            flash('로그인이 필요한 서비스입니다.')
+            return redirect(url_for('auth.login', next=request.url))
+        return view(*args, **kwargs)
+    return wrapped_view
 
 @bp.route('/signup/', methods=('GET', 'POST'))
 def signup():
@@ -43,6 +53,8 @@ def signup():
 def login():
     form = UserLoginForm()
 
+    next_page = request.args.get('next', '')
+
     if request.method == 'POST':
         user_id_input = request.form.get('user_id', '').strip()
         password_input = request.form.get('password', '').strip()
@@ -58,24 +70,18 @@ def login():
         if form.validate_on_submit():
             user = User.query.filter_by(user_id=form.user_id.data).first()
 
-            if not user:
-                flash("존재하지 않는 아이디입니다.")
-                return render_template('auth/login.html', form=form)
-
-            elif not check_password_hash(user.password_hash, form.password.data):
-                flash("비밀번호가 올바르지 않습니다.")
+            if not user or not check_password_hash(user.password_hash, form.password.data):
+                flash("아이디 또는 비밀번호가 올바르지 않습니다.")
                 return render_template('auth/login.html', form=form)
 
             session.clear()
             session['user_id'] = user.id
+
+            if next_page and next_page.strip():
+                return redirect(next_page)
             return redirect(url_for('main.index'))
 
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    flash(error)
-
-    return render_template('auth/login.html', form=form)
+    return render_template('auth/login.html', form=form, next=next_page)
 
 
 @bp.route('/check_id', methods=['POST'])
@@ -207,59 +213,88 @@ kakao = oauth.register(
     api_base_url='https://kakao.com',
 )
 
+
 # ==========================================
-#  1. 구글(Google) 로그인 라우트
+#  1. 구글(Google) 로그인 및 콜백
 # ==========================================
 @bp.route('/login/google')
 def google_login():
+    if request.args.get('next'):
+        session['social_next'] = request.args.get('next')
+
     redirect_uri = url_for('auth.google_callback', _external=True)
     return google.authorize_redirect(redirect_uri)
+
 
 @bp.route('/login/google/callback')
 def google_callback():
     token = google.authorize_access_token()
     user_info = google.get('userinfo').json()
 
-    # 세션에 유저 이메일 저장 (로그인 완료 처리)
     session['user_id'] = user_info.get('email')
     session['user_name'] = user_info.get('name')
+
+    social_next = session.pop('social_next', None)
+    if social_next:
+        return redirect(social_next)
     return redirect(url_for('main.index'))
 
+
 # ==========================================
-#  2. 네이버(Naver) 로그인 라우트
+#  2. 네이버(Naver) 로그인 및 콜백
 # ==========================================
 @bp.route('/login/naver')
 def naver_login():
+    if request.args.get('next'):
+        session['social_next'] = request.args.get('next')
+
     redirect_uri = url_for('auth.naver_callback', _external=True)
     return naver.authorize_redirect(redirect_uri)
+
 
 @bp.route('/login/naver/callback')
 def naver_callback():
     token = naver.authorize_access_token()
-    # 네이버는 response 라는 키 안에 유저 프로필 정보가 담겨 있습니다.
     user_info = naver.get('').json().get('response', {})
 
     session['user_id'] = user_info.get('email')
     session['user_name'] = user_info.get('name')
+
+    social_next = session.pop('social_next', None)
+    if social_next:
+        return redirect(social_next)
     return redirect(url_for('main.index'))
 
+
 # ==========================================
-#  3. 카카오(Kakao) 로그인 라우트
+#  3. 카카오(Kakao) 로그인 및 콜백
 # ==========================================
 @bp.route('/login/kakao')
 def kakao_login():
+    if request.args.get('next'):
+        session['social_next'] = request.args.get('next')
+
     redirect_uri = url_for('auth.kakao_callback', _external=True)
     return kakao.authorize_redirect(redirect_uri)
+
 
 @bp.route('/login/kakao/callback')
 def kakao_callback():
     token = kakao.authorize_access_token()
-    user_info = kakao.get('').json()
 
-    # 카카오는 kakao_account 정보 안에 이메일과 프로필이 있습니다.
-    kakao_account = user_info.get('kakao_account', {})
-    profile = kakao_account.get('profile', {})
+    session['user_id'] = "kakao_user_id"
 
-    session['user_id'] = kakao_account.get('email')
-    session['user_name'] = profile.get('nickname')
+    social_next = session.pop('social_next', None)
+    if social_next:
+        return redirect(social_next)
     return redirect(url_for('main.index'))
+
+# 고객센터 개인문의 내용
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if g.user is None:
+            flash('로그인이 필요한 서비스입니다.')
+            return redirect(url_for('auth.login', next=request.url))
+        return view(*args, **kwargs)
+    return wrapped_view
