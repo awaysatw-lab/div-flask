@@ -1,6 +1,6 @@
 # pybo/forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField, IntegerField, BooleanField
+from wtforms import StringField, PasswordField, EmailField, IntegerField, BooleanField,TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Regexp, NumberRange, Optional
 from pybo.models import User
 from datetime import datetime, timedelta, date
@@ -176,4 +176,10 @@ class OrderReserveForm(FlaskForm):
 
 # 호환성 별칭
 ReserveForm = OrderReserveForm
+
+# 고객센터
+class QuestionForm(FlaskForm):
+    subject = StringField('제목', validators=[DataRequired('제목은 필수 항목입니다.')])
+    email = EmailField('이메일', validators=[DataRequired('이메일은 필수 항목입니다.'), Email('올바른 이메일 형식이 아닙니다.')])
+    content = TextAreaField('내용', validators=[DataRequired('내용은 필수 항목입니다.')])
 

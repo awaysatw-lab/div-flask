@@ -1,0 +1,102 @@
+
+body {
+    background-color: #F8F5F0;
+    color: #212529;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+.cs-card {
+    background: #FFFFFF;
+    border: 1px solid #EAE8E4;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    padding: 30px;
+}
+
+.form-control {
+    background-color: #fff;
+    border: 1px solid #F8F5F0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    background-color: #FFFFFF;
+    border-color: #1E3A8A;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+.btn-navy {
+    background-color: #1D3557;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.btn-navy:hover {
+    background-color: #4A7C8F;
+    color: #FFFFFF;
+}
+
+.btn-light-custom {
+    background-color: #fff;
+    color: #1E3A5F;
+    border-color: #F8F5F0;
+    border-radius: 8px;
+    padding: 12px 24px;
+}
+
+.btn-light-custom:hover {
+    background-color: #4A7C8F;
+}
+
+.accordion-item {
+    border: none;
+    border-bottom: 1px solid #EAE8E4;
+    background: transparent;
+}
+
+.accordion-button {
+    background-color: transparent ;
+    color: #2B2D42 ;
+    font-weight: 500;
+    padding: 20px 10px;
+    box-shadow: none ;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #1E3A5F ;
+    font-weight: 600;
+}
+
+.accordion-body {
+    padding: 0 10px 20px 10px;
+    color: #999999;
+    line-height: 1.6;
+}
+
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.custom-table tr {
+    background: #FFFFFF;
+    border: 1px solid #F6F4EE;
+}
+
+.custom-table td, .custom-table th {
+    padding: 16px;
+    border: none;
+}
+
+.custom-table th {
+    color: #999;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
