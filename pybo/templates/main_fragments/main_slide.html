@@ -1,23 +1,23 @@
-
+<!-- 메인 배너 (슬라이드) 조각 -->
 <section class="main-banner-full" id="mainBanner"
          onclick="location.href='{{ url_for('main.autumn_detail') }}'"
-         style="background-image: url('{{ url_for('static', filename='img/slide1.jpg') }}'); cursor: pointer; min-height: 400px; background-position: center; background-size: cover;">
+         style="background-image: url('{{ url_for('static', filename='img/slide1.jpg') }}'); cursor: pointer;">
 
     <div class="banner-overlay"></div>
-    <div class="container h-100 d-flex align-items-center">
-        <div class="banner-content-wrap text-white">
-            <div class="banner-text" onclick="event.stopPropagation();" style="cursor: default;">
-                <h2 id="bannerTitle" class="fw-bold fs-2 fs-md-1 mb-3">
-                    추억이 물드는<br>가을 여행
-                </h2>
-                <p id="bannerDesc" class="fs-5 opacity-75 mb-4">
-                    일상에서 벗어나<br>가을 추천 여행
-                </p>
-                <div class="banner-arrows bg-dark bg-opacity-50 rounded-pill px-3 py-1 d-inline-flex align-items-center" onclick="event.stopPropagation();">
-                    <span class="arrow-btn me-2" id="prevBanner" style="cursor: pointer;">〈</span>
-                    <span id="bannerArrowText" class="small">1 / 6</span>
-                    <span class="arrow-btn ms-2" id="nextBanner" style="cursor: pointer;">〉</span>
-                </div>
+    <div class="banner-content-wrap">
+        <div class="banner-text" onclick="event.stopPropagation();" style="cursor: default;">
+            <h2 id="bannerTitle">
+                추억이 물드는<br>
+                가을 여행
+            </h2>
+            <p id="bannerDesc">
+                일상에서 벗어나<br>
+                가을 추천 여행
+            </p>
+            <div class="banner-arrows" onclick="event.stopPropagation();">
+                <span class="arrow-btn" id="prevBanner" style="cursor: pointer;">〈</span>
+                <span id="bannerArrowText">1 / 6</span>
+                <span class="arrow-btn" id="nextBanner" style="cursor: pointer;">〉</span>
             </div>
         </div>
     </div>

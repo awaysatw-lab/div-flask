@@ -1,169 +1,165 @@
-<!-- [독립 컴포넌트] 🟠 길마중 Q&A (질문답변) 섹션 -->
-<section class="qa-custom-section my-5 px-3">
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-        <div>
-            <h2 class="mb-1 fw-bold fs-4" style="color: #212529;">🙋‍♂️ 자주 묻는 질문 / 답변</h2>
-            <p class="text-muted small mb-0">길마중 여행에 대해 궁금한 점을 빠르게 확인해보세요.</p>
-        </div>
-        <!-- 지속적 업데이트 기능을 수행하는 비동기 트리거 버튼 -->
-        <button class="btn btn-primary btn-sm fw-bold py-2 px-3 shadow-sm" id="btnLoadMoreQA">
-            질문 더보기 ↻
-        </button>
-    </div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대한민국 구석구석 - 여행 Q&A (최종완성본)</title>
+    <style>
+        /* 1. 기본 리셋 및 스타일 독립화 (충돌 방지 프리픽스 적용) */
+        .kor-travel-body * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
+        .kor-travel-body { background-color: #f8f9fa; color: #333; line-height: 1.5; }
+        .kor-travel-body a { text-decoration: none; color: inherit; cursor: pointer; }
+        .kor-travel-body ul { list-style: none; }
 
-    <!-- [기능 1] 버튼창 이동 가이드 (특정 질문 영역으로 앵커 이동) -->
-    <div class="qa-quick-navigation mb-4 p-3 bg-light rounded-3 d-flex flex-wrap gap-2 align-items-center">
-        <span class="fw-semibold text-secondary small me-2">🎯 빠른 바로가기 :</span>
-        <button class="btn btn-sm btn-outline-dark rounded-pill qa-nav-btn" data-target-qa="headingOne">취소/환불 규정</button>
-        <button class="btn btn-sm btn-outline-dark rounded-pill qa-nav-btn" data-target-qa="headingTwo">준비물 안내</button>
-        <span id="qaDynamicNavContainer" class="d-inline-flex gap-2"></span>
-    </div>
+        /* 2. 헤더 */
+        .kt-header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .kt-logo { font-size: 24px; font-weight: bold; color: #007bff; cursor: pointer; user-select: none; }
+        .kt-user-menu a { margin-left: 15px; font-size: 14px; color: #666; }
+        .kt-user-menu a:hover { color: #007bff; }
 
-    <!-- 부트스트랩 아코디언 구조 (고유 ID 체계로 충돌 전면 차단) -->
-    <div class="accordion shadow-sm rounded-3 overflow-hidden" id="gilmajungFaqAccordion">
-        <!-- 기본 질문 1 -->
-        <div class="accordion-item border-light-subtle">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    Q1. 예약 취소 및 환불 규정은 어떻게 되나요?
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#gilmajungFaqAccordion">
-                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
-                    여행 출발 7일 전까지는 100% 전액 환불이 가능합니다. 이후 취소 시점에 따라 차등 수수료가 부과되오니 고지된 여행약관 및 고객센터 규정을 참고해 주세요.
+        /* 메인 컨테이너 */
+        .kt-container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+
+        /* 3. 검색창 세션 */
+        .kt-search-section { text-align: center; margin-bottom: 30px; }
+        .kt-search-section h1 { font-size: 28px; margin-bottom: 20px; color: #222; }
+        .kt-search-box { position: relative; max-width: 600px; margin: 0 auto; }
+        .kt-search-box input { width: 100%; padding: 15px 20px; font-size: 16px; border: 2px solid #007bff; border-radius: 30px; outline: none; box-shadow: 0 4px 6px rgba(0,123,255,0.1); cursor: text; }
+        .kt-search-box button { position: absolute; right: 5px; top: 5px; background-color: #007bff; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background 0.2s; user-select: none; }
+        .kt-search-box button:hover { background-color: #0056b3; }
+
+        /* 4. 이미지 홍보 슬라이드 배너 */
+        .kt-slider-wrapper { position: relative; max-width: 1000px; height: 220px; margin: 0 auto 40px auto; overflow: hidden; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .kt-slider-container { display: flex; width: 300%; height: 100%; transition: transform 0.5s ease-in-out; }
+        .kt-slide { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 0 60px; color: white; position: relative; cursor: pointer; user-select: none; }
+
+        .kt-slide.slide1 { background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc); }
+        .kt-slide.slide2 { background: linear-gradient(135deg, #3a7bd5, #3a6073); }
+        .kt-slide.slide3 { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .kt-slide h2 { font-size: 24px; margin-bottom: 10px; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); }
+        .kt-slide p { font-size: 15px; opacity: 0.9; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+
+        /* 슬라이드 컨트롤러 */
+        .kt-slide-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 20px; font-weight: bold; z-index: 10; transition: background 0.2s; user-select: none; }
+        .kt-slide-btn:hover { background: rgba(255,255,255,0.4); }
+        .kt-slide-prev { left: 15px; }
+        .kt-slide-next { right: 15px; }
+
+        /* 슬라이드 인디케이터 */
+        .kt-slide-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; }
+        .kt-dot { width: 8px; height: 8px; background: rgba(255,255,255,0.4); border-radius: 50%; cursor: pointer; user-select: none; }
+        .kt-dot.active { background: #ffffff; width: 20px; border-radius: 10px; transition: all 0.3s; }
+
+        /* 5. 네비게이션 카테고리 탭 */
+        .kt-nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #e9ecef; padding-bottom: 10px; user-select: none; }
+        .kt-tab-item { padding: 10px 20px; font-size: 15px; font-weight: 500; color: #666; cursor: pointer; border-radius: 20px; transition: all 0.2s; }
+        .kt-tab-item.active { background-color: #007bff; color: white; }
+        .kt-tab-item:hover:not(.active) { background-color: #e9ecef; }
+
+        /* 6. Q&A 리스트 영역 */
+        .kt-qa-list { background-color: #ffffff; border-radius: 8px; border: 1px solid #eeeeee; overflow: hidden; }
+        .kt-qa-item { padding: 20px; border-bottom: 1px solid #eeeeee; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .kt-qa-item:hover { background-color: #fafbfc; }
+        .kt-qa-item:last-child { border-bottom: none; }
+        .kt-qa-content { flex: 1; }
+        .kt-qa-status { display: inline-block; padding: 4px 8px; font-size: 12px; border-radius: 4px; font-weight: bold; margin-bottom: 8px; user-select: none; }
+        .kt-status-resolved { background-color: #e6f4ea; color: #137333; }
+        .kt-status-pending { background-color: #feeee7; color: #c26401; }
+        .kt-qa-title { font-size: 18px; font-weight: bold; margin-bottom: 6px; color: #222; transition: color 0.2s; cursor: pointer; }
+        .kt-qa-title:hover { color: #007bff; }
+        .kt-qa-info { font-size: 13px; color: #888; cursor: default; }
+        .kt-qa-meta { text-align: right; min-width: 80px; user-select: none; }
+        .kt-reply-count { font-size: 14px; font-weight: bold; color: #007bff; background-color: #f0f7ff; padding: 6px 12px; border-radius: 20px; cursor: default; }
+
+        /* 검색결과 없음 안내 */
+        .kt-no-result { padding: 50px 20px; text-align: center; color: #999; font-size: 16px; display: none; cursor: default; }
+
+        /* 7. 푸터 */
+        .kt-footer { background-color: #ffffff; border-top: 1px solid #eeeeee; padding: 30px 20px; text-align: center; font-size: 13px; color: #888; margin-top: 50px; cursor: default; }
+    </style>
+</head>
+<body class="kor-travel-body">
+
+    <!-- 1. 헤더 -->
+    <header class="kt-header">
+        <div class="kt-logo" onclick="resetFilters()">대한민국 구석구석</div>
+        <nav class="kt-user-menu">
+            <a href="#">로그인</a>
+            <a href="#">회원가입</a>
+            <a href="#">고객센터</a>
+        </nav>
+    </header>
+
+    <!-- 메인 컨테이너 -->
+    <main class="kt-container">
+
+        <!-- 2. 검색창 세션 -->
+        <section class="kt-search-section">
+            <h1>궁금한 국내 여행 정보를 찾아보세요</h1>
+            <div class="kt-search-box">
+                <input type="text" id="ktSearchInput" placeholder="지역명, 관광지, 맛집 등을 검색해보세요." onkeyup="if(window.event.keyCode==13){filterQA()}">
+                <button type="button" onclick="filterQA()">검색</button>
+            </div>
+        </section>
+
+        <!-- 3. 이미지 홍보 슬라이드 배너 -->
+        <section class="kt-slider-wrapper">
+            <button class="kt-slide-btn kt-slide-prev" onclick="moveSlide(-1)">&#10094;</button>
+            <div class="kt-slider-container" id="ktSlider">
+                <div class="kt-slide slide1" onclick="location.href='https://visitkorea.or.kr'">
+                    <h2>가을빛 물든 경주 보문관광단지</h2>
+                    <p>가족과 함께 걷기 좋은 10월 최적의 힐링 코스 보러가기 &gt;</p>
+                </div>
+                <div class="kt-slide slide2" onclick="location.href='https://visitkorea.or.kr'">
+                    <h2>부산 광안리 드론 라이트쇼</h2>
+                    <p>매주 토요일 밤을 수놓는 화려한 드론쇼 명당 가이드 &gt;</p>
+                </div>
+                <div class="kt-slide slide3" onclick="location.href='https://visitkorea.or.kr'">
+                    <h2>낭만 가득 여수 밤바다 크루즈</h2>
+                    <p>선상에서 즐기는 불꽃놀이와 버스킹 예약 꿀팁 &gt;</p>
                 </div>
             </div>
-        </div>
+            <button class="kt-slide-btn kt-slide-next" onclick="moveSlide(1)">&#10095;</button>
+            <div class="kt-slide-dots">
+                <span class="kt-dot active" onclick="currentSlide(0)"></span>
+                <span class="kt-dot" onclick="currentSlide(1)"></span>
+                <span class="kt-dot" onclick="currentSlide(2)"></span>
+            </div>
+        </section>
 
-        <!-- 기본 질문 2 -->
-        <div class="accordion-item border-light-subtle">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Q2. 가이드 투어 시 개인 준비물이 있나요?
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#gilmajungFaqAccordion">
-                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
-                    도보 이동이 많으므로 편안한 운동화 착용을 적극 권장합니다. 개인 무선 이어폰을 지참하시면 투어 수신기 연결이 한층 더 수월합니다.
+        <!-- 4. 네비게이션 탭 -->
+        <nav class="kt-nav-tabs">
+            <div class="kt-tab-item active" data-category="전체" onclick="changeTab(this)">전체</div>
+            <div class="kt-tab-item" data-category="관광지" onclick="changeTab(this)">관광지</div>
+            <div class="kt-tab-item" data-category="맛집" onclick="changeTab(this)">맛집</div>
+            <div class="kt-tab-item" data-category="숙소" onclick="changeTab(this)">숙소</div>
+            <div class="kt-tab-item" data-category="교통/일정" onclick="changeTab(this)">교통/일정</div>
+        </nav>
+
+        <!-- 5. Q&A 리스트 영역 (총 6개 데이터 행 구축) -->
+        <section class="kt-qa-list" id="ktQaList">
+            <!-- 행 1 -->
+            <div class="kt-qa-item" data-category="관광지">
+                <div class="kt-qa-content">
+                    <span class="kt-qa-status kt-status-resolved">답변완료</span>
+                    <a href="#"><h2 class="kt-qa-title">10월 중순 경주 2박 3일 가족 여행 코스 추천 부탁드립니다.</h2></a>
+                    <div class="kt-qa-info">분류: 관광지 | 작성자: 길동이 | 조회수: 124</div>
+                </div>
+                <div class="kt-qa-meta">
+                    <span class="kt-reply-count">답변 3</span>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
 
-<!-- 다른 JS 파일이나 라이브러리와 절대 간섭하지 않는 안전 격리 스크립트 -->
-<script>
-    (function() {
-        let qaIndex = 2; // 기존 기본 질문 수
-        const btnLoadMore = document.getElementById('btnLoadMoreQA');
-        const accordionContainer = document.getElementById('gilmajungFaqAccordion');
-        const navContainer = document.getElementById('qaDynamicNavContainer');
+            <!-- 행 2 -->
+            <div class="kt-qa-item" data-category="맛집">
+                <div class="kt-qa-content">
+                    <span class="kt-qa-status kt-status-pending">답변대기</span>
+                    <a href="#"><h2 class="kt-qa-title">부산 광안리 근처 혼밥하기 좋은 맛집 있을까요?</h2></a>
+                    <div class="kt-qa-info">분류: 맛집 | 작성자: 여행조아 | 조회수: 45</div>
+                </div>
+                <div class="kt-qa-meta">
+                    <span class="kt-reply-count">답변 0</span>
+                </div>
+            </div>
 
-        // [기능 2] 버튼창 이동 기능 스크롤 핸들러 (충돌 없는 표준 스크롤 이동)
-        function initScrollNavigation(element) {
-            element.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('data-target-qa');
-                const targetElement = document.getElementById(targetId);
-
-                if (targetElement) {
-                    // 해당 질문 요소를 찾아서 부드럽게 화면 중앙 부근으로 이동
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    // 이동 후 아코디언 버튼을 강제로 열어 가시성 확보
-                    const targetButton = targetElement.querySelector('.accordion-button');
-                    if (targetButton && targetButton.classList.contains('collapsed')) {
-                        targetButton.click();
-                    }
-                }
-            });
-        }
-
-        // 기본 제공 이동 버튼들에 기능 바인딩
-        document.querySelectorAll('.qa-nav-btn').forEach(btn => initScrollNavigation(btn));
-
-        // [기능 3] 지속적 질문 업데이트 기능 (비동기 데이터 누적 추가)
-        if (btnLoadMore && accordionContainer) {
-            btnLoadMore.addEventListener('click', function() {
-                qaIndex++;
-                btnLoadMore.disabled = true;
-                btnLoadMore.textContent = '불러오는 중...';
-
-                // 샘플 데이터 배열 (실제 운영 시 이 영역을 fetch('/api/qa') API 연동으로 교체 가능)
-                const mockTitles = [
-                    "길마중 패키지 여행 시 가이드 팁은 필수인가요?",
-                    "우천 등 기상 악화 시 투어 일정이 취소되나요?",
-                    "단체 예약 시 추가 할인을 적용받을 수 있나요?"
-                ];
-                const mockAnswers = [
-                    "길마중의 모든 전용 투어 상품은 공식 가이드 비용이 포함되어 있어 별도의 팁 강요가 절대 없습니다.",
-                    "안전에 지장이 없는 가벼운 비의 경우 정상 진행됩니다. 단, 천재지변급 기상악화 시 전액 환불 혹은 일정 변경 조치됩니다.",
-                    "10인 이상의 대가족이나 기업 연수 투어의 경우, 고객센터를 통해 맞춤형 견적 및 추가 프로모션 적용이 가능합니다."
-                ];
-
-                // 가상 인덱스 매칭을 통한 무한 루프 데이터 생성
-                const selectIdx = (qaIndex - 3) % mockTitles.length;
-                const dynamicTitle = `Q${qaIndex}. ${mockTitles[selectIdx]}`;
-                const dynamicAnswer = mockAnswers[selectIdx];
-                const newTargetId = `headingGenerated${qaIndex}`;
-                const newCollapseId = `collapseGenerated${qaIndex}`;
-
-                setTimeout(() => {
-                    // 1. 아코디언 리스트 리프레시 추가
-                    const newQaNode = document.createElement('div');
-                    newQaNode.className = 'accordion-item border-light-subtle';
-                    newQaNode.innerHTML = `
-                        <h2 class="accordion-header" id="${newTargetId}">
-                            <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#${newCollapseId}" aria-expanded="false" aria-controls="${newCollapseId}">
-                                ${dynamicTitle}
-                            </button>
-                        </h2>
-                        <div id="${newCollapseId}" class="accordion-collapse collapse" aria-labelledby="${newTargetId}" data-bs-parent="#gilmajungFaqAccordion">
-                            <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
-                                ${dynamicAnswer}
-                            </div>
-                        </div>
-                    `;
-                    accordionContainer.appendChild(newQaItemNode = newQaNode);
-
-                    // 2. 상단 이동 버튼 네비게이션바에도 동적 버튼 연동 자동화
-                    if (navContainer) {
-                        const newNavBtn = document.createElement('button');
-                        newNavBtn.className = 'btn btn-sm btn-outline-primary rounded-pill fade-in-animation';
-                        newNavBtn.setAttribute('data-target-qa', newTargetId);
-                        // 가시성을 위해 앞부분 명칭만 발췌 표기
-                        newNavBtn.textContent = mockTitles[selectIdx].substring(0, 6) + '...';
-                        navContainer.appendChild(newNavBtn);
-
-                        // 새로 생성된 바로가기 버튼에도 즉시 스크롤 기능 투입
-                        initScrollNavigation(newNavBtn);
-                    }
-
-                    // 버튼 상태 복구
-                    btnLoadMore.disabled = false;
-                    btnLoadMore.textContent = '질문 더보기 ↻';
-                }, 400); // 부드러운 전개를 위한 가상 딜레이 시간 적용
-            });
-        }
-    })();
-</script>
-
-<!-- 주석 정상 마감 및 UI 향상 테마 CSS 코드 -->
-<style>
-    .qa-custom-section .accordion-button:not(.collapsed) {
-        background-color: var(--bs-primary-bg-subtle, #cfe2ff) !important;
-        color: var(--bs-primary-text-emphasis, #052c65) !important;
-        box-shadow: none !important;
-    }
-    .qa-custom-section .accordion-button:focus {
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
-    }
-    /* 동적 추가 버튼 생성 시 부드러운 등장 애니메이션 */
-    .fade-in-animation {
-        animation: qaFadeIn 0.3s ease-in-out forwards;
-    }
-    @keyframes qaFadeIn {
-        from { opacity: 0; transform: scale(0.9); }
-        to { opacity: 1; transform: scale(1); }
-    }
-</style>
+            <!-- 행 3 -->

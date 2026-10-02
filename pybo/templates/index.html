@@ -4,18 +4,24 @@
 
 {% block content %}
 
-{% include 'main_fragments/main_slide.html' %}
+<div class="gilmajung-main-wrapper" style="all: unset; display: block; width: 100%;">
 
-<main class="content-container">
+    {% include 'main_fragments/main_slide.html' %}
 
-    {% include 'main_fragments/region_theme.html' %}
+    <div class="content-container">
 
-    {% include 'main_fragments/time_deal.html' %}
+        {% include 'main_fragments/region_theme.html' %}
 
-    {% include 'main_fragments/main_review.html' %}
+        {% include 'main_fragments/time_deal.html' %}
 
-    {% include 'main_fragments/main_notice.html' %}
+        {% include 'main_fragments/main_review.html' %}
 
-</main>
+        {% include 'main_fragments/main_notice.html' %}
+
+    </div>
+
+</div>
+
+
 
 {% endblock %}
