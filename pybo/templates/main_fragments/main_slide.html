@@ -1,0 +1,24 @@
+<!-- 메인 배너 (슬라이드) 조각 -->
+<section class="main-banner-full" id="mainBanner"
+         onclick="location.href='{{ url_for('main.autumn_detail') }}'"
+         style="background-image: url('{{ url_for('static', filename='img/slide1.jpg') }}'); cursor: pointer;">
+
+    <div class="banner-overlay"></div>
+    <div class="banner-content-wrap">
+        <div class="banner-text" onclick="event.stopPropagation();" style="cursor: default;">
+            <h2 id="bannerTitle">
+                추억이 물드는<br>
+                가을 여행
+            </h2>
+            <p id="bannerDesc">
+                일상에서 벗어나<br>
+                가을 추천 여행
+            </p>
+            <div class="banner-arrows" onclick="event.stopPropagation();">
+                <span class="arrow-btn" id="prevBanner" style="cursor: pointer;">〈</span>
+                <span id="bannerArrowText">1 / 6</span>
+                <span class="arrow-btn" id="nextBanner" style="cursor: pointer;">〉</span>
+            </div>
+        </div>
+    </div>
+</section>

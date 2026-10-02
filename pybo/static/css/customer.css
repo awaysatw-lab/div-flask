@@ -1,0 +1,255 @@
+/* ==========================================
+   [고객센터] 길마중 테마 기반 최적화 CSS (최종)
+   ========================================== */
+
+/* 기본 바디 가이드 */
+body {
+    background-color: #F8F5F0;
+    color: #212529;
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* 대시보드 레이아웃 중앙 정렬기 */
+.cs-dashboard-container {
+    max-width: 1280px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+/* 대제목 레이아웃 */
+.cs-title-area {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.cs-sub-title {
+    letter-spacing: 3px;
+    font-weight: 600;
+    display: block;
+    color: #8E90A6 !important;
+    font-size: 0.8rem;
+}
+
+.cs-main-title {
+    color: #1E3A5F;
+    letter-spacing: -1px;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* 2단 분할 그리드 강제 매핑 */
+.cs-grid-row {
+    display: flex !important;
+    width: 100%;
+    margin: 0 !important;
+}
+
+.cs-col-left {
+    flex: 0 0 auto;
+    width: 41.666667%;
+}
+
+.cs-col-right {
+    flex: 0 0 auto;
+    width: 58.333333%;
+}
+
+/* 길마중 감성의 백색 단정 카드 구조 */
+.cs-card {
+    background: #ffffff !important;
+    border: 1px solid #EAE6DF !important;
+    border-radius: 8px !important;
+    padding: 30px 25px !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.01) !important;
+}
+
+/* 좌우 카드 높이 동기화 셋 */
+.cs-height-sync {
+    height: 100%;
+    min-height: 480px;
+}
+
+.cs-flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 섹션 대타이틀 */
+.cs-section-title {
+    color: #1E3A5F;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    margin-bottom: 20px !important;
+}
+
+.cs-emoji {
+    font-size: 1.2rem;
+}
+
+/* 검색창 리팩토링 */
+.cs-search-bar {
+    border: 1px solid #D3C9BC !important;
+    border-radius: 4px !important;
+    padding: 10px 14px !important;
+    width: 100% !important;
+    background-color: #ffffff !important;
+    margin-bottom: 20px !important;
+    font-size: 0.9rem !important;
+}
+
+.cs-search-bar:focus {
+    border-color: #1E3A5F !important;
+    box-shadow: none !important;
+}
+
+/* 아코디언 컴포넌트 커스텀 */
+.cs-acc-item {
+    border: none !important;
+    border-bottom: 1px solid #EAE8E4 !important;
+    background: transparent !important;
+}
+
+.cs-acc-button {
+    font-weight: 600 !important;
+    color: #2B2D42 !important;
+    padding: 16px 5px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 100%;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.cs-acc-body {
+    padding: 16px 20px !important;
+    color: #6B6D7A !important;
+    line-height: 1.6 !important;
+    background-color: #FAF8F5;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+}
+
+/* 오른쪽 문의내역 목록 헤더 바 */
+.cs-list-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 25px !important;
+    width: 100%;
+}
+
+.cs-btn-size {
+    background-color: #1E3A5F !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    padding: 8px 18px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+.cs-btn-size:hover {
+    background-color: #11243E !important;
+}
+
+/* 가로 분할 리스트 비율 헤더 */
+.cs-table-header {
+    display: flex !important;
+    width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    color: #8E90A6;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 10px !important;
+}
+
+/* 칼럼 너비 지정 유닛 */
+.cs-col-num { width: 12%; text-align: center; }
+.cs-col-content { width: 53%; text-align: left; }
+.cs-col-date { width: 35%; text-align: right; }
+
+/* 데이터 리스트 영역 */
+.cs-list-body {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px;
+    width: 100%;
+    flex: 1;
+}
+
+/* 한지 무드의 개별 문의 카드 */
+.cs-item-row-card {
+    display: flex !important;
+    align-items: center !important;
+    width: 100%;
+    padding: 16px 20px;
+    background-color: #F3FEE7;
+    border: 1px solid #EAE6DF;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.005);
+}
+
+.cs-num-text {
+    color: #7A7A85;
+    font-size: 0.88rem;
+}
+
+.cs-text-group {
+    padding-right: 15px;
+}
+
+.cs-row-subject {
+    color: #2B2D42;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.cs-row-email {
+    color: #8E90A6;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.cs-row-date {
+    color: #8E90A6;
+    font-size: 0.85rem;
+}
+
+/* 데이터가 비었을 때 균형 상태 지정 */
+.cs-empty-state {
+    width: 100%;
+    text-align: center;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    color: #7A7A85;
+    font-size: 0.9rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cs-item-row-link:hover .cs-item-row-card {
+    cursor: pointer;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(43, 45, 66, 0.04);
+    border-color: #D3C9BC !important; /* 마우스 올리면 테두리가 조금 더 진해짐 */
+    transition: all 0.2s ease;
+}

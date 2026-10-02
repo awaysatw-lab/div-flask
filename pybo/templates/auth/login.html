@@ -37,8 +37,10 @@
 
         {% include 'auth/errors.html' %}
 
-         <form class="login-form" method="POST" novalidate action="{{ url_for('auth.login') }}">
+         <form method="post" action="{{ url_for('auth.login', next=next) }}" class="login-form">
             {{ form.csrf_token }}
+            <input type="hidden" name="next" value="{{ next or '' }}">
+
             <div class="input-box">
                 <span class="input-icon">♙</span>
                 <input
@@ -64,7 +66,7 @@
                 <button type="button" class="password-view" id="passwordView">◉</button>
             </div>
 
-                        <div class="login-options">
+            <div class="login-options">
                 <label>
                     <input type="checkbox" id="remember_id" name="remember_id">
                     <span>아이디 저장</span>
@@ -73,41 +75,6 @@
                     <a href="#" id="openFindId">아이디 찾기</a>
                     <span>|</span>
                     <a href="#" id="openFindPw">비밀번호 찾기</a>
-                </div>
-            </div>
-            <div id="findIdModal" class="modal-overlay">
-                <div class="modal-window">
-                    <div class="modal-header">
-                        <h3>🔍 아이디 찾기</h3>
-                        <button type="button" class="modal-close-btn" id="closeFindId">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="modal-desc">가입 시 등록한 이름과 이메일 주소를 입력해 주세요.</p>
-                        <input type="text" id="find_id_name" class="modal-input" placeholder="이름을 입력하세요" required>
-                        <input type="email" id="find_id_email" class="modal-input spacing-bottom" placeholder="이메일 주소를 입력하세요" required>
-
-                        <div id="findIdMessage" class="modal-check-message"></div>
-
-                        <button type="button" id="btnSubmitFindId" class="login-button modal-btn" data-url="{{ url_for('auth.find_id') }}">아이디 찾기</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="findPwModal" class="modal-overlay">
-                <div class="modal-window">
-                    <div class="modal-header">
-                        <h3>🔒 비밀번호 찾기</h3>
-                        <button type="button" class="modal-close-btn" id="closeFindPw">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="modal-desc">가입하신 아이디와 이메일 주소를 입력하시면 임시 비밀번호를 발송해 드립니다.</p>
-                        <input type="text" id="find_pw_id" class="modal-input" placeholder="아이디를 입력하세요" required>
-                        <input type="email" id="find_pw_email" class="modal-input spacing-bottom" placeholder="이메일 주소를 입력하세요" required>
-
-                        <div id="findPwMessage" class="modal-check-message"></div>
-
-                        <button type="button" id="btnSubmitFindPw" class="login-button modal-btn" data-url="{{ url_for('auth.find_pw') }}">임시 비밀번호 발급</button>
-                    </div>
                 </div>
             </div>
 
@@ -119,18 +86,13 @@
         </div>
 
         <div class="social-login">
-            <!-- 1. 네이버 로그인 버튼 -->
-            <a href="{{ url_for('auth.naver_login') }}" class="social-button naver" style="text-decoration: none;">
+            <a href="{{ url_for('auth.naver_login', next=next) }}" class="social-button naver" style="text-decoration: none;">
                 <span>N</span>네이버 로그인
             </a>
-
-            <!-- 2. 카카오 로그인 버튼 -->
-            <a href="{{ url_for('auth.kakao_login') }}" class="social-button kakao" style="text-decoration: none;">
+            <a href="{{ url_for('auth.kakao_login', next=next) }}" class="social-button kakao" style="text-decoration: none;">
                 <span>K</span>카카오 로그인
             </a>
-
-            <!-- 3. 구글 로그인 버튼 -->
-            <a href="{{ url_for('auth.google_login') }}" class="social-button google" style="text-decoration: none;">
+            <a href="{{ url_for('auth.google_login', next=next) }}" class="social-button google" style="text-decoration: none;">
                 <span>G</span>구글 로그인
             </a>
         </div>
@@ -145,6 +107,42 @@
         <div class="login-policy">
             <span>TIP</span>
             <p>처음 방문하셨나요? <a href="#" id="openTerms">이용약관</a>을 확인해주세요.</p>
+        </div>
+    </div>
+</div>
+
+<div id="findIdModal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="modal-header">
+            <h3>🔍 아이디 찾기</h3>
+            <button type="button" class="modal-close-btn" id="closeFindId">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-desc">가입 시 등록한 이름과 이메일 주소를 입력해 주세요.</p>
+            <input type="text" id="find_id_name" class="modal-input" placeholder="이름을 입력하세요">
+            <input type="email" id="find_id_email" class="modal-input spacing-bottom" placeholder="이메일 주소를 입력하세요">
+
+            <div id="findIdMessage" class="modal-check-message"></div>
+
+            <button type="button" id="btnSubmitFindId" class="login-button modal-btn" data-url="{{ url_for('auth.find_id') }}">아이디 찾기</button>
+        </div>
+    </div>
+</div>
+
+<div id="findPwModal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="modal-header">
+            <h3>🔒 비밀번호 찾기</h3>
+            <button type="button" class="modal-close-btn" id="closeFindPw">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-desc">가입하신 아이디와 이메일 주소를 입력하시면 임시 비밀번호를 발송해 드립니다.</p>
+            <input type="text" id="find_pw_id" class="modal-input" placeholder="아이디를 입력하세요">
+            <input type="email" id="find_pw_email" class="modal-input spacing-bottom" placeholder="이메일 주소를 입력하세요">
+
+            <div id="findPwMessage" class="modal-check-message"></div>
+
+            <button type="button" id="btnSubmitFindPw" class="login-button modal-btn" data-url="{{ url_for('auth.find_pw') }}">임시 비밀번호 발급</button>
         </div>
     </div>
 </div>

@@ -150,15 +150,11 @@ document.addEventListener('DOMContentLoaded', function() {
   function syncReserverPreview() {
     if (!isSameAsReserver) return;
     const reserver = getReserverInfo();
-    const namePrev = document.getElementById('repNamePreview');
-    const phonePrev = document.getElementById('repPhonePreview');
-    const hiddenName = document.getElementById('repHiddenName');
-    const hiddenPhone = document.getElementById('repHiddenPhone');
+    const repNameInput = document.getElementById('repTravelerName');
+    const repPhoneInput = document.getElementById('repTravelerPhone');
 
-    if (namePrev) namePrev.innerText = reserver.name;
-    if (phonePrev) phonePrev.innerText = reserver.phone;
-    if (hiddenName) hiddenName.value = reserver.name;
-    if (hiddenPhone) hiddenPhone.value = reserver.phone;
+    if (repNameInput && reserver.name) repNameInput.value = reserver.name;
+    if (repPhoneInput && reserver.phone) repPhoneInput.value = reserver.phone;
   }
 
   // 여행객 폼 렌더링
@@ -176,95 +172,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
     for (let i = 0; i < count; i++) {
       const card = document.createElement('div');
-      card.className = 'traveler-card';
+      card.className = 'card shadow-sm border mb-3 rounded-3';
+      card.id = `travelerCard_${i + 1}`;
 
       const isRep = (i === 0);
       const title = isRep ? '여행객 1 (대표 여행자)' : `여행객 ${i + 1}`;
-      const nameVal = prevNames[i] || '';
-      const genderVal = prevGenders[i] || '남';
-      const phoneVal = prevPhones[i] || '';
-      const birthVal = prevBirths[i] || '';
+      
+      let nameVal = prevNames[i] || '';
+      let genderVal = prevGenders[i] || '남';
+      let phoneVal = prevPhones[i] || '';
+      let birthVal = prevBirths[i] || '';
 
-      if (isRep) {
-        // 대표 여행객 카드
-        card.innerHTML = `
-          <div class="traveler-card-header">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span>👤 ${title}</span>
-              <span style="font-size:12px; color:var(--primary); font-weight:600;">대표자</span>
+      if (isRep && isSameAsReserver) {
+        nameVal = reserver.name || nameVal;
+        phoneVal = reserver.phone || phoneVal;
+      }
+
+      card.innerHTML = `
+        <div class="card-body p-3">
+          <!-- 카드 상단 헤더: 대표예약자의 경우 타이틀과 '예약자와 동일' 버튼을 맨 오른쪽에 배치하여 1줄로 구성 -->
+          <div class="d-flex justify-content-between align-items-center pb-2 mb-3 border-bottom flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="fw-bold text-dark fs-6">👤 ${title}</span>
+              ${isRep ? `<span class="badge bg-primary-subtle text-primary border border-primary-subtle small">대표자</span>` : ''}
+              ${isRep && isSameAsReserver ? `<span class="badge bg-success-subtle text-success border border-success-subtle small">✓ 예약자 정보 적용됨</span>` : ''}
             </div>
-            <button type="button" class="btn-same-as-reserver ${isSameAsReserver ? 'active' : ''}" onclick="toggleSameAsReserver()">
-              <span>${isSameAsReserver ? '✓' : '＋'}</span> 예약자와 동일
-            </button>
+            ${isRep ? `
+              <div>
+                <button type="button" class="btn btn-sm ${isSameAsReserver ? 'btn-primary' : 'btn-outline-primary'} fw-semibold d-inline-flex align-items-center gap-1 shadow-sm" onclick="toggleSameAsReserver()">
+                  <span>${isSameAsReserver ? '✓' : '＋'}</span> 예약자와 동일
+                </button>
+              </div>
+            ` : ''}
           </div>
-          ${isSameAsReserver ? `
-            <div class="rep-same-notice">
-              <div class="rep-notice-content">
-                <span class="rep-notice-icon">📋</span>
-                <div class="rep-notice-text">
-                  <strong>예약자 정보로 자동 등록됩니다.</strong>
-                  <p>성명: <span id="repNamePreview">${reserver.name}</span> | 연락처: <span id="repPhonePreview">${reserver.phone}</span> (추가 입력 불필요)</p>
-                </div>
-              </div>
-              <button type="button" class="btn-rep-edit" onclick="toggleSameAsReserver()">직접 입력</button>
+
+          <!-- 여행객 상세정보 Bootstrap 그리드: 이름 3칸, 성별 1칸, 전화번호 4칸, 생년월일 4칸 (총 12칸 1줄) -->
+          <div class="row g-2 align-items-end">
+            <!-- 이름 3칸 -->
+            <div class="col-12 col-md-3">
+              <label class="form-label fw-bold small mb-1">이름 <span class="text-danger">*</span></label>
+              <input type="text" name="traveler_name[]" value="${nameVal}" required class="form-control bg-white" placeholder="성함"${isRep ? ' id="repTravelerName"' : ''}>
             </div>
-            <input type="hidden" name="traveler_name[]" id="repHiddenName" value="${reserver.name}">
-            <input type="hidden" name="traveler_gender[]" value="미지정">
-            <input type="hidden" name="traveler_phone[]" id="repHiddenPhone" value="${reserver.phone}">
-            <input type="hidden" name="traveler_birth[]" value="-">
-          ` : `
-            <div class="traveler-form-grid">
-              <div class="form-group">
-                <label class="form-label">이름 *</label>
-                <input type="text" name="traveler_name[]" value="${nameVal}" required class="form-control" placeholder="성함">
-              </div>
-              <div class="form-group">
-                <label class="form-label">성별 *</label>
-                <select name="traveler_gender[]" class="form-control">
-                  <option value="남" ${genderVal === '남' ? 'selected' : ''}>남</option>
-                  <option value="여" ${genderVal === '여' ? 'selected' : ''}>여</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">전화번호 *</label>
-                <input type="tel" name="traveler_phone[]" value="${phoneVal}" required class="form-control" placeholder="010-0000-0000">
-              </div>
-              <div class="form-group">
-                <label class="form-label">생년월일 *</label>
-                <input type="date" name="traveler_birth[]" value="${birthVal}" required class="form-control">
-              </div>
-            </div>
-          `}
-        `;
-      } else {
-        // 동행 여행객 카드 (2번, 3번 ...)
-        card.innerHTML = `
-          <div class="traveler-card-header">
-            <span>👤 ${title}</span>
-          </div>
-          <div class="traveler-form-grid">
-            <div class="form-group">
-              <label class="form-label">이름 *</label>
-              <input type="text" name="traveler_name[]" value="${nameVal}" required class="form-control" placeholder="성함">
-            </div>
-            <div class="form-group">
-              <label class="form-label">성별 *</label>
-              <select name="traveler_gender[]" class="form-control">
+            <!-- 성별 1칸 -->
+            <div class="col-12 col-md-1">
+              <label class="form-label fw-bold small mb-1 text-nowrap">성별 <span class="text-danger">*</span></label>
+              <select name="traveler_gender[]" class="form-select text-center px-1 bg-white"${isRep ? ' id="repTravelerGender"' : ''}>
                 <option value="남" ${genderVal === '남' ? 'selected' : ''}>남</option>
                 <option value="여" ${genderVal === '여' ? 'selected' : ''}>여</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="form-label">전화번호 *</label>
-              <input type="tel" name="traveler_phone[]" value="${phoneVal}" required class="form-control" placeholder="010-0000-0000">
+            <!-- 전화번호 4칸 -->
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-bold small mb-1">전화번호 <span class="text-danger">*</span></label>
+              <input type="tel" name="traveler_phone[]" value="${phoneVal}" required class="form-control bg-white" placeholder="010-1234-5678"${isRep ? ' id="repTravelerPhone"' : ''}>
             </div>
-            <div class="form-group">
-              <label class="form-label">생년월일 *</label>
-              <input type="date" name="traveler_birth[]" value="${birthVal}" required class="form-control">
+            <!-- 생년월일 4칸 -->
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-bold small mb-1">생년월일 <span class="text-danger">*</span></label>
+              <input type="date" name="traveler_birth[]" value="${birthVal}" required class="form-control bg-white"${isRep ? ' id="repTravelerBirth"' : ''}>
             </div>
           </div>
-        `;
-      }
+        </div>
+      `;
+
       container.appendChild(card);
     }
   }
