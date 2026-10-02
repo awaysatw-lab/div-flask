@@ -1,5 +1,6 @@
-from flask import Blueprint, url_for, render_template, request, flash, redirect, session, g, jsonify
+from flask import Blueprint, url_for, render_template, request, flash, redirect, session, g, jsonify, render_template
 from werkzeug.security import check_password_hash, generate_password_hash
+from authlib.integrations.flask_client import OAuth
 
 
 from pybo import db
@@ -9,8 +10,18 @@ from pybo.forms import UserCreateForm, UserLoginForm
 import re
 import secrets
 import string
+import functools
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if g.user is None:
+            flash('로그인이 필요한 서비스입니다.')
+            return redirect(url_for('auth.login', next=request.url))
+        return view(*args, **kwargs)
+    return wrapped_view
 
 @bp.route('/signup/', methods=('GET', 'POST'))
 def signup():
@@ -42,6 +53,8 @@ def signup():
 def login():
     form = UserLoginForm()
 
+    next_page = request.args.get('next', '')
+
     if request.method == 'POST':
         user_id_input = request.form.get('user_id', '').strip()
         password_input = request.form.get('password', '').strip()
@@ -57,24 +70,18 @@ def login():
         if form.validate_on_submit():
             user = User.query.filter_by(user_id=form.user_id.data).first()
 
-            if not user:
-                flash("존재하지 않는 아이디입니다.")
-                return render_template('auth/login.html', form=form)
-
-            elif not check_password_hash(user.password_hash, form.password.data):
-                flash("비밀번호가 올바르지 않습니다.")
+            if not user or not check_password_hash(user.password_hash, form.password.data):
+                flash("아이디 또는 비밀번호가 올바르지 않습니다.")
                 return render_template('auth/login.html', form=form)
 
             session.clear()
             session['user_id'] = user.id
+
+            if next_page and next_page.strip():
+                return redirect(next_page)
             return redirect(url_for('main.index'))
 
-        else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    flash(error)
-
-    return render_template('auth/login.html', form=form)
+    return render_template('auth/login.html', form=form, next=next_page)
 
 
 @bp.route('/check_id', methods=['POST'])
@@ -168,3 +175,126 @@ def find_pw():
         db.session.rollback()
         print(f"비밀번호 찾기 백엔드 에러: {str(e)}")
         return jsonify({'status': 'fail', 'message': '시스템 통신 에러가 발생했습니다.'}), 500
+
+oauth = OAuth()
+
+# 1. 🌐 구글 OAuth 설정 (공식 주소 반영)
+google = oauth.register(
+    name='google',
+    client_id='발급받은_구글_클라이언트_://googleusercontent.com',
+    client_secret='발급받은_구글_클라이언트_보안_비밀번호',
+    access_token_url='https://googleapis.com',
+    authorize_url='https://google.com',
+    api_base_url='https://googleapis.com',
+    userinfo_endpoint='https://googleapis.com',
+    client_kwargs={'scope': 'openid email profile'},
+)
+
+# 2. 🟢 네이버 OAuth 설정 (공식 주소 반영)
+naver = oauth.register(
+    name='naver',
+    client_id='네이버에서_발급받은_클라이언트_ID',
+    client_secret='네이버에서_발급받은_비밀번호',
+    access_token_url='https://naver.com',
+    authorize_url='https://naver.com',
+    api_base_url='https://naver.com',
+    client_kwargs={
+        'token_endpoint_auth_method': 'client_secret_post',
+    }
+)
+
+# 3. 🟡 카카오 OAuth 설정 (공식 주소 반영)
+kakao = oauth.register(
+    name='kakao',
+    client_id='카카오에서_발급받은_REST_API_키',
+    client_secret='카카오에서_발급받은_보안_비밀구절(선택사항)',
+    access_token_url='https://kakao.com',
+    authorize_url='https://kakao.com',
+    api_base_url='https://kakao.com',
+)
+
+
+# ==========================================
+#  1. 구글(Google) 로그인 및 콜백
+# ==========================================
+@bp.route('/login/google')
+def google_login():
+    if request.args.get('next'):
+        session['social_next'] = request.args.get('next')
+
+    redirect_uri = url_for('auth.google_callback', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+
+@bp.route('/login/google/callback')
+def google_callback():
+    token = google.authorize_access_token()
+    user_info = google.get('userinfo').json()
+
+    session['user_id'] = user_info.get('email')
+    session['user_name'] = user_info.get('name')
+
+    social_next = session.pop('social_next', None)
+    if social_next:
+        return redirect(social_next)
+    return redirect(url_for('main.index'))
+
+
+# ==========================================
+#  2. 네이버(Naver) 로그인 및 콜백
+# ==========================================
+@bp.route('/login/naver')
+def naver_login():
+    if request.args.get('next'):
+        session['social_next'] = request.args.get('next')
+
+    redirect_uri = url_for('auth.naver_callback', _external=True)
+    return naver.authorize_redirect(redirect_uri)
+
+
+@bp.route('/login/naver/callback')
+def naver_callback():
+    token = naver.authorize_access_token()
+    user_info = naver.get('').json().get('response', {})
+
+    session['user_id'] = user_info.get('email')
+    session['user_name'] = user_info.get('name')
+
+    social_next = session.pop('social_next', None)
+    if social_next:
+        return redirect(social_next)
+    return redirect(url_for('main.index'))
+
+
+# ==========================================
+#  3. 카카오(Kakao) 로그인 및 콜백
+# ==========================================
+@bp.route('/login/kakao')
+def kakao_login():
+    if request.args.get('next'):
+        session['social_next'] = request.args.get('next')
+
+    redirect_uri = url_for('auth.kakao_callback', _external=True)
+    return kakao.authorize_redirect(redirect_uri)
+
+
+@bp.route('/login/kakao/callback')
+def kakao_callback():
+    token = kakao.authorize_access_token()
+
+    session['user_id'] = "kakao_user_id"
+
+    social_next = session.pop('social_next', None)
+    if social_next:
+        return redirect(social_next)
+    return redirect(url_for('main.index'))
+
+# 고객센터 개인문의 내용
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if g.user is None:
+            flash('로그인이 필요한 서비스입니다.')
+            return redirect(url_for('auth.login', next=request.url))
+        return view(*args, **kwargs)
+    return wrapped_view

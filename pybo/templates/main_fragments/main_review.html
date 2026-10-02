@@ -1,0 +1,26 @@
+<!-- 여행 후기 조각 (실제 CSS 구조 100% 매칭 버전) -->
+<section class="travel-reviews">
+    <h3>💬 여행 후기</h3>
+
+    <div class="review-wrapper">
+        <!-- 💡 로그인 유무에 따라 blurred 처리를 하실 계획이었다면 클래스 뒤에 "blurred"를 추가하시면 됩니다. -->
+        <div class="review-grid">
+            {% if review_list %}
+                {% for review in review_list %}
+                <a href="{{ url_for('main.review_detail', review_id=review.id) }}" class="review-card" style="text-decoration: none; color: inherit; display: block;">
+                    <!-- .thumb 클래스를 매칭하여 백그라운드 이미지를 고정 출력합니다. -->
+                    <div class="thumb" style="background-image: url('{{ url_for('static', filename='img/' ~ review.image_file) if review.image_file else url_for('static', filename='img/default_review.jpg') }}'); background-size: cover; background-position: center; width: 100%; height: 200px;"></div>
+                    <p>
+                        <strong>{{ review.title }}</strong><br>
+                        <span style="color: #666; font-size: 0.75rem;">★ {{ review.rating }} | {{ review.user.name if review.user else '익명' }}님</span>
+                    </p>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="review-card" style="grid-column: span 5; display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 0.9rem;">
+                    아직 등록된 여행 후기가 없습니다. 첫 후기를 남겨보세요!
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

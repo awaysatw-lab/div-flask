@@ -4,6 +4,7 @@ import enum
 import uuid
 import json
 from pybo import db
+from pybo import db
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -289,6 +290,7 @@ class OrderAccommodation(db.Model):
         return f"<OrderAccommodation order_id={self.order_id} acc_id={self.accommodation_id}>"
 
 #타임딜 참고
+
 class TimeDeal(db.Model):
     __tablename__ = 'time_deal'
 
@@ -304,3 +306,10 @@ class TimeDeal(db.Model):
     badge1 = db.Column(db.String(50))  # 태그/배지 1 (예: 블루마운틴 시닉4콤보)
     badge2 = db.Column(db.String(50))  # 태그/배지 2 (예: 시드니타워)
 
+# 고객센터
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text(), nullable=False)
+    create_date = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
+    email = db.Column(db.String(100), nullable=False)

@@ -29,6 +29,9 @@ def create_app():
 
     from . import models
 
+    from pybo.views.auth_views import oauth as auth_oauth
+    auth_oauth.init_app(app)
+
     from .views import auth_views
     app.register_blueprint(auth_views.bp)
 
@@ -43,6 +46,9 @@ def create_app():
 
     from .views import product_views
     app.register_blueprint(product_views.bp)
+
+    from .views import customer_views
+    app.register_blueprint(customer_views.bp)
 
     from .timedealseed import seed_time_deals
     with app.app_context():
