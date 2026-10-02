@@ -1,105 +1,110 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 및 Q&A</title>
 
-{% block title %}공지사항 - 대한민국 구석구석 여행{% endblock %}
+    <!-- 1. 부트스트랩 5.3 라이브러리 로드 (클릭 오류 방지 및 기본 디자인 보장) -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <script src="https://jsdelivr.net"></script>
 
-{% block content %}
-<div class="container mt-5">
-    <!-- 페이지 제목 -->
-    <div class="pb-3 mb-4 border-bottom">
-        <h2 class="fw-bold m-0">공지사항</h2>
-    </div>
+    <!-- 2. 모든 스타일 시트 통합 (디자인 및 Hover 애니메이션 효과) -->
+    <style>
+        /* [스타일 1] 아코디언 질문 클릭하여 활성화되었을 때 색상 변경 */
+        .qa-section .accordion-button:not(.collapsed) {
+            background-color: var(--bs-primary-bg-subtle, #cfe2ff) !important;
+            color: var(--bs-primary-text-emphasis, #052c65) !important;
+        }
 
-    <!-- 게시판 테이블 (Bootstrap 클래스 적용) -->
-    <div class="table-responsive bg-white rounded shadow-sm">
-        <table class="table table-hover align-middle text-center mb-0" style="min-width: 700px;">
-            <thead class="table-light border-top border-secondary-subtle">
-                <tr>
-                    <th scope="col" style="width: 8%;">번호</th>
-                    <th scope="col" style="width: 60%;" class="text-start ps-4">제목</th>
-                    <th scope="col" style="width: 12%;">작성자</th>
-                    <th scope="col" style="width: 12%;">등록일</th>
-                    <th scope="col" style="width: 8%;">조회수</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 중요 공지 사항 (서버 데이터 바인딩 예시) -->
-                {% if notices %}
-                    {% for notice in notices %}
-                    <tr class="{{ 'table-warning-subtle' if notice.is_pinned }}">
-                        <td>
-                            {% if notice.is_pinned %}
-                                <span class="badge text-bg-danger px-2 py-1">공지</span>
-                            {% else %}
-                                {{ notice.id }}
-                            {% endif %}
-                        </td>
-                        <td class="text-start ps-4">
-                            <a href="{{ url_for('notice.detail', notice_id=notice.id) }}" class="text-decoration-none text-dark fw-medium link-primary">
-                                {{ notice.title }}
-                            </a>
-                        </td>
-                        <td>{{ notice.author }}</td>
-                        <td>{{ notice.created_at }}</td>
-                        <td class="text-secondary">{{ notice.views }}</td>
-                    </tr>
-                    {% endfor %}
-                {% else %}
-                    <!-- 하드코딩된 샘플 데이터 (서버 연결 전 테스트용) -->
-                    <tr class="table-danger-subtle">
-                        <td><span class="badge text-bg-danger px-2 py-1">공지</span></td>
-                        <td class="text-start ps-4"><a href="#" class="text-decoration-none text-dark fw-bold link-primary">[필독] 시스템 정기 점검에 따른 서비스 일시 중단 안내</a></td>
-                        <td>관리자</td>
-                        <td>2026-10-01</td>
-                        <td class="text-secondary">1,245</td>
-                    </tr>
-                    <tr class="table-danger-subtle">
-                        <td><span class="badge text-bg-danger px-2 py-1">공지</span></td>
-                        <td class="text-start ps-4"><a href="#" class="text-decoration-none text-dark fw-bold link-primary">[이벤트] 가을맞이 전국 언택트 여행지 인증샷 이벤트 안내</a></td>
-                        <td>이벤트담당</td>
-                        <td>2026-09-25</td>
-                        <td class="text-secondary">3,892</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td class="text-start ps-4"><a href="#" class="text-decoration-none text-dark link-primary">[안내] 전라남도 지역 축제 일정 변경 안내</a></td>
-                        <td>관리자</td>
-                        <td>2026-09-28</td>
-                        <td class="text-secondary">421</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td class="text-start ps-4"><a href="#" class="text-decoration-none text-dark link-primary">[안내] 대한민국 구석구석 앱 업데이트 배포 안내 (v2.4.0)</a></td>
-                        <td>개발팀</td>
-                        <td>2026-09-20</td>
-                        <td class="text-secondary">856</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td class="text-start ps-4"><a href="#" class="text-decoration-none text-dark link-primary">[안내] 추석 연휴 기간 고객센터 운영 시간 안내</a></td>
-                        <td>관리자</td>
-                        <td>2026-09-15</td>
-                        <td class="text-secondary">1,043</td>
-                    </tr>
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
+        /* [스타일 2] 카드 버튼 기본 상태: 부드러운 전환 효과(Transition) 설정 */
+        .review-text-btn-card {
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
+        }
 
-    <!-- 페이지네이션 (Bootstrap 구조로 변환) -->
-    <nav aria-label="Page navigation" class="mt-4 mb-5">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-            </li>
-        </ul>
-    </nav>
+        /* [스타일 3] 카드 버튼 Hover 상태: 마우스 올렸을 때 색상 변경 및 3px 공중 부양 */
+        .review-text-btn-card:hover {
+            background-color: var(--bs-gray-200, #e9ecef) !important;
+            border-color: var(--bs-border-color-translucent, #cbd5e1) !important;
+            transform: translateY(-3px) !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 3. [독립 컴포넌트] 자주 묻는 질문 (Q&A) 섹션 HTML -->
+    <section class="qa-section my-5 p-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h3 mb-0 fw-bold">🙋‍♂️ 자주 묻는 질문 (Q&A)</h2>
+            <!-- 질문 더보기 버튼 (Hover 효과를 위해 클래스명 결합 완료) -->
+            <button class="btn btn-primary fw-bold review-text-btn-card" id="btnLoadMoreQA">질문 더보기 ↻</button>
+        </div>
+
+        <!-- 부트스트랩 아코디언 (고유 ID 지정으로 기능 충돌 방지) -->
+        <div class="accordion shadow-sm rounded-3" id="faqAccordion">
+            <!-- 기본 질문 1 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        Q1. 예약 취소 및 환불 규정은 어떻게 되나요?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-secondary" style="line-height: 1.6;">
+                        여행 출발 7일 전까지는 100% 전액 환불이 가능합니다. 이후 취소 시점에 따라 차등 수수료가 부과되오니 고객센터 규정을 참고해 주세요.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 기본 질문 2 -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Q2. 가이드 투어 시 개인 준비물이 있나요?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body text-secondary" style="line-height: 1.6;">
+                        도보 이동이 많으므로 편안한 운동화 착용을 권장합니다. 개인 무선 이어폰을 지참하시면 가이드 수신기 연결이 더 수월합니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
-{% endblock %}
+
+<!-- 4. 전역 스코프 오염 및 코드 충돌을 방지하기 위한 독립 스크립트 블록 -->
+<script>
+    (function() {
+        let qaCount = 2; // 초기 질문 개수 카운터
+        const btnLoadMore = document.getElementById('btnLoadMoreQA');
+        const accordionContainer = document.getElementById('faqAccordion');
+
+        if (btnLoadMore && accordionContainer) {
+            btnLoadMore.addEventListener('click', function() {
+                qaCount++;
+
+                // 새로운 질문 아이템 노드 생성
+                const newQaItem = document.createElement('div');
+                newQaItem.className = 'accordion-item';
+                newQaItem.innerHTML = `
+                    <h2 class="accordion-header" id="heading${qaCount}">
+                        <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${qaCount}" aria-expanded="false" aria-controls="collapse${qaCount}">
+                            Q${qaCount}. 지속적 업데이트 기능으로 추가된 질문입니다.
+                        </button>
+                    </h2>
+                    <div id="collapse${qaCount}" class="accordion-collapse collapse" aria-labelledby="heading${qaCount}" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-secondary" style="line-height: 1.6;">
+                            이 영역은 백엔드 API 연동 시 실시간(Ajax/Fetch)으로 최신 데이터를 받아와 기존 레이아웃 파괴 없이 부드럽게 누적 업데이트됩니다.
+                        </div>
+                    </div>
+                `;
+                accordionContainer.appendChild(newQaItem);
+            });
+        }
+    })();
+</script>
+
+</body>
+</html>
