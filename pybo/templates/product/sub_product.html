@@ -48,7 +48,7 @@
                     <button class="white-btn">🖇️</button>
                 </div>
                 <div>
-                    <p id="schedule">여행일정 2026.10.08 (목) 10:10 ~ 2026.10.12 (월) 16:30 4박 5일</p>
+                    <p id="schedule">여행일정 : {{ product.get_schedule_summary() }} </p>
                 </div>
             </div>
             <!-- 오른쪽 -->
@@ -117,7 +117,7 @@
             <p> 도착 : 2026.10.12(월) 14:00</p>
             <div>
                 <h5> 여행도시 </h5>
-                <h5> {{ product.citeies }} </h5>
+                <h5> {{ product.get_cities() }} </h5>
             </div>
         </div>
     </div>
