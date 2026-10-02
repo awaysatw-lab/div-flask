@@ -88,7 +88,7 @@
 
                         <div id="findIdMessage" class="modal-check-message"></div>
 
-                        <button type="button" id="btnSubmitFindId" class="login-button modal-btn">아이디 찾기</button>
+                        <button type="button" id="btnSubmitFindId" class="login-button modal-btn" data-url="{{ url_for('auth.find_id') }}">아이디 찾기</button>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@
 
                         <div id="findPwMessage" class="modal-check-message"></div>
 
-                        <button type="button" id="btnSubmitFindPw" class="login-button modal-btn">임시 비밀번호 발급</button>
+                        <button type="button" id="btnSubmitFindPw" class="login-button modal-btn" data-url="{{ url_for('auth.find_pw') }}">임시 비밀번호 발급</button>
                     </div>
                 </div>
             </div>
@@ -119,9 +119,20 @@
         </div>
 
         <div class="social-login">
-            <button type="button" class="social-button naver"><span>N</span>네이버 로그인</button>
-            <button type="button" class="social-button kakao"><span>●</span>카카오 로그인</button>
-            <button type="button" class="social-button google"><span>G</span>구글 로그인</button>
+            <!-- 1. 네이버 로그인 버튼 -->
+            <a href="{{ url_for('auth.naver_login') }}" class="social-button naver" style="text-decoration: none;">
+                <span>N</span>네이버 로그인
+            </a>
+
+            <!-- 2. 카카오 로그인 버튼 -->
+            <a href="{{ url_for('auth.kakao_login') }}" class="social-button kakao" style="text-decoration: none;">
+                <span>K</span>카카오 로그인
+            </a>
+
+            <!-- 3. 구글 로그인 버튼 -->
+            <a href="{{ url_for('auth.google_login') }}" class="social-button google" style="text-decoration: none;">
+                <span>G</span>구글 로그인
+            </a>
         </div>
 
         <div class="signup-prompt">
@@ -154,10 +165,4 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-<script>
-    window.findIdUrl = "{{ url_for('auth.find_id') }}";
-    window.findPwUrl = "{{ url_for('auth.find_pw') }}";
-</script>
-
-
 {% endblock %}
