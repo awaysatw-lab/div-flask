@@ -63,3 +63,8 @@
 .receipt-bottom-card {
   border-color: var(--bs-primary, #0d6efd) !important;
 }
+#checkout_button {
+    background-color: #1D3557;
+    color: #ffffff;
+    border-color: #1D3557;
+}
