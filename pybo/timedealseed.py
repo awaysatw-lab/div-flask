@@ -1,10 +1,20 @@
 from datetime import datetime, timedelta
+from sqlalchemy import inspect
 from pybo import db
 from pybo.models import TimeDeal
 
 def seed_time_deals():
     # 1. 이미 데이터가 있는지 검사 (중복 등록 방지)
-    if TimeDeal.query.first() is not None:
+    try:
+        # DB 테이블이 아직 생성되지 않은 상태(flask db init, migrate 등)에서는 건너뜁니다.
+        inspector = inspect(db.engine)
+        if not inspector.has_table('time_deal'):
+            return
+
+        # 1. 이미 데이터가 있는지 검사 (중복 등록 방지)
+        if TimeDeal.query.first() is not None:
+            return
+    except Exception:
         return
 
     print("🌱 데이터베이스에 타임딜 테스트 데이터를 등록하는 중...")

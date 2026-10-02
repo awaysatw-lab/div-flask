@@ -1,11 +1,12 @@
 <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3 row-gap-4">
     {% for product in products %}
+        {% if current_region == 'all' or product.region == current_region %}
         <div class="card"  style="min-height: 400px; display: block !important;">
             <img src="{{ product.image_url }}" class="card-img-top" alt="...">
             <div class="card-body">
                 <div class="heart_star">
                     <p>❤️{{ "{:,}".format(product.recommendation_count) }}</p>
-                    <p>⭐5.0</p>
+                    <p>⭐{{ product.get_average_rating() }}</p>
                 </div>
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
@@ -26,5 +27,6 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     {% endfor %}
 </div>

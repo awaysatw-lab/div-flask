@@ -5,7 +5,6 @@ import uuid
 import json
 from pybo import db
 
-
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -51,6 +50,12 @@ class TourProduct(db.Model):
     recommendation_count = db.Column(db.Integer, default=0, index=True) # 누적 추천수
     image_url = db.Column(db.String(255), default='/static/img/default-tour.jpg')
     image_urls = db.Column(db.Text, nullable=True) # JSON 문자열 형태의 3~4개 이상 이미지 URL 목록
+    schedule_summary = db.Column(db.String(100), nullable=True) # 여행 일정 요약
+    cities = db.Column(db.String(100), nullable=True) # 여행 주요 도시
+    departure_info = db.Column(db.String(150), nullable=True) # 출발 안내
+    arrival_info = db.Column(db.String(150), nullable=True) # 도착 안내
+    itinerary_json = db.Column(db.Text, nullable=True) # 상세 여행일정 JSON
+    detail_content = db.Column(db.Text, nullable=True) # 상세 소개/하이라이트/포함/불포함 JSON
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
@@ -125,6 +130,161 @@ class TourProduct(db.Model):
             nearby.extend(extra)
 
         return nearby
+
+    def get_schedule_summary(self):
+        if self.schedule_summary:
+            return self.schedule_summary
+        return "당일 힐링 코스 (08:30 ~ 19:30)"
+
+    def get_cities(self):
+        if self.cities:
+            return self.cities
+        clean_name = self.name.split('(')[0].replace('&', ' ').replace('/', ' ')
+        tokens = [t.strip() for t in clean_name.split() if len(t.strip()) >= 2]
+        spot_names = tokens[:2] if tokens else [self.region]
+        return f"{self.region} ({' - '.join(spot_names)})"
+
+    def get_departure_info(self):
+        if self.departure_info:
+            return self.departure_info
+        return f"08:30 {self.region} 거점 주요 전철역 / KTX역 앞 집결 후 전용 투어 버스 탑승"
+
+    def get_arrival_info(self):
+        if self.arrival_info:
+            return self.arrival_info
+        return f"19:30 {self.region} 거점 역 및 시내 중심가 순차 하차 및 투어 종료"
+
+    def get_itinerary(self):
+        """일자별/시간대별 상세 여행 일정 반환 (DB에 없으면 기본 일정 생성)"""
+        import json
+        if self.itinerary_json:
+            try:
+                data = json.loads(self.itinerary_json)
+                if isinstance(data, list) and len(data) > 0:
+                    return data
+            except Exception:
+                pass
+
+        # 기본 일정 fallback
+        title_core = self.name.split('(')[0].strip()
+        return [
+            {
+                "day": 1,
+                "title": f"낭만과 여유를 즐기는 {self.region} 테마 힐링 여행",
+                "meals": {
+                    "breakfast": "개별 조식 또는 차량 내 간단 생수/다과",
+                    "lunch": f"{self.region} 현지 로컬 맛집 향토 특선 중식",
+                    "dinner": "자유식 (복귀 후 또는 개별 식사)"
+                },
+                "timeline": [
+                    {
+                        "time": "08:30 ~ 09:30",
+                        "icon": "🚌",
+                        "title": f"지정 집결지 미팅 및 {self.region} 출발",
+                        "location": f"{self.region} 주요 역 앞 집결처",
+                        "desc": "가이드 미팅 후 전용 투어 버스 탑승, 안전 수칙 안내 및 오늘의 여행 일정 브리핑."
+                    },
+                    {
+                        "time": "10:00 ~ 12:00",
+                        "icon": "🌿",
+                        "title": f"{title_core} 오전 핵심 관광",
+                        "location": f"{self.region} 대표 명소",
+                        "desc": f"{self.description[:120]}... 쾌적한 힐링 산책과 포토존 자유 시간."
+                    },
+                    {
+                        "time": "12:30 ~ 13:40",
+                        "icon": "🍽️",
+                        "title": f"{self.region} 현지 제철 향토 미식 중식",
+                        "location": f"{self.region} 로컬 지정 식당",
+                        "desc": f"현지에서 엄선한 정갈하고 맛있는 제철 식재료 향토 요리를 즐기는 여유로운 점심 시간."
+                    },
+                    {
+                        "time": "14:10 ~ 16:30",
+                        "icon": "📸",
+                        "title": f"{self.region} 오후 문화 체험 및 감성 명소",
+                        "location": f"{self.region} 주요 관광 코스",
+                        "desc": f"아름다운 풍경을 배경으로 인생 사진을 남기고, 현지 특유의 정취를 만끽하는 힐링 코스."
+                    },
+                    {
+                        "time": "17:00 ~ 18:00",
+                        "icon": "☕",
+                        "title": "로컬 감성 거리 & 카페 자유 시간",
+                        "location": f"{self.region} 중심 감성 거리",
+                        "desc": "지역 유명 베이커리/특산물 쇼핑 및 분위기 좋은 카페에서 여유로운 티타임."
+                    },
+                    {
+                        "time": "18:00 ~ 19:30",
+                        "icon": "🚌",
+                        "title": "투어 종료 및 복귀/해산",
+                        "location": f"{self.region} 거점 역 및 시내 중심지",
+                        "desc": "전용 차량 탑승 후 안전하게 출발지로 복귀, 순차 하차 및 개별 해산."
+                    }
+                ]
+            }
+        ]
+
+    def get_detail_info(self):
+        """상품 소개, 핵심 포인트(하이라이트), 포함/불포함, 집결/준비사항 상세 정보 반환"""
+        import json
+        if self.detail_content:
+            try:
+                data = json.loads(self.detail_content)
+                if isinstance(data, dict):
+                    return data
+            except Exception:
+                pass
+
+        # 기본 상세 정보 fallback
+        title_core = self.name.split('(')[0].strip()
+        return {
+            "intro": f"{self.description} 바쁜 일상에서 벗어나 오롯이 자연과 문화를 느끼며 진정한 재충전을 경험해보세요.",
+            "highlights": [
+                {
+                    "title": f"전문 가이드와 함께하는 {self.region} 핵심 명소 투어",
+                    "desc": "기계적인 설명 대신 현지인의 재미있는 역사와 문화 스토리텔링을 통해 여행지의 깊이를 더합니다."
+                },
+                {
+                    "title": f"{title_core} 인생 포토존과 힐링 산책",
+                    "desc": "사계절 변화하는 아름다운 풍경 속에서 가족, 연인, 친구와 함께 잊지 못할 추억을 만듭니다."
+                },
+                {
+                    "title": "스트레스 없는 편안한 전용 차량 이동",
+                    "desc": "대중교통 환승 부담 없이 쾌적한 전용 차량으로 목적지까지 안전하고 여유롭게 이동합니다."
+                }
+            ],
+            "included": [
+                "전 일정 왕복 전용 투어 버스 차량비 (유류비/통행료/기사 수고비 포함)",
+                "전문 문화관광 가이드 인솔 및 해설비",
+                f"{title_core} 주요 관광지 입장료",
+                "차량 내 시원한 생수 제공"
+            ],
+            "excluded": [
+                "개인 식사비 및 음료비",
+                "개인 기호 식품 및 기념품 구매 비용",
+                "선택 체험 프로그램 이용료",
+                "개인 여행자보험 (개별 가입 권장)"
+            ],
+            "meeting_info": [
+                {"point": f"{self.region} 거점 집결지", "time": "08:30", "place": f"{self.region} 주요 역 1번 출구 앞"},
+                {"point": "추가 픽업지", "time": "09:00", "place": f"{self.region} 시내 중심 지하철역 앞"}
+            ],
+            "dropoff_info": [
+                {"point": "1차 하차", "time": "18:30", "place": f"{self.region} 주요 역 앞"},
+                {"point": "2차 하차", "time": "19:30", "place": f"{self.region} 시내 중심지"}
+            ],
+            "preparation": [
+                "편안한 보행을 위해 편한 운동화나 워킹화 착용을 권장합니다.",
+                "계절과 기온 변화에 대비한 가벼운 겉옷이나 얇은 외투.",
+                "스마트폰 카메라 충전을 위한 보조배터리.",
+                "야외 활동을 위한 모자, 선글라스, 양산 등 햇빛 차단 용품."
+            ],
+            "cancellation_policy": [
+                "출발 3일 전 취소 시: 100% 전액 환불",
+                "출발 2일 전 취소 시: 80% 환불 (위약금 20%)",
+                "출발 1일 전 취소 시: 70% 환불 (위약금 30%)",
+                "출발 당일 취소 또는 미탑승 시: 50% 환불 (위약금 50%)"
+            ]
+        }
 
     def __repr__(self):
         return f"<TourProduct {self.name} ({self.region})>"
@@ -290,7 +450,10 @@ class OrderAccommodation(db.Model):
         return f"<OrderAccommodation order_id={self.order_id} acc_id={self.accommodation_id}>"
 
 #타임딜 참고
+
 class TimeDeal(db.Model):
+    __tablename__ = 'time_deal'
+
     id = db.Column(db.Integer, primary_key=True)
     product_type = db.Column(db.String(10), nullable=False, default='sub')  # 'main'(큰 카드) 또는 'sub'(우측 작은 카드)
     airline = db.Column(db.String(50), nullable=False)  # 예: [아시아나항공], [이스타항공]
@@ -302,3 +465,4 @@ class TimeDeal(db.Model):
     image_file = db.Column(db.String(100), nullable=False)  # 이미지 파일명 (예: sydney.jpg)
     badge1 = db.Column(db.String(50))  # 태그/배지 1 (예: 블루마운틴 시닉4콤보)
     badge2 = db.Column(db.String(50))  # 태그/배지 2 (예: 시드니타워)
+
