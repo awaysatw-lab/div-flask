@@ -31,4 +31,7 @@ def list():
 
 @bp.route('/detail/<int:product_id>')
 def detail(product_id):
-    return render_template("review/review_detail.html")
+    selected_product = TourProduct.query.get_or_404(product_id)
+    reviews = db.session.query(Review).filter_by(product_id=product_id).all()
+
+    return render_template("review/review_detail.html",product=selected_product,reviews=reviews)

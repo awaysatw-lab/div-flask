@@ -6,13 +6,18 @@
 <div class="container my-4">
 
     <!-- ==========================================================================
-         1. 👑 베스트 후기 상품 섹션 (기존 코드 유지형)
+         1. 👑 베스트 후기 상품 섹션 (가로 4개 나란히 배치형 최종본)
          ========================================================================== -->
     <h2 class="mb-4 fw-bold" style="color: #212529;">👑 베스트 후기 상품</h2>
 
-    <!-- [팀 프로젝트 유지] 베스트 후기 레이아웃은 단 한 글자도 건드리지 않고 무결성 유지 보존 -->
+    <!--
+       [반응형 그리드 설계]
+       row-cols-1: 모바일 스마트폰 환경에서는 세로로 1개씩 안전 정렬
+       row-cols-sm-2: 태블릿 환경에서는 가로로 2개씩 분할 노출
+       row-cols-lg-4: PC 와이드 스크린 환경에서는 완벽하게 가로로 4개 나란히 정렬
+    -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
-        {% for product, review_count in popular_products[:4] %}
+        {% for product, review_count in popular_products %}
         <div class="col">
             <!-- 팀원간 CSS 간섭을 배제하기 위해 마찰 없는 표준 inline-style로 테두리 밀착 고정 -->
             <div class="card h-100 shadow-sm border rounded-3 overflow-hidden" style="border: 1px solid #ffc107 !important; position: relative;">
@@ -45,7 +50,7 @@
     <hr class="my-5" style="border-top: 2px dashed #cbd5e1;">
 
     <!-- ==========================================================================
-         2. ⏱️ 최신 후기 상품 섹션 (이미지 없는 텍스트 버튼형 업데이트 최종 규격)
+         2. ⏱️ 최신 후기 상품 섹션 (이미지 제거 텍스트 버튼클릭형 최종 완성본)
          ========================================================================== -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -58,13 +63,13 @@
         </button>
     </div>
 
-    <!-- 텍스트 전용 카드 그리드 레이아웃 (PC 스크린 기준 4개 가로 정렬 및 이미지 완전 제외) -->
+    <!-- 텍스트 전용 카드 그리드 레이아웃 (PC 스크린 기준 4개 가로 정렬 및 이미지 삭제) -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 mb-5" id="latestReviewContainer">
         {% for product, review_count, latest_review_date in latest_products %}
         <div class="col review-item-node">
             <a href="{{ url_for('review.detail', product_id=product.id) }}" class="text-decoration-none h-100 d-block">
-                <!-- 이미지 영역을 원천 배제하고 깔끔한 텍스트 카드 버튼클릭형태로 구성 -->
-                <div class="card h-100 border rounded-3 shadow-sm latest-text-card-btn" style="background-color: #f8f9fa; border: 1px solid #dee2e6 !important; cursor: pointer; transition: all 0.2s ease-in-out;">
+                <!-- 이미지 영역을 원천 배제하고 깔끔한 텍스트형태로 구성 -->
+                <div class="card h-100 border rounded-3 shadow-sm" style="background-color: #f8f9fa; border: 1px solid #dee2e6 !important; cursor: pointer;">
                     <div class="card-body d-flex flex-column justify-content-between p-4">
                         <div>
                             <!-- 상품명 강조 -->
@@ -119,7 +124,7 @@
                             newCol.className = 'col review-item-node';
                             newCol.innerHTML = `
                                 <a href="/review/detail/${item.product_id}" class="text-decoration-none h-100 d-block">
-                                    <div class="card h-100 border rounded-3 shadow-sm bg-light" style="border: 1px solid #dee2e6 !important;">
+                                    <div class="card h-100 border rounded-3 shadow-sm" style="background-color: #f8f9fa; border: 1px solid #dee2e6 !important;">
                                         <div class="card-body d-flex flex-column justify-content-between p-4">
                                             <div>
                                                 <h5 class="card-title fw-bold text-dark text-truncate mb-2" style="font-size: 1.1rem; color: #212529;">${item.product_name}</h5>
@@ -138,7 +143,6 @@
                     })
                     .catch(err => console.error('최신 후기 업데이트 실패:', err))
                     .finally(() => {
-                        // 🛠️ [문법 파괴 복구 완료] 구형 .final을 온전한 비동기 정식 .finally 블록으로 수선 마감
                         btnUpdate.disabled = false;
                         btnUpdate.textContent = '최신화 ↻';
                     });
