@@ -118,37 +118,35 @@
       </div>
     </div>
 
-    <!-- 3. 예약자 정보 -->
+    <!-- 3. 예약자 정보 & 주관 여행사 상세 정보 -->
     <div class="card shadow-sm border mb-4">
       <div class="card-body p-4">
-        <h3 class="card-title h5 fw-bold mb-3 pb-2 border-bottom text-dark">
+        <h3 class="card-title h5 fw-bold mb-3 pb-2 border-bottom d-flex align-items-center justify-content-between text-dark">
           <span>👤 3. 예약자 정보</span>
+          {% if is_member and logged_user %}
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">회원 예약 ({{ logged_user.user_id }})</span>
+          {% else %}
+            <span class="badge bg-secondary-subtle text-secondary border">비회원 예약</span>
+          {% endif %}
         </h3>
+
         {% if is_member and logged_user %}
-          <div class="row g-3 p-3 bg-light rounded-3 border">
-            <div class="col-12 col-sm-6">
-              <div class="d-flex gap-2">
-                <span class="text-muted" style="min-width: 60px;">성명:</span>
-                <span class="fw-bold text-dark">{{ logged_user.name }}</span>
+          <!-- 회원 예약자 정보 (이름 3칸, 전화번호 3칸, 이메일 6칸 -> 큰 화면 1줄) -->
+          <div class="row g-3 p-3 bg-light rounded-3 border align-items-center mb-3">
+            <div class="col-12 col-md-3">
+              <span class="text-muted small d-block mb-1">성명 (이름)</span>
+              <div class="d-flex align-items-center gap-1">
+                <strong class="text-dark fs-6">{{ logged_user.name }}</strong>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle small ms-1">{{ logged_user.user_id }}</span>
               </div>
             </div>
-            <div class="col-12 col-sm-6">
-              <div class="d-flex gap-2">
-                <span class="text-muted" style="min-width: 60px;">회원ID:</span>
-                <span class="fw-bold text-dark">{{ logged_user.user_id }}</span>
-              </div>
+            <div class="col-12 col-md-3">
+              <span class="text-muted small d-block mb-1">전화번호</span>
+              <strong class="text-dark fs-6">{{ logged_user.phone }}</strong>
             </div>
-            <div class="col-12 col-sm-6">
-              <div class="d-flex gap-2">
-                <span class="text-muted" style="min-width: 60px;">연락처:</span>
-                <span class="fw-bold text-dark">{{ logged_user.phone }}</span>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6">
-              <div class="d-flex gap-2">
-                <span class="text-muted" style="min-width: 60px;">이메일:</span>
-                <span class="fw-bold text-dark">{{ logged_user.email }}</span>
-              </div>
+            <div class="col-12 col-md-6">
+              <span class="text-muted small d-block mb-1">이메일</span>
+              <strong class="text-dark fs-6">{{ logged_user.email }}</strong>
             </div>
           </div>
         {% else %}
@@ -158,21 +156,49 @@
               <strong>비회원 예약</strong>으로 진행 중입니다. 예약 확인 및 알림을 위해 연락처를 정확히 입력해주세요.
             </div>
           </div>
-          <div class="row g-3">
-            <div class="col-12 col-sm-6">
-              <label class="form-label fw-bold small" for="guest_name">예약자 성함 <span class="text-danger">*</span></label>
+          <!-- 비회원 예약자 입력 (이름 3칸, 전화번호 3칸, 이메일 6칸 -> 큰 화면 1줄) -->
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-md-3">
+              <label class="form-label fw-bold small" for="guest_name">성명 (이름) <span class="text-danger">*</span></label>
               <input type="text" id="guest_name" name="guest_name" required class="form-control" placeholder="예: 홍길동" value="{{ form.guest_name.data or '' }}">
             </div>
-            <div class="col-12 col-sm-6">
-              <label class="form-label fw-bold small" for="guest_phone">휴대폰 번호 <span class="text-danger">*</span></label>
+            <div class="col-12 col-md-3">
+              <label class="form-label fw-bold small" for="guest_phone">전화번호 <span class="text-danger">*</span></label>
               <input type="tel" id="guest_phone" name="guest_phone" required class="form-control" placeholder="예: 010-1234-5678" value="{{ form.guest_phone.data or '' }}">
             </div>
-            <div class="col-12">
-              <label class="form-label fw-bold small" for="guest_email">이메일 주소 (예약 확인용) <span class="text-danger">*</span></label>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small" for="guest_email">이메일 주소 <span class="text-danger">*</span></label>
               <input type="email" id="guest_email" name="guest_email" required class="form-control" placeholder="예: guest@example.com" value="{{ form.guest_email.data or '' }}">
             </div>
           </div>
         {% endif %}
+
+        <!-- 여행사 상세 정보 (동일 형식: 이름 3칸, 전화번호 3칸, 이메일 6칸 -> 큰 화면 1줄) -->
+        <div class="mt-4 pt-3 border-top">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h4 class="h6 fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+              <span>🏢 주관 여행사 상세 정보</span>
+            </h4>
+            <span class="badge bg-light text-secondary border small">관광사업자 등록 제1993-000006호</span>
+          </div>
+          <div class="row g-3 p-3 bg-light rounded-3 border align-items-center">
+            <div class="col-12 col-md-3">
+              <span class="text-muted small d-block mb-1">여행사명 (이름)</span>
+              <strong class="text-dark fs-6">(주)길마중투어</strong>
+            </div>
+            <div class="col-12 col-md-3">
+              <span class="text-muted small d-block mb-1">전화번호 (고객센터)</span>
+              <strong class="text-primary fs-6">📞 1577-1233</strong>
+            </div>
+            <div class="col-12 col-md-6">
+              <span class="text-muted small d-block mb-1">이메일 및 소재지</span>
+              <div class="d-flex flex-wrap align-items-center gap-1">
+                <strong class="text-dark fs-6">✉️ help@gilmajungtour.com</strong>
+                <span class="text-muted small">(경기 수원시 팔달구 권광로 146 벽산그랜드코아 401호)</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
