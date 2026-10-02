@@ -38,3 +38,18 @@ def create():
         form.email.data = g.user.email
 
     return render_template('customer/question_form.html', form=form)
+
+
+@bp.route('/detail/<int:question_id>/')
+def detail(question_id):
+    if g.user is None:
+        flash('로그인이 필요한 서비스입니다.')
+        return redirect(url_for('auth.login', next=request.full_path))
+
+    question = Question.query.get_or_404(question_id)
+
+    if question.email != g.user.email:
+        flash('본인의 문의 내역만 열람할 수 있습니다.')
+        return redirect(url_for('customer.faq_list'))
+
+    return render_template('customer/customer_detail.html', question=question)

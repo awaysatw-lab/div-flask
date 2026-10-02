@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, g
+from flask import Blueprint, render_template, request, redirect, url_for, g, session
 from pybo.models import Review, TimeDeal
 from datetime import datetime
 
@@ -118,3 +118,10 @@ def deal_detail(deal_id):
     deal = TimeDeal.query.get_or_404(deal_id)
 
     return render_template('product/deal_detail.html', deal=deal)
+
+# 언저 변경
+@bp.route('/set-language/<lang_code>')
+def set_language(lang_code):
+    session['lang'] = lang_code
+
+    return redirect(request.referrer or url_for('main.index'))
