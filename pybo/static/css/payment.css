@@ -25,3 +25,9 @@
 .table td {
   font-size: 14px;
 }
+
+#pay_button {
+    background-color: #1D3557;
+    color: #ffffff;
+    border-color: #1D3557;
+}
