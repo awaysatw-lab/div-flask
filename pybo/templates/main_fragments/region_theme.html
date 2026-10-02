@@ -10,37 +10,37 @@
          ========================= -->
     <div class="travel-tab-content active" id="region-tab">
         <div class="icon-list region-list">
-            <a href="{{ url_for('main.region_seoul') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+            <a href="{{ url_for('product.main_product', region='sudo') }}" class="icon-item" style="text-decoration: none; color: inherit;">
                 <div class="circle-img">
                     <img src="{{ url_for('static', filename='img/seoul.png') }}" alt="수도권 여행">
                 </div>
                 <span>수도권</span>
             </a>
-            <a href="{{ url_for('main.region_gangwon') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+            <a href="{{ url_for('product.main_product', region='gang') }}" class="icon-item" style="text-decoration: none; color: inherit;">
                 <div class="circle-img">
                     <img src="{{ url_for('static', filename='img/gangwon.png') }}" alt="강원권 여행">
                 </div>
                 <span>강원권</span>
             </a>
-            <a href="{{ url_for('main.region_chungcheong') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+            <a href="{{ url_for('product.main_product', region='chung') }}" class="icon-item" style="text-decoration: none; color: inherit;">
                 <div class="circle-img">
                     <img src="{{ url_for('static', filename='img/chungcheong.png') }}" alt="충청권 여행">
                 </div>
                 <span>충청권</span>
             </a>
-            <a href="{{ url_for('main.region_gyeongsang') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+            <a href="{{ url_for('product.main_product', region='geong') }}" class="icon-item" style="text-decoration: none; color: inherit;">
                 <div class="circle-img">
                     <img src="{{ url_for('static', filename='img/gyeongsang.png') }}" alt="경상권 여행">
                 </div>
                 <span>경상권</span>
             </a>
-            <a href="{{ url_for('main.region_jeolla') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+            <a href="{{ url_for('product.main_product', region='jeon') }}" class="icon-item" style="text-decoration: none; color: inherit;">
                 <div class="circle-img">
                     <img src="{{ url_for('static', filename='img/jeolla.png') }}" alt="전라권 여행">
                 </div>
                 <span>전라권</span>
             </a>
-            <a href="{{ url_for('main.region_jeju') }}" class="icon-item" style="text-decoration: none; color: inherit;">
+            <a href="{{ url_for('product.main_product', region='jeju') }}" class="icon-item" style="text-decoration: none; color: inherit;">
                 <div class="circle-img">
                     <img src="{{ url_for('static', filename='img/jeju.png') }}" alt="제주권 여행">
                 </div>
@@ -48,7 +48,7 @@
             </a>
         </div>
         <div class="more-btn-wrap">
-            <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('main.index') }}'">
+            <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('product.main_product') }}'">
                 지역별 여행 정보 보러가기
             </button>
         </div>
