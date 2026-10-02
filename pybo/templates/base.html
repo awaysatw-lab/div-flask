@@ -33,7 +33,7 @@
                     <span class="util-divider">|</span>
                     <a href="{{ url_for('order.lookup') }}" class="util-link">예약확인</a>
                     <span class="util-divider">|</span>
-                    <a href="#" class="util-link">고객센터</a>
+                    <a href="{{ url_for('customer.faq_list') }}" class="util-link">고객센터</a>
                     <span class="util-divider">|</span>
                     <div class="lang-dropdown">
                         <span class="util-text">🌐 한국어</span>
@@ -47,7 +47,7 @@
                             <div class="nav-item"><a href="{{ url_for('product.main_product') }}">여행 ▾</a></div>
                             <div class="nav-item"><a href="#">추천 <span class="badge">N</span> ▾</a></div>
                             <div class="nav-item"><a href="{{ url_for('review.list') }}">후기</a></div>
-                            <div class="nav-item"><a href="#">QnA</a></div>
+                            <div class="nav-item"><a href="{{ url_for('customer.faq_list') }}">QnA</a></div>
                         </div>
                     </nav>
 

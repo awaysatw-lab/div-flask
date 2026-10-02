@@ -44,22 +44,56 @@
     font-size: 14pt;
 }
 
-/*슬라이드 밑 nav*/
-#underslide > #pills-tab{
-    width: 600px;
-    height: 40px;
-    margin: 0 auto;
+/*슬라이드 밑 설명*/
+#underslide > h5{
+    height: 50px;
+    padding: 10px;
+    text-align: center;
+    background-color: #FAF8F5;
 }
 
-#pills-tab > li{
+/* 지도 */
+#map-choice{
+    width: 350px;
+    height: 790px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-color: #0f172a;
+    border-style: solid;
+    border-radius: 10px;
+}
+#map-choice>div{
+    margin-bottom: 20px;
+}
+
+#map-choice>div>h6{
+    font-weight: 700;
+    font-size: 15pt;
+}
+
+/*지도 밑 버튼*/
+.map-choice > div > #pills-tab{
+    width: 145px;
     height: 40px;
-    width: 80px;
+}
+
+.map-choice > div > #pills-tab > li{
+    width: 145px;
+    height: 40px;
     color: white;
     align-items: center;
 }
 
+#pills-tab > li:first-child{
+    grid-column: span 2;
+}
+
+#pills-tab > li:first-child > button{
+    width: 300px;
+}
+
 #pills-tab > li > button{
-    width: 80px;
+    width: 145px;
     height: 40px;
     background-color: #FAF8F5;
     color: #212529;
@@ -78,42 +112,8 @@
     color: white;
 }
 
-/* 지도 */
-#map-choice{
-    width: 350px;
-    height: 730px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-color: #0f172a;
-    border-style: solid;
-    border-radius: 10px;
-}
-#map-choice>div{
-    margin-bottom: 20px;
-}
-
-#map-choice>div>h6{
-    font-weight: 700;
-    font-size: 15pt;
-}
-
-/*지도 밑 버튼*/
-.map-btn{
-    width: 145px;
-    height: 40px;
-    background-color: #FAF8F5;
-    color: #212529;
-    border-radius: 5px;
-    border-style: none;
-    border-color: none;
-}
-.map-btn:not(.active):hover {
-    background-color: #1D3557;
-    color: white;
-}
-
 /*상세 이동 버튼*/
-#main_right > div > .card > img{
+ .card > img{
     height: 250px;
 }
 
@@ -175,12 +175,14 @@
 }
 /*스와이퍼*/
 #carouselExample{
+    width: 95%;
     height: 300px;
     margin: 20px;
     overflow: hidden;
 }
 
 #mini{
+    width: 95%;
     height: 80px;
     margin: 20px;
     display: flex;
@@ -374,8 +376,10 @@
 
 #myTabContent > div{
     height: 600px;
+    overflow: auto;
 }
 
+/*구역 3*/
 .infomation > h5{
     margin: 50px 0 10px;
     font-weight: 700;
@@ -441,7 +445,6 @@
 }
 
 #review_w{
-    border-style: solid;
     padding: 5px 0;
 }
 

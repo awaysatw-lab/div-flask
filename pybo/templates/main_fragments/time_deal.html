@@ -1,0 +1,76 @@
+
+<section class="time-deal">
+    <div class="deal-header">
+        <h3>⏰ M타임딜</h3>
+        <p class="subtitle">오늘의 득템 찬스! 날마다 새로운 핫딜 라인업!</p>
+    </div>
+
+    <div class="deal-container">
+        <!-- =================================================
+             메인 딜 (왼쪽 큰 카드)
+             ================================================= -->
+        {% if main_deal %}
+        <a href="{{ url_for('main.deal_detail', deal_id=main_deal.id) }}" class="main-deal-card" style="text-decoration: none; color: inherit; display: block;">
+            <div class="main-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ main_deal.image_file) }}');">
+                <div class="badge-group">
+                    {% if main_deal.badge1 %}<span class="badge blue">{{ main_deal.badge1 }}</span>{% endif %}
+                    {% if main_deal.badge2 %}<span class="badge green">{{ main_deal.badge2 }}</span>{% endif %}
+                </div>
+            </div>
+
+            <div class="deal-info">
+                <div class="timer-banner">
+                    <span class="clock-icon">⏱️</span>
+                    <span class="time-text" id="mainTimer" data-endtime="{{ main_deal.end_date.strftime('%Y-%m-%dT%H:%M:%S') }}">
+                        시간 계산 중...
+                    </span>
+                </div>
+
+                <h4 class="product-title"><strong>{{ main_deal.airline }}</strong> {{ main_deal.title }}</h4>
+                <p class="hashtags">{{ main_deal.hashtags }}</p>
+                <p class="product-desc">{{ main_deal.description }}</p>
+                <div class="price-line">
+                    <span class="price"><strong>{{ "{:,}".format(main_deal.price) }}</strong>원</span> 부터~
+                </div>
+            </div>
+        </a>
+        {% else %}
+        <div class="main-deal-card no-deal" style="display:flex; align-items:center; justify-content:center; background:#f9f9f9; color:#999;">
+            진행 중인 메인 타임딜이 없습니다.
+        </div>
+        {% endif %}
+
+        <!-- =================================================
+             서브 딜 (오른쪽 작은 카드 리스트) - 기존 오리지널 CSS 구조 완벽 싱크
+             ================================================= -->
+        <div class="sub-deal-list">
+            {% if sub_deal_list %}
+                {% for sub in sub_deal_list %}
+                <a href="{{ url_for('main.deal_detail', deal_id=sub.id) }}" class="sub-deal-card" style="text-decoration: none; color: inherit; display: block;">
+                    <div class="sub-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ sub.image_file) }}');">
+                        <div class="badge-group">
+                            {% if sub.badge1 %}<span class="badge blue">{{ sub.badge1 }}</span>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sub-deal-info">
+                        <div class="timer-banner">
+                            <span class="clock-icon">⏱️</span>
+                            <span class="time-text sub-timer" data-endtime="{{ sub.end_date.strftime('%Y-%m-%dT%H:%M:%S') }}">시간 계산 중...</span>
+                        </div>
+                        <h4 class="product-title"><strong>{{ sub.airline }}</strong> {{ sub.title }}</h4>
+                        <p class="hashtags">{{ sub.hashtags }}</p>
+                        <div class="price-line">
+                            <span class="price"><strong>{{ "{:,}".format(sub.price) }}</strong>원</span> 부터~
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="no-deal" style="display:flex; align-items:center; justify-content:center; background:#f9f9f9; color:#999; width: 100%; height: 100%;">
+                    진행 중인 서브 타임딜이 없습니다.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
