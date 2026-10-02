@@ -1,191 +1,169 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>대한민국 구석구석 - 여행 Q&A 상세보기</title>
-    <style>
-        /* 기본 리셋 및 폰트 설정 (기존 양식 유지) */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
-        body { background-color: #f8f9fa; color: #333; line-height: 1.6; }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
+<!-- [독립 컴포넌트] 🟠 길마중 Q&A (질문답변) 섹션 -->
+<section class="qa-custom-section my-5 px-3">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div>
+            <h2 class="mb-1 fw-bold fs-4" style="color: #212529;">🙋‍♂️ 자주 묻는 질문 / 답변</h2>
+            <p class="text-muted small mb-0">길마중 여행에 대해 궁금한 점을 빠르게 확인해보세요.</p>
+        </div>
+        <!-- 지속적 업데이트 기능을 수행하는 비동기 트리거 버튼 -->
+        <button class="btn btn-primary btn-sm fw-bold py-2 px-3 shadow-sm" id="btnLoadMoreQA">
+            질문 더보기 ↻
+        </button>
+    </div>
 
-        /* 1. 헤더 (기존 양식 일치) */
-        .header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 24px; font-weight: bold; color: #007bff; }
-        .user-menu a { margin-left: 15px; font-size: 14px; color: #666; }
-        .user-menu a:hover { color: #007bff; }
+    <!-- [기능 1] 버튼창 이동 가이드 (특정 질문 영역으로 앵커 이동) -->
+    <div class="qa-quick-navigation mb-4 p-3 bg-light rounded-3 d-flex flex-wrap gap-2 align-items-center">
+        <span class="fw-semibold text-secondary small me-2">🎯 빠른 바로가기 :</span>
+        <button class="btn btn-sm btn-outline-dark rounded-pill qa-nav-btn" data-target-qa="headingOne">취소/환불 규정</button>
+        <button class="btn btn-sm btn-outline-dark rounded-pill qa-nav-btn" data-target-qa="headingTwo">준비물 안내</button>
+        <span id="qaDynamicNavContainer" class="d-inline-flex gap-2"></span>
+    </div>
 
-        /* 메인 컨테이너 */
-        .container { max-width: 800px; margin: 0 auto; padding: 30px 20px; }
-
-        /* 공통 배지 스타일 (기존 양식 일치) */
-        .category-badge { background-color: #e3f2fd; color: #0d47a1; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 12px; display: inline-block; }
-        .status-badge { font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 12px; display: inline-block; }
-        .status-badge.solved { background-color: #e8f5e9; color: #1b5e20; }
-        .status-badge.pending { background-color: #fff3e0; color: #e65100; }
-
-        /* 목록으로 버튼 */
-        .action-options { display: flex; justify-content: flex-start; margin-bottom: 20px; }
-        .btn-list { background-color: #6c757d; color: white; padding: 8px 16px; font-size: 14px; font-weight: bold; border-radius: 6px; transition: background 0.2s; }
-        .btn-list:hover { background-color: #5a6268; }
-
-        /* 2. 질문 상세 영역 */
-        .view-qa-card { background-color: #ffffff; padding: 30px; border-radius: 8px; border: 1px solid #e9ecef; box-shadow: 0 2px 8px rgba(0,0,0,0.02); margin-bottom: 30px; }
-        .view-qa-meta-top { display: flex; gap: 8px; margin-bottom: 15px; }
-        .view-qa-title { font-size: 24px; font-weight: bold; color: #222; margin-bottom: 15px; line-height: 1.4; }
-        .view-qa-info { font-size: 13px; color: #999; display: flex; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid #f1f3f5; margin-bottom: 20px; }
-        .view-qa-content { font-size: 16px; color: #444; line-height: 1.8; min-height: 150px; white-space: pre-wrap; }
-
-        /* 3. 답변 레이블 섹션 */
-        .answer-section-title { font-size: 18px; font-weight: bold; color: #222; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .answer-count { color: #007bff; }
-
-        /* 4. 답변 리스트 영역 */
-        .answer-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
-        .answer-item { background-color: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #e9ecef; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
-        .answer-item.expert-reply { border-left: 4px solid #28a745; }
-        .answer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .answer-user { font-weight: bold; color: #333; font-size: 15px; display: flex; align-items: center; gap: 6px; }
-        .expert-badge { background-color: #e8f5e9; color: #28a745; font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-        .answer-date { font-size: 13px; color: #999; }
-        .answer-content { font-size: 15px; color: #444; line-height: 1.7; white-space: pre-wrap; margin-bottom: 15px; }
-
-        /* [추가] 답변 추천(좋아요) 영역 스타일 */
-        .answer-footer { display: flex; justify-content: flex-end; padding-top: 10px; border-top: 1px dashed #f1f3f5; }
-        .btn-like { background-color: #ffffff; color: #dc3545; border: 1px solid #f8d7da; padding: 6px 12px; font-size: 13px; font-weight: 500; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
-        .btn-like:hover { background-color: #fff5f5; border-color: #dc3545; }
-        .btn-like.liked { background-color: #dc3545; color: white; border-color: #dc3545; }
-
-        /* 5. 답변 쓰기 폼 영역 */
-        .answer-form-card { background-color: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #e9ecef; }
-        .answer-form-title { font-size: 16px; font-weight: bold; color: #333; margin-bottom: 12px; }
-        .answer-textarea-box { position: relative; margin-bottom: 15px; }
-
-        /* 비로그인 안내 메시지 오버레이용 스타일 */
-        .answer-textarea-box textarea { width: 100%; height: 120px; padding: 15px; font-size: 15px; border: 1px solid #ced4da; border-radius: 6px; outline: none; resize: none; transition: border-color 0.2s; }
-        .answer-textarea-box textarea:focus { border-color: #007bff; }
-
-        /* [추가] 로그인 제한 안내 멘트 효과 */
-        .answer-textarea-box textarea::placeholder { color: #adb5bd; }
-        .answer-textarea-box.disabled-box textarea { background-color: #f1f3f5; cursor: not-allowed; }
-
-        .answer-submit-box { display: flex; justify-content: flex-end; }
-        .btn-submit-answer { background-color: #007bff; color: white; border: none; padding: 12px 24px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-        .btn-submit-answer:hover { background-color: #0056b3; }
-        .btn-submit-answer:disabled { background-color: #ced4da; cursor: not-allowed; }
-
-        /* 6. 푸터 (기존 양식 일치) */
-        .footer { background-color: #343a40; color: #fff; text-align: center; padding: 20px; font-size: 14px; margin-top: 60px; }
-    </style>
-</head>
-<body>
-
-    <!-- 1. 헤더 -->
-    <header class="header">
-        <div class="logo">대한민국 구석구석</div>
-        <nav class="user-menu">
-            <!-- 테스트를 위해 임의로 비로그인 상태라고 가정합니다 -->
-            <a href="#" id="nav-login">로그인</a>
-            <a href="#">회원가입</a>
-            <a href="#">고객센터</a>
-        </nav>
-    </header>
-
-    <!-- 메인 콘텐츠 영역 -->
-    <main class="container">
-
-        <!-- 상단 옵션바 -->
-        <div class="action-options">
-            <a href="#" class="btn-list">← 목록으로</a>
+    <!-- 부트스트랩 아코디언 구조 (고유 ID 체계로 충돌 전면 차단) -->
+    <div class="accordion shadow-sm rounded-3 overflow-hidden" id="gilmajungFaqAccordion">
+        <!-- 기본 질문 1 -->
+        <div class="accordion-item border-light-subtle">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    Q1. 예약 취소 및 환불 규정은 어떻게 되나요?
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#gilmajungFaqAccordion">
+                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                    여행 출발 7일 전까지는 100% 전액 환불이 가능합니다. 이후 취소 시점에 따라 차등 수수료가 부과되오니 고지된 여행약관 및 고객센터 규정을 참고해 주세요.
+                </div>
+            </div>
         </div>
 
-        <!-- 2. Q&A 질문 본문 상세 보기 -->
-        <section class="view-qa-card">
-            <div class="view-qa-meta-top">
-                <span class="category-badge">맛집/카페</span>
-                <span class="status-badge solved">답변완료</span>
+        <!-- 기본 질문 2 -->
+        <div class="accordion-item border-light-subtle">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Q2. 가이드 투어 시 개인 준비물이 있나요?
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#gilmajungFaqAccordion">
+                <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                    도보 이동이 많으므로 편안한 운동화 착용을 적극 권장합니다. 개인 무선 이어폰을 지참하시면 투어 수신기 연결이 한층 더 수월합니다.
+                </div>
             </div>
-            <h1 class="view-qa-title">이번 주말에 부모님 모시고 여수 가는데 하모샤브샤브 맛집 추천해주세요!</h1>
-            <div class="view-qa-info">
-                <span><strong>작성자:</strong> 길동이</span>
-                <span><strong>등록일:</strong> 2026-10-01</span>
-                <span><strong>조회수:</strong> 124</span>
-            </div>
-            <div class="view-qa-content">안녕하세요! 이번 주말에 효도 여행으로 부모님을 모시고 여수에 방문할 예정입니다.
-여수에 가면 하모 샤브샤브(갯장어)를 꼭 먹어봐야 한다고 해서 맛집을 찾고 있습니다.
-
-부모님께서 비린 음식을 잘 못 드셔서 깔끔하고 육수가 깊은 곳이었으면 좋겠고, 창밖으로 바다 뷰가 보이면 더 좋을 것 같습니다. 현지인 분들이나 다녀오신 분들의 진솔한 추천 부탁드립니다!</div>
-        </section>
-
-        <!-- 3. 답변 섹션 타이틀 -->
-        <div class="answer-section-title">
-            <span>등록된 답변</span>
-            <span class="answer-count">2개</span>
         </div>
+    </div>
+</section>
 
-        <!-- 4. 답변 리스트 -->
-        <section class="answer-list">
-            <!-- 답변 1 -->
-            <article class="answer-item expert-reply">
-                <div class="answer-header">
-                    <div class="answer-user">
-                        <span>여수여행가이드</span>
-                        <span class="expert-badge">현지 전문가</span>
-                    </div>
-                    <span class="answer-date">2026-10-01 14:20</span>
-                </div>
-                <div class="answer-content">부모님 모시고 가신다면 국동항 근처의 식당가를 추천합니다.
-특히 현지인들도 자주 찾는 '경도회관'이나 '당머리 첫집' 라인은 갯장어가 매우 신선하고 비린내가 전혀 나지 않는 깔끔한 육수를 제공합니다.
+<!-- 다른 JS 파일이나 라이브러리와 절대 간섭하지 않는 안전 격리 스크립트 -->
+<script>
+    (function() {
+        let qaIndex = 2; // 기존 기본 질문 수
+        const btnLoadMore = document.getElementById('btnLoadMoreQA');
+        const accordionContainer = document.getElementById('gilmajungFaqAccordion');
+        const navContainer = document.getElementById('qaDynamicNavContainer');
 
-대부분 통창 너머로 바다가 보이기 때문에 부모님과 함께 눈과 입이 모두 즐거운 식사가 되실 겁니다. 밑반찬으로 나오는 돌게장도 일품입니다!</div>
-                <!-- [추가] 추천 버튼 탑재 영역 -->
-                <div class="answer-footer">
-                    <button type="button" class="btn-like" onclick="handleLike(this)">
-                        <span>❤️</span> 추천 <span class="like-count">12</span>
-                    </button>
-                </div>
-            </article>
+        // [기능 2] 버튼창 이동 기능 스크롤 핸들러 (충돌 없는 표준 스크롤 이동)
+        function initScrollNavigation(element) {
+            element.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('data-target-qa');
+                const targetElement = document.getElementById(targetId);
 
-            <!-- 답변 2 -->
-            <article class="answer-item">
-                <div class="answer-header">
-                    <div class="answer-user">
-                        <span>여수밤바다</span>
-                    </div>
-                    <span class="answer-date">2026-10-01 15:05</span>
-                </div>
-                <div class="answer-content">저도 저번 달에 가족 여행으로 다녀왔는데, 여수 소호동 쪽 '하모하모' 식당도 깔끔하고 괜찮았어요! 인테리어가 깔끔해서 부모님이 엄청 좋아하셨습니다. 즐거운 여행 되세요.</div>
-                <!-- [추가] 추천 버튼 탑재 영역 -->
-                <div class="answer-footer">
-                    <button type="button" class="btn-like" onclick="handleLike(this)">
-                        <span>❤️</span> 추천 <span class="like-count">4</span>
-                    </button>
-                </div>
-            </article>
-        </section>
+                if (targetElement) {
+                    // 해당 질문 요소를 찾아서 부드럽게 화면 중앙 부근으로 이동
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        <!-- 5. 답변 작성 폼 -->
-        <section class="answer-form-card">
-            <h2 class="answer-form-title">답변 작성하기</h2>
-            <form id="commentForm" action="#" method="POST">
-                <!-- 비로그인 상태 효과 제어를 위한 다이내믹 박스 구성 -->
-                <div class="answer-textarea-box disabled-box" id="textareaContainer" onclick="checkAuth()">
-                    <textarea id="answerTextarea" placeholder="로그인 후 이용하실 수 있습니다. 클릭하면 로그인 페이지로 이동합니다." readonly required></textarea>
-                </div>
-                <div class="answer-submit-box">
-                    <button type="submit" id="submitBtn" class="btn-submit-answer" disabled>답변 등록</button>
-                </div>
-            </form>
-        </section>
+                    // 이동 후 아코디언 버튼을 강제로 열어 가시성 확보
+                    const targetButton = targetElement.querySelector('.accordion-button');
+                    if (targetButton && targetButton.classList.contains('collapsed')) {
+                        targetButton.click();
+                    }
+                }
+            });
+        }
 
-    </main>
+        // 기본 제공 이동 버튼들에 기능 바인딩
+        document.querySelectorAll('.qa-nav-btn').forEach(btn => initScrollNavigation(btn));
 
-    <!-- 6. 푸터 -->
-    <footer class="footer">
-        <p>&copy; 2026 대한민국 구석구석 여행 Q&A. All rights reserved.</p>
-    </footer>
+        // [기능 3] 지속적 질문 업데이트 기능 (비동기 데이터 누적 추가)
+        if (btnLoadMore && accordionContainer) {
+            btnLoadMore.addEventListener('click', function() {
+                qaIndex++;
+                btnLoadMore.disabled = true;
+                btnLoadMore.textContent = '불러오는 중...';
 
-    <!-- 자바스크립트 비즈니스 로직 추가 -->
-    <script>
+                // 샘플 데이터 배열 (실제 운영 시 이 영역을 fetch('/api/qa') API 연동으로 교체 가능)
+                const mockTitles = [
+                    "길마중 패키지 여행 시 가이드 팁은 필수인가요?",
+                    "우천 등 기상 악화 시 투어 일정이 취소되나요?",
+                    "단체 예약 시 추가 할인을 적용받을 수 있나요?"
+                ];
+                const mockAnswers = [
+                    "길마중의 모든 전용 투어 상품은 공식 가이드 비용이 포함되어 있어 별도의 팁 강요가 절대 없습니다.",
+                    "안전에 지장이 없는 가벼운 비의 경우 정상 진행됩니다. 단, 천재지변급 기상악화 시 전액 환불 혹은 일정 변경 조치됩니다.",
+                    "10인 이상의 대가족이나 기업 연수 투어의 경우, 고객센터를 통해 맞춤형 견적 및 추가 프로모션 적용이 가능합니다."
+                ];
+
+                // 가상 인덱스 매칭을 통한 무한 루프 데이터 생성
+                const selectIdx = (qaIndex - 3) % mockTitles.length;
+                const dynamicTitle = `Q${qaIndex}. ${mockTitles[selectIdx]}`;
+                const dynamicAnswer = mockAnswers[selectIdx];
+                const newTargetId = `headingGenerated${qaIndex}`;
+                const newCollapseId = `collapseGenerated${qaIndex}`;
+
+                setTimeout(() => {
+                    // 1. 아코디언 리스트 리프레시 추가
+                    const newQaNode = document.createElement('div');
+                    newQaNode.className = 'accordion-item border-light-subtle';
+                    newQaNode.innerHTML = `
+                        <h2 class="accordion-header" id="${newTargetId}">
+                            <button class="accordion-button collapsed fw-semibold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#${newCollapseId}" aria-expanded="false" aria-controls="${newCollapseId}">
+                                ${dynamicTitle}
+                            </button>
+                        </h2>
+                        <div id="${newCollapseId}" class="accordion-collapse collapse" aria-labelledby="${newTargetId}" data-bs-parent="#gilmajungFaqAccordion">
+                            <div class="accordion-body bg-white text-secondary" style="line-height: 1.6;">
+                                ${dynamicAnswer}
+                            </div>
+                        </div>
+                    `;
+                    accordionContainer.appendChild(newQaItemNode = newQaNode);
+
+                    // 2. 상단 이동 버튼 네비게이션바에도 동적 버튼 연동 자동화
+                    if (navContainer) {
+                        const newNavBtn = document.createElement('button');
+                        newNavBtn.className = 'btn btn-sm btn-outline-primary rounded-pill fade-in-animation';
+                        newNavBtn.setAttribute('data-target-qa', newTargetId);
+                        // 가시성을 위해 앞부분 명칭만 발췌 표기
+                        newNavBtn.textContent = mockTitles[selectIdx].substring(0, 6) + '...';
+                        navContainer.appendChild(newNavBtn);
+
+                        // 새로 생성된 바로가기 버튼에도 즉시 스크롤 기능 투입
+                        initScrollNavigation(newNavBtn);
+                    }
+
+                    // 버튼 상태 복구
+                    btnLoadMore.disabled = false;
+                    btnLoadMore.textContent = '질문 더보기 ↻';
+                }, 400); // 부드러운 전개를 위한 가상 딜레이 시간 적용
+            });
+        }
+    })();
+</script>
+
+<!-- 주석 정상 마감 및 UI 향상 테마 CSS 코드 -->
+<style>
+    .qa-custom-section .accordion-button:not(.collapsed) {
+        background-color: var(--bs-primary-bg-subtle, #cfe2ff) !important;
+        color: var(--bs-primary-text-emphasis, #052c65) !important;
+        box-shadow: none !important;
+    }
+    .qa-custom-section .accordion-button:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15) !important;
+    }
+    /* 동적 추가 버튼 생성 시 부드러운 등장 애니메이션 */
+    .fade-in-animation {
+        animation: qaFadeIn 0.3s ease-in-out forwards;
+    }
+    @keyframes qaFadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+</style>
