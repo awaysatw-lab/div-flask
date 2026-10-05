@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.css"/>
 
     <!--구역1-->
     <div class="wide1">
@@ -8,27 +9,25 @@
             <!-- 왼쪽 -->
             <div id="sub-left">
                 <div id="four-slide">
-                    <div id="carouselExample" class="carousel slide">
-                        <div class="carousel-inner ">
+                    <div class="swiper mySwiper2">
+                        <div class="swiper-wrapper">
                             {% for img_url in product.image_urls %}
-                            <div class="carousel-item {% if loop.first %}active{% endif %}">
-                                <img src="{{ img_url }}" class="d-block w-100" alt="">
+                            <div class="swiper-slide">
+                                <img src="{{ img_url }}"  alt="">
                             </div>
                             {% endfor %}
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
                     </div>
-                    <div id="mini">
-                        {% for img_url in product.image_urls %}
-                            <img src="{{ img_url }}" class="d-block w-100" alt="">
-                        {% endfor %}
+                    <div thumbsSlider="" class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            {% for img_url in product.image_urls %}
+                            <div class="swiper-slide">
+                                <img src="{{ img_url }}"  alt="">
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
 
@@ -42,13 +41,13 @@
                         <button id="heart-log" onclick="location.href=`{{ url_for('auth.login') }}`">추천하기<br>(로그인 필요)</button>
                         {% endif %}
                     </div>
-                    <button class="white-btn">1:1문의</button>
+                    <button class="white-btn" onclick="location.href=`{{ url_for('customer.faq_list') }}`">1:1문의</button>
                     <button class="white-btn">❤️</button>
                     <button class="white-btn">🖨️</button>
                     <button class="white-btn">🖇️</button>
                 </div>
                 <div>
-                    <p id="schedule">여행일정 : {{ product.get_schedule_summary() }} </p>
+                    <p id="schedule">여행일정 : {{ product.schedule_summary }} </p>
                 </div>
             </div>
             <!-- 오른쪽 -->
@@ -111,23 +110,22 @@
             <h3> 여행 주요 일정</h3>
             <div>
                 <h5> 일정 </h5>
-                <h5> 4박 5일 </h5>
             </div>
-            <p> 출발 : 2026.10.08(목) 10:10</p>
-            <p> 도착 : 2026.10.12(월) 14:00</p>
+            <p> 출발 : {{ product.departure_info }}</p>
+            <p> 도착 : {{ product.arrival_info }}</p>
             <div>
                 <h5> 여행도시 </h5>
-                <h5> {{ product.get_cities() }} </h5>
             </div>
+            <h5> {{ product.cities }} </h5>
         </div>
     </div>
     <div class="wide1">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" style="color: #212529">상세일정</button>
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true" style="color: #212529">일정소개</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="color: #212529">숙소안내</button>
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false" style="color: #212529">상세일정</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="color: #212529">지도보기</button>
@@ -137,9 +135,10 @@
             </li>
         </ul>
         <div class="tab-content 2-100" id="myTabContent">
-            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">상세일정</div>
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                {% include '/product/sub_product_intro.html'  %}</div>
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-                {% include '/product/sub_product_tab_house.html'  %}</div>
+                {% include '/product/sub_product_details.html'  %}</div>
             <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                 <div class="ratio ratio-16x9">
                     <iframe style="border:0" loading="lazy" allowfullscreen src="https://www.google.com/maps?q={{ product.name }}&output=embed">></iframe>
@@ -226,6 +225,6 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/reserve.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.js"></script>
+<!--    <script src="{{ url_for('static', filename='js/product.js') }}"></script>-->
 {% endblock %}

@@ -1,0 +1,15 @@
+<p>{{ product_details.intro }}</p>
+{% for high in product_details.highlights %}
+    <h5>{{ high.title }}</h5>
+    <p>{{ high.desc }}</p>
+{% endfor %}
+<h5>승차 장소</h5>
+{% for meet in product_details.meeting_info %}
+    <p>{{ meet.point }} {{ meet.time }}</p>
+    <p>{{ meet.place }}</p>
+{% endfor %}
+<h5>하차 장소</h5>
+{% for drop in product_details.dropoff_info %}
+    <p>{{ drop.point }} {{ drop.time }}</p>
+    <p>{{ drop.place }}</p>
+{% endfor %}
