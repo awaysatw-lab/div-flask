@@ -1,15 +1,39 @@
-<p>{{ product_details.intro }}</p>
-{% for high in product_details.highlights %}
-    <h5>{{ high.title }}</h5>
-    <p>{{ high.desc }}</p>
-{% endfor %}
-<h5>승차 장소</h5>
-{% for meet in product_details.meeting_info %}
-    <p>{{ meet.point }} {{ meet.time }}</p>
-    <p>{{ meet.place }}</p>
-{% endfor %}
-<h5>하차 장소</h5>
-{% for drop in product_details.dropoff_info %}
-    <p>{{ drop.point }} {{ drop.time }}</p>
-    <p>{{ drop.place }}</p>
-{% endfor %}
+<div id="sub_intro">
+    {% for item in product_itinerary %}
+    <h3> {{ item.title }}</h3>
+    {% endfor %}
+    <p>{{ product_details.intro }}</p>
+    <div>
+        <div>
+            <div>
+                <img src="{{ product.image_url }}" alt="">
+            </div>
+            <div>
+            {% for high in product_details.highlights %}
+                <div id="intro_space">
+                <h5>{{ high.title }}</h5>
+                <p>{{ high.desc }}</p>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <div id="bus_line"></div>
+        <div id="bus_place">
+            <div>
+                <h1>🚌</h1>
+                <h5>승차 장소</h5>
+                {% for meet in product_details.meeting_info %}
+                    <p>{{ meet.point }} ({{ meet.time }}) : {{ meet.place }}</p>
+                {% endfor %}
+            </div>
+            <div>
+                <h1>🚏</h1>
+                <h5>하차 장소</h5>
+                {% for drop in product_details.dropoff_info %}
+                    <p>{{ drop.point }} ({{ drop.time }}) : {{ drop.place }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

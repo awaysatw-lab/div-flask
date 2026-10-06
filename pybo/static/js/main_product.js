@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.shadowOffsetY = 2;
 
         // 코랄 배경 알약 뱃지
-        ctx.fillStyle = '#E76F5F';
+        ctx.fillStyle = '#FFFFFF';
         ctx.beginPath();
         if (typeof ctx.roundRect === 'function') {
             ctx.roundRect(x, y, w, h, 13);
@@ -224,8 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
 
         // 텍스트 출력
-        ctx.shadowColor = 'transparent';
-        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = 'black';
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'center';
         ctx.fillText(text, x + w / 2, y + h / 2);
@@ -251,14 +250,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const d = currentData.data;
         const totalPixels = 370 * 539;
 
-        // 해당 권역으로 확정된 픽셀만 하이라이트 색상(#1D3557 네이비) 적용
+        // 해당 권역으로 확정된 픽셀만 하이라이트 색상(#415803D 초록색) 적용
         for (let i = 0; i < totalPixels; i++) {
             if (regionGrid[i] === targetCode) {
                 const idx = i * 4;
-                d[idx] = 29;     // R
-                d[idx + 1] = 53; // G
-                d[idx + 2] = 87; // B
-                d[idx + 3] = 240;// A
+                d[idx] = 21;     // R
+                d[idx + 1] = 128; // G
+                d[idx + 2] = 61; // B
+                d[idx + 3] = 180;// A
             }
         }
 
@@ -332,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 2. 상단 탭 버튼 active 클래스 동기화
+        // 2. 좌측 탭 버튼 active 클래스 동기화
         tabButtons.forEach(btn => {
             const btnRegion = getRegionFromBtn(btn);
             if (btnRegion === region) {
@@ -354,17 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.classList.remove('active');
             }
         });
-
-        // 4. 상단 캐러셀 슬라이드 이동
-        if (carouselEl && window.bootstrap && typeof window.bootstrap.Carousel !== 'undefined') {
-            const slideIndex = regionToSlide[region];
-            if (slideIndex !== undefined) {
-                const carouselInstance = bootstrap.Carousel.getOrCreateInstance(carouselEl);
-                if (carouselInstance) {
-                    carouselInstance.to(slideIndex);
-                }
-            }
-        }
 
         // 5. 지도 캔버스 권역 색상 하이라이트 렌더링
         renderMapHighlight(region);
@@ -404,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 상단 탭 버튼 클릭 및 전환 이벤트 리스너 등록
+    // 좌측 탭 버튼 클릭 및 전환 이벤트 리스너 등록
     tabButtons.forEach(tabBtn => {
         tabBtn.addEventListener('click', () => {
             const region = getRegionFromBtn(tabBtn);

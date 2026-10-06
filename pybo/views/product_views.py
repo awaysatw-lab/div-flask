@@ -56,21 +56,9 @@ def sub_product(product_id):
         elif isinstance(raw_details, dict):
             product_details = raw_details
 
-
     return render_template('product/sub_product.html',
                            product=selected_product, reviews=product_review, times=product_time,
                            product_itinerary=product_itinerary,
                            product_details=product_details )
 
-
-
-@bp.route('/sub_product', methods=['GET'])
-def reserve():
-    headcount = request.args.get('headcount', 1, type=int)
-    if headcount < 1:
-        headcount = 1
-
-    form = OrderReserveForm(headcount=headcount)
-
-    return render_template('product/sub_product.html', headcount=headcount, form=form)
 

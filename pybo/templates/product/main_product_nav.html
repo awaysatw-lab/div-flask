@@ -1,12 +1,13 @@
 <div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3 row-gap-4">
     {% for product in products %}
         {% if current_region == 'all' or product.region == current_region %}
-        <div class="card"  style="min-height: 400px; display: block !important;">
+        <div class="card">
             <img src="{{ product.image_url }}" class="card-img-top" alt="...">
             <div class="card-body">
+                <div id="on_img_box">🏅추천</div>
                 <div class="heart_star">
-                    <p>❤️{{ "{:,}".format(product.recommendation_count) }}</p>
-                    <p>⭐{{ product.get_average_rating() }}</p>
+                    <p>❤️ {{ "{:,}".format(product.recommendation_count) }}</p>
+                    <p>⭐ {{ product.get_average_rating() }}</p>
                 </div>
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
@@ -21,7 +22,7 @@
                         <p>(회원가입 시 {{ "{:,}".format(product.member_discount_rate * 100)|int }}% 할인)</p>
                     </div>
                 </div>
-                <div>
+                <div id="card-btn">
                     <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-primary">상세보기</a>
                     <a href="{{ url_for('order.reserve', product_id=product.id) }}" class="btn btn-primary">구매</a>
                 </div>
