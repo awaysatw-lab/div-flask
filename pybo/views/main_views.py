@@ -31,7 +31,7 @@ def index():
 @bp.route('/notice/')
 def notice():
     # templates/main_fragments/main_notice.html 파일을 렌더링
-    return render_template('main_fragments/main_notice.html')
+    return render_template('/notice.html')
 
 
 # ==========================================
