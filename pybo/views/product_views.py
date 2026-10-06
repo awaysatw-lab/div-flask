@@ -1,3 +1,4 @@
+import ast
 import json
 
 from flask import render_template, Blueprint, request
@@ -22,7 +23,6 @@ def sub_product(product_id):
     selected_product = TourProduct.query.get_or_404(product_id)
     product_review = Review.query.filter_by(product_id=product_id).all()
     product_time = Order.query.all()
-
 
     if isinstance(selected_product.image_urls, str):
         try:
@@ -56,9 +56,11 @@ def sub_product(product_id):
         elif isinstance(raw_details, dict):
             product_details = raw_details
 
+
     return render_template('product/sub_product.html',
                            product=selected_product, reviews=product_review, times=product_time,
                            product_itinerary=product_itinerary,
                            product_details=product_details )
+
 
 
