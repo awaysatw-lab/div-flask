@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}길마중 - 오늘, 더 특별한 여행{% endblock %}</title>
+    {# bootstrap css #}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     {% block style %}
@@ -52,13 +53,47 @@
                     <div id="google_translate_element" style="display:none;"></div>
                 </div>
 
-                <div class="nav-search-line">
+                  <div class="nav-search-line">
                     <nav class="main-nav">
                         <div class="nav-links">
-                            <div class="nav-item"><a href="{{ url_for('product.main_product') }}">여행 ▾</a></div>
-                            <div class="nav-item"><a href="#">추천 <span class="badge">N</span> ▾</a></div>
+                            <!-- [수정됨] 1. 여행 메뉴 & 드롭다운 메가 메뉴 -->
+                            <div class="nav-item dropdown">
+                                <a href="{{ url_for('product.main_product') }}" class="nav-link btn-box">여행 <span class="arrow">▾</span></a>
+                                <div class="dropdown-menu mega-menu">
+                                    <div class="menu-column">
+                                        <h3>테마별</h3>
+                                        <ul>
+                                            <li><a href="{{ url_for('product.main_product', category='resort') }}">휴양지</a></li>
+                                            <li><a href="{{ url_for('product.main_product', category='activity') }}">체험</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="menu-column">
+                                        <h3>지역별</h3>
+                                        <ul>
+                                            <li><a href="{{ url_for('product.main_product', region='seoul') }}">수도권</a></li>
+                                            <li><a href="{{ url_for('product.main_product', region='gangwon') }}">강원권</a></li>
+                                            <li><a href="{{ url_for('product.main_product', region='chungcheong') }}">충청권</a></li>
+                                            <li><a href="{{ url_for('product.main_product', region='gyeongsang') }}">경상권</a></li>
+                                            <li><a href="{{ url_for('product.main_product', region='jeolla') }}">전라권</a></li>
+                                            <li><a href="{{ url_for('product.main_product', region='jeju') }}">제주권</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- [수정됨] 2. 추천 메뉴 & 일반 드롭다운 메뉴 -->
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link">추천 <span class="badge">N</span> <span class="arrow">▾</span></a>
+                                <ul class="dropdown-menu standard-menu">
+                                    <li><a href="{{ url_for('product.main_product', season='spring') }}">봄</a></li>
+                                    <li><a href="{{ url_for('product.main_product', season='summer') }}">여름</a></li>
+                                    <li><a href="{{ url_for('product.main_product', season='autumn') }}">가을</a></li>
+                                    <li><a href="{{ url_for('product.main_product', season='winter') }}">겨울</a></li>
+                                </ul>
+                            </div>
+
                             <div class="nav-item"><a href="{{ url_for('review.list') }}">후기</a></div>
-                            <div class="nav-item"><a href="{{ url_for('customer.faq_list') }}">QnA</a></div>
+                            <div class="nav-item"><a href="{{ url_for('customer.faq_list') }}">고객센터</a></div>
                         </div>
                     </nav>
 

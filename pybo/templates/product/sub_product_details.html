@@ -1,0 +1,23 @@
+{% for item in product_itinerary %}
+    <h3>📌 {{ item.title }}</h3>
+
+    <div class="meals-section" style="margin-bottom: 15px; font-weight: bold;">
+        <p>🍳 아침: {{ item.meals.breakfast }}</p>
+        <p>🍱 점심: {{ item.meals.lunch }}</p>
+        <p>🌙 저녁: {{ item.meals.dinner }}</p>
+    </div>
+
+    <hr>
+
+    <h5>🕒 세부 시간표</h5>
+    <ul class="timeline-list">
+        {% for time_detail in item.timeline %}
+            <li style="margin-bottom: 20px; list-style: none;">
+                <strong>[{{ time_detail.time }}] {{ time_detail.icon }} {{ time_detail.title }}</strong>
+                <p style="margin: 5px 0 0 15px; color: #555;">📍 위치: {{ time_detail.location }}</p>
+                <p style="margin: 5px 0 0 15px; color: #666;">📝 안내: {{ time_detail.desc }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+

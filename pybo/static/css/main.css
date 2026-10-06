@@ -42,12 +42,12 @@ button,input {
 }
 
 /* ==========================================================================
-   헤더
+   헤더 (수정완료)
    ========================================================================== */
 
 .site-header {
     width: 100%;
-    height: 80px;
+    height: 90px; /* 유틸메뉴와 네비게이션 공간 분리를 위해 높이를 약간 확보 */
     background-color: #faf8f5;
     border-bottom: 1px solid #F6F4EE;
 }
@@ -59,11 +59,12 @@ button,input {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
 }
 
 .logo-area {
     display: flex;
-    margin-top: 15px;
+    align-items: center; /* 로고와 슬로건의 세로 정렬 맞춤 */
     gap: 2px;
     flex-shrink: 0;
 }
@@ -80,7 +81,6 @@ button,input {
 }
 
 .logo-area span {
-    margin-top: 15px;
     cursor: default;
     font-size: x-small;
 }
@@ -108,7 +108,9 @@ button,input {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: center;
     flex: 1;
+    height: 100%;
 }
 
 .top-util-menu {
@@ -116,7 +118,7 @@ button,input {
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
-    padding: 10px 2px;
+    padding: 6px 2px;
     font-size: 13px;
     color: #2B2D42;
 }
@@ -160,40 +162,83 @@ button,input {
     color: #2B2D42;
 }
 
+/* 네비게이션 & 검색창 라인 정렬 통합 수정한 곳 */
 .nav-search-line {
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: center;      /* 메뉴 전체 라인과 검색창의 수직 센터 맞춤 */
     justify-content: flex-end;
     gap: 35px;
+    margin-top: 4px;
 }
 
+/* 중복 정의되던 .nav-links를 하나로 정돈 */
 .nav-links {
     display: flex;
     flex-direction: row;
-    gap: 25px;
+    align-items: center;       /* [여행], [추천] 글자들의 높낮이 수직 중앙 맞춤 */
+    gap: 32px;                 /* 메뉴 글자 사이 간격 확장 */
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.nav-item a {
+.nav-item {
+    position: relative;        /* 하위 절대위치 드롭다운의 기준축 고정 */
+    display: flex;
+    align-items: center;       /* 아이템 내부 요소 정렬 */
+}
+
+.nav-item > a {
     text-decoration: none;
     color: #2B2D42;
     font-size: 1.05rem;
     font-weight: bold;
     letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;       /* 링크 글자 내부 아이콘 정렬 */
 }
 
+/* 마우스 호버 시 최상위 텍스트 흑색 및 굵기 유지 */
+.nav-item:hover > a {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* 이미지 레이아웃 반영: 글자가 갇혀 보이지 않도록 패딩과 선 두께 최적화 */
+.btn-box {
+    border: 1px solid #999999; /* 테두리를 조금 더 은은하게 변경 */
+    border-radius: 6px;
+    padding: 6px 14px !important;
+    background-color: #ffffff;
+}
+
+/* 이미지 레이아웃 반영: 추천 N 배지 텍스트 라인 깨짐 보완 */
 .nav-item .badge {
     background-color: #007bff;
     color: #ffffff;
-    font-size: 0.6rem;
-    padding: 1px 4px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 1px 5px;
     border-radius: 3px;
-    vertical-align: super;
+    margin-left: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 14px;
+    vertical-align: middle;
+    transform: translateY(-1px); /* 글자 기준 살짝 위로 정렬 교정 */
 }
 
+.arrow {
+    font-size: 0.75rem;
+    color: #8E90A6;
+    margin-left: 4px;
+    display: inline-block;
+    transform: translateY(1px); /* 화살표 아이콘 세로 정렬 미세 교정 */
+}
+
+/* 검색창 레이아웃 유지 */
 .search-box-wrap {
     width: 280px;
     display: flex;
@@ -231,6 +276,87 @@ button,input {
     align-items: center;
     justify-content: center;
 }
+
+/* ---------------------------------
+   드롭다운 서브메뉴 스타일 세팅
+   --------------------------------- */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #EAE6DF;
+    border-radius: 4px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    z-index: 99999;
+    margin-top: 12px;
+    padding: 0;
+    list-style: none;
+}
+
+/* 마우스 올리면 부드럽게 노출 */
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: #2B2D42;
+    font-size: 0.88rem;
+    display: block;
+    padding: 10px 20px;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.dropdown-menu a:hover {
+    background-color: #F8F6F2;
+    color: #007bff;
+}
+
+/* 1. 여행 전용 대형 메가 메뉴 구성 */
+.mega-menu {
+    display: none;
+    flex-direction: row;
+    gap: 40px;
+    padding: 20px;
+    min-width: 320px;
+}
+
+.nav-item:hover .mega-menu {
+    display: flex; /* 가로 배열 멀티컬럼 구현 */
+}
+
+.menu-column {
+    flex: 1;
+}
+
+.menu-column h3 {
+    font-size: 0.85rem;
+    color: #8E90A6;
+    margin-bottom: 12px;
+    padding-left: 8px;
+    border-left: 3px solid #007bff;
+    font-weight: 600;
+}
+
+.menu-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-column ul li a {
+    padding: 6px 8px;
+    border-radius: 4px;
+}
+
+/* 2. 추천 전용 일반 세로형 드롭다운 */
+.standard-menu {
+    min-width: 120px;
+}
+
 
 /* ==========================================================================
    메인 슬라이드

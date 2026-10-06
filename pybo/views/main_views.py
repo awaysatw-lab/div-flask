@@ -49,38 +49,32 @@ def autumn_detail():
 # ==========================================
 @bp.route('/region/seoul')
 def region_seoul():
-    context = get_common_context()
-    return render_template('index.html', **context)
+    return redirect(url_for('product.main_product', region='sudo'))
 
 
 @bp.route('/region/gangwon')
 def region_gangwon():
-    context = get_common_context()
-    return render_template('index.html', **context)
+    return redirect(url_for('product.main_product', region='gang'))
 
 
 @bp.route('/region/chungcheong')
 def region_chungcheong():
-    context = get_common_context()
-    return render_template('index.html', **context)
+    return redirect(url_for('product.main_product', region='chung'))
 
 
 @bp.route('/region/gyeongsang')
 def region_gyeongsang():
-    context = get_common_context()
-    return render_template('index.html', **context)
+    return redirect(url_for('product.main_product', region='geong'))
 
 
 @bp.route('/region/jeolla')
 def region_jeolla():
-    context = get_common_context()
-    return render_template('index.html', **context)
+    return redirect(url_for('product.main_product', region='jeon'))
 
 
 @bp.route('/region/jeju')
 def region_jeju():
-    context = get_common_context()
-    return render_template('index.html', **context)
+    return redirect(url_for('product.main_product', region='jeju'))
 
 
 # ==========================================
