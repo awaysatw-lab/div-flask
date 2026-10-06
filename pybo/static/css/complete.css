@@ -1,16 +1,82 @@
-/* complete.css - Bootstrap 기반 결제 완료 화면 보조 스타일 */
+/* complete.css - 예약 및 결제 완료 화면 스타일 (로그인 버튼 #1D3557 테마 통일) */
 
 .complete-container {
   max-width: 860px;
   margin: 0 auto;
+  --bs-primary: #1D3557;
+  --bs-primary-rgb: 29, 53, 87;
+  --bs-primary-text-emphasis: #1D3557;
+  --bs-primary-bg-subtle: #e8edf3;
+  --bs-primary-border-subtle: #b6c4d4;
+  --bs-link-color: #1D3557;
+  --bs-link-hover-color: #4A7C8F;
 }
-.btn {
-    background-color: #1D3557;
-    color: #ffffff;
-    border-color: #1D3557;
+
+/* =========================================================================
+   버튼 스타일: 로그인 버튼(#1D3557) 및 호버(#4A7C8F)와 동일하게 통일
+   ========================================================================= */
+
+.complete-container .btn-primary {
+  background-color: #1D3557 !important;
+  color: #ffffff !important;
+  border-color: #1D3557 !important;
+  box-shadow: 0 3px 7px rgba(32, 63, 104, 0.25);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.btn:hover {
-    background-color: #585b60;
-    color: #ffffff;
-    border-color: #585b60;
+
+.complete-container .btn-primary:hover {
+  background-color: #4A7C8F !important;
+  border-color: #4A7C8F !important;
+  color: #ffffff !important;
+}
+
+.complete-container .btn-primary:active {
+  background-color: #152740 !important;
+  border-color: #152740 !important;
+  color: #ffffff !important;
+}
+
+.complete-container .btn-outline-primary {
+  color: #1D3557 !important;
+  border-color: #1D3557 !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease;
+}
+
+.complete-container .btn-outline-primary:hover {
+  background-color: #1D3557 !important;
+  border-color: #1D3557 !important;
+  color: #ffffff !important;
+}
+
+/* =========================================================================
+   파란색(Primary) 요소 -> 로그인 버튼 바탕색(#1D3557)으로 통일
+   ========================================================================= */
+
+.complete-container .text-primary {
+  color: #1D3557 !important;
+}
+
+.complete-container .bg-primary {
+  background-color: #1D3557 !important;
+  color: #ffffff !important;
+}
+
+.complete-container .bg-primary-subtle {
+  background-color: #e8edf3 !important;
+  color: #1D3557 !important;
+}
+
+.complete-container .border-primary-subtle {
+  border-color: #b6c4d4 !important;
+}
+
+.complete-container .border-primary {
+  border-color: #1D3557 !important;
+}
+
+.complete-container .alert-primary {
+  background-color: #e8edf3 !important;
+  border-color: #b6c4d4 !important;
+  color: #1D3557 !important;
 }

@@ -406,7 +406,7 @@
                 <p class="mb-0 text-success-emphasis small">길마중 회원으로 로그인하시면 <strong>{{ product.region }}</strong> 권역의 엄선된 호텔 10곳 및 민박 10곳을 여행과 함께 원스톱으로 할인 예약하실 수 있습니다.</p>
               </div>
             </div>
-            <a href="{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}" class="btn btn-success btn-sm flex-shrink-0 fw-bold px-3 py-2">로그인하기</a>
+            <a href="{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}" class="btn btn-primary btn-sm flex-shrink-0 fw-bold px-3 py-2">로그인하기</a>
           </div>
         {% endif %}
       </div>

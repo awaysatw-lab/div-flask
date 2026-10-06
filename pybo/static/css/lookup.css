@@ -1,8 +1,150 @@
+/* lookup.css - 예약 확인 및 조회 화면 스타일 (로그인 버튼 #1D3557 테마 통일) */
 
+.lookup-container,
+.standalone-detail-wrap,
+.reservation-detail-card {
+  --bs-primary: #1D3557;
+  --bs-primary-rgb: 29, 53, 87;
+  --bs-primary-text-emphasis: #1D3557;
+  --bs-primary-bg-subtle: #e8edf3;
+  --bs-primary-border-subtle: #b6c4d4;
+  --bs-link-color: #1D3557;
+  --bs-link-hover-color: #4A7C8F;
+}
 
 .lookup-container {
   max-width: 960px;
   margin: 0 auto;
+}
+
+/* =========================================================================
+   버튼 스타일: 로그인 버튼(#1D3557) 및 호버(#4A7C8F)와 동일하게 통일
+   ========================================================================= */
+
+.lookup-container .btn-primary,
+.standalone-detail-wrap .btn-primary,
+.reservation-detail-card .btn-primary,
+.btn-primary-action {
+  background-color: #1D3557 !important;
+  color: #ffffff !important;
+  border-color: #1D3557 !important;
+  box-shadow: 0 3px 7px rgba(32, 63, 104, 0.25);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lookup-container .btn-primary:hover,
+.standalone-detail-wrap .btn-primary:hover,
+.reservation-detail-card .btn-primary:hover,
+.btn-primary-action:hover {
+  background-color: #4A7C8F !important;
+  border-color: #4A7C8F !important;
+  color: #ffffff !important;
+}
+
+.lookup-container .btn-primary:active,
+.standalone-detail-wrap .btn-primary:active,
+.reservation-detail-card .btn-primary:active,
+.btn-primary-action:active {
+  background-color: #152740 !important;
+  border-color: #152740 !important;
+  color: #ffffff !important;
+}
+
+.lookup-container .btn-outline-primary,
+.standalone-detail-wrap .btn-outline-primary,
+.reservation-detail-card .btn-outline-primary {
+  color: #1D3557 !important;
+  border-color: #1D3557 !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease;
+}
+
+.lookup-container .btn-outline-primary:hover,
+.standalone-detail-wrap .btn-outline-primary:hover,
+.reservation-detail-card .btn-outline-primary:hover {
+  background-color: #1D3557 !important;
+  border-color: #1D3557 !important;
+  color: #ffffff !important;
+}
+
+/* 상세 화면 커스텀 액션 버튼 */
+.btn-primary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-outline-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-back:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+/* =========================================================================
+   파란색(Primary) 요소 -> 로그인 버튼 바탕색(#1D3557)으로 통일
+   ========================================================================= */
+
+.lookup-container .text-primary,
+.standalone-detail-wrap .text-primary,
+.reservation-detail-card .text-primary {
+  color: #1D3557 !important;
+}
+
+.lookup-container .bg-primary,
+.standalone-detail-wrap .bg-primary,
+.reservation-detail-card .bg-primary {
+  background-color: #1D3557 !important;
+  color: #ffffff !important;
+}
+
+.lookup-container .bg-primary-subtle,
+.standalone-detail-wrap .bg-primary-subtle,
+.reservation-detail-card .bg-primary-subtle {
+  background-color: #e8edf3 !important;
+  color: #1D3557 !important;
+}
+
+.lookup-container .border-primary-subtle,
+.standalone-detail-wrap .border-primary-subtle,
+.reservation-detail-card .border-primary-subtle {
+  border-color: #b6c4d4 !important;
+}
+
+.lookup-container .border-primary,
+.standalone-detail-wrap .border-primary,
+.reservation-detail-card .border-primary {
+  border-color: #1D3557 !important;
+}
+
+.lookup-container .alert-primary,
+.standalone-detail-wrap .alert-primary,
+.reservation-detail-card .alert-primary {
+  background-color: #e8edf3 !important;
+  border-color: #b6c4d4 !important;
+  color: #1D3557 !important;
+}
+
+/* 입력 필드 포커스 */
+.lookup-container .form-control:focus {
+  border-color: #1D3557 !important;
+  box-shadow: 0 0 0 0.25rem rgba(29, 53, 87, 0.25) !important;
 }
 
 /* 예약 목록 아코디언 카드 인터랙션 */

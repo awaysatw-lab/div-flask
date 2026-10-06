@@ -83,10 +83,10 @@
 }
 
 .nearby-slider-btn:hover {
-    background-color: #0d6efd !important;
+    background-color: #1D3557 !important;
     color: #ffffff !important;
-    border-color: #0d6efd !important;
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25) !important;
+    border-color: #1D3557 !important;
+    box-shadow: 0 4px 12px rgba(29, 53, 87, 0.25) !important;
     transform: translateY(-50%) scale(1.08);
 }
 

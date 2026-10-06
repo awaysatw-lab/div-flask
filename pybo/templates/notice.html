@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>길마중 - 공지사항</title>
+    <title>길마중 - 공지사항 (최종 통합본)</title>
     <!-- 구글 Noto Sans KR 폰트 적용 -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 1. 메인 시안 스타일 프리픽스 독립화 및 초기화 */
+        /* 1. 스타일 초기화 및 프리픽스 적용 */
         .gm-travel-body * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
         .gm-travel-body { background-color: #ffffff; color: #333333; line-height: 1.6; }
         .gm-travel-body a { text-decoration: none; color: inherit; cursor: pointer; }
@@ -19,7 +19,7 @@
         .gm-header { background-color: #ffffff; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 1000; width: 100%; }
         .gm-header-top { max-width: 1200px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 10px 20px; gap: 15px; font-size: 12px; color: #666666; }
         .gm-header-top span { cursor: pointer; }
-        .gm-header-top span:hover { color: #333333; }
+        .gm-header-top span:hover { color: #ff5a5f; }
 
         .gm-header-main { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; padding: 10px 20px 20px 20px; }
         .gm-logo-area { display: flex; align-items: center; gap: 8px; cursor: pointer; }
@@ -30,9 +30,8 @@
         /* 메인 내비게이션 */
         .gm-nav { display: flex; align-items: center; gap: 30px; margin-left: 60px; font-size: 16px; font-weight: 700; color: #333333; }
         .gm-nav-item { cursor: pointer; padding: 5px 0; position: relative; }
-        .gm-nav-item.active { color: #222222; }
-        /* 시안 속 공지사항 탭 하단 사각 테두리 포인트 효과 재현 */
-        .gm-nav-item.active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: #222222; }
+        .gm-nav-item.active { color: #ff5a5f; }
+        .gm-nav-item.active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: #ff5a5f; }
         .gm-nav-item .gm-arrow { font-size: 10px; margin-left: 4px; color: #666666; }
 
         /* 시안 라운드 우측 검색바 */
@@ -41,63 +40,47 @@
         .gm-search-bar input:focus { border-color: #ff5a5f; background-color: #ffffff; }
         .gm-search-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #888888; font-size: 14px; }
 
-        /* 3. 와이드 서정적 비주얼 배너 섹션 (충청 가을 산책 테마 계승) */
-        .gm-visual-banner { width: 100%; height: 340px; background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://unsplash.com'); background-size: cover; background-position: center; display: flex; align-items: center; position: relative; }
-        .gm-banner-card { background-color: rgba(0, 0, 0, 0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: 24px; padding: 40px; color: #ffffff; max-width: 420px; margin-left: calc((100% - 1160px) / 2); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        @media (max-width: 1200px) { .gm-banner-card { margin-left: 40px; } }
-        .gm-banner-tag { font-size: 13px; font-weight: 500; opacity: 0.9; margin-bottom: 12px; letter-spacing: 1px; }
-        .gm-banner-title { font-size: 32px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; letter-spacing: -1px; }
-        .gm-banner-desc { font-size: 14px; opacity: 0.85; margin-bottom: 25px; font-weight: 300; }
-        .gm-banner-pager { font-size: 12px; opacity: 0.7; font-weight: 400; letter-spacing: 1px; }
-
-        /* 4. 메인 컨텐츠 영역 및 공지사항 레이아웃 */
+        /* 3. 메인 컨텐츠 영역 및 공지사항 레이아웃 */
         .gm-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; }
         .gm-content-title-area { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; border-bottom: 2px solid #222222; padding-bottom: 15px; }
         .gm-content-title { font-size: 24px; font-weight: 700; color: #222222; }
         .gm-content-sub { font-size: 14px; color: #888888; margin-left: 10px; font-weight: 400; }
 
-        /* 게시판 테이블 내부 인터페이스 */
-        .gm-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 15px; }
-        .gm-table th { padding: 16px 12px; font-weight: 500; color: #555555; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; }
-        .gm-table td { padding: 18px 12px; border-bottom: 1px solid #f3f4f6; color: #4b5563; }
+        /* 선명한 테두리 틀 선언 및 테이블 내부 규격 설정 */
+        .gm-table-wrapper { width: 100%; overflow-x: auto; border-top: 2px solid #222222; border-bottom: 1px solid #d1d5db; }
+        .gm-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 15px; background-color: #ffffff; }
+        .gm-table th { padding: 16px 12px; font-weight: 500; color: #374151; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+        .gm-table td { padding: 18px 12px; border-bottom: 1px solid #eaeaea; color: #4b5563; }
 
         /* 테이블 호버 인터랙션 효과 */
         .gm-table tbody tr { transition: background-color 0.2s; cursor: pointer; }
-        .gm-table tbody tr:hover { background-color: #f9fafb; }
+        .gm-table tbody tr:hover { background-color: #f8f9fa; }
 
         .gm-txt-left { text-align: left; padding-left: 20px !important; }
-        .gm-notice-link { color: #222222; font-weight: 500; display: inline-block; max-width: 580px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
+        .gm-notice-link { color: #222222; font-weight: 500; display: inline-block; max-width: 620px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; transition: color 0.15s; }
         .gm-table tr:hover .gm-notice-link { color: #ff5a5f; text-decoration: underline; }
 
-        /* 강조 인디케이터 배지 스타일 */
+        /* 강조 인디케이터 배지 시스템 */
         .gm-badge { display: inline-block; padding: 3px 10px; font-size: 11px; font-weight: 700; border-radius: 4px; vertical-align: middle; margin-right: 8px; }
         .gm-badge-important { background-color: #fff1f2; color: #f43f5e; border: 1px solid #fecdd3; }
-        .gm-badge-normal { background-color: #f3f4f6; color: #6b7280; }
+        .gm-badge-normal { background-color: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
         .gm-badge-new { background-color: #ff5a5f; color: #ffffff; padding: 2px 5px; font-size: 9px; font-weight: 700; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
 
         /* 고정 공지 행 특별 배경 처리 */
         .gm-row-important { background-color: #fffafb; }
-        .gm-row-important td { color: #111111; }
+        .gm-row-important td { border-bottom: 1px solid #fecdd3; }
 
-        /* 5. 하단 페이지네이션 컴포넌트 */
-        .gm-pagination { display: flex; justify-content: center; align-items: center; margin-top: 50px; gap: 5px; }
-        .gm-page-btn { display: inline-block; width: 36px; height: 36px; line-height: 34px; text-align: center; border: 1px solid #e5e7eb; background-color: #ffffff; color: #555555; font-size: 14px; border-radius: 50%; font-weight: 500; transition: all 0.2s; user-select: none; cursor: pointer; }
+        /* 4. 3~5페이지 유연 확장형 페이지네이션 */
+        .gm-pagination { display: flex; justify-content: center; align-items: center; margin-top: 50px; gap: 6px; }
+        .gm-page-btn { display: inline-block; width: 36px; height: 36px; line-height: 34px; text-align: center; border: 1px solid #e5e7eb; background-color: #ffffff; color: #555555; font-size: 14px; border-radius: 6px; font-weight: 500; transition: all 0.2s; user-select: none; cursor: pointer; text-decoration: none; }
         .gm-page-btn:hover { border-color: #ff5a5f; color: #ff5a5f; background-color: #fff5f5; }
-        .gm-page-btn.active { background-color: #222222; border-color: #222222; color: #ffffff; pointer-events: none; }
-        .gm-page-btn.disabled { color: #d1d5db; border-color: #f3f4f6; cursor: not-allowed; pointer-events: none; }
-
-        /* 6. 푸터 영역 */
-        .gm-footer { background-color: #222222; color: #aaaaaa; padding: 40px 20px; font-size: 13px; margin-top: 100px; border-top: 1px solid #111111; }
-        .gm-footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-        .gm-footer-left p { margin-bottom: 5px; }
-        .gm-footer-links a { margin-right: 15px; color: #ffffff; font-weight: 500; }
-        .gm-footer-links a:hover { text-decoration: underline; }
-        .gm-copyright { color: #777777; margin-top: 5px; }
+        .gm-page-btn.active { background-color: #222222; border-color: #222222; color: #ffffff; pointer-events: none; font-weight: 700; }
+        .gm-page-btn.disabled { color: #d1d5db; border-color: #f3f4f6; cursor: not-allowed; pointer-events: none; background-color: #f9fafb; }
     </style>
 </head>
 <body class="gm-travel-body">
 
-    <!-- 1. GNB 헤더 영역 -->
+    <!-- GNB 헤더 영역 -->
     <header class="gm-header">
         <div class="gm-header-top">
             <span>로그인</span>
@@ -106,7 +89,7 @@
             <span style="font-weight: 500; color:#333;">🌐 한국어 ▼</span>
         </div>
         <div class="gm-header-main">
-            <div class="gm-logo-area" onclick="location.href='#'">
+            <div class="gm-logo-area" onclick="location.reload()">
                 <span class="gm-logo-circle"></span>
                 <span class="gm-logo-text">길마중</span>
                 <span class="gm-logo-sub">오늘, 더 특별한 여행</span>
@@ -123,17 +106,7 @@
         </div>
     </header>
 
-    <!-- 2. 와이드 서정적 비주얼 배너 섹션 -->
-    <section class="gm-visual-banner">
-        <div class="gm-banner-card">
-            <p class="gm-banner-tag">은은한 단풍빛 고을</p>
-            <h2 class="gm-banner-title">고즈넉한 서정<br>충청 가을 산책</h2>
-            <p class="gm-banner-desc">충청권 추천 안심 전통 가을 도보 코스 특별 기획전</p>
-            <p class="gm-banner-pager">〈  3 / 6  〉</p>
-        </div>
-    </section>
-
-    <!-- 3. 메인 공지사항 게시판 컨텐츠 영역 -->
+    <!-- 메인 공지사항 게시판 컨텐츠 영역 (상단 비주얼 배너 제거 완료) -->
     <main class="gm-container">
         <div class="gm-content-title-area">
             <div style="display: flex; align-items: flex-end;">
@@ -142,15 +115,49 @@
             </div>
         </div>
 
-        <table class="gm-table">
-            <thead>
-                <tr>
-                    <th style="width: 80px;">번호</th>
-                    <th style="width: 110px;">구분</th>
-                    <th class="gm-txt-left">제목</th>
-                    <th style="width: 120px;">작성일</th>
-                    <th style="width: 100px;">조회수</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 상단 고정 중요 공지 행 -->
+        <!-- 틀이 명확히 잡힌 감싸기 레이아웃 적용 -->
+        <div class="gm-table-wrapper">
+            <table class="gm-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">번호</th>
+                        <th style="width: 110px;">구분</th>
+                        <th class="gm-txt-left">제목</th>
+                        <th style="width: 130px;">작성일</th>
+                        <th style="width: 100px;">조회수</th>
+                    </tr>
+                </thead>
+                <tbody id="noticeTableBody">
+                    <!-- [A] 고정 중요 공지사항 영역 (2개 행 마감 정밀 조치 완료 🛠️) -->
+                    <tr class="gm-row-important" onclick="location.href='#'">
+                        <td><strong>공지</strong></td>
+                        <td><span class="gm-badge gm-badge-important">중요</span></td>
+                        <td class="gm-txt-left">
+                            <span class="gm-notice-link">[시스템] 결제 모듈 전용 인프라 정기 보안 업데이트에 따른 일시 순단 고지</span>
+                            <span class="gm-badge-new">N</span>
+                        </td>
+                        <td>2026-10-06</td>
+                        <td>1,420</td>
+                    </tr>
+                    <tr class="gm-row-important" onclick="location.href='#'">
+                        <td><strong>공지</strong></td>
+                        <td><span class="gm-badge gm-badge-important">중요</span></td>
+                        <td class="gm-txt-left">
+                            <span class="gm-notice-link">[공모전] 2026 길마중 숨은 가을 비경 숏폼/사진 공모전 개최 및 부상 안내</span>
+                        </td>
+                        <td>2026-10-01</td>
+                        <td>3,285</td>
+                    </tr>
+
+                    <!-- [B] 일반 공지사항 영역 (7개 행 배치) -->
+                    <tr onclick="location.href='#'">
+                        <td>7</td>
+                        <td><span class="gm-badge gm-badge-normal">투어안내</span></td>
+                        <td class="gm-txt-left">
+                            <span class="gm-notice-link">가을 단풍철 예약 폭주에 따른 동해안 특별 프리미엄 패키지 열차 증편 확정 소식</span>
+                        </td>
+                        <td>2026-10-04</td>
+                        <td>854</td>
+                    </tr>
+                    <tr onclick="location.href='#'">
+                        <td>6</td>
