@@ -30,68 +30,60 @@
         <a href="#" class="text-decoration-none text-dark small fw-semibold" style="font-size: 0.9rem;">+ 지난 베스트여행후기</a>
     </div>
 
-    <!-- 베스트 후기 카드 그리드 (글자 수 제한 및 높이 균형화 적용) -->
+    <!-- 베스트 후기 카드 그리드 (실제 후기 및 상품 연동) -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-4">
         {% for product, review_count in popular_products[:3] %}
+        {% set top_review = product.reviews.first() if product.reviews else None %}
         <div class="col">
-            <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden" style="background: #ffffff;">
-                <!-- 상품/리뷰 이미지 영역 -->
-                <div style="height: 200px; overflow: hidden;">
-                    <img src="{{ product.image_url or '/static/images/default_best.jpg' }}" class="w-100 h-100" alt="{{ product.name }}" style="object-fit: cover;">
-                </div>
+            <a href="{{ url_for('review.detail', product_id=product.id, review_id=top_review.id if top_review else None) }}" class="text-decoration-none text-dark d-block h-100">
+                <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden" style="background: #ffffff; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+                    <!-- 상품/리뷰 이미지 영역 -->
+                    <div style="height: 200px; overflow: hidden; position: relative;">
+                        <img src="{{ product.image_url or '/static/img/default-tour.jpg' }}" class="w-100 h-100" alt="{{ product.name }}" style="object-fit: cover;">
+                        <span class="badge bg-danger position-absolute top-0 start-0 m-3 px-2 py-1 shadow-sm" style="font-size: 0.75rem;">BEST 후기</span>
+                        <span class="badge bg-dark bg-opacity-75 position-absolute bottom-0 start-0 m-3 px-2 py-1" style="font-size: 0.75rem;">{{ product.region }}</span>
+                    </div>
 
-                <!-- 카드 본문 텍스트 (truncate 필터로 보기 좋게 조절) -->
-                <div class="card-body p-3 d-flex flex-column justify-content-between">
-                    <div>
-                        <!-- 제목 글자 수 22자로 제한 -->
-                        <h5 class="fw-bold text-dark text-truncate mb-2" style="font-size: 1.05rem;" title="{{ product.name }}">
-                            {{ product.name | truncate(22, True, '...') }}
-                        </h5>
-                        <!-- 본문 글자 수 55자로 제한하여 지저분함 방지 -->
-                        <p class="text-muted small mb-3" style="font-size: 0.85rem; line-height: 1.5; min-height: 38px;">
-                            {{ "「" ~ product.name ~ " 패키지 여행 솔직한 후기」 리조트 및 가이드 추천 내용입니다. 만족도 높은 여행이었습니다." | truncate(55, True, '...') }}
-                        </p>
-                    </div>
-                    <!-- 작성자 및 작성일 정보 행 -->
-                    <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted" style="border-top: 1px solid #f1f5f9 !important; font-size: 0.8rem;">
-                        <span>홍**</span>
-                        <span>2026-08-03</span>
+                    <!-- 카드 본문 텍스트 -->
+                    <div class="card-body p-3 d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="fw-bold text-dark text-truncate mb-1" style="font-size: 1.05rem;" title="{{ top_review.title if top_review else product.name }}">
+                                {{ (top_review.title if top_review else product.name) | truncate(24, True, '...') }}
+                            </h5>
+                            <p class="text-muted small mb-3" style="font-size: 0.85rem; line-height: 1.5; min-height: 38px;">
+                                {{ (top_review.content if top_review else product.description) | truncate(55, True, '...') }}
+                            </p>
+                        </div>
+                        <!-- 작성자 및 작성일 정보 행 -->
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top text-muted" style="border-top: 1px solid #f1f5f9 !important; font-size: 0.8rem;">
+                            <span>👤 {{ top_review.author.name if (top_review and top_review.author) else '길마중 회원' }} ({{ top_review.author.user_id if (top_review and top_review.author) else '' }})</span>
+                            <span>{{ top_review.created_at.strftime('%Y-%m-%d') if top_review else '2026-10-02' }}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         {% endfor %}
     </div>
 
-    <!-- 하단 좌우 슬라이드 내비게이션 화살표 -->
-    <div class="d-flex justify-content-end gap-2 mb-5">
-        <button class="btn btn-sm btn-light border rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">&larr;</button>
-        <button class="btn btn-sm btn-light border rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">&rarr;</button>
-    </div>
-
-
     <!-- ==========================================================================
          3. 🔍 필터 및 통합 검색바 섹션
          ========================================================================== -->
-    <div class="p-3 mb-4 rounded-3 border d-flex flex-wrap gap-2 align-items-center justify-content-between" style="background-color: #f8f9fa;">
+    <form method="get" action="{{ url_for('review.list') }}" class="p-3 mb-4 rounded-3 border d-flex flex-wrap gap-2 align-items-center justify-content-between" style="background-color: #f8f9fa;">
         <div class="d-flex gap-2 flex-wrap">
-            <select class="form-select form-select-sm" style="width: 120px; border-color: #ced4da;">
-                <option>전체선택</option>
-            </select>
-            <select class="form-select form-select-sm" style="width: 120px; border-color: #ced4da;">
-                <option>전체보기</option>
+            <select name="region" class="form-select form-select-sm" style="width: 140px; border-color: #ced4da;" onchange="this.form.submit()">
+                <option value="">전체 권역</option>
+                {% for reg in region_list %}
+                <option value="{{ reg }}" {% if selected_region == reg %}selected{% endif %}>{{ reg }}</option>
+                {% endfor %}
             </select>
         </div>
 
         <div class="d-flex align-items-center bg-white border rounded px-2 py-1" style="width: 100%; max-width: 400px; border-color: #ced4da !important;">
-            <select class="form-select form-select-sm border-0 bg-transparent" style="width: 110px; box-shadow: none;">
-                <option>제목내용</option>
-            </select>
-            <div class="vr mx-2" style="height: 20px;"></div>
-            <input type="text" class="form-control form-control-sm border-0 bg-transparent p-0" placeholder="검색어를 입력하세요" style="box-shadow: none;">
-            <button class="btn btn-link p-0 text-primary ms-2" type="button" style="text-decoration: none; font-size: 1.1rem;">🔍</button>
+            <input type="text" name="kw" value="{{ kw or '' }}" class="form-control form-control-sm border-0 bg-transparent p-0" placeholder="제목, 내용 또는 상품명 검색" style="box-shadow: none;">
+            <button class="btn btn-link p-0 text-primary ms-2" type="submit" style="text-decoration: none; font-size: 1.1rem;">🔍</button>
         </div>
-    </div>
+    </form>
 
 
     <!-- ==========================================================================
@@ -101,57 +93,59 @@
         <table class="table align-middle text-center" style="border-top: 2px solid #212529; font-size: 0.95rem;">
             <thead>
                 <tr style="background-color: #f8f9fa; font-weight: 600; color: #334155;">
-                    <th style="width: 10%; padding: 14px 0;">번호</th>
-                    <th style="width: 12%;">구분</th>
-                    <th style="width: 12%;">지역</th>
-                    <th class="text-start" style="width: 44%; padding-left: 20px;">제목</th>
+                    <th style="width: 7%; padding: 14px 0;">번호</th>
+                    <th style="width: 10%;">지역</th>
+                    <th class="text-start" style="width: 32%; padding-left: 15px;">여행지</th>
+                    <th class="text-start" style="width: 28%; padding-left: 15px;">후기</th>
                     <th style="width: 12%;">작성자</th>
-                    <th style="width: 10%;">작성일</th>
+                    <th style="width: 11%;">작성일</th>
                 </tr>
             </thead>
             <tbody>
-                {% for product, review_count, latest_review_date in latest_products %}
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                    <td class="text-muted" style="padding: 14px 0;">350760</td>
-                    <td>
-                        <span class="badge rounded-pill btn-outline-primary border px-3 py-1.5" style="color: #0d6efd; font-size: 0.8rem; font-weight: 500;">패키지</span>
-                    </td>
-                    <td class="fw-semibold text-secondary">일본</td>
-                    <td class="text-start" style="padding-left: 20px;">
-                        <a href="{{ url_for('review.detail', product_id=product.id) }}" class="text-decoration-none text-dark fw-medium text-truncate d-inline-block" style="max-width: 450px; vertical-align: middle;">
-                            끝까지 감사합니다.
-                        </a>
-                        <span class="badge bg-danger rounded-circle ms-1" style="font-size: 0.65rem; padding: 3px 5px; vertical-align: middle;">N</span>
-                    </td>
-                    <td class="text-muted">백**</td>
-                    <td class="text-muted" style="font-size: 0.88rem;">2026.10.01</td>
-                </tr>
-                {% endfor %}
-
-                <!-- 하드코딩 백업 데이터 (시안 싱크로율 유지용) -->
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                    <td class="text-muted" style="padding: 14px 0;">350759</td>
-                    <td>
-                        <span class="badge rounded-pill btn-outline-primary border px-3 py-1.5" style="color: #0d6efd; font-size: 0.8rem; font-weight: 500;">패키지</span>
-                    </td>
-                    <td class="fw-semibold text-secondary">중국</td>
-                    <td class="text-start" style="padding-left: 20px;">
-                        <a href="#" class="text-decoration-none text-dark fw-medium text-truncate d-inline-block" style="max-width: 450px; vertical-align: middle;">
-                            구름이 아쉬워요 그래도 좋았어요!
-                        </a>
-                        <span class="badge bg-danger rounded-circle ms-1" style="font-size: 0.65rem; padding: 3px 5px; vertical-align: middle;">N</span>
-                    </td>
-                    <td class="text-muted">신**</td>
-                    <td class="text-muted" style="font-size: 0.88rem;">2026.10.01</td>
-                </tr>
+                {% if review_list.items %}
+                    {% for review in review_list.items %}
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                        <td class="text-muted" style="padding: 14px 0;">
+                            {{ review_list.total - ((review_list.page - 1) * review_list.per_page) - loop.index0 }}
+                        </td>
+                        <td class="fw-semibold text-secondary">
+                            {{ review.product.region }}
+                        </td>
+                        <td class="text-start" style="padding-left: 15px;">
+                            <a href="{{ url_for('review.detail', product_id=review.product_id, review_id=review.id) }}" class="text-decoration-none text-dark fw-bold text-truncate d-inline-block" style="max-width: 280px; vertical-align: middle;" title="{{ review.product.name }}">
+                                🚩 {{ review.product.name }}
+                            </a>
+                        </td>
+                        <td class="text-start" style="padding-left: 15px;">
+                            <a href="{{ url_for('review.detail', product_id=review.product_id, review_id=review.id) }}" class="text-decoration-none text-dark fw-medium text-truncate d-inline-block" style="max-width: 250px; vertical-align: middle;" title="{{ review.title }}">
+                                {{ review.title }}
+                            </a>
+                            <span class="text-warning small ms-1" style="font-size: 0.8rem;">★{{ review.rating }}</span>
+                        </td>
+                        <td class="text-muted" style="font-size: 0.88rem;">
+                            <span class="fw-semibold text-dark">{{ review.author.name if review.author else '고객' }}</span>
+                            <small class="text-primary d-block" style="font-size: 0.78rem;">({{ review.author.user_id if review.author else 'ID미등록' }})</small>
+                        </td>
+                        <td class="text-muted" style="font-size: 0.85rem;">
+                            {{ review.created_at.strftime('%Y.%m.%d') if review.created_at else '' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="py-5 text-muted">
+                            등록된 여행 후기가 없습니다.
+                        </td>
+                    </tr>
+                {% endif %}
             </tbody>
         </table>
         <!--페이징처리 시작-->
         <ul class="pagination justify-content-center">
             <!--이전버튼-->
-            {% if latest_products.has_prev %}
+            {% if review_list.has_prev %}
             <li class="page-item">
-                <a href="?page={{ latest_products.prev_num }}" class="page-link">이전</a>
+                <a href="?page={{ review_list.prev_num }}{% if selected_region %}&region={{ selected_region }}{% endif %}{% if kw %}&kw={{ kw }}{% endif %}" class="page-link">이전</a>
             </li>
             {% else %}
             <li class="page-item disabled">
@@ -159,11 +153,11 @@
             </li>
             {% endif %}
             <!--페이지 번호-->
-            {% for page_num in latest_products.iter_pages() %}
+            {% for page_num in review_list.iter_pages() %}
             {% if page_num %}
-            {% if page_num != latest_products.page %}
+            {% if page_num != review_list.page %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                <a class="page-link" href="?page={{ page_num }}{% if selected_region %}&region={{ selected_region }}{% endif %}{% if kw %}&kw={{ kw }}{% endif %}">{{ page_num }}</a>
             </li>
             {% else %}
             <li class="page-item active" aria-current="page">
@@ -177,9 +171,9 @@
             {% endif %}
             {% endfor %}
             <!--다음페이지-->
-            {% if latest_products.has_next %}
+            {% if review_list.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ latest_products.next_num }}">다음</a>
+                <a class="page-link" href="?page={{ review_list.next_num }}{% if selected_region %}&region={{ selected_region }}{% endif %}{% if kw %}&kw={{ kw }}{% endif %}">다음</a>
             </li>
             {% else %}
             <li class="page-item disabled">

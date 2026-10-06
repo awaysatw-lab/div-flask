@@ -1,3 +1,4 @@
+import ast
 import json
 
 from flask import render_template, Blueprint, request
@@ -41,41 +42,39 @@ def sub_product(product_id):
     product_time = Order.query.all()
 
 
-    if isinstance(selected_product.image_urls, str):
+    product_images = selected_product.get_image_list()
+
+    # itinerary
+    import ast
+    raw_itinerary = selected_product.itinerary_json
+    product_itinerary = []
+
+    if isinstance(raw_itinerary, str) and raw_itinerary.strip():
         try:
-            valid_json_string = selected_product.image_urls.replace("'", '"')
-            selected_product.image_urls = json.loads(valid_json_string)
+            product_itinerary = ast.literal_eval(raw_itinerary)
         except Exception:
-            selected_product.image_urls = selected_product.image_urls.strip("[]").replace("'", "").split(", ")
+            product_itinerary = []
+    elif isinstance(raw_itinerary, list):
+        product_itinerary = raw_itinerary
 
-        # itinerary
-        import ast
-        raw_itinerary = selected_product.itinerary_json
-        product_itinerary = []
+    # details
+    raw_details = selected_product.detail_content
+    product_details = {}
 
-        if isinstance(raw_itinerary, str) and raw_itinerary.strip():
-            try:
-                product_itinerary = ast.literal_eval(raw_itinerary)
-            except Exception:
-                product_itinerary = []
-        elif isinstance(raw_itinerary, list):
-            product_itinerary = raw_itinerary
+    if isinstance(raw_details, str) and raw_details.strip():
+        try:
+            product_details = ast.literal_eval(raw_details)
+        except Exception:
+            product_details = {}
+    elif isinstance(raw_details, dict):
+        product_details = raw_details
 
-        # details
-        raw_details = selected_product.detail_content
-        product_details = {}
-
-        if isinstance(raw_details, str) and raw_details.strip():
-            try:
-                product_details = ast.literal_eval(raw_details)
-            except Exception:
-                product_details = {}
-        elif isinstance(raw_details, dict):
-            product_details = raw_details
 
     return render_template('product/sub_product.html',
                            product=selected_product, reviews=product_review, times=product_time,
+                           product_images=product_images,
                            product_itinerary=product_itinerary,
                            product_details=product_details )
+
 
 

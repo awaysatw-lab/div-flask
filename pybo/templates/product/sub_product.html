@@ -11,7 +11,7 @@
                 <div id="four-slide">
                     <div class="swiper mySwiper2">
                         <div class="swiper-wrapper">
-                            {% for img_url in product.image_urls %}
+                            {% for img_url in (product_images or product.get_image_list()) %}
                             <div class="swiper-slide">
                                 <img src="{{ img_url }}"  alt="">
                             </div>
@@ -22,7 +22,7 @@
                     </div>
                     <div thumbsSlider="" class="swiper mySwiper">
                         <div class="swiper-wrapper">
-                            {% for img_url in product.image_urls %}
+                            {% for img_url in (product_images or product.get_image_list()) %}
                             <div class="swiper-slide">
                                 <img src="{{ img_url }}"  alt="">
                             </div>
@@ -176,7 +176,7 @@
                 ※ 근무시간 내에만 취소 변경 처리가 가능합니다. <br> </p>
         </div>
     </div>
-
+    {% if not g.user %}
     <div class="wide1">
         <div id="log-ad">
             <div>
@@ -189,7 +189,7 @@
             </div>
         </div>
     </div>
-
+    {% endif %}
     <!-- 구역5 -->
     <div class="wide1">
         <div class="review">
@@ -214,8 +214,8 @@
             <div id="detail_star">
                 <div>⭐ {{ review.rating }} </div>
                 <div>
-                    <div>{{ review.user_id }}</div>
-                    <div> {{ review.created_at }}</div>
+                    <div>👤 {{ review.author.name if review.author else '고객' }} (아이디: {{ review.author.user_id if review.author else review.user_id }})</div>
+                    <div> {{ review.created_at.strftime('%Y-%m-%d') if review.created_at else '' }}</div>
                 </div>
             </div>
             <p> {{ review.content }} </p>
@@ -229,5 +229,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/sub_product.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/reserve.js') }}"></script>
 {% endblock %}

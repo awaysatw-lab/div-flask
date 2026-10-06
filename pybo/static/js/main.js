@@ -155,3 +155,154 @@ document.addEventListener('DOMContentLoaded', function () {
     updateMTimeDeals();
     setInterval(updateMTimeDeals, 1000);
 });
+
+// ========================================
+// 언어 메뉴 열기 / 닫기
+// ========================================
+
+function toggleLangMenu() {
+
+    const menu = document.getElementById('customLangMenu');
+
+    if (!menu) {
+        return;
+    }
+
+    if (menu.style.display === 'block') {
+        menu.style.display = 'none';
+    } else {
+        menu.style.display = 'block';
+    }
+}
+
+
+// ========================================
+// 언어 변경
+// ========================================
+
+function changeLanguage(lang) {
+
+    const menu = document.getElementById('customLangMenu');
+    const currentLanguageText =
+        document.getElementById('currentLanguageText');
+
+    const languageNames = {
+        'ko': '한국어',
+        'en': 'English',
+        'ja': '日本語',
+        'zh-CN': '简体中文'
+    };
+
+
+    // -----------------------------
+    // 버튼에 현재 언어 표시
+    // -----------------------------
+
+    if (currentLanguageText) {
+        currentLanguageText.textContent =
+            languageNames[lang] || '한국어';
+    }
+
+
+    // -----------------------------
+    // 메뉴 닫기
+    // -----------------------------
+
+    if (menu) {
+        menu.style.display = 'none';
+    }
+
+
+    // -----------------------------
+    // Google Translate 선택창 찾기
+    // -----------------------------
+
+    const googleSelect =
+        document.querySelector('.goog-te-combo');
+
+
+    // Google Translate가 아직 로딩되지 않은 경우
+    if (!googleSelect) {
+
+        console.log('Google Translate 로딩 대기 중...');
+
+        // 조금 기다렸다가 다시 실행
+        setTimeout(function () {
+            changeLanguage(lang);
+        }, 500);
+
+        return;
+    }
+
+
+    // -----------------------------
+    // 한국어
+    // -----------------------------
+
+    if (lang === 'ko') {
+
+        googleSelect.value = 'ko';
+
+        googleSelect.dispatchEvent(
+            new Event('change')
+        );
+
+        return;
+    }
+
+
+    // -----------------------------
+    // 외국어 번역
+    // -----------------------------
+
+    googleSelect.value = lang;
+
+    googleSelect.dispatchEvent(
+        new Event('change')
+    );
+}
+
+
+// ========================================
+// 메뉴 바깥 클릭하면 닫기
+// ========================================
+
+document.addEventListener('click', function (event) {
+
+    const dropdown =
+        document.querySelector('.cs-lang-dropdown');
+
+    const menu =
+        document.getElementById('customLangMenu');
+
+    if (!dropdown || !menu) {
+        return;
+    }
+
+    if (!dropdown.contains(event.target)) {
+        menu.style.display = 'none';
+    }
+});
+
+
+// ========================================
+// 후기
+// ========================================
+
+document.addEventListener("DOMContentLoaded", function () {
+    const btnMore = document.getElementById("btnMoreReviews");
+    const reviewGrid = document.querySelector(".review-grid");
+
+    if (btnMore && reviewGrid) {
+        btnMore.addEventListener("click", function () {
+            reviewGrid.classList.toggle("is-active");
+
+            if (reviewGrid.classList.contains("is-active")) {
+                btnMore.textContent = "후기 접기 △";
+            } else {
+                btnMore.textContent = "후기 더보기 ▽";
+                reviewGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    }
+});
