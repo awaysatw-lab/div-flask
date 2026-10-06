@@ -6,6 +6,8 @@
     const redirectUrl = (document.body && document.body.dataset.redirectUrl) || '/';
     if (window.opener && !window.opener.closed) {
         window.opener.location.href = redirectUrl;
+        window.close();
+    } else {
+        window.location.href = redirectUrl;
     }
-    window.close();
 })();

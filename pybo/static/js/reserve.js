@@ -63,19 +63,27 @@ document.addEventListener('DOMContentLoaded', function() {
   let selectedAccName = '';
   let selectedAccCategory = '';
 
-  // 숙소 카테고리 필터링 (전역 window 바인딩)
+  // 숙소 카테고리 필터링 (전역 window 바인딩) - 호텔만 또는 민박만 선택
   window.filterAcc = function(category, btn) {
     const tabs = document.querySelectorAll('.btn-acc-tab');
-    tabs.forEach(t => t.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+    tabs.forEach(t => {
+      t.classList.remove('active', 'btn-primary');
+      t.classList.add('btn-outline-primary');
+    });
 
-    const cards = document.querySelectorAll('.acc-card');
-    cards.forEach(card => {
-      const cardCat = card.dataset.category;
-      if (category === 'all' || cardCat === category) {
-        card.style.display = 'flex';
+    const activeBtn = btn || document.querySelector(`.btn-acc-tab[data-category="${category}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('active', 'btn-primary');
+      activeBtn.classList.remove('btn-outline-primary');
+    }
+
+    const items = document.querySelectorAll('#accListGrid .acc-item');
+    items.forEach(item => {
+      const itemCat = item.dataset.category;
+      if (itemCat === category) {
+        item.style.display = '';
       } else {
-        card.style.display = 'none';
+        item.style.display = 'none';
       }
     });
   };
@@ -83,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 숙소 선택 변경 핸들러 (전역 window 바인딩)
   window.handleAccSelect = function(radio) {
     const noneCard = document.getElementById('accCard_none');
-    const allCards = document.querySelectorAll('.acc-card');
+    const allCards = document.querySelectorAll('#accListGrid .acc-card');
 
     if (!radio.value) {
       // 숙소 선택 안 함
@@ -165,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevNames = Array.from(document.querySelectorAll('input[name="traveler_name[]"]')).map(el => el.value);
     const prevGenders = Array.from(document.querySelectorAll('select[name="traveler_gender[]"]')).map(el => el.value);
     const prevPhones = Array.from(document.querySelectorAll('input[name="traveler_phone[]"]')).map(el => el.value);
-    const prevBirths = Array.from(document.querySelectorAll('input[name="traveler_birth[]"]')).map(el => el.value);
 
     container.innerHTML = '';
     const reserver = getReserverInfo();
@@ -181,7 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
       let nameVal = prevNames[i] || '';
       let genderVal = prevGenders[i] || '남';
       let phoneVal = prevPhones[i] || '';
-      let birthVal = prevBirths[i] || '';
 
       if (isRep && isSameAsReserver) {
         nameVal = reserver.name || nameVal;
@@ -206,30 +212,25 @@ document.addEventListener('DOMContentLoaded', function() {
             ` : ''}
           </div>
 
-          <!-- 여행객 상세정보 Bootstrap 그리드: 이름 3칸, 성별 1칸, 전화번호 4칸, 생년월일 4칸 (총 12칸 1줄) -->
+          <!-- 여행객 상세정보 Bootstrap 그리드: 이름 5칸, 성별 2칸, 전화번호 5칸 (총 12칸 1줄) -->
           <div class="row g-2 align-items-end">
-            <!-- 이름 3칸 -->
-            <div class="col-12 col-md-3">
+            <!-- 이름 5칸 -->
+            <div class="col-12 col-md-5">
               <label class="form-label fw-bold small mb-1">이름 <span class="text-danger">*</span></label>
               <input type="text" name="traveler_name[]" value="${nameVal}" required class="form-control bg-white" placeholder="성함"${isRep ? ' id="repTravelerName"' : ''}>
             </div>
-            <!-- 성별 1칸 -->
-            <div class="col-12 col-md-1">
+            <!-- 성별 2칸 -->
+            <div class="col-12 col-md-2">
               <label class="form-label fw-bold small mb-1 text-nowrap">성별 <span class="text-danger">*</span></label>
-              <select name="traveler_gender[]" class="form-select text-center px-1 bg-white"${isRep ? ' id="repTravelerGender"' : ''}>
+              <select name="traveler_gender[]" class="form-select text-center bg-white"${isRep ? ' id="repTravelerGender"' : ''}>
                 <option value="남" ${genderVal === '남' ? 'selected' : ''}>남</option>
                 <option value="여" ${genderVal === '여' ? 'selected' : ''}>여</option>
               </select>
             </div>
-            <!-- 전화번호 4칸 -->
-            <div class="col-12 col-md-4">
+            <!-- 전화번호 5칸 -->
+            <div class="col-12 col-md-5">
               <label class="form-label fw-bold small mb-1">전화번호 <span class="text-danger">*</span></label>
               <input type="tel" name="traveler_phone[]" value="${phoneVal}" required class="form-control bg-white" placeholder="010-1234-5678"${isRep ? ' id="repTravelerPhone"' : ''}>
-            </div>
-            <!-- 생년월일 4칸 -->
-            <div class="col-12 col-md-4">
-              <label class="form-label fw-bold small mb-1">생년월일 <span class="text-danger">*</span></label>
-              <input type="date" name="traveler_birth[]" value="${birthVal}" required class="form-control bg-white"${isRep ? ' id="repTravelerBirth"' : ''}>
             </div>
           </div>
         </div>
