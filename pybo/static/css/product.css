@@ -560,35 +560,60 @@ hr{
 }
 
 #sub_details > ul > h5{
-    margin: 0 0 10px;
+    margin: 0 0 20px;
+}
+
+#sub_details > ul > h6{
+    margin: 0 15px 5px;
 }
 
 #sub_details > ul > li{
     width: 950px;
-    margin: 15px 15px 35px;
-    padding: 20px 20px;
+    margin: 10px 15px 55px;
+    padding: 20px 20px 10px;
     list-style: none;
     background-color: #FFFFDD;
     opacity: 0.9;
     border-radius: 20px;
 }
 
-#sub_details >ul > li > >div >h6{
+#sub_details >ul > li > >h6{
     height: 20px;
     font-size: 13pt;
     font-weight: 600;
 }
+
+#sub_details >ul > li > div{
+    align-items: flex-start;
+    padding: 0 10px;
+}
+
 #sub_details >ul > li > div > p{
     font-size: 11pt;
     font-weight: 500;
+}
+#sub_details >ul > li > div > p:first-child{
+    height: 10px;
 }
 
 /* tab4 pretour */
 #pretour{
     padding: 20px;
+    display: flex;
 }
 
-#pretour > ul > li{
+#pretour > div{
+    margin: 0 10px;
+    padding: 20px;
+    border-style: solid;
+    border-color: #dddddd;
+}
+
+#pre2{
+    width: 700px;
+}
+
+#pretour > div > ul > li{
     list-style: none;
 }
 

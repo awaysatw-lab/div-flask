@@ -1,22 +1,27 @@
 <div id="pretour">
-    <h5>■ 포함 사항</h5>
-    <ul>
-        {% for item in product_details.included %}
-            <li>- {{ item }}</li>
-        {% endfor %}
-    </ul>
+    <div>
+        <img src="{{ url_for('static', filename='img/main_product/sub_pre.jpg') }}" alt="">
+    </div>
+    <div id="pre2">
+        <h5> □ 포함 사항</h5>
+        <ul>
+            {% for item in product_details.included %}
+                <li>- {{ item }}</li>
+            {% endfor %}
+        </ul>
 
-    <h5>■ 불포함 사항</h5>
-    <ul>
-        {% for item in product_details.excluded %}
-            <li>- {{ item }}</li>
-        {% endfor %}
-    </ul>
+        <h5> □ 불포함 사항</h5>
+        <ul>
+            {% for item in product_details.excluded %}
+                <li>- {{ item }}</li>
+            {% endfor %}
+        </ul>
 
-    <h5>■ 필수 준비물</h5>
-    <ul>
-        {% for item in product_details.preparation %}
-            <li>- {{ item }}</li>
-        {% endfor %}
-    </ul>
+        <h5> □ 필수 준비물</h5>
+        <ul>
+            {% for item in product_details.preparation %}
+                <li>- {{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
