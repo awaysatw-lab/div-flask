@@ -3362,7 +3362,7 @@ def seed_database():
         {
             'name': '울릉도 해안누리길 일주 & 독도 평화 바다 유람선',
             'description': '태고의 신비를 간직한 울릉도의 화산 비경 해안길을 걷고 대한민국 동쪽 끝 독도를 직접 밟아보는 평생의 버킷리스트 투어.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 180000,
             'member_discount_rate': 0.2,
             'recommendation_count': 1520,
@@ -3500,7 +3500,7 @@ def seed_database():
         {
             'name': '경주 타임 트래블러 트레일 (불국사 & 황리단길 & 월정교)',
             'description': '한국의 영혼을 경험하는 신라 천년 시간 여행! 아홉산 숲, 불국사, 교촌마을, 대릉원, 황리단길, 월정교를 전문 가이드와 함께 부산에서 출발하여 편안하게 탐험합니다.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 75000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1190,
@@ -3680,7 +3680,7 @@ def seed_database():
         {
             'name': '포항 호미곶 상생의 손 일출 & 환호공원 스페이스워크',
             'description': '한반도에서 가장 먼저 해가 뜨는 호미곶 바다 일출을 보고, 공중에 떠 있는 롤러코스터 계단 스페이스워크를 걷습니다.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 55000,
             'member_discount_rate': 0.1,
             'recommendation_count': 960,
@@ -3818,7 +3818,7 @@ def seed_database():
         {
             'name': '안동 하회마을 전통 탈춤 관람 & 유교문화 한옥 고택 스테이',
             'description': '낙동강이 S자로 감싸 흐르는 하회마을에서 유서 깊은 양반 가옥을 체험하고 하회별신굿탈놀이를 관람합니다.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 85000,
             'member_discount_rate': 0.15,
             'recommendation_count': 870,
@@ -3956,7 +3956,7 @@ def seed_database():
         {
             'name': '청송 주산지 왕버들 물안개 숲 & 솔기온천 스파 웰니스',
             'description': '물속에 뿌리를 내린 신비로운 왕버들과 아침 물안개의 비경을 감상하고, 미끌미끌한 알칼리 솔기온천에서 피로를 풉니다.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 72000,
             'member_discount_rate': 0.15,
             'recommendation_count': 640,
@@ -4094,7 +4094,7 @@ def seed_database():
         {
             'name': '문경새재 황톳길 맨발 트레킹 & 오미자 와인동굴 투어',
             'description': '영남대로 과거길 문경새재 흙길을 맨발로 걸으며 자연을 느끼고, 와인터널에서 붉은 오미자 스파클링 와인을 시음합니다.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 49000,
             'member_discount_rate': 0.1,
             'recommendation_count': 580,
@@ -10580,7 +10580,7 @@ def seed_database():
         {
             'name': '경주 불국사 석굴암 신라천년 & 첨성대 동궁과월지 야경',
             'description': '유네스코 세계문화유산 신라 불교 예술의 정수와 야경이 아름다운 동궁과 월지 야간 투어.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 75000,
             'member_discount_rate': 0.15,
             'recommendation_count': 1250,
@@ -10718,7 +10718,7 @@ def seed_database():
         {
             'name': '안동 하회마을 부용대 나룻배 & 만휴정 원림 답사',
             'description': '600년 전통의 풍산 류씨 집성촌 고택 마을과 부용대 절벽, 낙동강변의 그림 같은 정자 탐방.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 58000,
             'member_discount_rate': 0.1,
             'recommendation_count': 840,
@@ -10856,7 +10856,7 @@ def seed_database():
         {
             'name': '포항 호미곶 상생의손 해맞이 & 스페이스워크 환호공원',
             'description': '한반도 최동단 호미곶 바다 위 청동 손 조형물과 롤러코스터처럼 하늘을 걷는 스페이스워크 체험.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 62000,
             'member_discount_rate': 0.15,
             'recommendation_count': 990,
@@ -10994,7 +10994,7 @@ def seed_database():
         {
             'name': '청송 주왕산 주산지 물안개 & 대전사 기암 협곡',
             'description': '물속에 잠긴 왕버들이 신비로운 분위기를 자아내는 주산지와 기암절벽 웅장한 주왕산 국립공원.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 59000,
             'member_discount_rate': 0.1,
             'recommendation_count': 720,
@@ -11132,7 +11132,7 @@ def seed_database():
         {
             'name': '문경 문경새재 황톳길 맨발걷기 & 오픈세트장 사극체험',
             'description': '영남과 한양을 잇던 과거길 조령 삼관문 흙길을 맨발로 걷고 조선시대 드라마 촬영장을 둘러보는 코스.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 52000,
             'member_discount_rate': 0.1,
             'recommendation_count': 810,
@@ -11270,7 +11270,7 @@ def seed_database():
         {
             'name': '영주 부석사 무량수전 배흘림기둥 & 소수서원 선비마을',
             'description': '소백산맥 봉우리들이 파도치는 절경의 부석사와 우리나라 최초의 사액서원에서 배우는 선비정신.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 54000,
             'member_discount_rate': 0.1,
             'recommendation_count': 690,
@@ -11408,7 +11408,7 @@ def seed_database():
         {
             'name': '울진 불영사 계곡 드라이브 & 덕구온천 족욕 테라피',
             'description': '한국의 그랜드캐니언 불영계곡의 푸른 물줄기와 국내 유일의 자연용출 덕구온천 힐링.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 67000,
             'member_discount_rate': 0.15,
             'recommendation_count': 540,
@@ -11546,7 +11546,7 @@ def seed_database():
         {
             'name': '영덕 블루로드 해맞이공원 바다산책 & 강구항 대게 미식',
             'description': '동해안 푸른 바다를 따라 조성된 해안 둘레길과 영덕 축산항 강구항의 풍성한 대게 미식.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 79000,
             'member_discount_rate': 0.15,
             'recommendation_count': 860,
@@ -11684,7 +11684,7 @@ def seed_database():
         {
             'name': '봉화 백두대간 수목원 호랑이숲 & 분천역 산타마을',
             'description': '아시아 최대 규모의 국립수목원에서 백두산 호랑이를 만나고 동화 같은 산타마을의 낭만 기차역.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 61000,
             'member_discount_rate': 0.1,
             'recommendation_count': 630,
@@ -11822,7 +11822,7 @@ def seed_database():
         {
             'name': '군위 화본역 레트로 감성 & 한밤마을 돌담길 산책',
             'description': '네티즌이 뽑은 가장 아름다운 간이역 화본역과 제주도를 닮은 제주식 돌담이 이어진 한밤마을.',
-            'region': RegionEnum.GYEONGBUK.value,
+            'region': RegionEnum.GYEONGSANG.value,
             'original_price': 46000,
             'member_discount_rate': 0.1,
             'recommendation_count': 510,
