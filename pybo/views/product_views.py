@@ -1,3 +1,4 @@
+import ast
 import json
 
 from flask import render_template, Blueprint, request
@@ -68,10 +69,12 @@ def sub_product(product_id):
     elif isinstance(raw_details, dict):
         product_details = raw_details
 
+
     return render_template('product/sub_product.html',
                            product=selected_product, reviews=product_review, times=product_time,
                            product_images=product_images,
                            product_itinerary=product_itinerary,
                            product_details=product_details )
+
 
 
