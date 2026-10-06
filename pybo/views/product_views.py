@@ -11,11 +11,28 @@ from pybo.views.main_views import review_list
 
 bp = Blueprint('product', __name__, url_prefix='/product')
 
+REGION_ALIAS = {
+    'all': 'all',
+    'sudo': 'sudo',
+    'seoul': 'sudo',
+    'gang': 'gang',
+    'gangwon': 'gang',
+    'chung': 'chung',
+    'chungcheong': 'chung',
+    'geong': 'geong',
+    'gyeongsang': 'geong',
+    'jeon': 'jeon',
+    'jeolla': 'jeon',
+    'jeju': 'jeju'
+}
+
 @bp.route('/main_product')
 def main_product():
+    raw_region = request.args.get('region', 'all').lower()
+    selected_region = REGION_ALIAS.get(raw_region, 'all')
     products_data = TourProduct.query.all()
 
-    return render_template('product/main_product.html', products=products_data)
+    return render_template('product/main_product.html', products=products_data, selected_region=selected_region)
 
 
 @bp.route('/sub_product/<int:product_id>')

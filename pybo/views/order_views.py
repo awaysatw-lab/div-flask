@@ -150,18 +150,16 @@ def payment():
         reserver_phone = (form.guest_phone.data or '').strip()
         reserver_email = (form.guest_email.data or '').strip()
 
-    # 여행객별 상세 정보 목록 수집 (이름, 남/여, 전화번호, 생년월일)
+    # 여행객별 상세 정보 목록 수집 (이름, 성별, 전화번호)
     names = request.form.getlist('traveler_name[]')
     genders = request.form.getlist('traveler_gender[]')
     phones = request.form.getlist('traveler_phone[]')
-    births = request.form.getlist('traveler_birth[]')
 
     travelers = []
     for i in range(headcount):
         t_name = names[i].strip() if i < len(names) else ''
         t_gender = genders[i].strip() if i < len(genders) else '남'
         t_phone = phones[i].strip() if i < len(phones) else ''
-        t_birth = births[i].strip() if i < len(births) else ''
 
         # 대표 여행자(1번) 정보가 비어있으면 예약자 정보로 대체
         if i == 0 and not t_name:
@@ -173,8 +171,7 @@ def payment():
             'index': i + 1,
             'name': t_name or f"여행객 {i + 1}",
             'gender': t_gender,
-            'phone': t_phone or '-',
-            'birth': t_birth or '-'
+            'phone': t_phone or '-'
         })
 
     # 연관 숙박 상품 확인 (회원인 경우만 적용)

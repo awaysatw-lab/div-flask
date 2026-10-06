@@ -38,7 +38,7 @@
                         {% if g.user %}
                         <button id="heart-log">추천<br>하기</button>
                         {% else %}
-                        <button id="heart-log" onclick="location.href=`{{ url_for('auth.login') }}`">추천하기<br>(로그인 필요)</button>
+                        <button id="heart-log" onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">추천하기<br>(로그인 필요)</button>
                         {% endif %}
                     </div>
                     <button class="white-btn" onclick="location.href=`{{ url_for('customer.faq_list') }}`">1:1문의</button>
@@ -90,8 +90,8 @@
                 <div id="log-discount">
                     <div>💡로그인 시 {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 / {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원에 이용 가능!</div>
                     <div>
-                        <button onclick="location.href=`{{ url_for('auth.login') }}`">로그인하고 할인 결제</button>
-                        <button onclick="location.href=`{{ url_for('auth.signup') }}`">간편 회원가입</button>
+                        <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인하고 할인 결제</button>
+                        <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">간편 회원가입</button>
                     </div>
                 </div>
                 {% endif %}
@@ -184,8 +184,8 @@
                 <p>회원 가입 즉시 관광 상품 10~20% 및 숙박 시설 우대 할인이 자동 적용됩니다.</p>
             </div>
             <div>
-                <button onclick="location.href=`{{ url_for('auth.login') }}`">로그인</button>
-                <button onclick="location.href=`{{ url_for('auth.signup') }}`">회원가입</button>
+                <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인</button>
+                <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">회원가입</button>
             </div>
         </div>
     </div>
