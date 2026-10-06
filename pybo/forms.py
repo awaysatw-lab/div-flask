@@ -183,3 +183,21 @@ class QuestionForm(FlaskForm):
     email = EmailField('이메일', validators=[DataRequired('이메일은 필수 항목입니다.'), Email('올바른 이메일 형식이 아닙니다.')])
     content = TextAreaField('내용', validators=[DataRequired('내용은 필수 항목입니다.')])
 
+
+# =========================================================================
+# 5. 여행 후기 작성 검증 폼 (ReviewForm)
+# =========================================================================
+class ReviewForm(FlaskForm):
+    title = StringField('후기 제목', validators=[
+        DataRequired('후기 제목을 입력해 주세요.'),
+        Length(min=2, max=150, message='제목은 2자 이상 150자 이하로 입력해 주세요.')
+    ])
+    content = TextAreaField('후기 내용', validators=[
+        DataRequired('후기 내용을 입력해 주세요.'),
+        Length(min=5, message='후기 내용은 5자 이상 입력해 주세요.')
+    ])
+    rating = IntegerField('별점', default=5, validators=[
+        DataRequired('별점을 선택해 주세요.'),
+        NumberRange(min=1, max=5, message='별점은 1점부터 5점까지 선택 가능합니다.')
+    ])
+
