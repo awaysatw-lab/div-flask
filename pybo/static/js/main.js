@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             tabContents.forEach(function (content) {
                 content.classList.remove('active');
-                content.style.display = "none"; // 💡 CSS 호환을 위해 명시적 처리 보강
+                content.style.display = "none";
             });
 
             const targetContent = document.getElementById(target + '-tab');
@@ -103,7 +103,25 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+    const travelDropdown = document.querySelector('.nav-item.dropdown, .dropdown');
+    const dropdownMenu = document.querySelector('.dropdown-menu, .travel-tab-content-wrapper');
 
+    let dropdownTimeoutId;
+
+    if (travelDropdown && dropdownMenu) {
+        travelDropdown.addEventListener('mouseenter', function () {
+            clearTimeout(dropdownTimeoutId);
+            dropdownMenu.classList.add('show');
+            travelDropdown.classList.add('show');
+        });
+
+        travelDropdown.addEventListener('mouseleave', function () {
+            dropdownTimeoutId = setTimeout(function () {
+                dropdownMenu.classList.remove('show');
+                travelDropdown.classList.remove('show');
+            }, 500);
+        });
+    }
 
     // ==========================================================================
     // 3. ✨ [신규 통합] M타임딜 1초 주기 실시간 카운트다운 타이머 엔진
