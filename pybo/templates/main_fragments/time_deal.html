@@ -1,23 +1,19 @@
 <section class="time-deal">
     <div class="deal-header">
         <h3>⏰ M타임딜</h3>
-        <p class="subtitle">오늘의 득템 찬스! 날마다 새로운 핫딜 라인업!</p>
-    </div>
-
+        <p class="subtitle">오늘의 득템 찬스! 날마다 새로운 핫딜 라인업!</p> </div>
     <div class="deal-container">
         <!-- =================================================
              메인 딜 (왼쪽 큰 카드)
              ================================================= -->
         {% if main_deal %}
-        <!-- loading="lazy" 추가로 첫 로딩 최적화 -->
         <a href="{{ url_for('main.deal_detail', deal_id=main_deal.id) }}" class="main-deal-card" style="text-decoration: none; color: inherit; display: block;" loading="lazy">
-            <div class="main-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ main_deal.image_file) }}');">
+            <div class="main-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ main_deal.image_file) }}'); background-size: cover; background-position: center;">
                 <div class="badge-group">
                     {% if main_deal.badge1 %}<span class="badge blue">{{ main_deal.badge1 }}</span>{% endif %}
                     {% if main_deal.badge2 %}<span class="badge green">{{ main_deal.badge2 }}</span>{% endif %}
                 </div>
             </div>
-
             <div class="deal-info">
                 <div class="timer-banner">
                     <span class="clock-icon">⏱️</span>
@@ -25,8 +21,6 @@
                         시간 계산 중...
                     </span>
                 </div>
-
-                <!-- 부모 .main-deal-card에 맞춰 h4 -> h5 등으로 조절하거나 제공된 .product-title 스타일 적용 -->
                 <h4 class="product-title"><strong>{{ main_deal.airline }}</strong> {{ main_deal.title }}</h4>
                 <p class="hashtags">{{ main_deal.hashtags }}</p>
                 <p class="product-desc">{{ main_deal.description }}</p>
@@ -47,31 +41,25 @@
         <div class="sub-deal-list">
             {% if sub_deal_list %}
                 {% for sub in sub_deal_list %}
-                <!-- css 클래스 기준 수정한 부분: sub-deal-card -> sub-card -->
                 <a href="{{ url_for('main.deal_detail', deal_id=sub.id) }}" class="sub-card" style="text-decoration: none; color: inherit; display: flex;" loading="lazy">
-                    <div class="sub-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ sub.image_file) }}');">
-                        <div class="badge-group sub-badges"> <!-- .sub-badges 스타일 적용 -->
+                    <div class="sub-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ sub.image_file) }}'); background-size: cover; background-position: center;">
+                        <div class="badge-group sub-badges">
                             {% if sub.badge1 %}<span class="badge blue">{{ sub.badge1 }}</span>{% endif %}
                         </div>
                     </div>
-
-                    <!-- css 클래스 기준 수정한 부분: sub-deal-info -> sub-card-text -->
                     <div class="sub-card-text">
                         <div>
-                            <!-- css 클래스 기준 수정한 부분: 기존 구조에서 .title 매핑 -->
                             <div class="title">
                                 <strong>{{ sub.airline }}</strong> {{ sub.title }}
                             </div>
                             <p class="hashtags" style="margin-top: 6px;">{{ sub.hashtags }}</p>
 
-                            <!-- 서브 타이머용 배너 배치 (필요시 스타일 조절) -->
-                            <div class="timer-banner" style="transform: scale(0.85); margin-top: 10px; margin-bottom: 0; origin-x: left;">
+                            <!-- 서브 타이머 배너 -->
+                            <div class="timer-banner" style="transform: scale(0.85); margin-top: 10px; margin-bottom: 0; transform-origin: left center;">
                                 <span class="clock-icon">⏱️</span>
                                 <span class="time-text sub-timer" data-endtime="{{ sub.end_date.strftime('%Y-%m-%dT%H:%M:%S') }}">시간 계산 중...</span>
                             </div>
                         </div>
-
-                        <!-- css 클래스 기준 수정한 부분: price-line -> sub-price-line -->
                         <div class="sub-price-line">
                             <span class="price"><strong>{{ "{:,}".format(sub.price) }}</strong>원</span> 부터~
                         </div>
@@ -86,3 +74,42 @@
         </div>
     </div>
 </section>
+
+<!-- [추가] 실시간 카운트다운 타이머 스크립트 -->
+<script>
+function updateTimers() {
+    const timerElements = document.querySelectorAll('[data-endtime]');
+
+    timerElements.forEach(el => {
+        const endTimeStr = el.getAttribute('data-endtime');
+        if (!endTimeStr) return;
+
+        const endTime = new Date(endTimeStr).getTime();
+        const now = new Date().getTime();
+        const diff = endTime - now;
+
+        if (diff <= 0) {
+            el.textContent = "만료된 타임딜";
+            el.style.color = "#999";
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        let timeString = "";
+        if (days > 0) timeString += `${days}일 `;
+        timeString += `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} 남음`;
+
+        el.textContent = timeString;
+    });
+}
+
+// 페이지 로드 시 즉시 실행 및 1초마다 반복 업데이트
+document.addEventListener("DOMContentLoaded", () => {
+    updateTimers();
+    setInterval(updateTimers, 1000);
+});
+</script>
