@@ -121,6 +121,8 @@ button,input {
     padding: 6px 2px;
     font-size: 13px;
     color: #2B2D42;
+    white-space: nowrap !important;
+    flex-shrink: 0;
 }
 
 .top-util-menu .util-link {
@@ -187,6 +189,8 @@ button,input {
     position: relative;        /* 하위 절대위치 드롭다운의 기준축 고정 */
     display: flex;
     align-items: center;       /* 아이템 내부 요소 정렬 */
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
 }
 
 .nav-item > a {
@@ -197,6 +201,13 @@ button,input {
     letter-spacing: -0.3px;
     display: flex;
     align-items: center;       /* 링크 글자 내부 아이콘 정렬 */
+    white-space: nowrap !important;
+}
+
+/* 외부 CSS(.nav-link)에 의한 너비 확장 방지 */
+.site-header .nav-link {
+    width: auto !important;
+    white-space: nowrap !important;
 }
 
 /* 마우스 호버 시 최상위 텍스트 흑색 및 굵기 유지 */
