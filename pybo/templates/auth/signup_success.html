@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>가입 완료</title>
 </head>
-<body data-redirect-url="{{ url_for('main.index') }}">
+<body data-redirect-url="{{ redirect_url or url_for('main.index') }}">
     <script src="{{ url_for('static', filename='js/signup_success.js') }}"></script>
 </body>
 </html>

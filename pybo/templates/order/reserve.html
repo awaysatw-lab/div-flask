@@ -323,11 +323,21 @@
             여행 권역(<strong>{{ product.region }}</strong>)의 추천 숙소를 함께 예약하실 수 있습니다. 원하시는 호텔 또는 민박을 선택하시면 여행 상품과 함께 통합 결제됩니다.
           </p>
 
-          <!-- 필터 탭 -->
-          <div class="acc-filter-tabs d-flex gap-2 mb-3 flex-wrap">
-            <button type="button" class="btn btn-sm btn-primary rounded-pill btn-acc-tab active" onclick="filterAcc('all', this)">전체보기 ({{ accommodations|length }})</button>
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill btn-acc-tab" onclick="filterAcc('호텔', this)">🏨 호텔 ({{ hotels|length }})</button>
-            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill btn-acc-tab" onclick="filterAcc('민박', this)">🏡 민박 ({{ minbaks|length }})</button>
+          <!-- 필터 탭: 호텔만 또는 민박만 선택 가능 -->
+          {% set default_tab = '호텔' if hotels|length > 0 else '민박' %}
+          <div class="acc-filter-tabs d-flex gap-2 mb-3 flex-wrap" role="group" aria-label="숙소 분류 선택">
+            <button type="button" 
+                    data-category="호텔"
+                    class="btn btn-sm {% if default_tab == '호텔' %}btn-primary active{% else %}btn-outline-primary{% endif %} rounded-pill btn-acc-tab px-3 fw-bold" 
+                    onclick="filterAcc('호텔', this)">
+              🏨 호텔만 보기 ({{ hotels|length }})
+            </button>
+            <button type="button" 
+                    data-category="민박"
+                    class="btn btn-sm {% if default_tab == '민박' %}btn-primary active{% else %}btn-outline-primary{% endif %} rounded-pill btn-acc-tab px-3 fw-bold" 
+                    onclick="filterAcc('민박', this)">
+              🏡 민박만 보기 ({{ minbaks|length }})
+            </button>
           </div>
 
           <!-- 옵션: 숙소 선택 안 함 (기본) -->
@@ -352,8 +362,8 @@
           <!-- 숙소 목록 그리드 (width가 작은 경우 1줄에 1칸 표시: row-cols-1 row-cols-md-2) -->
           <div class="row row-cols-1 row-cols-md-2 g-3 overflow-y-auto pe-1" id="accListGrid" style="max-height: 520px;">
             {% for acc in accommodations %}
-              <div class="col" data-category="{{ acc.category }}">
-                <label class="card h-100 border-2 p-2 position-relative" id="accCard_{{ acc.id }}" style="cursor: pointer;">
+              <div class="col acc-item" data-category="{{ acc.category }}" {% if acc.category != default_tab %}style="display: none;"{% endif %}>
+                <label class="card h-100 border-2 p-2 position-relative acc-card" id="accCard_{{ acc.id }}" style="cursor: pointer;">
                   <div class="position-absolute top-0 end-0 p-2 z-1">
                     <input type="radio" name="accommodation_id" value="{{ acc.id }}"
                            data-name="{{ acc.name }}" data-price="{{ acc.price_per_night }}" data-category="{{ acc.category }}"
@@ -396,7 +406,7 @@
                 <p class="mb-0 text-success-emphasis small">길마중 회원으로 로그인하시면 <strong>{{ product.region }}</strong> 권역의 엄선된 호텔 10곳 및 민박 10곳을 여행과 함께 원스톱으로 할인 예약하실 수 있습니다.</p>
               </div>
             </div>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-success btn-sm flex-shrink-0 fw-bold px-3 py-2">로그인하기</a>
+            <a href="{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}" class="btn btn-success btn-sm flex-shrink-0 fw-bold px-3 py-2">로그인하기</a>
           </div>
         {% endif %}
       </div>

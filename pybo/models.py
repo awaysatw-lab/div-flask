@@ -31,7 +31,7 @@ class RegionEnum(str, enum.Enum):
     JEONLA = "전라"
     CHUNGCHEONG = "충청"
     GANGWON = "강원"
-    GYEONGBUK = "경북"
+    GYEONGSANG = "경상"
     JEJU = "제주"
 
     @classmethod

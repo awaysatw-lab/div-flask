@@ -840,116 +840,116 @@ accommodations_data = [
     },
 
     # =========================================================================
-    # 5. 경북 (GYEONGBUK) - 호텔 10건
+    # 5. 경북 (GYEONGSANG) - 호텔 10건
     # =========================================================================
     {
         'name': '힐튼 경주',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 경주시 보문로 422 보문호수 앞',
         'price_per_night': 280000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_01.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_01.jpg',
         'description': '보문호수 산책로와 미술관 우양미술관을 품은 경주 최고의 5성급 럭셔리 호텔입니다.',
         'rating': 4.9
     },
     {
         'name': '라한셀렉트 경주',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 경주시 보문로 338 보문호수 뷰',
         'price_per_night': 250000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_02.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_02.jpg',
         'description': '보문호수 정면 파노라마 뷰와 북스토어 경주산책을 갖춘 감성 호반 특급 호텔입니다.',
         'rating': 4.9
     },
     {
         'name': '라한호텔 포항',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 포항시 북구 삼호로 265번길 1 영일대해변 앞',
         'price_per_night': 175000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_03.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_03.jpg',
         'description': '영일대 해수욕장 모래사장과 영일대 해상누각 전망의 전 객실 오션뷰 랜드마크 호텔입니다.',
         'rating': 4.8
     },
     {
         'name': '리첼호텔 안동',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 안동시 관광단지로 346-9 안동관광단지',
         'price_per_night': 145000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_04.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_04.jpg',
         'description': '안동문화관광단지 중심 유교랜드와 인접한 쾌적하고 넉넉한 전통 문화 관광 호텔입니다.',
         'rating': 4.6
     },
     {
         'name': 'STX리조트 문경',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 문경시 농암면 청화로 509 속리산 자락',
         'price_per_night': 185000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_05.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_05.jpg',
         'description': '속리산 자락 청화산 원시림 계곡 속 스파 스파빌라를 보유한 대규모 청정 산악 리조트입니다.',
         'rating': 4.7
     },
     {
         'name': '호텔 인터불고 대구',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '대구 수성구 팔현길 212 망우공원 내',
         'price_per_night': 210000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_06.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_06.jpg',
         'description': '금호강변 망우공원 울창한 숲에 둘러싸인 유서 깊고 품격 있는 대구 대표 특급 호텔입니다.',
         'rating': 4.8
     },
     {
         'name': '소노벨 청송',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 청송군 주왕산면 주왕산로 494-1',
         'price_per_night': 190000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_07.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_07.jpg',
         'description': '주왕산 국립공원 입구 솔샘온천 탄산약수 노천탕을 즐기는 명품 웰빙 스파 호텔입니다.',
         'rating': 4.8
     },
     {
         'name': '힐링스테이 영주 소백헌',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 영주시 풍기읍 소백산로 2156',
         'price_per_night': 155000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_08.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_08.jpg',
         'description': '소백산 희방사 계곡과 풍기 인삼마을 인근 풍경 좋은 친자연 웰니스 힐링 호텔입니다.',
         'rating': 4.7
     },
     {
         'name': '울릉도 힐링스테이 코스모스 리조트',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 울릉군 북면 추산길 88-13 추산 송곳봉 앞',
         'price_per_night': 450000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_09.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_09.jpg',
         'description': '추산 송곳바위 절벽 아래 세계 건축상을 석권한 동해 울릉도의 하이엔드 럭셔리 리조트입니다.',
         'rating': 5.0
     },
     {
         'name': '덕구온천 리조트호텔 울진',
         'category': '호텔',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 울진군 북면 덕구온천로 924 응봉산 계곡',
         'price_per_night': 160000,
-        'image_url': '/static/img/accomodation/hotel_gyeongbuk_10.jpg',
+        'image_url': '/static/img/accomodation/hotel_GYEONGSANG_10.jpg',
         'description': '국내 유일 자연용출 천연 온천수가 샘솟는 응봉산 계곡의 청정 스파 힐링 호텔입니다.',
         'rating': 4.7
     },
 
     # =========================================================================
-    # 5. 경북 (GYEONGBUK) - 민박 10건
+    # 5. 경북 (GYEONGSANG) - 민박 10건
     # =========================================================================
     {
         'name': '안동 하회마을 옥연정사 고택민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 안동시 풍천면 광덕솔밭길 86 부용대 아래',
         'price_per_night': 130000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_01.jpg',
@@ -959,7 +959,7 @@ accommodations_data = [
     {
         'name': '경주 첨성대 달빛한옥민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 경주시 첨성로 99번길 16 황리단길 인근',
         'price_per_night': 95000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_02.jpg',
@@ -969,7 +969,7 @@ accommodations_data = [
     {
         'name': '청송 주왕산 사과나무과수원민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 청송군 주왕산면 당마을길 15',
         'price_per_night': 75000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_03.jpg',
@@ -979,7 +979,7 @@ accommodations_data = [
     {
         'name': '울릉도 나리분지 너와집민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 울릉군 북면 나리1길 45 화산 분화구 평야',
         'price_per_night': 85000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_04.jpg',
@@ -989,7 +989,7 @@ accommodations_data = [
     {
         'name': '영덕 강구항 대게거리 바다민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 영덕군 강구면 강구대게길 112 강구항 앞',
         'price_per_night': 80000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_05.jpg',
@@ -999,7 +999,7 @@ accommodations_data = [
     {
         'name': '문경새재 황토돌담옛길민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 문경시 문경읍 새재로 865 문경새재 1관문 아래',
         'price_per_night': 75000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_06.jpg',
@@ -1009,7 +1009,7 @@ accommodations_data = [
     {
         'name': '봉화 닭실마을 청암한옥민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 봉화군 봉화읍 충재길 44 청암정 앞',
         'price_per_night': 80000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_07.jpg',
@@ -1019,7 +1019,7 @@ accommodations_data = [
     {
         'name': '성주 가야산 야생화골민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 성주군 수륜면 가야산로 1250 가야산 국립공원 입구',
         'price_per_night': 70000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_08.jpg',
@@ -1029,7 +1029,7 @@ accommodations_data = [
     {
         'name': '포항 호미곶 일출바다민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 포항시 남구 호미곶면 해맞이로 150 상생의손 앞',
         'price_per_night': 75000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_09.jpg',
@@ -1039,7 +1039,7 @@ accommodations_data = [
     {
         'name': '경주 양동마을 회재고택민박',
         'category': '민박',
-        'region': RegionEnum.GYEONGBUK.value,
+        'region': RegionEnum.GYEONGSANG.value,
         'location': '경북 경주시 강동면 양동마을길 124 양동마을 내',
         'price_per_night': 90000,
         'image_url': '/static/img/accomodation/minbak_gyeongbuk_10.jpg',
