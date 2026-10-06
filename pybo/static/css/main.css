@@ -42,15 +42,16 @@ button,input {
 }
 
 /* ==========================================================================
-   헤더
+   헤더 (수정완료)
    ========================================================================== */
 
 .site-header {
     width: 100%;
-    height: 80px;
+    height: 90px;
     background-color: #faf8f5;
     border-bottom: 1px solid #F6F4EE;
 }
+
 .header-container {
     width: 100%;
     max-width: 1100px;
@@ -59,11 +60,12 @@ button,input {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
 }
 
 .logo-area {
     display: flex;
-    margin-top: 15px;
+    align-items: center;
     gap: 2px;
     flex-shrink: 0;
 }
@@ -80,10 +82,10 @@ button,input {
 }
 
 .logo-area span {
-    margin-top: 15px;
     cursor: default;
     font-size: x-small;
 }
+
 .logo-circle {
     width: 18px;
     height: 18px;
@@ -108,7 +110,9 @@ button,input {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: center;
     flex: 1;
+    height: 100%;
 }
 
 .top-util-menu {
@@ -116,9 +120,11 @@ button,input {
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
-    padding: 10px 2px;
+    padding: 6px 2px;
     font-size: 13px;
     color: #2B2D42;
+    white-space: nowrap !important;
+    flex-shrink: 0;
 }
 
 .top-util-menu .util-link {
@@ -166,32 +172,75 @@ button,input {
     align-items: center;
     justify-content: flex-end;
     gap: 35px;
+    margin-top: 4px;
 }
 
 .nav-links {
     display: flex;
     flex-direction: row;
-    gap: 25px;
+    align-items: center;
+    gap: 35px;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.nav-item a {
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;       /* 아이템 내부 요소 정렬 */
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.nav-item > a {
     text-decoration: none;
     color: #2B2D42;
     font-size: 1.05rem;
     font-weight: bold;
     letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;       /* 링크 글자 내부 아이콘 정렬 */
+    white-space: nowrap !important;
+}
+
+/* 외부 CSS(.nav-link)에 의한 너비 확장 방지 */
+.site-header .nav-link {
+    width: auto !important;
+    white-space: nowrap !important;
+}
+
+.nav-item:hover > a {
+    color: #000000;
+    font-weight: bold;
+}
+
+.btn-box {
+    padding: 6px 10px;
 }
 
 .nav-item .badge {
     background-color: #007bff;
     color: #ffffff;
-    font-size: 0.6rem;
-    padding: 1px 4px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 1px 5px;
     border-radius: 3px;
-    vertical-align: super;
+    margin-left: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 14px;
+    vertical-align: middle;
+    transform: translateY(-1px);
+}
+
+.arrow {
+    font-size: 0.75rem;
+    color: #2B2D42;
+    margin: 0 0 3px 7px;
+    display: inline-block;
+    transform: translateY(1px);
 }
 
 .search-box-wrap {
@@ -230,6 +279,160 @@ button,input {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+/* =========================================================
+   언어 선택 메뉴
+   ========================================================= */
+
+.cs-lang-dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 999999;
+}
+
+#languageDropdown {
+    position: relative;
+    z-index: 1000000;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+#languageDropdown:hover {
+    color: #007bff !important;
+}
+
+#customLangMenu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    display: none;
+    width: 110px;
+    min-width: 110px;
+    margin: 0;
+    padding: 6px 0;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #EAE6DF;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    z-index: 1000001;
+    text-align: left;
+}
+
+#customLangMenu li {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#customLangMenu .lang-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    color: #2B2D42;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: #ffffff;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+#customLangMenu .lang-item:hover {
+    background-color: #F8F6F2;
+    color: #007bff;
+}
+
+#currentLanguageText {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.header-container,
+.header-right-block,
+.top-util-menu {
+    position: relative;
+}
+
+.site-header {
+    position: relative;
+    z-index: 99999;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #EAE6DF;
+    border-radius: 4px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    z-index: 99999;
+    padding: 0;
+    list-style: none;
+}
+
+.nav-item:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: #2B2D42;
+    font-size: 0.88rem;
+    display: block;
+    padding: 10px 12px;
+    font-weight: 500;
+}
+
+.dropdown-menu a:hover {
+    background-color: #F8F6F2;
+    color: #007bff;
+}
+
+.mega-menu {
+    display: none;
+    flex-direction: row;
+    gap: 40px;
+    padding: 20px;
+    min-width: 120px;
+}
+
+.nav-item:hover .mega-menu {
+    display: flex;
+}
+
+.menu-column {
+    flex: 1;
+}
+
+.menu-column h3 {
+    font-size: 0.85rem;
+    color: #2B2D42;
+    margin-bottom: 12px;
+    padding-left: 8px;
+    border-left: 3px solid #007bff;
+    font-weight: 600;
+}
+
+.menu-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-column ul li a {
+    padding: 6px 8px;
+    border-radius: 4px;
 }
 
 /* ==========================================================================
@@ -311,7 +514,7 @@ button,input {
 
 .banner-text p {
     font-size: 1.05rem;
-    color: #e9ecef;
+    color: #fff;
     line-height: 1.5;
     font-weight: 500;
 }
@@ -330,7 +533,7 @@ button,input {
 }
 
 /* ==========================================================================
-   지역별 / 테마별
+   지역별
    ========================================================================== */
 
 .region-category {
@@ -373,6 +576,7 @@ button,input {
 
 .travel-tab-content {
     display: none;
+    margin-top: 30px;
 }
 
 .travel-tab-content.active {
@@ -427,7 +631,7 @@ button,input {
 .more-btn-wrap {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin: 5px 0;
 }
 
 .btn-content-more {
@@ -467,22 +671,20 @@ button,input {
     letter-spacing: -0.03em;
 }
 
-/* 헤더 영역 - 깊고 신뢰감 있는 먹색 타이틀 */
 .time-deal .deal-header h3 {
     font-size: 1.7rem;
     font-weight: 700;
-    color: #2B2D42; /* 깊은 먹색 */
+    color: #2B2D42;
     margin: 0;
 }
 
 .time-deal .subtitle {
     font-size: 0.92rem;
-    color: #7A7A85; /* 차분한 그레이 */
+    color: #7A7A85;
     margin-top: 10px;
     margin-bottom: 45px;
 }
 
-/* 그리드 레이아웃 */
 .time-deal .deal-container {
     width: 100%;
     display: grid;
@@ -490,12 +692,11 @@ button,input {
     gap: 30px;
 }
 
-/* 카드 컴포넌트 베이스 - 절제된 선과 얇은 그림자 */
 .main-deal-card, .sub-card {
     background-color: #ffffff;
-    border-radius: 8px; /* 단정하고 정갈한 모서리 */
+    border-radius: 8px;
     overflow: hidden;
-    border: 1px solid #EAE6DF; /* 미색 톤의 차분한 테두리 */
+    border: 1px solid #EAE6DF;
     box-shadow: 0 4px 20px rgba(43, 45, 66, 0.02);
     transition: all 0.3s ease;
 }
@@ -506,7 +707,6 @@ button,input {
     border-color: #D3C9BC;
 }
 
-/* 이미지 영역 */
 .main-img-area, .sub-img-area {
     background-size: cover;
     background-position: center;
@@ -520,7 +720,6 @@ button,input {
     height: 330px;
 }
 
-/* 🏷️ 정갈하고 차분한 배지 (길마중의 단정한 톤앤매너) */
 .badge-group {
     display: flex;
     flex-wrap: wrap;
@@ -537,25 +736,22 @@ button,input {
     border-radius: 4px;
 }
 
-/* 깊은 네이비/네이비그레이 톤 */
 .badge.blue {
     background-color: #1E3A5F;
     color: #ffffff;
 }
 
-/* 은은한 크림 베이지 톤 */
 .badge.green {
     background-color: #F6F4EE;
     color: #2B2D42;
     border: 1px solid #EAE6DF;
 }
 
-/* ⏱️ 차분하게 정돈된 타이머 배너 (길마중 로그인 버튼 컬러 테마 반영) */
 .timer-banner {
-    background-color: #1E3A5F; /* 길마중의 시그니처 딥 네이비 */
+    background-color: #1E3A5F;
     color: #ffffff;
     padding: 6px 14px;
-    border-radius: 4px; /* 라운드 칩 대신 단정한 사각형태 유지 */
+    border-radius: 4px;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -565,7 +761,6 @@ button,input {
     font-weight: 600;
 }
 
-/* 메인 딜 정보 영역 */
 .main-deal-card .deal-info {
     padding: 30px 24px;
     display: flex;
@@ -580,7 +775,6 @@ button,input {
     line-height: 1.5;
 }
 
-/* [항공사] 태그는 톤다운된 깊은 청동 그린 컬러로 우아하게 강조 */
 .main-deal-card .product-title strong,
 .sub-card-text .title strong {
     color: #3D7D66;
@@ -588,7 +782,6 @@ button,input {
     margin-right: 6px;
 }
 
-/* 해시태그 및 설명 - 은은하고 깊이감 있는 그레이 */
 .hashtags {
     font-size: 0.85rem;
     color: #8E90A6;
@@ -603,7 +796,6 @@ button,input {
     margin-bottom: 25px;
 }
 
-/* 가격 라인 - 불필요한 원색을 빼고 묵직한 서체로 가독성 확보 */
 .price-line {
     margin-top: auto;
     text-align: right;
@@ -614,7 +806,7 @@ button,input {
 .price-line .price {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #2B2D42; /* 시크한 먹색으로 가격 강조 */
+    color: #2B2D42;
 }
 
 /* ==========================================
@@ -637,7 +829,6 @@ button,input {
     flex-shrink: 0;
 }
 
-/* 서브 카드 내부 텍스트 밸런스 */
 .sub-card-text {
     width: 62%;
     padding: 22px;
@@ -653,7 +844,6 @@ button,input {
     line-height: 1.45;
 }
 
-/* 서브 카드 내부 타이머 축소 정돈 */
 .sub-card-text .timer-banner {
     margin-bottom: 0;
     margin-top: 8px;
@@ -979,229 +1169,129 @@ button,input {
 /* ==========================================================================
    반응형
    ========================================================================== */
+@media (max-width: 991px) {
+    .site-header {
+        height: auto;
+        padding: 10px 0;
+    }
+
+    .header-container {
+        flex-direction: column;
+        height: auto;
+        gap: 12px;
+    }
+
+    .header-right-block {
+        align-items: center;
+        width: 100%;
+    }
+
+    .top-util-menu {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .nav-search-line {
+        justify-content: center;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .content-container { padding: 0 15px; }
+    .banner-content-wrap { padding: 0 15px; }
+    .banner-text { width: 280px; min-height: 220px; padding: 30px; }
+    .banner-text h2 { font-size: 2rem; }
+    .time-deal { padding: 35px 20px; }
+    .time-deal .deal-container { grid-template-columns: 1fr; }
+    .sub-card { min-height: 180px; }
+    .review-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .review-card:nth-child(n+4) { display: none; }
+    .info-footer-inside { flex-direction: column; }
+    .notice-box { border-right: none; border-bottom: 1px solid #FFFFDD; }
+}
 
 @media (max-width: 900px) {
-
     .region-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 18px;
     }
 
-    .icon-item {
-        width: 90px;
-    }
-
-    .circle-img {
-        width: 82px;
-        height: 82px;
-    }
-
-    .icon-item > span {
-        font-size: 13px;
-    }
+    .icon-item { width: 90px; }
+    .circle-img { width: 82px; height: 82px; }
+    .icon-item > span { font-size: 13px; }
 }
-
-
-@media (max-width: 700px) {
-    .region-list {
-        flex-wrap: wrap;
-        row-gap: 25px;
-    }
-    .theme-list {
-        gap: 40px;
-    }
-}
-
-
-@media (max-width: 480px) {
-    .tab-buttons {
-        gap: 8px;
-    }
-
-    .tab-btn {
-        min-width: 130px;
-        height: 40px;
-        padding: 0 15px;
-        font-size: 13px;
-    }
-
-    .region-list {
-        gap: 18px 25px;
-    }
-
-    .icon-item {
-        width: 80px;
-    }
-
-    .circle-img {
-        width: 72px;
-        height: 72px;
-    }
-
-    .icon-item > span {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 991px) {
-    .content-container {
-        padding: 0 15px;
-    }
-
-    .banner-content-wrap {
-        padding: 0 15px;
-    }
-
-    .banner-text {
-        width: 280px;
-        min-height: 220px;
-        padding: 30px;
-    }
-
-    .banner-text h2 {
-        font-size: 2rem;
-    }
-
-    .time-deal {
-        padding: 35px 20px;
-    }
-
-    .time-deal .deal-container {
-        grid-template-columns: 1fr;
-    }
-
-    .sub-card {
-        min-height: 180px;
-    }
-
-    .review-grid {
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
-    }
-
-    .review-card:nth-child(n+4) {
-        display: none;
-    }
-
-    .info-footer-inside {
-        flex-direction: column;
-    }
-
-    .notice-box {
-        border-right: none;
-
-        border-bottom: 1px solid #FFFFDD;
-    }
-
-}
-
 
 @media (max-width: 700px) {
     .header-container {
         flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
+        gap: 12px;
+        align-items: center;
     }
+
     .header-right-block {
-        align-items: stretch;
+        align-items: center;
     }
 
     .nav-search-line {
         flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
+        gap: 12px;
+        align-items: center;
     }
 
     .nav-links {
         justify-content: center;
         flex-wrap: wrap;
-    }
-    .search-box-wrap {
-        width: 100%;
-    }
-    .main-banner-full {
-        height: 360px;
-    }
-    .banner-content-wrap {
-        justify-content: center;
-    }
-    .banner-text {
-        width: 280px;
-        min-height: auto;
-        padding: 25px;
-    }
-    .banner-text h2 {
-        font-size: 1.8rem;
-    }
-    .banner-text p {
-        font-size: 0.9rem;
-    }
-    .icon-list {
-        gap: 30px;
-    }
-    .icon-item {
-        width: 90px;
-    }
-    .circle-img {
-        width: 90px;
-        height: 90px;
-    }
-    .btn-content-more {
-        width: 100%;
-        min-width: 0;
-    }
-    .time-deal {
-        padding: 30px 15px;
-        border-radius: 12px;
-    }
-    .main-img-area {
-        height: 220px;
-    }
-    .main-deal-card .deal-info {
-        padding: 25px 20px;
-    }
-    .main-deal-card .product-title {
-        font-size: 1.1rem;
-    }
-    .main-deal-card .price-line .price {
-        font-size: 1.4rem;
+        gap: 20px;
     }
 
-    .sub-card {
-        flex-direction: column;
-    }
-    .sub-img-area {
+    .search-box-wrap {
         width: 100%;
-        min-height: 180px;
+        max-width: 300px;
     }
-    .sub-card-text {
-        width: 100%;
+
+    .region-list {
+        justify-content: center;
+        row-gap: 25px;
     }
-    .travel-reviews {
-        padding-bottom: 35px;
-    }
-    .review-wrapper {
-        height: 230px;
-    }
-    .review-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-    .review-card:nth-child(n+3) {
-        display: none;
-    }
-    .review-card .thumb {
-        height: 150px;
-    }
-    .footer-body {
-        flex-direction: column;
-        gap: 25px;
-    }
-    .escrow-info {
-        border-left: none;
-        border-top: 1px solid #e9ecef;
-        padding-left: 0;
-        padding-top: 20px;
-    }
+
+    .theme-list { gap: 40px; }
+    .main-banner-full { height: 360px; }
+    .banner-content-wrap { justify-content: center; }
+    .banner-text { width: 280px; min-height: auto; padding: 25px; }
+    .banner-text h2 { font-size: 1.8rem; }
+    .banner-text p { font-size: 0.9rem; }
+    .icon-list { gap: 30px; }
+    .icon-item { width: 90px; }
+    .circle-img { width: 90px; height: 90px; }
+    .btn-content-more { width: 100%; min-width: 0; }
+    .time-deal { padding: 30px 15px; border-radius: 12px; }
+    .main-img-area { height: 220px; }
+    .main-deal-card .deal-info { padding: 25px 20px; }
+    .main-deal-card .product-title { font-size: 1.1rem; }
+    .main-deal-card .price-line .price { font-size: 1.4rem; }
+    .sub-card { flex-direction: column; }
+    .sub-img-area { width: 100%; min-height: 180px; }
+    .sub-card-text { width: 100%; }
+    .travel-reviews { padding-bottom: 35px; }
+    .review-wrapper { height: 230px; }
+    .review-grid { grid-template-columns: 1fr 1fr; }
+    .review-card:nth-child(n+3) { display: none; }
+    .review-card .thumb { height: 150px; }
+    .footer-body { flex-direction: column; gap: 25px; }
+    .escrow-info { border-left: none; border-top: 1px solid #e9ecef; padding-left: 0; padding-top: 20px; }
 }
+
+@media (max-width: 480px) {
+    .tab-buttons { gap: 8px; }
+    .tab-btn { min-width: 130px; height: 40px; padding: 0 15px; font-size: 13px; }
+    .region-list { gap: 18px 25px; }
+    .icon-item { width: 80px; }
+    .circle-img { width: 72px; height: 72px; }
+    .icon-item > span { font-size: 12px; }
+}
+
 /* ==========================================================================
    질문답변(Q&A) 전용 교정 테마 스타일
    ========================================================================== */

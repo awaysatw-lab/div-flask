@@ -1,20 +1,30 @@
-<!-- 여행 후기 조각 -->
 <section class="travel-reviews">
     <h3>💬 여행 후기</h3>
 
     <div class="review-wrapper">
         <div class="review-grid">
+            <!-- main_views.py에서 넘겨주는 'review_list'를 사용하여 반복문을 돌립니다 -->
             {% if review_list %}
                 {% for review in review_list %}
+                <!-- 메인 블루프린트(main)의 review_detail 뷰 함수로 연결하고 review_id를 전달합니다 -->
                 <a href="{{ url_for('main.review_detail', review_id=review.id) }}" class="review-card" style="text-decoration: none; color: inherit; display: block;">
+                    <!-- 후기 이미지가 있다면 출력, 없다면 기본 디폴트 이미지 출력 -->
                     <div class="thumb" style="background-image: url('{{ url_for('static', filename='img/' ~ review.image_file) if review.image_file else url_for('static', filename='img/default_review.jpg') }}'); background-size: cover; background-position: center;"></div>
-                    <p>
-                        <strong>{{ review.title }}</strong><br>
-                        <span style="color: #888; font-size: 0.75rem;">★ {{ review.rating }} | {{ review.user.name if review.user else '익명' }}님</span>
+
+                    <p style="padding: 10px; margin: 0;">
+                        <!-- 후기 제목 또는 본문 일부 노출 -->
+                        <strong style="font-size: 0.95rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            {{ review.subject if review.subject else review.content[:15] }}
+                        </strong>
+                        <!-- 작성일자 표시 -->
+                        <span style="color: #888; font-size: 0.75rem;">
+                            📅 {{ review.created_at.strftime('%Y-%m-%d') if review.created_at else '' }}
+                        </span>
                     </p>
                 </a>
                 {% endfor %}
             {% else %}
+                <!-- 등록된 후기가 없을 때 보여줄 예외 처리 -->
                 <div class="review-card" style="grid-column: span 5; display: flex; align-items: center; justify-content: center; min-height: 150px; color: #999; font-size: 0.9rem;">
                     아직 등록된 여행 후기가 없습니다. 첫 후기를 남겨보세요!
                 </div>
