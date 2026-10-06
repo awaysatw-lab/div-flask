@@ -1,4 +1,4 @@
-<div style="grid-template-columns: 1fr 1fr;" class="d-grid gap-3 row-gap-4">
+<div class="product-grid">
     {% for product in products %}
         {% if current_region == 'all' or product.region == current_region %}
         <div class="card">

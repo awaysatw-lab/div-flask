@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let baseImageData = null;
     let regionGrid = null; // Uint8Array(370 * 539) 픽셀별 권역 코드 매핑 (1~6)
     let currentActiveRegion = 'all';
+    let currentHoveredRegion = null;
 
     /**
      * 흰색 내륙 픽셀 여부 판별 (배경 투명 및 경계선 제외)
@@ -184,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.drawImage(sourceImg, 0, 0, 370, 539);
             baseImageData = ctx.getImageData(0, 0, 370, 539);
             regionGrid = buildRegionGrid(baseImageData.data, 370, 539);
-            renderMapHighlight(currentActiveRegion);
+            renderMap(currentActiveRegion, currentHoveredRegion);
         }
 
         if (sourceImg.complete && sourceImg.naturalWidth > 0) {
@@ -196,8 +197,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * 권역 뱃지(Pill Label) 그리기
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Object} badge { text, x, y }
+     * @param {boolean} isHover 마우스 호버 여부
      */
-    function drawRegionBadge(ctx, badge) {
+    function drawRegionBadge(ctx, badge, isHover = false) {
         ctx.save();
         const text = badge.text;
         ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif';
@@ -209,12 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const y = Math.max(10, Math.min(539 - h - 10, badge.y - h / 2));
 
         // 그림자 효과
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-        ctx.shadowBlur = 8;
+        ctx.shadowColor = isHover ? 'rgba(0, 0, 0, 0.35)' : 'rgba(0, 0, 0, 0.2)';
+        ctx.shadowBlur = isHover ? 10 : 6;
         ctx.shadowOffsetY = 2;
 
-        // 코랄 배경 알약 뱃지
-        ctx.fillStyle = '#FFFFFF';
+        // 알약 뱃지 배경: 호버 시 브랜드 네이비(#1D3557)에 흰 글씨, 일반 선택 시 흰 배경에 초록 테두리
+        ctx.fillStyle = isHover ? '#1D3557' : '#FFFFFF';
         ctx.beginPath();
         if (typeof ctx.roundRect === 'function') {
             ctx.roundRect(x, y, w, h, 13);
@@ -223,8 +227,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         ctx.fill();
 
+        // 테두리
+        ctx.strokeStyle = isHover ? '#1D3557' : '#15803D';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
         // 텍스트 출력
-        ctx.fillStyle = 'black';
+        ctx.shadowColor = 'transparent';
+        ctx.fillStyle = isHover ? '#FFFFFF' : '#15803D';
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'center';
         ctx.fillText(text, x + w / 2, y + h / 2);
@@ -232,42 +242,87 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 활성화된 권역 지도에 색상 하이라이트 렌더링
+     * 권역 지도에 활성화(Active) 및 마우스 호버(Hover) 색상 렌더링
+     * @param {string} activeRegion 현재 선택된 권역
+     * @param {string|null} hoveredRegion 현재 마우스 호버 중인 권역
      */
-    function renderMapHighlight(activeRegion) {
-        if (!mapCanvas || !baseImageData) return;
+    function renderMap(activeRegion, hoveredRegion) {
+        if (!mapCanvas || !baseImageData || !regionGrid) return;
         const ctx = mapCanvas.getContext('2d');
         if (!ctx) return;
 
-        // 전체 또는 미선택 시 기본 지도 원본 출력
-        if (!activeRegion || activeRegion === 'all' || !regionCodes[activeRegion] || !regionGrid) {
+        const hasActive = activeRegion && activeRegion !== 'all' && regionCodes[activeRegion];
+        const hasHover = hoveredRegion && hoveredRegion !== 'all' && regionCodes[hoveredRegion];
+
+        // 선택 및 호버가 모두 없으면 기본 지도 원본 출력
+        if (!hasActive && !hasHover) {
             ctx.putImageData(baseImageData, 0, 0);
             return;
         }
 
-        const targetCode = regionCodes[activeRegion];
+        const activeCode = hasActive ? regionCodes[activeRegion] : null;
+        const hoverCode = hasHover ? regionCodes[hoveredRegion] : null;
+
         const currentData = new ImageData(new Uint8ClampedArray(baseImageData.data), 370, 539);
         const d = currentData.data;
         const totalPixels = 370 * 539;
 
-        // 해당 권역으로 확정된 픽셀만 하이라이트 색상(#415803D 초록색) 적용
+        // 색상 정의
+        // 1. 선택(Active) 색상: #15803D (초록색)
+        const cActive = { r: 21, g: 128, b: 61, a: 185 };
+        // 2. 호버(Hover) 색상: 산뜻한 민트/에메랄드 그린 (#42BA82)
+        const cHover = { r: 66, g: 186, b: 130, a: 195 };
+        // 3. 선택된 권역에 다시 호버했을 때: 더 선명하고 짙은 그린 하이라이트 (#106930)
+        const cActiveHover = { r: 16, g: 105, b: 48, a: 215 };
+
         for (let i = 0; i < totalPixels; i++) {
-            if (regionGrid[i] === targetCode) {
-                const idx = i * 4;
-                d[idx] = 21;     // R
-                d[idx + 1] = 128; // G
-                d[idx + 2] = 61; // B
-                d[idx + 3] = 180;// A
+            const code = regionGrid[i];
+            if (code === 0) continue;
+
+            const idx = i * 4;
+            if (code === activeCode && code === hoverCode) {
+                // 선택된 권역에 마우스가 호버된 상태
+                d[idx] = cActiveHover.r;
+                d[idx + 1] = cActiveHover.g;
+                d[idx + 2] = cActiveHover.b;
+                d[idx + 3] = cActiveHover.a;
+            } else if (code === hoverCode) {
+                // 마우스 호버 중인 권역
+                d[idx] = cHover.r;
+                d[idx + 1] = cHover.g;
+                d[idx + 2] = cHover.b;
+                d[idx + 3] = cHover.a;
+            } else if (code === activeCode) {
+                // 현재 선택된 권역
+                d[idx] = cActive.r;
+                d[idx + 1] = cActive.g;
+                d[idx + 2] = cActive.b;
+                d[idx + 3] = cActive.a;
             }
         }
 
         // 캔버스에 색 채워진 지도 반영
         ctx.putImageData(currentData, 0, 0);
 
-        // 상단에 눈에 띄는 권역 라벨 뱃지 표시
-        if (regionBadges[activeRegion]) {
-            drawRegionBadge(ctx, regionBadges[activeRegion]);
+        // 상단 권역 뱃지(Pill Label) 표시
+        // 선택된 권역 뱃지 먼저 그리고, 호버 중인 권역 뱃지를 표시
+        if (hasActive && (!hasHover || activeRegion !== hoveredRegion)) {
+            if (regionBadges[activeRegion]) {
+                drawRegionBadge(ctx, regionBadges[activeRegion], false);
+            }
         }
+        if (hasHover) {
+            if (regionBadges[hoveredRegion]) {
+                drawRegionBadge(ctx, regionBadges[hoveredRegion], true);
+            }
+        }
+    }
+
+    /**
+     * 하위 호환성을 위한 래퍼 함수
+     */
+    function renderMapHighlight(activeRegion) {
+        renderMap(activeRegion, currentHoveredRegion);
     }
 
     /**
@@ -355,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // 5. 지도 캔버스 권역 색상 하이라이트 렌더링
-        renderMapHighlight(region);
+        renderMap(currentActiveRegion, currentHoveredRegion);
 
         // 6. 브라우저 URL 쿼리 파라미터 동기화
         if (window.history && window.history.replaceState) {
@@ -370,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * 지도 캔버스 클릭 시 해당 권역 선택 이벤트 연동
+     * 지도 캔버스 클릭 및 마우스 호버 이벤트 연동
      */
     if (mapCanvas) {
         mapCanvas.addEventListener('click', (event) => {
@@ -400,10 +455,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const hoveredRegion = getRegionFromCoord(moveX, moveY);
             mapCanvas.style.cursor = hoveredRegion ? 'pointer' : 'default';
+
+            if (hoveredRegion !== currentHoveredRegion) {
+                currentHoveredRegion = hoveredRegion;
+                renderMap(currentActiveRegion, currentHoveredRegion);
+            }
+        });
+
+        mapCanvas.addEventListener('mouseleave', () => {
+            if (currentHoveredRegion !== null) {
+                currentHoveredRegion = null;
+                mapCanvas.style.cursor = 'default';
+                renderMap(currentActiveRegion, null);
+            }
         });
     }
 
-    // 좌측 탭 버튼 클릭 및 전환 이벤트 리스너 등록
+    // 좌측 탭 버튼 클릭 및 마우스 호버 이벤트 리스너 등록
     tabButtons.forEach(tabBtn => {
         tabBtn.addEventListener('click', () => {
             const region = getRegionFromBtn(tabBtn);
@@ -413,9 +481,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const region = getRegionFromBtn(tabBtn);
             activateRegion(region);
         });
+        tabBtn.addEventListener('mouseenter', () => {
+            const region = getRegionFromBtn(tabBtn);
+            if (region !== 'all' && regionCodes[region]) {
+                if (currentHoveredRegion !== region) {
+                    currentHoveredRegion = region;
+                    renderMap(currentActiveRegion, currentHoveredRegion);
+                }
+            }
+        });
+        tabBtn.addEventListener('mouseleave', () => {
+            if (currentHoveredRegion) {
+                currentHoveredRegion = null;
+                renderMap(currentActiveRegion, null);
+            }
+        });
     });
 
-    // 좌측 지도 권역 버튼 및 전체 버튼 클릭 이벤트 리스너 등록
+    // 좌측 지도 권역 버튼 및 전체 버튼 클릭 및 마우스 호버 이벤트 리스너 등록
     mapButtons.forEach(mapBtn => {
         mapBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -426,6 +509,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 activateRegion('all');
             } else {
                 activateRegion(region);
+            }
+        });
+        mapBtn.addEventListener('mouseenter', () => {
+            const region = getRegionFromBtn(mapBtn);
+            if (region !== 'all' && regionCodes[region]) {
+                if (currentHoveredRegion !== region) {
+                    currentHoveredRegion = region;
+                    renderMap(currentActiveRegion, currentHoveredRegion);
+                }
+            }
+        });
+        mapBtn.addEventListener('mouseleave', () => {
+            if (currentHoveredRegion) {
+                currentHoveredRegion = null;
+                renderMap(currentActiveRegion, null);
             }
         });
     });

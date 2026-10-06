@@ -72,56 +72,83 @@ hr{
 
 }
 
-/* 지도 */
-#map-choice{
+/* ==========================================================================
+   권역별 상품 레이아웃 (반응형 및 지도 항상 표시 Sticky 고정)
+   ========================================================================== */
+
+/* 1. 메인 레이아웃 기본 (큰 화면: 데스크톱 > 1024px) */
+.product-main-layout {
+    display: grid;
+    grid-template-columns: 330px 1fr;
+    gap: 24px;
+    align-items: start; /* sticky 고정을 위해 필수 */
+}
+
+/* 2. 지도 구역 (#map-choice) */
+#map-choice {
     width: 330px;
-    height: 770px;
+    height: auto;
     padding: 20px;
     margin-bottom: 20px;
     border-color: #1D3557;
     border-style: solid;
     border-width: 2px;
     border-radius: 10px;
+    background-color: #ffffff;
+    box-sizing: border-box;
 }
 
-#map-choice>div{
+/* 769px 이상: 오른쪽 항목들이 많아 스크롤을 내려도 항상 지도와 버튼이 보이도록 Sticky 고정 */
+@media (min-width: 769px) {
+    #map-choice {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 20px;
+        align-self: start;
+        z-index: 10;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+    }
+}
+
+#map-choice > div {
     margin-bottom: 20px;
 }
 
-#map-choice>div>h6{
+#map-choice > div > h6 {
     font-weight: 700;
     font-size: 15pt;
 }
 
-/*지도 밑 버튼*/
-.map-choice > div > #pills-tab{
-    width: 145px;
-    height: 40px;
+/* 지도 밑 탭 버튼 */
+#map-choice #pills-tab {
+    width: 100%;
 }
 
-.map-choice > div > #pills-tab > li{
-    width: 145px;
-    height: 40px;
+#map-choice #pills-tab > li {
+    width: 100%;
     color: white;
     align-items: center;
 }
 
-#pills-tab > li:first-child{
+#map-choice #pills-tab > li:first-child {
     grid-column: span 2;
 }
 
-#pills-tab > li:first-child > button{
-    width: 290px;
+#map-choice #pills-tab > li:first-child > button {
+    width: 100%;
 }
 
-#pills-tab > li > button{
-    width: 135px;
+#map-choice #pills-tab > li > button {
+    width: 100%;
     height: 40px;
     background-color: #FAF8F5;
     color: #212529;
     border-radius: 10px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 #pills-tab > li > button.active {
@@ -134,14 +161,89 @@ hr{
     color: white;
 }
 
-/*오른쪽 구역*/
-.card{
-    margin-top: 5px;
-    width: 335px;
-    height: auto;
+/* 3. 오른쪽 상품 그리드 구역 (.product-grid) */
+.product-grid {
+    display: grid;
+    gap: 20px;
+    row-gap: 24px;
+    width: 100%;
 }
- .card > img{
+
+/* 기본 큰 화면 (> 1024px): 1줄에 2개씩 상품 표시 */
+@media (min-width: 1025px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.product-grid .card,
+.card {
+    margin-top: 5px;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.product-grid .card > img,
+.card > img {
     height: 210px;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* 4. 화면 크기가 작은 경우 (769px ~ 1024px):
+      지도와 1개 상품을 나란히 표시 가능하므로, 지도는 왼쪽(sticky)에 두고 상품은 1줄에 1개씩 표시 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .product-main-layout {
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+    }
+    #map-choice {
+        width: 320px;
+    }
+    .product-grid {
+        grid-template-columns: 1fr; /* 1줄에 1개 */
+    }
+    .product-grid .card {
+        max-width: 460px;
+    }
+}
+
+/* 5. 큰 기준으로 권역별 지도와 하나의 상품을 표시할 정도보다 작은 경우 (<= 768px):
+      권역별 지도를 맨 위에 보이고, 그 아래로 1줄에 1칸씩 상품 정보 표시 */
+@media (max-width: 768px) {
+    .product-main-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    #map-choice {
+        width: 100%;
+        max-width: 350px;
+        position: static; /* 맨 위에 위치 */
+        margin: 0 auto 10px auto;
+    }
+
+    .tab-content {
+        width: 100%;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr; /* 1줄에 1칸씩 */
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+
+    .product-grid .card {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+    }
 }
 .card > div > #on_img_box{
     display: none;
@@ -223,11 +325,13 @@ hr{
 
 #card-btn{
     display: flex;
+    gap: 8px;
     justify-content: space-between;
 }
 
 .card-body > div > a:first-child{
-    width: 205px;
+    flex: 1;
+    min-width: 0;
     background-color: #1D3557;
     color: #ffffff;
     border-color: #1D3557;
@@ -239,6 +343,7 @@ hr{
 
 .card-body > div > a:last-child{
     width: 85px;
+    flex-shrink: 0;
     background-color: #E76F5F;
     color: #ffffff;
     border-color: #E76F5F;
