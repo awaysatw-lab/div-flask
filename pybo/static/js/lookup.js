@@ -24,29 +24,6 @@ function toggleOrderDetail(orderNo) {
   }
 }
 
-/**
- * 비회원 조회 빠른 테스트를 위해 샘플 데이터를 인풋에 자동 입력
- * @param {string} name 예약자 성함
- * @param {string} orderNo 주문번호
- */
-function fillSample(name, orderNo) {
-  const nameInput = document.getElementById('guest_name');
-  const orderInput = document.getElementById('order_no');
-
-  if (nameInput) {
-    nameInput.value = name;
-    nameInput.style.backgroundColor = '#eff6ff';
-    setTimeout(() => { nameInput.style.backgroundColor = ''; }, 600);
-  }
-
-  if (orderInput) {
-    orderInput.value = orderNo;
-    orderInput.style.backgroundColor = '#eff6ff';
-    setTimeout(() => { orderInput.style.backgroundColor = ''; }, 600);
-    orderInput.focus();
-  }
-}
-
 // 전역 윈도우 객체 바인딩
 window.toggleOrderDetail = toggleOrderDetail;
-window.fillSample = fillSample;
+
