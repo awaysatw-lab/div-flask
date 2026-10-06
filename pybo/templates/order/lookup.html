@@ -160,7 +160,7 @@
                 <!-- 아코디언 상세 영역 (숨김/펼침) -->
                 <div class="border-top bg-light accordion-detail-content" id="detailWrap_{{ o.order_no }}" style="display: none;">
                   <div class="p-3 p-md-4">
-                    {% with order=o %}
+                    {% with order=o, hide_product_review_btn=True %}
                       {% include 'order/_detail_card.html' %}
                     {% endwith %}
                   </div>
