@@ -27,7 +27,7 @@
                         <span class="util-user-name">👤 {{ g.user.name }}님</span>
                         <a href="{{ url_for('auth.logout') }}" class="util-link logout-btn">로그아웃</a>
                     {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="util-link">로그인</a>
+                        <a href="{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}" class="util-link">로그인</a>
                     {% endif %}
                     <span class="util-divider">|</span>
                     <a href="{{ url_for('order.lookup') }}" class="util-link">예약확인</a>

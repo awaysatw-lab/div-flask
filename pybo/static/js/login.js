@@ -32,15 +32,20 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    window.openSignupPopup = function(e, el) {
+        if (e) e.preventDefault();
+        const href = (el && el.href) ? el.href : (signupBtn ? signupBtn.href : '/auth/signup/');
+        const popupWidth = 460;
+        const popupHeight = 580;
+        const left = window.screenX + (window.outerWidth - popupWidth) / 2;
+        const top = window.screenY + (window.outerHeight - popupHeight) / 2;
+        const windowFeatures = `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`;
+        window.open(href, "SignupPopup", windowFeatures);
+    };
+
     if (signupBtn) {
         signupBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const popupWidth = 460;
-            const popupHeight = 580;
-            const left = window.screenX + (window.outerWidth - popupWidth) / 2;
-            const top = window.screenY + (window.outerHeight - popupHeight) / 2;
-            const windowFeatures = `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`;
-            window.open(this.href, "SignupPopup", windowFeatures);
+            window.openSignupPopup(e, this);
         });
     }
 

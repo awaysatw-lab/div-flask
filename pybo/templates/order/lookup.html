@@ -240,7 +240,7 @@
             <!-- 로그인 유도 링크 -->
             <div class="text-center small text-muted">
               <span>회원으로 예약하셨나요?</span>
-              <a href="{{ url_for('auth.login') }}" class="text-primary fw-semibold text-decoration-none ms-1">회원 로그인 후 예약 확인하기 &gt;</a>
+              <a href="{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}" class="text-primary fw-semibold text-decoration-none ms-1">회원 로그인 후 예약 확인하기 &gt;</a>
             </div>
           </div>
         </div>

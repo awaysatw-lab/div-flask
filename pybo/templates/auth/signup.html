@@ -34,8 +34,9 @@
 
         {% include 'auth/errors.html' %}
 
-        <form method="post" id="signupForm" novalidate>
-            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ form.csrf_token._value() }}">
+        <form method="post" id="signupForm" action="{{ url_for('auth.signup', next=next) }}" novalidate>
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ form.csrf_token._value() if form.csrf_token is defined else '' }}">
+            <input type="hidden" name="next" value="{{ next or '' }}">
             <div class="input-group">
                 <div class="id-input-wrapper">
                     <div class="id-input-inner">
