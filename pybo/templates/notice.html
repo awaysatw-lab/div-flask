@@ -3,287 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항 | 대한민국 구석구석 여행</title>
+    <title>대한민국 구석구석 - 공지사항 (리뷰 통합형)</title>
     <style>
-        /* 기본 스타일 초기화 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Noto Sans KR', sans-serif;
-        }
-        body {
-            background-color: #f9f9f9;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        a {
-            text-shadow: none;
-            text-decoration: none;
-            color: inherit;
-        }
+        /* 1. 기본 리셋 및 스타일 독립화 (Q&A/리뷰 페이지 공통 프리픽스 계승) */
+        .kor-travel-body * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
+        .kor-travel-body { background-color: #f8f9fa; color: #333; line-height: 1.5; }
+        .kor-travel-body a { text-decoration: none; color: inherit; cursor: pointer; }
+        .kor-travel-body ul { list-style: none; }
 
-        /* 1. 헤더 (Header) */
-        .header {
-            background-color: #fff;
-            border-bottom: 1px solid #eee;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #0066cc;
-        }
-        .utill-menu a {
-            margin-left: 15px;
-            font-size: 14px;
-            color: #666;
-        }
+        /* 2. 헤더 (디자인 아이덴티티 통일) */
+        .kt-header { background-color: #ffffff; border-bottom: 1px solid #eeeeee; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .kt-logo { font-size: 24px; font-weight: bold; color: #007bff; cursor: pointer; user-select: none; }
+        .kt-nav-links a { margin-left: 20px; font-size: 15px; font-weight: 500; color: #555; cursor: pointer; }
+        .kt-nav-links a:hover, .kt-nav-links a.active { color: #007bff; }
+        .kt-user-menu { margin-left: auto; }
+        .kt-user-menu a { margin-left: 15px; font-size: 14px; color: #666; cursor: pointer; }
+        .kt-user-menu a:hover { color: #007bff; }
 
-        /* 2. 네비게이션 (Navigation) */
-        .nav {
-            background-color: #0066cc;
-            overflow: hidden;
-        }
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .nav-menu li a {
-            display: block;
-            padding: 15px 20px;
-            color: #fff;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-        .nav-menu li a:hover, .nav-menu li.active a {
-            background-color: #004da0;
-        }
+        /* 메인 컨테이너 */
+        .kt-container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
 
-        /* 메인 컨텐츠 영역 */
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            margin: 40px auto;
-            padding: 0 20px;
-            flex: 1;
-        }
-        .page-title {
-            font-size: 28px;
-            margin-bottom: 30px;
-            font-weight: 700;
-            border-bottom: 2px solid #333;
-            padding-bottom: 15px;
-        }
+        /* 3. 검색창 세션 (리뷰/Q&A 통합 테마) */
+        .kt-search-section { text-align: center; margin-bottom: 30px; }
+        .kt-search-section h1 { font-size: 28px; margin-bottom: 20px; color: #222; }
+        .kt-search-box { position: relative; max-width: 600px; margin: 0 auto; }
+        .kt-search-box input { width: 100%; padding: 15px 120px 15px 20px; font-size: 16px; border: 2px solid #007bff; border-radius: 30px; outline: none; box-shadow: 0 4px 6px rgba(0,123,255,0.1); }
+        .kt-search-box button { position: absolute; right: 5px; top: 5px; background-color: #007bff; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background 0.2s; user-select: none; }
+        .kt-search-box button:hover { background-color: #0056b3; }
 
-        /* 3. 공지사항 목록 (Notice List Table) */
-        .notice-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            margin-bottom: 30px;
-        }
-        .notice-table th, .notice-table td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-        .notice-table th {
-            background-color: #f5f7fa;
-            font-weight: 600;
-            border-top: 1px solid #333;
-        }
-        .notice-table td.title {
-            text-align: left;
-            font-weight: 500;
-        }
-        .notice-table td.title a:hover {
-            text-decoration: underline;
-            color: #0066cc;
-        }
-        .badge-notice {
-            background-color: #ff4d4d;
-            color: #fff;
-            padding: 2px 8px;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+        /* 4. 이미지 홍보 슬라이드 배너 */
+        .kt-slider-wrapper { position: relative; max-width: 1000px; margin: 0 auto 40px auto; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); height: 180px; }
+        .kt-slider { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
+        .kt-slide-item { min-width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 20px; cursor: pointer; }
 
-        /* 페이징 (Pagination) */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            margin-top: 20px;
-        }
-        .pagination li {
-            margin: 0 5px;
-        }
-        .pagination li a {
-            display: block;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-        .pagination li.active a {
-            background-color: #0066cc;
-            color: #fff;
-            border-color: #0066cc;
-        }
+        /* 그라데이션 일관성 확보 */
+        .kt-slide-item:nth-child(1) { background: linear-gradient(135deg, #007bff, #00c6ff); }
+        .kt-slide-item:nth-child(2) { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .kt-slide-item:nth-child(3) { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .kt-slide-item h2 { font-size: 22px; margin-bottom: 8px; }
+        .kt-slide-item p { font-size: 14px; opacity: 0.9; }
 
-        /* 4. 푸터 (Footer) */
-        .footer {
-            background-color: #333;
-            color: #ccc;
-            padding: 40px 20px;
-            margin-top: auto;
-            font-size: 14px;
-        }
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        .footer-links a {
-            margin-right: 20px;
-            color: #fff;
-        }
-        .footer-info {
-            margin-top: 15px;
-            line-height: 1.6;
-        }
-        .copyright {
-            margin-top: 15px;
-            color: #888;
-            font-size: 12px;
-        }
+        /* 5. 공지사항 컨텐츠 섹션 및 카드 레이아웃 스타일 */
+        .kt-content-layout { display: flex; flex-direction: column; gap: 20px; }
+        .kt-section-title { font-size: 20px; font-weight: bold; color: #222; margin-bottom: 15px; padding-left: 5px; border-left: 4px solid #007bff; }
+
+        /* 공지 리스트 본체 및 아이템 구조 */
+        .kt-notice-list { display: flex; flex-direction: column; gap: 12px; }
+        .kt-notice-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+        .kt-notice-card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
+
+        /* 중요 공지사항 특별 강조 인디케이터 */
+        .kt-notice-card.kt-important-row { border-left: 4px solid #ff416c; background-color: #fff9f9; }
+
+        /* 배지 시스템 스타일 */
+        .kt-notice-badge { display: inline-block; padding: 4px 8px; font-size: 12px; font-weight: bold; border-radius: 5px; margin-right: 12px; vertical-align: middle; }
+        .kt-badge-important { background-color: #ffe5e5; color: #ff416c; }
+        .kt-badge-normal { background-color: #e2e8f0; color: #4a5568; }
+
+        /* 공지 내부 좌측 주요 텍스트 정보 */
+        .kt-notice-main { flex: 1; min-width: 0; }
+        .kt-notice-title { font-size: 16px; font-weight: bold; color: #333; display: inline-block; vertical-align: middle; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%; }
+        .kt-notice-card:hover .kt-notice-title { color: #007bff; text-decoration: underline; }
+
+        /* 공지 내부 우측 메타 데이터 */
+        .kt-notice-meta { display: flex; align-items: center; gap: 15px; font-size: 13px; color: #999; margin-left: 20px; white-space: nowrap; }
+        .kt-meta-views { color: #666; }
+
+        /* 6. 통일된 디자인의 페이지네이션 컴포넌트 */
+        .kt-pagination-wrap { display: flex; justify-content: center; align-items: center; margin-top: 40px; gap: 5px; }
+        .kt-page-btn { display: inline-block; min-width: 36px; height: 36px; line-height: 34px; text-align: center; border: 1px solid #e2e8f0; background-color: #fff; color: #555; font-size: 14px; border-radius: 6px; font-weight: 500; transition: all 0.2s; user-select: none; cursor: pointer; }
+        .kt-page-btn:hover { border-color: #007bff; color: #007bff; background-color: #f0f7ff; }
+        .kt-page-btn.kt-active { background-color: #007bff; border-color: #007bff; color: #fff; pointer-events: none; }
+        .kt-page-btn.kt-disabled { color: #ccc; border-color: #f1f3f5; cursor: not-allowed; pointer-events: none; }
+
+        /* 7. 푸터 */
+        .kt-footer { text-align: center; padding: 4px 20px; margin-top: 60px; font-size: 13px; color: #999; border-top: 1px solid #eeeeee; line-height: 60px; background-color: #ffffff; }
     </style>
 </head>
-<body>
+<body class="kor-travel-body">
 
-    <!-- 1. 헤더 영역 -->
-    <header class="header">
-        <div class="logo">K-Tour Connect</div>
-        <div class="utill-menu">
+    <!-- 헤더 영역 -->
+    <header class="kt-header">
+        <div class="kt-logo" onclick="location.href='notice.html'">대한민국 구석구석</div>
+        <nav class="kt-nav-links">
+            <a onclick="location.href='notice.html'" class="active">공지사항</a>
+            <a onclick="location.href='review.html'">여행리뷰</a>
+        </nav>
+        <div class="kt-user-menu">
             <a href="#">로그인</a>
             <a href="#">회원가입</a>
-            <a href="#">English</a>
+            <a href="#">고객센터</a>
         </div>
     </header>
 
-    <!-- 2. 네비게이션 영역 -->
-    <nav class="nav">
-        <ul class="nav-menu">
-            <li><a href="#">홈</a></li>
-            <li><a href="#">여행지 소개</a></li>
-            <li><a href="#">축제/행사</a></li>
-            <li><a href="#">여행 가이드</a></li>
-            <li class="active"><a href="#">공지사항</a></li>
-        </ul>
-    </nav>
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="kt-container">
 
-    <!-- 메인 컨텐츠 및 3. 공지사항 목록 영역 -->
-    <main class="container">
-        <h2 class="page-title">공지사항</h2>
-
-        <table class="notice-table">
-            <thead>
-                <tr>
-                    <th style="width: 8%;">번호</th>
-                    <th style="width: 57%;">제목</th>
-                    <th style="width: 15%;">작성일</th>
-                    <th style="width: 10%;">조회수</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 상단 고정 공지 -->
-                <tr>
-                    <td><span class="badge-notice">공지</span></td>
-                    <td class="title"><a href="#">[중요] 시스템 점검에 따른 여행 예약 서비스 일시 중단 안내</a></td>
-                    <td>2026-09-28</td>
-                    <td>1,245</td>
-                </tr>
-                <tr>
-                    <td><span class="badge-notice">공지</span></td>
-                    <td class="title"><a href="#">[이벤트] 가을 맞이 국내 숙박 할인 쿠폰 지급 이벤트 (선착순)</a></td>
-                    <td>2026-09-25</td>
-                    <td>3,890</td>
-                </tr>
-                <!-- 일반 공지 목록 -->
-                <tr>
-                    <td>5</td>
-                    <td class="title"><a href="#">전라남도 지역 축제 셔틀버스 운행 시간표 변경 안내</a></td>
-                    <td>2026-09-24</td>
-                    <td>452</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td class="title"><a href="#">[발표] 8월 베스트 포토 후기 작성자 경품 당첨자 발표</a></td>
-                    <td>2026-09-20</td>
-                    <td>612</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td class="title"><a href="#">경복궁 야간 관람 예매 방식 변경 안내</a></td>
-                    <td>2026-09-15</td>
-                    <td>1,805</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td class="title"><a href="#">제주도 렌터카 제휴 업체 가격 비교 서비스 오픈 안내</a></td>
-                    <td>2026-09-10</td>
-                    <td>930</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td class="title"><a href="#">K-Tour Connect 서비스 공식 론칭 안내</a></td>
-                    <td>2026-09-01</td>
-                    <td>2,341</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- 페이징 영역 -->
-        <ul class="pagination">
-            <li><a href="#">&lt;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&gt;</a></li>
-        </ul>
-    </main>
-
-    <!-- 4. 푸터 영역 -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="#">이용약관</a>
-                <a href="#"><strong>개인정보처리방침</strong></a>
-                <a href="#">고객센터</a>
-                <a href="#">찾아오시는 길</a>
+        <!-- 검색 섹션 -->
+        <section class="kt-search-section">
+            <h1>공지사항</h1>
+            <div class="kt-search-box">
+                <input type="text" placeholder="새로운 소식이나 안내사항을 검색해보세요.">
+                <button type="button">검색</button>
             </div>
-            <div class="footer-info">
-                <p>(우) 06132 서울특별시 강남구 테헤란로 | 대표자: 홍길동</p>
-                <p>사업자등록번호: 123-45-67890 | 통신판매업신고: 제 2026-서울강남-0000호</p>
-                <p class="copyright">&copy; 2026 K-Tour Connect. All rights reserved.</p>
+        </section>
+
+        <!-- 이미지 홍보 슬라이드 배너 (클릭 시 외부 URL 가상 이동 바인딩) -->
+        <div class="kt-slider-wrapper">
+            <div class="kt-slider" id="imageSlider">
+                <div class="kt-slide-item" onclick="location.href='https://visitkorea.or.kr'">
+                    <h2>안전하고 즐거운 가을철 맞춤 여행 가이드</h2>
+                    <p>문화체육관광부와 한국관광공사가 제안하는 안전 여행 수칙</p>
+                </div>
+                <div class="kt-slide-item" onclick="location.href='#'">
+                    <h2>구석구석 통합 회원 가입 인센티브 이벤트</h2>
+                    <p>지금 가입하면 선착순 2,000명에게 모바일 커피 쿠폰 지급!</p>
+                </div>
+                <div class="kt-slide-item" onclick="location.href='#'">
+                    <h2>2026 정부 지정 대한민국 대표 축제 라인업</h2>
+                    <p>전국에서 펼쳐지는 풍성한 가을 문화 축제 일정을 확인하세요</p>
+                </div>
             </div>
         </div>
-    </footer>
 
-</body>
-</html>
+        <!-- 공지사항 콘텐츠 영역 -->
+        <div class="kt-content-layout">
+            <section>
+                <h2 class="kt-section-title">전체 공지사항</h2>
+
+                <div class="kt-notice-list">
+                    <!-- 중요 공지사항 (클릭 시 상세조회 이동 가상 설계) -->
+                    <div class="kt-notice-card kt-important-row" onclick="location.href='/notice/detail/1'">
+                        <div class="kt-notice-main">
+                            <span class="kt-notice-badge kt-badge-important">중요</span>
+                            <h3 class="kt-notice-title">[안내] 시스템 서버 정기 점검에 따른 서비스 일시 중단 안내 (10/15)</h3>
+                        </div>
+                        <div class="kt-notice-meta">
+                            <span class="kt-meta-date">2026-10-06</span>
+                            <span class="kt-meta-views">조회수: 1,845</span>
+                        </div>
+                    </div>
+                    <div class="kt-notice-card kt-important-row" onclick="location.href='/notice/detail/2'">
+                        <div class="kt-notice-main">
+                            <span class="kt-notice-badge kt-badge-important">중요</span>
+                            <h3 class="kt-notice-title">[공모전] 2026 대한민국 구석구석 보물찾기 사진전 개최 고지</h3>
+                        </div>
+                        <div class="kt-notice-meta">
+                            <span class="kt-meta-date">2026-10-01</span>
+                            <span class="kt-meta-views">조회수: 3,412</span>
+                        </div>
+                    </div>
+                    <!-- 일반 공지사항 -->
+                    <div class="kt-notice-card" onclick="location.href='/notice/detail/3'">
+                        <div class="kt-notice-main">
+                            <span class="kt-notice-badge kt-badge-normal">일반</span>
+                            <h3 class="kt-notice-title">전국 단풍 개화 시기 업데이트 및 추천 가을 도보 여행 코스</h3>
+                        </div>
+                        <div class="kt-notice-meta">
+                            <span class="kt-meta-date">2026-10-04</span>
+                            <span class="kt-meta-views">조회수: 952</span>
+                        </div>
