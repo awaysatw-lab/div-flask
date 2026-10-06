@@ -10,14 +10,13 @@
 }
 
 #slider{
-    margin-bottom: 30px;
-    background-size: cover;
+    height: 420px;
     background-position: center;
 }
 
 .carousel-item{
     width: 100%;
-    height: 430px;
+    height: 420px;
     background-size: 100%;
     overflow: hidden;
 }
@@ -26,7 +25,7 @@
     margin: 0 auto;
     padding: 20px;
     top: 250px;
-    left: -450px;
+    left: -430px;
     background-color: white;
     opacity: 0.7;
     width: 400px;
@@ -48,32 +47,43 @@
     font-weight: 550;
 }
 
+#underslide{
+    background-color: #031526;
+    height: 15px;
+}
+
 /*슬라이드 밑 설명*/
-#underslide > h5{
-    width: 500px;
-    height: 50px;
-    padding: 10px;
-    text-align: center;
-    background-color: #FAF8F5;
+#main_text{
+    background-color: #F5f5f5;
+    margin-bottom: 15px;
 }
-#underslide > p{
-    height: 20px;
+#main_text > p{
+    width: 700px;
+    height: 45px;
+    margin: 0 auto;
+    padding: 10px 0 5px;
     text-align: center;
+    font-weight: 500;
 }
-#underslide > hr{
-    margin: 10px 0 30px;
+hr{
+    width: 1000px;
+    margin: 0 auto;
+    padding: 10px 0 10px;
+
 }
 
 /* 지도 */
 #map-choice{
-    width: 350px;
-    height: 790px;
+    width: 330px;
+    height: 770px;
     padding: 20px;
     margin-bottom: 20px;
-    border-color: #0f172a;
+    border-color: #1D3557;
     border-style: solid;
+    border-width: 2px;
     border-radius: 10px;
 }
+
 #map-choice>div{
     margin-bottom: 20px;
 }
@@ -101,11 +111,11 @@
 }
 
 #pills-tab > li:first-child > button{
-    width: 300px;
+    width: 290px;
 }
 
 #pills-tab > li > button{
-    width: 145px;
+    width: 135px;
     height: 40px;
     background-color: #FAF8F5;
     color: #212529;
@@ -124,14 +134,57 @@
     color: white;
 }
 
-/*상세 이동 버튼*/
- .card > img{
-    height: 250px;
+/*오른쪽 구역*/
+.card{
+    margin-top: 5px;
+    width: 335px;
+    height: auto;
 }
+ .card > img{
+    height: 210px;
+}
+.card > div > #on_img_box{
+    display: none;
+}
+ .card:nth-of-type(1) > div > #on_img_box{
+     display: block;
+     height: 30px;
+     width: 70px;
+     position: absolute;
+     margin-top: -210px;
+     border-radius: 10px;
+     background-color: #FFC939;
+     text-align: center;
+     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
+     border-color: #D3C9BC;
+     border-width: 5px;
+     font-weight: 500;
+ }
+ .card:nth-of-type(2) > div > #on_img_box{
+     display: block;
+     height: 30px;
+     width: 70px;
+     position: absolute;
+     margin-top: -210px;
+     border-radius: 10px;
+     background-color: #FFC939;
+     text-align: center;
+     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
+     border-color: #D3C9BC;
+     border-width: 5px;
+     font-weight: 500;
+ }
+
 
 .card-body > .heart_star{
+    height: 25px;
+    position: relative;
+    top: -5px;
+    bottom: 5px;
     display: flex;
     justify-content: space-between;
+    margin: 0;
+    font-size: 11pt;
 }
 
 .card-body > h5{
@@ -148,6 +201,7 @@
 .card-body > .card-price > p{
     margin-top: 5px;
     text-decoration-line: line-through;
+    color: #2B2D42;
 }
 
 .card-body > .card-price > div{
@@ -167,17 +221,32 @@
     font-weight: 600;
 }
 
+#card-btn{
+    display: flex;
+    justify-content: space-between;
+}
+
 .card-body > div > a:first-child{
-    width: 210px;
+    width: 205px;
     background-color: #1D3557;
     color: #ffffff;
     border-color: #1D3557;
 }
+.card-body > div > a:first-child:hover{
+    box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
+    border-color: #D3C9BC;
+}
+
 .card-body > div > a:last-child{
     width: 85px;
     background-color: #E76F5F;
     color: #ffffff;
     border-color: #E76F5F;
+}
+
+.card-body > div > a:last-child:hover{
+    box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
+    border-color: #D3C9BC;
 }
 
 /*sub*/
@@ -187,55 +256,38 @@
     width: 300px !important;
 }
 /*스와이퍼*/
-.swiper {
-        width: 100%;
-        height: 100%;
-      }
+#four-slide{
+    width: 500px;
+    height: 400px;
+    margin: 20px 0;
+}
 
 .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #444;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-.swiper-slide img {
-        width: 100%;
-        height: 100%;
-      }
-.swiper {
-        width: 100%;
-        height: 300px;
-      }
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .mySwiper2 {
-        height: 80%;
-        width: 100%;
+    height: 80%;
+    margin-bottom: 10px;
       }
 
 .mySwiper {
-        height: 20%;
-        padding: 10px 0;
-      }
+    height: 20%;
+}
 
 .mySwiper .swiper-slide {
-        width: 25%;
-        height: 100%;
-        opacity: 0.4;
-      }
+    width: 25%;
+    height: 100%;
+    opacity: 0.4;
+}
 
 .mySwiper .swiper-slide-thumb-active {
-        opacity: 1;
-      }
+    opacity: 1;
+}
 
-.swiper-slide img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
 
 
 #recommend{
@@ -425,22 +477,128 @@
     margin: 5px 30px;
 }
 
-#myTab .nav-link{
+.wide1 > ul > li > .nav-link{
     width: 265px;
 }
 
-#myTabContent > div{
-    height: 600px;
-    overflow: auto;
+#myTabContent>div{
+    border-color: #dddddd;
+    border-style: solid;
+    border-width: 1px;
+}
+
+
+/* tab1 intro */
+#sub_intro{
+    padding: 20px;
+}
+
+#sub_intro > h3{
+    text-align: center;
+    font-size: 20pt;
+    padding: 15px;
+}
+
+#sub_intro > p{
+    height: 90px;
+    text-align: center;
+    background-color: #F3FEE7;
+    font-size: 12pt;
+    padding: 20px;
+}
+
+#sub_intro > div > div{
+    display: flex;
+    margin: 30px 0;
+}
+
+#sub_intro > div > div img{
+    width: 350px;
+}
+
+#intro_space{
+    padding: 5px 30px;
+    width: 600px;
+}
+
+#bus_place{
+    display: flex;
+    justify-content: space-between;
+}
+
+#bus_line{
+    width: 100%;
+    height: 15px;
+    background-color: #E6F2FF;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+#bus_place > div{
+    width: 550px;
+    height: 80px;
+    text-align: center;
+    position: relative;
+    top: -130px;
+    padding: 30px;
+}
+
+#bus_place > div > h1{
+    text-align: center;
+    margin: 20px;
+
+}
+
+/* tab2 details */
+#sub_details >h5{
+    margin: 30px 30px 10px;
+}
+
+.meals-section{
+    padding: 5px 50px;
+}
+
+#sub_details > ul > h5{
+    margin: 0 0 10px;
+}
+
+#sub_details > ul > li{
+    width: 950px;
+    margin: 15px 15px 35px;
+    padding: 20px 20px;
+    list-style: none;
+    background-color: #FFFFDD;
+    opacity: 0.9;
+    border-radius: 20px;
+}
+
+#sub_details >ul > li > >div >h6{
+    height: 20px;
+    font-size: 13pt;
+    font-weight: 600;
+}
+#sub_details >ul > li > div > p{
+    font-size: 11pt;
+    font-weight: 500;
+}
+
+/* tab4 pretour */
+#pretour{
+    padding: 20px;
+}
+
+#pretour > ul > li{
+    list-style: none;
 }
 
 /*구역 3*/
-.infomation > h5{
+.information > h5{
     margin: 50px 0 10px;
     font-weight: 700;
 }
 
-.infomation > p{
+.information > p{
     color: #2B2D42;
     padding: 2px;
 }
@@ -461,9 +619,8 @@
 }
 
 #log-ad > div > p{
-    margin-top: 15px;
     font-size: 10pt;
-    margin: 0;
+    margin: 15px 0 0 0;
 }
 
 #log-ad > div > button{
@@ -500,23 +657,36 @@
 }
 
 #review_w{
-    padding: 5px 0;
+    border-bottom-color: #999999;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
 }
 
 #detail_star{
     display: flex;
     justify-content: space-between;
-    margin: 0 0 20px;
+    margin: 10px 0 10px;
+    padding: 10px;
+    border-top-color: #999999;
+    border-top-style: solid;
+    border-top-width: 1px;
+
 }
 #detail_star > div{
     display: flex;
     justify-content: space-around;
 }
+
 #detail_star > div > div{
     margin-left: 10px;
+}
+
+#review_w > p{
+    margin: 0 10px 20px;
 }
 
 #more{
     display: flex;
     justify-content: space-between;
+    margin: 10px 0 30px;
 }
