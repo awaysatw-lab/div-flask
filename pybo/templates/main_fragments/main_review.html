@@ -7,15 +7,20 @@
             {% if review_list %}
                 {% for review in review_list %}
                 <!-- 메인 블루프린트(main)의 review_detail 뷰 함수로 연결하고 review_id를 전달합니다 -->
-                <a href="{{ url_for('main.review_detail', review_id=review.id) }}" class="review-card" style="text-decoration: none; color: inherit; display: block;">
-                    <!-- 후기 이미지가 있다면 출력, 없다면 기본 디폴트 이미지 출력 -->
-                    <div class="thumb" style="background-image: url('{{ url_for('static', filename='img/' ~ review.image_file) if review.image_file else url_for('static', filename='img/default_review.jpg') }}'); background-size: cover; background-position: center;"></div>
+                <a href="{{ url_for('review.detail', product_id=review.product_id, review_id=review.id) }}" class="review-card" style="text-decoration: none; color: inherit; display: block;">
+                    <!-- 후기 및 상품 이미지 출력 -->
+                    <div class="thumb" style="background-image: url('{{ review.product.image_url if (review.product and review.product.image_url) else url_for('static', filename='img/default-tour.jpg') }}'); background-size: cover; background-position: center;"></div>
 
                     <p style="padding: 10px; margin: 0;">
-                        <!-- 후기 제목 또는 본문 일부 노출 -->
+                        <span class="badge bg-secondary mb-1" style="font-size: 0.7rem;">{{ review.product.region if review.product else '' }}</span>
+                        <!-- 후기 제목 노출 -->
                         <strong style="font-size: 0.95rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            {{ review.subject if review.subject else review.content[:15] }}
+                            {{ review.title if review.title else review.content[:20] }}
                         </strong>
+                        <!-- 작성자 정보 및 ID 노출 -->
+                        <span class="d-block text-muted" style="font-size: 0.78rem;">
+                            👤 {{ review.author.name if review.author else '고객' }} ({{ review.author.user_id if review.author else '' }})
+                        </span>
                         <!-- 작성일자 표시 -->
                         <span style="color: #888; font-size: 0.75rem;">
                             📅 {{ review.created_at.strftime('%Y-%m-%d') if review.created_at else '' }}

@@ -102,14 +102,13 @@ def theme_experience():
 # ==========================================
 @bp.route('/reviews/')
 def review_list():
-    review_list = Review.query.order_by(Review.created_at.desc()).all()
-    return render_template('review/review_list.html', review_list=review_list)
+    return redirect(url_for('review.list'))
 
 
 @bp.route('/review/detail/<int:review_id>/')
 def review_detail(review_id):
     review = Review.query.get_or_404(review_id)
-    return render_template('review/review_detail.html', review=review)
+    return redirect(url_for('review.detail', product_id=review.product_id, review_id=review.id))
 
 
 @bp.route('/deal/detail/<int:deal_id>/')
