@@ -3,6 +3,8 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
 
+    <div id="underslide">
+    </div>
 
     <div id="slider">
         <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
@@ -26,7 +28,7 @@
                 <div class="carousel-item {% if selected_region == 'gang' %}active{% endif %}">
                     <img src="{{ url_for('static', filename='img/main_product/gangwon.jpg') }}" class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>푸른 바다와 깊은 숲이 <br> 건네는 완벽한 위로</h5>
+                        <h5>푸른 바다와 깊은 숲 <br> 은하수 아래서 찾는 나만의 쉼표</h5>
                         <p>끝없이 펼쳐진 동해 해변과 계절마다 옷을 갈아입는 웅장한 산맥 속에서 진정한 쉼표를 찍어보세요.</p>
                     </div>
                 </div>
@@ -70,13 +72,14 @@
         </div>
     </div>
 
-    <div class="wide1">
-        <div id="underslide">
-            <h5>설레는 모든 여정의 시작</h5>
-            <p>숨 가쁜 일상을 벗어나 당신의 취향을 채워줄 대한민국 전역의 보석 같은 여행지를 한눈에 만나보세요.</p>
-            <hr>
-        </div>
+    <div id="underslide">
     </div>
+
+
+    <div id="main_text">
+        <p> 숨 가쁜 일상을 벗어나 당신의 취향을 채워줄 대한민국 전역의 보석 같은 여행지를 한눈에 만나보세요. </p>
+    </div>
+    <hr>
 
     <div class="wide1">
         <div style="grid-template-columns: 4fr 8fr;" class="d-grid gap-3 row-gap-3">

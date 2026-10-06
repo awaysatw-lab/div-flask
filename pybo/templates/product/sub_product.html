@@ -38,7 +38,7 @@
                         {% if g.user %}
                         <button id="heart-log">추천<br>하기</button>
                         {% else %}
-                        <button id="heart-log" onclick="location.href=`{{ url_for('auth.login') }}`">추천하기<br>(로그인 필요)</button>
+                        <button id="heart-log" onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">추천하기<br>(로그인 필요)</button>
                         {% endif %}
                     </div>
                     <button class="white-btn" onclick="location.href=`{{ url_for('customer.faq_list') }}`">1:1문의</button>
@@ -53,7 +53,7 @@
             <!-- 오른쪽 -->
             <div id="sub-right">
                 <h3>{{ product.name }}</h3>
-                <p>⭐별점 후기 3건</p>
+                <p>⭐별점 후기 {{ reviews|length }}건</p>
                 <p>{{ product.description }}</p>
                 <!-- 가격표시 -->
                 <div id="purchase">
@@ -77,17 +77,12 @@
                     <h5>🛒 비회원 일반 구매</h5>
                     {% endif %}
                     <div>
-                        <p>수량/인원: </p>
-                        <div>
-                            <button type="button" class="btn-step" onclick="changeHeadcount(-1)">-</button>
-                            <input type="number" id="headcountInput" value="{{ headcount }}" min="1" max="20" class="headcount-input" readonly>
-                            <button type="button" class="btn-step" onclick="changeHeadcount(1)">+</button>
-                        </div>
+                        <p>수량/인원: 1인</p>
                     </div>
                     {% if g.user %}
-                    <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 회원 바로 구매하기(할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원)</button>
+                        <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 회원 바로 구매하기(할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원)</button>
                     {% else %}
-                    <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 비회원 바로 구매하기(정가 {{ "{:,}".format(product.original_price) }}원)</button>
+                        <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 비회원 바로 구매하기(정가 {{ "{:,}".format(product.original_price) }}원)</button>
                     {% endif %}
                 </div>
                 {% if g.user %}
@@ -95,8 +90,8 @@
                 <div id="log-discount">
                     <div>💡로그인 시 {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 / {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원에 이용 가능!</div>
                     <div>
-                        <button onclick="location.href=`{{ url_for('auth.login') }}`">로그인하고 할인 결제</button>
-                        <button onclick="location.href=`{{ url_for('auth.signup') }}`">간편 회원가입</button>
+                        <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인하고 할인 결제</button>
+                        <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">간편 회원가입</button>
                     </div>
                 </div>
                 {% endif %}
@@ -151,14 +146,11 @@
     </div>
 
     <!-- 구역3 -->
-{#일단 패스#}
-
-    <!-- 구역4 -->
     <div class="wide1">
-        <div class="infomation">
+        <div class="information">
             <h5>유의사항</h5>
             <p>1. 사전예약 및 사전예약금 입금이 필요합니다.<br>
-                2. 최소인원(20名) 미달 시 행사가 취소 될 수 있습니다. <br>
+                2. 최소인원(20명) 미달 시 행사가 취소 될 수 있습니다. <br>
                 - 모객이 되지 않아 취소 시에는 쌍방 원칙에 따라 배상의 책임을 지지 않음을 알려드립니다.<br>
                 3. 상기 일정은 도로교통 여건과 현지 상황에 따라 변경될 수 있습니다. <br>
                 4. 현금영수증 신청 시 길마중 알선수수료만큼 발행해 드립니다. - [부가가치세 집행기준 38-0-5]<br>
@@ -171,7 +163,7 @@
         </div>
     </div>
     <div class="wide1">
-        <div class="infomation">
+        <div class="information">
             <h5>취소및환불규정</h5>
             <p>1. 출발 3일전 취소 시 전체 여행경비의 100% 환불<br>
                 2. 출발 2일전 취소 시 전체 여행경비의 80% 환불 <br>
@@ -192,8 +184,8 @@
                 <p>회원 가입 즉시 관광 상품 10~20% 및 숙박 시설 우대 할인이 자동 적용됩니다.</p>
             </div>
             <div>
-                <button onclick="location.href=`{{ url_for('auth.login') }}`">로그인</button>
-                <button onclick="location.href=`{{ url_for('auth.signup') }}`">회원가입</button>
+                <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인</button>
+                <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">회원가입</button>
             </div>
         </div>
     </div>
@@ -201,10 +193,20 @@
     <!-- 구역5 -->
     <div class="wide1">
         <div class="review">
-            <h5>여행자 솔직후기(3)</h5>
+            <h5>여행자 솔직후기({{ reviews|length }})</h5>
             <div>
-                <div> 평균평점 ⭐ 4.7/5.0 </div>
+
+                <div> 평균평점 ⭐{% set total = namespace(sum=0) %}
+                    {% set total_count = reviews | length %}
+                    {% for review in reviews %}
+                        {% set total.sum = total.sum + review.rating %}
+                    {% endfor %}
+                    {% if total_count > 0 %}
+                        {{ (total.sum / total_count) | round(1) }}
+                    {% else %}0.0
+                    {% endif %}/ 5.0 </div>
                 <p>(비회원은 후기 읽기만 가능합니다.)</p>
+
             </div>
         </div>
         <div id="review_w">
@@ -216,15 +218,16 @@
                     <div> {{ review.created_at }}</div>
                 </div>
             </div>
-            <p>{{ review.content }}</p>
+            <p> {{ review.content }} </p>
             {% endfor %}
-            <div id="more">
-                <div>더보기</div>
-                <div>답글</div>
-            </div>
+        </div>
+        <div id="more">
+            <div>더보기</div>
+            <div>답글</div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.js"></script>
-<!--    <script src="{{ url_for('static', filename='js/product.js') }}"></script>-->
+    <script src="{{ url_for('static', filename='js/sub_product.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/reserve.js') }}"></script>
 {% endblock %}
