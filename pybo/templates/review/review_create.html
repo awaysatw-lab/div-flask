@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - 여행후기 작성{% endblock %}
+
+{% block content %}
+<div class="container my-5 review-container" style="max-width: 1000px;">
+
+    <!-- 알림 메시지 (Flash) -->
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show mb-4 shadow-sm" role="alert">
+        <span class="fw-semibold">{{ message }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+
+    <!-- 1. 상단: 제품 정보 카드 (review_detail과 동일한 구조 및 톤앤매너) -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden" style="background: #ffffff; border: 1px solid #e2e8f0 !important;">
+        <div class="row g-0">
+            <div class="col-md-5">
+                <img src="{{ product.image_url or '/static/img/default-tour.jpg' }}" class="w-100 h-100" style="min-height: 260px; max-height: 350px; object-fit: cover;" alt="{{ product.name }}">
+            </div>
+            <div class="col-md-7 p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="badge bg-primary px-3 py-1.5" style="font-size: 0.8rem;">{{ product.region }}</span>
+                        <span class="badge bg-light text-secondary border px-2 py-1">패키지 여행</span>
+                    </div>
+                    <h2 class="fw-bold mb-2 text-dark" style="font-size: 1.5rem;">{{ product.name }}</h2>
+                    <p class="text-muted small mb-3" style="line-height: 1.6;">{{ product.description }}</p>
+                </div>
+
+                {% if order %}
+                <div class="p-2 px-3 bg-light rounded-3 border mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <span class="small text-secondary">
+                        📋 <strong>연관 예약 번호:</strong> <code class="fw-bold text-primary">{{ order.order_no }}</code>
+                        {% if order.travel_date %}
+                        | 여행일: <strong>{{ order.travel_date }}</strong>
+                        {% endif %}
+                    </span>
+                    <a href="{{ url_for('order.lookup', order_no=order.order_no) }}" class="btn btn-outline-secondary btn-sm py-0" style="font-size: 0.78rem;">
+                        예약 내역 확인
+                    </a>
+                </div>
+                {% endif %}
+
+                <div class="bg-light p-3 rounded-3 d-flex justify-content-around text-center border">
+                    <div>
+                        <small class="text-muted d-block mb-1">전체 후기</small>
+                        <span class="badge text-bg-danger fs-6">{{ review_count }}개</span>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block mb-1">평균 평점</small>
+                        <span class="fw-bold text-warning fs-6">⭐ {{ avg_rating }} / 5.0</span>
+                    </div>
+                    {% if latest_review_date %}
+                    <div>
+                        <small class="text-muted d-block mb-1">최근 작성일</small>
+                        <span class="fw-semibold text-secondary">{{ latest_review_date }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="mt-3 text-end">
+                    <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-outline-primary btn-sm px-3 fw-semibold">
+                        상품 상세 및 예약 보기 &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 중단: 여행자 후기 등록 폼 카드 -->
+    <div class="card border rounded-4 shadow-sm mb-5 p-4" style="background-color: #ffffff; border: 1px solid #cbd5e1 !important;">
+        <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom flex-wrap gap-2">
+            <div>
+                <h3 class="fw-bold m-0" style="font-size: 1.35rem; color: #1e293b;">
+                    ✍️ 여행자 후기 작성
+                </h3>
+                <p class="text-muted small mb-0 mt-1">다녀오신 여행지의 솔직한 경험과 소중한 추억을 공유해 주세요.</p>
+            </div>
+            <div>
+                {% if g.user %}
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 fs-6">
+                    👤 작성자: <strong>{{ g.user.name }}</strong> (아이디: {{ g.user.user_id }})
+                </span>
+                {% elif order and order.guest_name %}
+                <span class="badge bg-secondary-subtle text-secondary border px-3 py-2 fs-6">
+                    👤 예약 고객: <strong>{{ order.guest_name }}</strong>
+                </span>
+                {% else %}
+                <span class="badge bg-light text-secondary border px-3 py-2 fs-6">
+                    👤 여행자 고객
+                </span>
+                {% endif %}
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('review.create', product_id=product.id, order_no=order_no or '') }}">
+            {{ form.csrf_token }}
+
+            <!-- 별점 선택 -->
+            <div class="mb-4">
+                <label for="rating" class="form-label fw-bold d-flex align-items-center gap-1 text-dark">
+                    <span>⭐ 여행 만족도 (별점)</span>
+                    <span class="text-danger">*</span>
+                </label>
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <select name="rating" id="rating" class="form-select form-select-lg fw-bold text-warning border-warning" style="max-width: 320px; cursor: pointer; font-size: 1rem;">
+                        <option value="5" selected>⭐⭐⭐⭐⭐ 5점 (최고예요! 강력 추천)</option>
+                        <option value="4">⭐⭐⭐⭐ 4점 (좋아요! 만족스러워요)</option>
+                        <option value="3">⭐⭐⭐ 3점 (보통이에요! 괜찮았어요)</option>
+                        <option value="2">⭐⭐ 2점 (조금 아쉬웠어요)</option>
+                        <option value="1">⭐ 1점 (불만족스러워요)</option>
+                    </select>
+                    <span class="text-muted small">선택하신 별점이 여행 상품의 종합 평점에 반영됩니다.</span>
+                </div>
+            </div>
+
+            <!-- 후기 제목 -->
+            <div class="mb-4">
+                <label for="title" class="form-label fw-bold d-flex align-items-center gap-1 text-dark">
+                    <span>📌 후기 제목</span>
+                    <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control form-control-lg fs-6" id="title" name="title"
+                       placeholder="여행의 핵심 느낌이나 한 줄 평을 입력해 주세요. (예: 가이드님도 친절하고 코스가 완벽했습니다!)"
+                       value="{{ request.form.get('title', '') }}" required maxlength="150">
+            </div>
+
+            <!-- 후기 상세 내용 -->
+            <div class="mb-4">
+                <label for="content" class="form-label fw-bold d-flex align-items-center gap-1 text-dark">
+                    <span>💬 후기 상세 내용</span>
+                    <span class="text-danger">*</span>
+                </label>
+                <textarea class="form-control fs-6" id="content" name="content" rows="6"
+                          placeholder="방문했던 명소의 분위기, 식사, 이동 편의성, 가이드 해설 등 다른 여행자분들께 도움이 될 생생한 경험을 솔직하게 작성해 주세요."
+                          required style="line-height: 1.7;">{{ request.form.get('content', '') }}</textarea>
+            </div>
+
+            <!-- 하단 제출 컨트롤 -->
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top flex-wrap gap-2">
+                <div>
+                    {% if not g.user %}
+                    <small class="text-muted">
+                        💡 <a href="{{ url_for('auth.login', next=request.full_path) }}" class="text-decoration-none fw-semibold">로그인</a>하시면 본인의 회원 아이디로 후기가 기록됩니다.
+                    </small>
+                    {% endif %}
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('review.detail', product_id=product.id) }}" class="btn btn-outline-secondary px-4 py-2">
+                        취소
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4 py-2 fw-bold shadow-sm">
+                        ✍️ 후기 등록하기
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 3. 하단: 해당 여행지의 기존 여행자 후기 목록 영역 (review_detail 톤앤매너 동일) -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <h3 class="fw-bold m-0" style="font-size: 1.35rem; color: #1e293b;">
+                        💬 이 여행지의 여행자 후기 목록
+                    </h3>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-6">
+                        총 {{ review_count }}개
+                    </span>
+                </div>
+                <a href="{{ url_for('review.list') }}" class="btn btn-sm btn-outline-secondary">
+                    전체 후기 목록 보기
+                </a>
+            </div>
+
+            {% if reviews %}
+                <div class="d-flex flex-column gap-3">
+                    {% for rev in reviews %}
+                    <div class="card border rounded-3 shadow-sm p-4" id="review-{{ rev.id }}" style="border-color: #e2e8f0 !important; background-color: #ffffff;">
+                        <div class="d-flex w-100 justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                            <div>
+                                <h5 class="fw-bold text-dark mb-1" style="font-size: 1.15rem;">{{ rev.title }}</h5>
+                                <div class="d-flex align-items-center gap-2 mt-1 flex-wrap">
+                                    <span class="fw-semibold text-secondary small">
+                                        👤 {{ rev.author.name if rev.author else '고객' }}
+                                    </span>
+                                    <span class="badge bg-light text-primary border" style="font-size: 0.78rem;">
+                                        아이디: {{ rev.author.user_id if rev.author else 'ID 미등록' }}
+                                    </span>
+                                    {% if rev.rating %}
+                                    <span class="text-warning small ms-1" style="font-size: 0.95rem;">
+                                        {{ '★' * rev.rating }}{{ '☆' * (5 - rev.rating) }}
+                                        <span class="text-secondary fw-semibold small ms-1">({{ rev.rating }}.0)</span>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted d-block" style="font-size: 0.85rem;">
+                                    ⏱️ {{ rev.created_at.strftime('%Y-%m-%d %H:%M') if rev.created_at else '' }}
+                                </small>
+                                {% if g.user and rev.user_id == g.user.id %}
+                                <div class="mt-1">
+                                    <a href="{{ url_for('review.modify', review_id=rev.id) }}" class="btn btn-outline-primary btn-sm py-0 px-2 fw-semibold" style="font-size: 0.8rem;">
+                                        ✏️ 수정
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="pt-2 mt-2 border-top text-secondary" style="border-top: 1px solid #f1f5f9 !important; line-height: 1.7; white-space: pre-line;">
+                            {{ rev.content }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5 border rounded-3 bg-light text-muted">
+                    <p class="mb-0">아직 등록된 여행 후기가 없습니다. 첫 번째 여행 후기를 남겨보세요!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 하단 버튼 컨트롤 -->
+    <div class="row mt-5 mb-4">
+        <div class="col-12 text-center">
+            <a href="{{ url_for('review.list') }}" class="btn btn-primary px-4 me-2">후기 목록으로</a>
+            <a href="javascript:history.back();" class="btn btn-outline-secondary px-4">이전 페이지</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

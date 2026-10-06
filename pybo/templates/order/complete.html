@@ -106,9 +106,14 @@
     </div>
   </div>
 
-  <!-- 액션 버튼 그룹 (Review 작성 & 상세 내역확인) -->
+  <!-- 액션 버튼 그룹 (Review 작성/수정 & 상세 내역확인) -->
   <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 my-4">
-    <a href="#" class="btn btn-outline-primary btn-lg px-4 fw-bold">Review 작성</a>
+    {% set existing_rev = order.get_user_review(g.user, product.id) %}
+    {% if existing_rev %}
+    <a href="{{ url_for('review.modify', review_id=existing_rev.id) }}" class="btn btn-primary btn-lg px-4 fw-bold shadow-sm">✏️ Review 수정</a>
+    {% else %}
+    <a href="{{ url_for('review.create', product_id=product.id, order_no=order.order_no) }}" class="btn btn-primary btn-lg px-4 fw-bold shadow-sm">✍️ Review 작성</a>
+    {% endif %}
     <a href="{{ url_for('order.lookup', order_no=order.order_no) }}" class="btn btn-primary btn-lg px-4 fw-bold shadow-sm">상세 내역확인하기</a>
   </div>
 

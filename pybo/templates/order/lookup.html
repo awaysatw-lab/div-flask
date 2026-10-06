@@ -136,8 +136,20 @@
                       </div>
                     </div>
 
-                    <!-- 펼치기/접기 버튼 -->
-                    <div class="flex-shrink-0 align-self-md-center">
+                    <!-- 펼치기/접기 버튼 및 Review 작성/수정 -->
+                    <div class="flex-shrink-0 align-self-md-center d-flex align-items-center gap-2">
+                      {% if item and item.product %}
+                        {% set existing_rev = o.get_user_review(g.user, item.product.id) %}
+                        {% if existing_rev %}
+                        <a href="{{ url_for('review.modify', review_id=existing_rev.id) }}" class="btn btn-sm btn-primary fw-bold" onclick="event.stopPropagation();">
+                          ✏️ Review 수정
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('review.create', product_id=item.product.id, order_no=o.order_no) }}" class="btn btn-sm btn-primary fw-bold" onclick="event.stopPropagation();">
+                          ✍️ Review 작성
+                        </a>
+                        {% endif %}
+                      {% endif %}
                       <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" id="expandBtn_{{ o.order_no }}">
                         상세 정보 <span>▼</span>
                       </button>
@@ -177,7 +189,7 @@
               <p class="mb-0 text-success-emphasis small">입력하신 정보와 일치하는 예약 내역을 불러왔습니다.</p>
             </div>
           </div>
-          <a href="{{ url_for('order.lookup') }}" class="btn btn-outline-success btn-sm flex-shrink-0 fw-bold">다른 예약 조회하기</a>
+          <a href="{{ url_for('order.lookup') }}" class="btn btn-outline-primary btn-sm flex-shrink-0 fw-bold">다른 예약 조회하기</a>
         </div>
 
         {% with order=detail_order %}

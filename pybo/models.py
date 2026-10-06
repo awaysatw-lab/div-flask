@@ -408,6 +408,23 @@ class Order(db.Model):
             return self.accommodations.first()
         except Exception:
             return None
+
+    def get_user_review(self, user=None, product_id=None):
+        """해당 주문의 상품에 대해 사용자가 이미 작성한 Review가 있는지 조회하여 반환"""
+        target_pid = product_id
+        if not target_pid:
+            item = self.items.first()
+            if item:
+                target_pid = item.product_id
+
+        if not target_pid:
+            return None
+
+        target_uid = user.id if (user and hasattr(user, 'id')) else self.user_id
+        if target_uid:
+            return Review.query.filter_by(user_id=target_uid, product_id=target_pid).order_by(Review.created_at.desc()).first()
+
+        return None
     
 class OrderItem(db.Model):
     __tablename__ = 'order_items'
