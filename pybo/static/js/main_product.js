@@ -368,6 +368,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 5. 지도 캔버스 권역 색상 하이라이트 렌더링
         renderMapHighlight(region);
+
+        // 6. 브라우저 URL 쿼리 파라미터 동기화
+        if (window.history && window.history.replaceState) {
+            const currentUrl = new URL(window.location.href);
+            if (region === 'all') {
+                currentUrl.searchParams.delete('region');
+            } else {
+                currentUrl.searchParams.set('region', region);
+            }
+            window.history.replaceState(null, '', currentUrl.toString());
+        }
     }
 
     /**
@@ -431,10 +442,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // URL 쿼리 파라미터(?region=...) 또는 해시(#pills-...) 파싱 및 별칭(alias) 매핑
+    const urlParams = new URLSearchParams(window.location.search);
+    let requestedRegion = urlParams.get('region');
+    if (!requestedRegion && window.location.hash) {
+        requestedRegion = window.location.hash.replace('#pills-', '').replace('#', '');
+    }
+
+    const regionAliases = {
+        'all': 'all',
+        'sudo': 'sudo',
+        'seoul': 'sudo',
+        'gang': 'gang',
+        'gangwon': 'gang',
+        'chung': 'chung',
+        'chungcheong': 'chung',
+        'geong': 'geong',
+        'gyeongsang': 'geong',
+        'jeon': 'jeon',
+        'jeolla': 'jeon',
+        'jeju': 'jeju'
+    };
+
+    let initialRegion = 'all';
+    if (requestedRegion && regionAliases[requestedRegion.toLowerCase()]) {
+        initialRegion = regionAliases[requestedRegion.toLowerCase()];
+    } else {
+        const activeTab = document.querySelector('#pills-tab button.nav-link.active') ||
+                          document.querySelector('#map-choice .map-btn.active');
+        initialRegion = getRegionFromBtn(activeTab);
+    }
+
     // 초기 캔버스 초기화 및 활성화된 탭 상태 동기화
     initMapCanvas();
-    const activeTab = document.querySelector('#pills-tab button.nav-link.active') ||
-                      document.querySelector('#map-choice .map-btn.active');
-    const initialRegion = getRegionFromBtn(activeTab);
     activateRegion(initialRegion);
+
+    // 브라우저 뒤로가기 / 앞으로가기 지원
+    window.addEventListener('popstate', () => {
+        const params = new URLSearchParams(window.location.search);
+        const popRegion = params.get('region');
+        if (popRegion && regionAliases[popRegion.toLowerCase()]) {
+            activateRegion(regionAliases[popRegion.toLowerCase()]);
+        } else {
+            activateRegion('all');
+        }
+    });
 });
