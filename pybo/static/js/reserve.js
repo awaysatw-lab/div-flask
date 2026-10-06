@@ -63,19 +63,27 @@ document.addEventListener('DOMContentLoaded', function() {
   let selectedAccName = '';
   let selectedAccCategory = '';
 
-  // 숙소 카테고리 필터링 (전역 window 바인딩)
+  // 숙소 카테고리 필터링 (전역 window 바인딩) - 호텔만 또는 민박만 선택
   window.filterAcc = function(category, btn) {
     const tabs = document.querySelectorAll('.btn-acc-tab');
-    tabs.forEach(t => t.classList.remove('active'));
-    if (btn) btn.classList.add('active');
+    tabs.forEach(t => {
+      t.classList.remove('active', 'btn-primary');
+      t.classList.add('btn-outline-primary');
+    });
 
-    const cards = document.querySelectorAll('.acc-card');
-    cards.forEach(card => {
-      const cardCat = card.dataset.category;
-      if (category === 'all' || cardCat === category) {
-        card.style.display = 'flex';
+    const activeBtn = btn || document.querySelector(`.btn-acc-tab[data-category="${category}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('active', 'btn-primary');
+      activeBtn.classList.remove('btn-outline-primary');
+    }
+
+    const items = document.querySelectorAll('#accListGrid .acc-item');
+    items.forEach(item => {
+      const itemCat = item.dataset.category;
+      if (itemCat === category) {
+        item.style.display = '';
       } else {
-        card.style.display = 'none';
+        item.style.display = 'none';
       }
     });
   };
@@ -83,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 숙소 선택 변경 핸들러 (전역 window 바인딩)
   window.handleAccSelect = function(radio) {
     const noneCard = document.getElementById('accCard_none');
-    const allCards = document.querySelectorAll('.acc-card');
+    const allCards = document.querySelectorAll('#accListGrid .acc-card');
 
     if (!radio.value) {
       // 숙소 선택 안 함
