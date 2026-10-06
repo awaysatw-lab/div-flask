@@ -90,21 +90,38 @@ class TourProduct(db.Model):
         return self.likes.filter_by(user_id=user.id).first() is not None
 
     def get_image_list(self):
-        """관광 상품의 다중 이미지 URL 목록 반환 (없을 경우 기본 image_url 또는 기본 이미지 반환)"""
-        if self.image_urls:
+        """다중 이미지 URL 목록을 반환하고, 없으면 대표 이미지 또는 기본 이미지를 반환한다."""
+        import json
+        import ast
+
+        raw = self.image_urls
+
+        if raw:
+            # 1) JSON 시도
             try:
-                import json
-                urls = json.loads(self.image_urls)
-                if isinstance(urls, list) and len(urls) > 0:
-                    return urls
+                urls = json.loads(raw)
+                if isinstance(urls, list) and urls:
+                    return [u for u in urls if isinstance(u, str) and u.strip()]
             except Exception:
-                urls = [u.strip() for u in self.image_urls.splitlines() if u.strip()]
-                if urls:
-                    return urls
+                pass
+
+            # 2) Python literal 시도
+            try:
+                urls = ast.literal_eval(raw)
+                if isinstance(urls, list) and urls:
+                    return [u for u in urls if isinstance(u, str) and u.strip()]
+            except Exception:
+                pass
+
+            # 3) 줄바꿈 분리
+            urls = [u.strip() for u in raw.splitlines() if u.strip()]
+            if urls:
+                return urls
+
         if self.image_url:
             return [self.image_url]
-        return ['/static/img/default-tour.jpg']
 
+        return ["/static/img/default-tour.jpg"]
     def set_image_list(self, urls):
         """이미지 URL 목록을 JSON으로 직렬화하여 저장하고 대표 이미지 동기화"""
         import json
