@@ -689,7 +689,7 @@ hr{
     border-radius: 20px;
 }
 
-#sub_details >ul > li > >h6{
+#sub_details > ul > li > h6{
     height: 20px;
     font-size: 13pt;
     font-weight: 600;

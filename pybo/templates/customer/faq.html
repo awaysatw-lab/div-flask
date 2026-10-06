@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- 부트스트랩 및 스타일시트 연결 (캐시 무력화 랜덤 값 포함) -->
-<link href="https://cloudflare.com" rel="stylesheet">
-<link rel="stylesheet" href="/static/css/customer.css?v={{ range(1, 100000) | random }}">
-
-<script src="https://cloudflare.com" defer></script>
-<script defer src="/static/js/customer.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/customer.css') }}">
+<script defer src="{{ url_for('static', filename='js/customer.js') }}"></script>
 
 <!-- 2단 대시보드 레이아웃 컨테이너 -->
 <div class="container-fluid cs-dashboard-container">

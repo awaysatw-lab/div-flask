@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   const paymentForm = document.getElementById('paymentForm');
-  const payBtnMain = document.getElementById('btnPayMain');
+  const payBtnMain = document.getElementById('pay_button') || document.getElementById('btnPayMain');
   const payBtnSidebar = document.getElementById('btnPayComplete');
   const allPayButtons = [payBtnMain, payBtnSidebar].filter(Boolean);
 

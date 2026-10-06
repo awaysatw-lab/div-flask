@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- 동일한 고객센터 스타일시트 공유 -->
-<link rel="stylesheet" href="/static/css/customer.css?v={{ range(1, 100000) | random }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/customer.css') }}">
 
 <div class="container py-5" style="max-width: 800px; width: 100%; margin-left: auto; margin-right: auto; margin-top: 30px; margin-bottom: 60px;">
     
