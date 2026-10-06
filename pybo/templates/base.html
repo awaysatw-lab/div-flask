@@ -7,6 +7,7 @@
     {# bootstrap css #}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="{{ url_for('static', filename='js/translate.js') }}"></script>
 </head>
 <body>
 
@@ -34,37 +35,71 @@
                     <span class="util-divider">|</span>
                     <a href="{{ url_for('customer.faq_list') }}" class="util-link">고객센터</a>
                     <span class="util-divider">|</span>
+
                     <div class="cs-lang-dropdown" style="display: inline-block; position: relative; z-index: 9999;">
-                        <script src="{{ url_for('static', filename='js/translate.js') }}" defer></script>
-                        <button type="button" id="languageDropdown" onclick="toggleLangMenu()" style="background: none; border: none; padding: 0; font-size: 0.88rem; color: #2B2D42; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; outline: none;">
-                            🌐 <span id="currentLanguageText">한국어</span> <span style="font-size: 0.6rem; color: #8E90A6; margin-left: 2px;">▼</span>
+
+                        <button type="button"
+                                id="languageDropdown"
+                                onclick="toggleLangMenu()"
+                                style="background: none; border: none; padding: 0; font-size: 0.88rem; color: #2B2D42; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; outline: none;">
+
+                            🌐 <span id="currentLanguageText">한국어</span>
+
+                            <span style="font-size: 0.6rem; color: #8E90A6; margin-left: 2px;">
+                                ▼
+                            </span>
                         </button>
 
-                        <ul id="customLangMenu" style="display: none; position: absolute; top: 100%; right: 0; margin: 8px 0 0 0; padding: 6px 0; list-style: none; background: #ffffff; border: 1px solid #EAE6DF; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); min-width: 110px; text-align: left;">
-                            <li><a href="javascript:changeLanguage('ko')" style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;" class="lang-item">한국어</a></li>
-                            <li><a href="javascript:changeLanguage('en')" style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;" class="lang-item">English</a></li>
-                            <li><a href="javascript:changeLanguage('ja')" style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;" class="lang-item">日本語</a></li>
-                            <li><a href="javascript:changeLanguage('zh-CN')" style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;" class="lang-item">简体中文</a></li>
+                        <ul id="customLangMenu"
+                            style="display: none; position: absolute; top: 100%; right: 0; margin: 8px 0 0 0; padding: 6px 0; list-style: none; background: #ffffff; border: 1px solid #EAE6DF; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); min-width: 110px; text-align: left; z-index: 9999;">
+
+                            <li>
+                                <a href="javascript:void(0);"
+                                   onclick="changeLanguage('ko')"
+                                   style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;"
+                                   class="lang-item">
+                                    한국어
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);"
+                                   onclick="changeLanguage('en')"
+                                   style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;"
+                                   class="lang-item">
+                                    English
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);"
+                                   onclick="changeLanguage('ja')"
+                                   style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;"
+                                   class="lang-item">
+                                    日本語
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="javascript:void(0);"
+                                   onclick="changeLanguage('zh-CN')"
+                                   style="display: block; padding: 8px 16px; color: #2B2D42; font-size: 0.85rem; text-decoration: none; font-weight: 500;"
+                                   class="lang-item">
+                                    简体中文
+                                </a>
+                            </li>
+
                         </ul>
                     </div>
 
-                    <div id="google_translate_element" style="display:none;"></div>
                 </div>
 
                   <div class="nav-search-line">
                     <nav class="main-nav">
                         <div class="nav-links">
-                            <!-- [수정됨] 1. 여행 메뉴 & 드롭다운 메가 메뉴 -->
                             <div class="nav-item dropdown">
-                                <a href="{{ url_for('product.main_product') }}" class="nav-link btn-box">여행 <span class="arrow">▾</span></a>
+                                <a href="{{ url_for('product.main_product') }}" class="nav-link btn-box">여행 <span class="arrow"> ▼</span></a>
                                 <div class="dropdown-menu mega-menu">
-                                    <div class="menu-column">
-                                        <h3>테마별</h3>
-                                        <ul>
-                                            <li><a href="{{ url_for('product.main_product', category='resort') }}">휴양지</a></li>
-                                            <li><a href="{{ url_for('product.main_product', category='activity') }}">체험</a></li>
-                                        </ul>
-                                    </div>
                                     <div class="menu-column">
                                         <h3>지역별</h3>
                                         <ul>
@@ -79,19 +114,8 @@
                                 </div>
                             </div>
 
-                            <!-- [수정됨] 2. 추천 메뉴 & 일반 드롭다운 메뉴 -->
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link">추천 <span class="badge">N</span> <span class="arrow">▾</span></a>
-                                <ul class="dropdown-menu standard-menu">
-                                    <li><a href="{{ url_for('product.main_product', season='spring') }}">봄</a></li>
-                                    <li><a href="{{ url_for('product.main_product', season='summer') }}">여름</a></li>
-                                    <li><a href="{{ url_for('product.main_product', season='autumn') }}">가을</a></li>
-                                    <li><a href="{{ url_for('product.main_product', season='winter') }}">겨울</a></li>
-                                </ul>
-                            </div>
-
                             <div class="nav-item"><a href="{{ url_for('review.list') }}">후기</a></div>
-                            <div class="nav-item"><a href="{{ url_for('customer.faq_list') }}">고객센터</a></div>
+                            <div class="nav-item"><a href="{{ url_for('main.notice') }}">공지사항</a></div>
                         </div>
                     </nav>
 

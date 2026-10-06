@@ -1,9 +1,10 @@
 
 <section class="region-category">
-    <div class="tab-buttons">
-        <button type="button" class="tab-btn active" data-tab="region">지역별 여행 정보</button>
-        <button type="button" class="tab-btn" data-tab="theme">테마별 여행 정보</button>
-    </div>
+        <div class="more-btn-wrap">
+        <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('product.main_product') }}'">
+            지역별 여행 정보 보러가기
+        </button>
+        </div>
 
     <!-- =========================
          지역별 여행 정보
@@ -46,36 +47,6 @@
                 </div>
                 <span>제주권</span>
             </a>
-        </div>
-        <div class="more-btn-wrap">
-            <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('product.main_product') }}'">
-                지역별 여행 정보 보러가기
-            </button>
-        </div>
-    </div>
-
-    <!-- =========================
-         테마별 여행 정보
-         ========================= -->
-    <div class="travel-tab-content" id="theme-tab">
-        <div class="icon-list theme-list">
-            <a href="{{ url_for('main.theme_resort') }}" class="icon-item theme-item" style="text-decoration: none; color: inherit;">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/resort.png') }}" alt="휴양지 여행">
-                </div>
-                <span>휴양지</span>
-            </a>
-            <a href="{{ url_for('main.theme_experience') }}" class="icon-item theme-item" style="text-decoration: none; color: inherit;">
-                <div class="circle-img">
-                    <img src="{{ url_for('static', filename='img/experience.png') }}" alt="체험 여행">
-                </div>
-                <span>체험</span>
-            </a>
-        </div>
-        <div class="more-btn-wrap">
-            <button type="button" class="btn-content-more" onclick="location.href='{{ url_for('main.index') }}'">
-                테마별 여행 정보 보러가기
-            </button>
         </div>
     </div>
 </section>
