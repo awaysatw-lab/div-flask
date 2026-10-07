@@ -16,7 +16,7 @@
         <div class="review-login-overlay">
             <div class="review-login-box">
                 <h4 class="fw-bold text-dark mb-0" style="font-size: 2.0rem; background: transparent;">
-                    User login시에 후기를 확인할 수 있습니다
+                    로그인이 필요한 서비스입니다.
                 </h4>
             </div>
         </div>
@@ -83,10 +83,6 @@
     </div>
 
     {% if review_list and review_list|length >= 5 %}
-    <div class="more-btn-wrap">
-        <a href="{{ url_for('review.list') if g.user else url_for('auth.login', next=url_for('review.list')) }}" class="btn-content-more text-decoration-none d-inline-block">
-            후기 전체보기 ➔
-        </a>
-    </div>
+
     {% endif %}
 </section>
