@@ -508,3 +508,11 @@ class Question(db.Model):
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
     email = db.Column(db.String(100), nullable=False)
+
+class Notice(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(20), default="일반")
+    subject = db.Column(db.String(200), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    views = db.Column(db.Integer, default=0)

@@ -1,22 +1,25 @@
-
 <div class="info-footer-box-wrap">
     <div class="info-footer-inside">
 
-        <div class="notice-box">
-            <h4>📢 공지사항 및 새소식</h4>
+        <div class="notice-section">
+            <h3>📢 공지사항 및 새소식</h3>
             <ul>
-                <li>
-                    <a href="#">[안내] 2026년 하반기 길마중 특별 전동 열차 패키지 예약 오픈 안내</a>
-                    <span style="float: right; font-size: 0.8rem; color: #999;">2026-10-01</span>
-                </li>
-                <li>
-                    <a href="#">[이벤트] 가을 맞이 추억의 가을 여행 패키지 포토후기 이벤트</a>
-                    <span style="float: right; font-size: 0.8rem; color: #999;">2026-09-25</span>
-                </li>
-                <li>
-                    <a href="#">[시스템] 하나은행 안전결제 에스크로 서비스 시스템 정기 점검 안내</a>
-                    <span style="float: right; font-size: 0.8rem; color: #999;">2026-09-18</span>
-                </li>
+                <!-- 플라스크 문법으로 변경: 데이터가 있을 때만 반복문 실행 -->
+                {% if latest_notices %}
+                    {% for notice in latest_notices %}
+                    <li>
+                        <!-- 상세 페이지 라우트가 있다면 매핑 (예: notice.detail) -->
+                        <a href="{{ url_for('main.notice') }}">
+                            [{{ notice.category }}] {{ notice.subject }}
+                        </a>
+                        <!-- 플라스크(파이썬) 날짜 포맷팅 .strftime() 사용 -->
+                        <span class="date">{{ notice.created_at.strftime('%Y-%m-%d') }}</span>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <!-- 공지사항이 비어있을 때 출력 -->
+                    <li>등록된 공지사항이 없습니다.</li>
+                {% endif %}
             </ul>
         </div>
 
