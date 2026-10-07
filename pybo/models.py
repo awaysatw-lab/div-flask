@@ -419,11 +419,11 @@ class Order(db.Model):
         if not target_pid:
             return None
 
-        target_uid = user.id if (user and hasattr(user, 'id')) else self.user_id
-        if target_uid:
-            return Review.query.filter_by(user_id=target_uid, product_id=target_pid).order_by(Review.created_at.desc()).first()
+        if not (user and hasattr(user, 'id')):
+            return None
 
-        return None
+        target_uid = user.id
+        return Review.query.filter_by(user_id=target_uid, product_id=target_pid).order_by(Review.created_at.desc()).first()
     
 class OrderItem(db.Model):
     __tablename__ = 'order_items'

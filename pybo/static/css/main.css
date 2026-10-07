@@ -1,3 +1,7 @@
+/* ==========================================================================
+ 공용 폰트
+   ========================================================================== */
+
 font[color], font[size], .goog-te-menu-value, .skiptranslate, font {
     font-family: inherit !important;
     color: inherit !important;
@@ -152,7 +156,7 @@ button,input {
     transition: color 0.2s;
 }
 
-.arrow-btn:hover { color: #F7931E; }
+.arrow-btn:hover { color: #E0AA3E; }
 
 /* ==========================================================================
    3. 지역별 여행 카테고리
@@ -191,22 +195,21 @@ button,input {
     height: 96px;
     border-radius: 50%;
     overflow: hidden;
-    background: #eee;
+    background: #F8F5F0;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
-
-.circle-img img, .circle-img svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.circle-img:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
+    border-color: #F8F5F0;
 }
+
 
 .icon-item > span {
     margin-top: 15px;
     font-size: 14px;
     font-weight: 600;
-    color: #222;
+    color: #212529;
     white-space: nowrap;
 }
 
@@ -221,8 +224,8 @@ button,input {
     padding: 12px 35px;
     font-size: 0.95rem;
     font-weight: 600;
-    color: #2B2D42;
-    background-color: #ffffff;
+    color: #fff;
+    background-color: #1D3557;
     border: 1px solid #EAE6DF;
     border-radius: 25px;
     cursor: pointer;
@@ -232,8 +235,9 @@ button,input {
 }
 
 .btn-content-more:hover {
-    background-color: #F8F6F2;
+    background-color: #4A7C8F;
     border-color: #999999;
+    color: #fff;
 }
 
 /* ==========================================================================
@@ -255,9 +259,9 @@ button,input {
 
 .time-deal .subtitle {
     font-size: 0.92rem;
-    color: #7A7A85;
+    color: #1E3A5F;
     margin-top: 10px;
-    margin-bottom: 45px;
+    margin-bottom: 15px;
 }
 
 .time-deal .deal-container {
@@ -273,7 +277,7 @@ button,input {
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
-    border: 1px solid #EAE6DF;
+    border: 1px solid #FAF8F5;
     border-radius: 12px;
     overflow: hidden;
     height: 520px;
@@ -283,7 +287,7 @@ button,input {
 .main-deal-card:hover, .sub-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
-    border-color: #D3C9BC;
+    border-color: #FAF8F5;
 }
 
 .main-img-area, .sub-img-area {
@@ -291,7 +295,7 @@ button,input {
     background-position: center;
     position: relative;
     padding: 18px;
-    background-color: #F6F4EE;
+    background-color: #FAF8F5;
 }
 
 .main-img-area {
@@ -308,11 +312,11 @@ button,input {
     left: 16px;
 }
 
-.badge.blue { background-color: #1E3A5F; color: #ffffff; }
-.badge.green { background-color: #F6F4EE; color: #2B2D42; border: 1px solid #EAE6DF; }
+.badge.blue { background-color: #E0AA3E; color: #ffffff; }
+.badge.green { background-color: #FFFFDD; color: #2B2D42; border: 1px solid #EAE6DF; }
 
 .timer-banner {
-    background-color: #1E3A5F;
+    background-color: #FEE1E8;
     color: #ffffff;
     padding: 6px 14px;
     border-radius: 4px;
@@ -343,21 +347,21 @@ button,input {
 
 .main-deal-card .product-title strong,
 .sub-card-text .title strong {
-    color: #3D7D66;
+    color: #A64C4D;
     font-weight: 700;
     margin-right: 6px;
 }
 
 .hashtags {
     font-size: 0.85rem;
-    color: #8E90A6;
+    color: #1D3557;
     font-weight: 500;
     margin-bottom: 8px;
 }
 
 .product-desc {
     font-size: 0.92rem;
-    color: #6B6D7A;
+    color: #999;
     line-height: 1.5;
     margin-bottom: 15px;
 }
@@ -368,11 +372,14 @@ button,input {
     font-size: 0.95rem;
     color: #6B6D7A;
 }
+.price-line .price strong{
+    color: #E76F5F;
+}
 
 .price-line .price {
     font-size: 1.8rem;
     font-weight: 800;
-    color: #2B2D42;
+    color: #E76F5F;
 }
 
 .sub-deal-list {
@@ -387,7 +394,7 @@ button,input {
     min-width: 0;
     display: flex;
     background-color: #ffffff;
-    border: 1px solid #EAE6DF;
+    border: 1px solid #FAF8F5;
     border-radius: 12px;
     overflow: hidden;
     height: 250px;
@@ -425,13 +432,17 @@ button,input {
 .sub-price-line {
     text-align: right;
     font-size: 0.85rem;
-    color: #6B6D7A;
+    color: #999;
+}
+
+.sub-price-line .price strong{
+    color: #E76F5F;
 }
 
 .sub-card-text .price {
     font-size: 1.4rem;
     font-weight: 800;
-    color: #2B2D42;
+    color: #E76F5F;;
 }
 
 /* ==========================================================================
@@ -468,90 +479,151 @@ button,input {
     transform: scale(1.05);
 }
 
+/* 비로그인 시 여행 후기 블러 및 오버레이 */
+.review-content-wrapper {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 280px;
+}
+
+.review-login-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.review-login-box {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+    padding: 10px;
+}
+
+.review-blurred-content {
+    filter: blur(7px);
+    -webkit-filter: blur(7px);
+    opacity: 0.4;
+    pointer-events: none;
+    user-select: none;
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
 /* ==========================================================================
    6. 공지사항 및 고객센터 박스
    ========================================================================== */
+
 .info-footer-box-wrap {
     width: 100%;
-    border: 1px solid #FFFFDD;
-    border-radius: 8px;
+    border: 1px solid #DDE7F2;
+    border-radius: 12px;
     background-color: #E6F2FF;
     margin-bottom: 50px;
     padding: 0;
     overflow: hidden;
+    box-sizing: border-box;
 }
 
 .info-footer-inside {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: stretch;
 }
 
-.notice-section, .notice-box {
+.notice-section, .cs-box {
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.notice-section {
     flex: 1.6;
     min-width: 0;
-    padding: 30px;
-    border-right: 1px solid #FFFFDD;
-}
-
-.notice-section h3, .notice-box h4 {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #212529;
-    margin-bottom: 18px;
-}
-
-.notice-section ul, .notice-box ul { list-style: none; }
-.notice-section li, .notice-box li {
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.notice-section li:last-child, .notice-box li:last-child { margin-bottom: 0; }
-
-.notice-section a, .notice-box a {
-    text-decoration: none;
-    color: #2B2D42;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.notice-section a:hover, .notice-box a:hover {
-    color: #E76F5F;
-    text-decoration: underline;
-}
-
-.notice-section .date {
-    font-size: 0.8rem;
-    color: #8E90A6;
+    border-right: 1px solid #DDE7F2;
 }
 
 .cs-box {
     flex: 1;
     min-width: 0;
-    padding: 30px;
-    background-color: transparent;
 }
 
-.cs-box h4 {
+.notice-section h3, .cs-box h4 {
     font-size: 1.1rem;
     font-weight: bold;
-    color: #212529;
+    color: #212529 !important;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+    height: 1.2rem;
+    text-decoration: underline !important;
+}
+
+.notice-body, .cs-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+
+.notice-body ul,
+.notice-section ul {
+    list-style: none !important; /* !important 추가 */
+    list-style-type: none !important;
+    padding-left: 0 !important;   /* 부트스트랩 기본 왼쪽 패딩 초기화 */
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.notice-body li,
+.notice-section li {
     margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    list-style: none !important;
+}
+
+.notice-body li:last-child {
+    margin-bottom: 0;
+}
+
+.notice-body ul li a,
+.notice-section a {
+    text-decoration: none !important;
+    color: #2B2D42 !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.6;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .cs-box .phone {
     font-size: 1.6rem;
     font-weight: 800;
     color: #E76F5F;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    line-height: 1;
 }
 
 .cs-box .time {
-    font-size: 0.8rem;
-    color: #2B2D42;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    color: #555568;
+    line-height: 1.6;
 }
 
 /* ==========================================================================

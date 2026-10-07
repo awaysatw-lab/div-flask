@@ -2,7 +2,7 @@
     <div class="info-footer-inside">
 
         <div class="notice-section">
-            <h3><a href="{{ url_for('main.notice') }}" class="text-decoration-none text-dark">📢 공지사항 및 새소식</a></h3>
+            <a href="{{ url_for('main.notice') }}" class="text-decoration-none text-dark"><h3>공지사항 및 새소식</h3></a>
             <ul>
                 <!-- 플라스크 문법으로 변경: 데이터가 있을 때만 반복문 실행 -->
                 {% if latest_notices %}
@@ -12,8 +12,6 @@
                         <a href="{{ url_for('main.notice_detail', notice_id=notice.id) }}">
                             [{{ notice.category }}] {{ notice.subject }}
                         </a>
-                        <!-- 플라스크(파이썬) 날짜 포맷팅 .strftime() 사용 -->
-                        <span class="date">{{ notice.created_at.strftime('%Y-%m-%d') }}</span>
                     </li>
                     {% endfor %}
                 {% else %}
@@ -24,7 +22,7 @@
         </div>
 
         <div class="cs-box">
-            <h4>고객센터</h4>
+            <a href="{{ url_for('customer.faq_list') }}" class="text-decoration-none text-dark"><h4>고객센터</h4></a>
             <div class="phone">1577-1233</div>
             <div class="time">
                 평일 09:00 ~ 18:00 (토/일, 공휴일 휴무)<br>

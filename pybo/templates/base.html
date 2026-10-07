@@ -123,10 +123,10 @@
                         </div>
                     </nav>
 
-                    <div class="search-box-wrap">
-                        <input type="text" placeholder="어디로 떠나고 싶으세요?" class="header-search-input">
-                        <button type="button" class="header-search-btn">🔎</button>
-                    </div>
+                    <form action="{{ url_for('product.main_product') }}" method="GET" class="search-box-wrap mb-0" id="searchBoxWrap">
+                        <input type="text" name="kw" value="{{ kw or '' }}" placeholder="어디로 떠나고 싶으세요?" class="header-search-input" autocomplete="off">
+                        <button type="submit" class="header-search-btn" aria-label="검색">🔎</button>
+                    </form>
                 </div>
 
             </div>

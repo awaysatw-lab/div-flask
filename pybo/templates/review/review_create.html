@@ -202,9 +202,12 @@
                                     ⏱️ {{ rev.created_at.strftime('%Y-%m-%d %H:%M') if rev.created_at else '' }}
                                 </small>
                                 {% if g.user and rev.user_id == g.user.id %}
-                                <div class="mt-1">
+                                <div class="mt-1 d-flex gap-1 justify-content-end">
                                     <a href="{{ url_for('review.modify', review_id=rev.id) }}" class="btn btn-outline-primary btn-sm py-0 px-2 fw-semibold" style="font-size: 0.8rem;">
                                         ✏️ 수정
+                                    </a>
+                                    <a href="{{ url_for('review.delete', review_id=rev.id, next=url_for('review.detail', product_id=product.id)) }}" class="btn btn-outline-danger btn-sm py-0 px-2 fw-semibold" style="font-size: 0.8rem;" onclick="return confirm('작성하신 리뷰를 정말 삭제하시겠습니까?');">
+                                        🗑️ 삭제
                                     </a>
                                 </div>
                                 {% endif %}

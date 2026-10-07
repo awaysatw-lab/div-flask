@@ -1,6 +1,8 @@
 <div class="product-grid">
+    {% set ns = namespace(count=0) %}
     {% for product in products %}
         {% if current_region == 'all' or product.region == current_region %}
+        {% set ns.count = ns.count + 1 %}
         <div class="card shadow-sm border">
             <img src="{{ product.image_url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}" onerror="this.src='/static/img/default-tour.jpg'">
             <div class="card-body d-flex flex-column p-3">
@@ -11,23 +13,41 @@
                 </div>
                 <h5 class="card-title fw-bold text-dark mb-1">{{ product.name }}</h5>
                 <p class="card-text text-secondary small mb-3 flex-grow-1">{{ product.description }}</p>
-                <div class="p-2 rounded mb-3 bg-light border">
+                <div id="card-price" class="p-2 rounded mb-3 bg-light border">
                     <p class="text-decoration-line-through text-muted small mb-0">{{ "{:,}".format(product.original_price) }}원</p>
-                    <div class="d-flex align-items-baseline gap-2">
+                    <div class="d-flex align-items-center gap-2">
                         {% if g.user %}
                             <h5 class="fw-bold mb-0 text-dark">{{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원</h5>
                         {% else %}
                             <h5 class="fw-bold mb-0 text-dark">{{ "{:,}".format(product.original_price) }}원</h5>
                         {% endif %}
-                        <p>(로그인 시 {{ "{:,}".format(product.member_discount_rate * 100)|int }}% 할인)</p>
+                        <p class="fw-bold mb-0">(로그인 시 {{ "{:,}".format(product.member_discount_rate * 100)|int }}% 할인)</p>
                     </div>
                 </div>
                 <div class="d-flex gap-2 mt-auto">
-                    <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-primary flex-grow-1">상세보기</a>
-                    <a href="{{ url_for('order.reserve', product_id=product.id) }}" class="btn btn-purchase flex-shrink-0" style="width: 85px; background-color: #E76F5F; border-color: #E76F5F; color: #fff;">구매</a>
+                    <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-primary ">상세보기</a>
+                    <a href="{{ url_for('order.reserve', product_id=product.id) }}" class="btn btn-purchase ">구매</a>
                 </div>
             </div>
         </div>
         {% endif %}
     {% endfor %}
+    {% if ns.count == 0 %}
+        <div class="p-5 text-center text-muted bg-light rounded-3 border" style="grid-column: 1 / -1; width: 100%;">
+            <p class="fs-2 mb-2">🔍</p>
+            <p class="fw-bold fs-6 mb-1 text-dark">
+                {% if kw %}
+                    '{{ kw }}' 검색 결과가 없습니다.
+                {% else %}
+                    해당 지역의 여행 상품이 없습니다.
+                {% endif %}
+            </p>
+            {% if kw %}
+            <p class="small text-secondary mb-3">검색하신 여행지 이름이 포함된 여행 상품을 찾을 수 없습니다.</p>
+            <a href="{{ url_for('product.main_product') }}" class="btn btn-sm btn-outline-primary px-3 fw-semibold">
+                전체 여행 상품 보기
+            </a>
+            {% endif %}
+        </div>
+    {% endif %}
 </div>
