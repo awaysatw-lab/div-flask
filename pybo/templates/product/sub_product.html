@@ -34,11 +34,11 @@
                 <div>
                     <!-- 슬라이드 밑-->
                     <div id="recommend">
-                        <p id="heart">❤️{{ "{:,}".format(product.recommendation_count) }}명이 추천했습니다! 이 여행 상품이 마음에 드셨다면 추천해주세요</p>
+                        <p id="heart">❤️{{ "{:,}".format(product.recommendation_count) }}명이 추천했습니다! 이 여행이 마음에 드셨다면 추천해주세요</p>
                         {% if g.user %}
-                        <button id="heart-log">추천<br>하기</button>
+                        <button class="log_heart">추천하기</button>
                         {% else %}
-                        <button id="heart-log" onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">추천하기<br>(로그인 필요)</button>
+                        <button class="log_heart" onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`"> 추천하기 <br> (로그인)</button>
                         {% endif %}
                     </div>
                     <button class="white-btn" onclick="location.href=`{{ url_for('customer.faq_list') }}`">1:1문의</button>
@@ -53,7 +53,7 @@
             <!-- 오른쪽 -->
             <div id="sub-right">
                 <h3>{{ product.name }}</h3>
-                <p>⭐별점 후기 {{ reviews|length }}건</p>
+                <p>⭐ 별점 후기 {{ reviews|length }}건</p>
                 <p>{{ product.description }}</p>
                 <!-- 가격표시 -->
                 <div id="purchase">
@@ -88,7 +88,7 @@
                 {% if g.user %}
                 {% else %}
                 <div id="log-discount">
-                    <div>💡로그인 시 {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 / {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원에 이용 가능!</div>
+                    <div>💡로그인 시 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원 ( {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 ) </div>
                     <div>
                         <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인하고 할인 결제</button>
                         <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">간편 회원가입</button>
@@ -195,7 +195,6 @@
         <div class="review">
             <h5>여행자 솔직후기({{ reviews|length }})</h5>
             <div>
-
                 <div> 평균평점 ⭐{% set total = namespace(sum=0) %}
                     {% set total_count = reviews | length %}
                     {% for review in reviews %}
@@ -212,9 +211,8 @@
         <div id="review_w">
             {% for review in reviews %}
             <div id="detail_star">
-                <div>⭐ {{ review.rating }} </div>
+                <div>👤 {{ review.author.name if review.author else '고객' }} (아이디: {{ review.author.user_id if review.author else review.user_id }}) ⭐ {{ review.rating }}</div>
                 <div>
-                    <div>👤 {{ review.author.name if review.author else '고객' }} (아이디: {{ review.author.user_id if review.author else review.user_id }})</div>
                     <div> {{ review.created_at.strftime('%Y-%m-%d') if review.created_at else '' }}</div>
                     {% if g.user and review.user_id == g.user.id %}
                     <div><a href="{{ url_for('review.modify', review_id=review.id) }}" class="badge bg-primary text-white text-decoration-none" style="font-size: 0.75rem;">✏️ 수정</a></div>

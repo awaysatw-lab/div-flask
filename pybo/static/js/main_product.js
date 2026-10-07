@@ -217,8 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.shadowBlur = isHover ? 10 : 6;
         ctx.shadowOffsetY = 2;
 
-        // 알약 뱃지 배경: 호버 시 브랜드 네이비(#1D3557)에 흰 글씨, 일반 선택 시 흰 배경에 초록 테두리
-        ctx.fillStyle = isHover ? '#1D3557' : '#FFFFFF';
+        // 알약 뱃지 배경: 호버 시 브랜드 네이비(#ffffff)에 흰 글씨, 일반 선택 시 흰 배경에 초록 테두리
+        ctx.fillStyle = isHover ? '#FFFFFF' : '#FFFFFF';
         ctx.beginPath();
         if (typeof ctx.roundRect === 'function') {
             ctx.roundRect(x, y, w, h, 13);
@@ -228,13 +228,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
 
         // 테두리
-        ctx.strokeStyle = isHover ? '#1D3557' : '#15803D';
+        ctx.strokeStyle = isHover ? '#15803D' : '#15803D';
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
         // 텍스트 출력
         ctx.shadowColor = 'transparent';
-        ctx.fillStyle = isHover ? '#FFFFFF' : '#15803D';
+        ctx.fillStyle = isHover ? '#15803D' : '#15803D';
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'center';
         ctx.fillText(text, x + w / 2, y + h / 2);

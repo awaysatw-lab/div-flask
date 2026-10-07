@@ -121,15 +121,14 @@
   <div class="card shadow-sm border mb-4">
     <div class="card-body p-4">
       <h3 class="card-title h5 fw-bold mb-3 d-flex align-items-center gap-2 text-dark">
-        <span>📍 장소 정보</span>
+        <span> 장소 정보</span>
       </h3>
       <div class="rounded-3 overflow-hidden border shadow-sm" style="height: 400px;">
         <iframe
           style="border:0; width: 100%; height: 100%;"
           loading="lazy"
           allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q={{ (product.name if product else '')|urlencode }}&output=embed">
+          src="https://www.google.com/maps?q={{ (product.name if product else '') }}&output=embed">
         </iframe>
       </div>
     </div>

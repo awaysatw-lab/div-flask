@@ -10,26 +10,40 @@
 }
 
 #slider{
-    height: 420px;
+    height: 350px;
     background-position: center;
+}
+@media (max-width: 1025px) {
+    #slider {
+        width: 1100px;
+        height: 250px;
+        overflow: hidden;
+    }
 }
 
 .carousel-item{
     width: 100%;
-    height: 420px;
+    height: 350px;
     background-size: 100%;
-    overflow: hidden;
 }
+@media (max-width: 1025px) {
+    .carousel-item {
+        width: 1100px;
+        height: 250px;
+    }
+}
+
 .carousel-item > div{
     position: absolute;
     margin: 0 auto;
-    padding: 20px;
-    top: 250px;
+    padding: 40px;
+    top: 20px;
     left: -430px;
     background-color: white;
     opacity: 0.7;
-    width: 400px;
-    height: 150px;
+    height: fit-content;
+    width: 350px;
+
     border-radius: 10px;
     align-items: center;
 }
@@ -56,12 +70,12 @@
 #main_text{
     background-color: #F5f5f5;
     margin-bottom: 15px;
+    height: fit-content;
+    padding: 10px 0;
 }
 #main_text > p{
     width: 700px;
-    height: 45px;
     margin: 0 auto;
-    padding: 10px 0 5px;
     text-align: center;
     font-weight: 500;
 }
@@ -79,16 +93,23 @@ hr{
 /* 1. 메인 레이아웃 기본 (큰 화면: 데스크톱 > 1024px) */
 .product-main-layout {
     display: grid;
-    grid-template-columns: 330px 1fr;
+    grid-template-columns: 1fr 2fr;
     gap: 24px;
     align-items: start; /* sticky 고정을 위해 필수 */
 }
 
 /* 2. 지도 구역 (#map-choice) */
 #map-choice {
-    width: 330px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 20px;
+    align-self: start;
+    z-index: 10;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    scrollbar-width: thin;
     height: auto;
-    padding: 20px;
+    padding: 16px;
     margin-bottom: 20px;
     border-color: #1D3557;
     border-style: solid;
@@ -98,32 +119,32 @@ hr{
     box-sizing: border-box;
 }
 
-/* 769px 이상: 오른쪽 항목들이 많아 스크롤을 내려도 항상 지도와 버튼이 보이도록 Sticky 고정 */
-@media (min-width: 769px) {
-    #map-choice {
-        position: -webkit-sticky;
-        position: sticky;
-        top: 20px;
-        align-self: start;
-        z-index: 10;
-        max-height: calc(100vh - 40px);
-        overflow-y: auto;
-        scrollbar-width: thin;
-    }
+#map-choice > div {
+    margin-bottom: 14px;
 }
 
-#map-choice > div {
-    margin-bottom: 20px;
+#map-choice > div:last-child {
+    margin-bottom: 0;
 }
 
 #map-choice > div > h6 {
     font-weight: 700;
-    font-size: 15pt;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+}
+
+#map-choice > div > p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 10px;
 }
 
 /* 지도 밑 탭 버튼 */
 #map-choice #pills-tab {
     width: 100%;
+    gap: 8px !important;
+    row-gap: 8px !important;
+    margin-bottom: 0 !important;
 }
 
 #map-choice #pills-tab > li {
@@ -142,21 +163,26 @@ hr{
 
 #map-choice #pills-tab > li > button {
     width: 100%;
-    height: 40px;
+    height: 38px;
     background-color: #FAF8F5;
     color: #212529;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-#pills-tab > li > button.active {
+
+#map-choice #pills-tab > li > button.active {
     background-color: #1D3557;
     color: white;
 }
 
-#pills-tab > li > button:not(.active):hover {
+
+#map-choice #pills-tab > li > button:not(.active):hover {
     background-color: #1D3557;
     color: white;
 }
@@ -197,11 +223,8 @@ hr{
       지도와 1개 상품을 나란히 표시 가능하므로, 지도는 왼쪽(sticky)에 두고 상품은 1줄에 1개씩 표시 */
 @media (min-width: 769px) and (max-width: 1024px) {
     .product-main-layout {
-        grid-template-columns: 320px 1fr;
+        grid-template-columns: 2fr 3fr;
         gap: 20px;
-    }
-    #map-choice {
-        width: 320px;
     }
     .product-grid {
         grid-template-columns: 1fr; /* 1줄에 1개 */
@@ -215,43 +238,20 @@ hr{
       권역별 지도를 맨 위에 보이고, 그 아래로 1줄에 1칸씩 상품 정보 표시 */
 @media (max-width: 768px) {
     .product-main-layout {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-    }
-
-    #map-choice {
-        width: 100%;
-        max-width: 350px;
-        position: static; /* 맨 위에 위치 */
-        margin: 0 auto 10px auto;
-    }
-
-    .tab-content {
-        width: 100%;
-    }
-
-    .product-grid {
-        grid-template-columns: 1fr; /* 1줄에 1칸씩 */
-        width: 100%;
-        max-width: 450px;
-        margin: 0 auto;
-    }
-
-    .product-grid .card {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
+        grid-template-columns: 2fr 3fr;
+        gap: 20px;
     }
 }
+
+
+
 .card > div > #on_img_box{
     display: none;
 }
  .card:nth-of-type(1) > div > #on_img_box{
      display: block;
      height: 30px;
-     width: 70px;
+     padding: 0 5px;
      position: absolute;
      margin-top: -210px;
      border-radius: 10px;
@@ -265,7 +265,7 @@ hr{
  .card:nth-of-type(2) > div > #on_img_box{
      display: block;
      height: 30px;
-     width: 70px;
+     padding: 0 5px;
      position: absolute;
      margin-top: -210px;
      border-radius: 10px;
@@ -276,7 +276,6 @@ hr{
      border-width: 5px;
      font-weight: 500;
  }
-
 
 .card-body > .heart_star{
     height: 25px;
@@ -304,6 +303,7 @@ hr{
     margin-top: 5px;
     text-decoration-line: line-through;
     color: #2B2D42;
+    font-size: 11pt;
 }
 
 .card-body > .card-price > div{
@@ -313,11 +313,13 @@ hr{
 .card-body > .card-price > div > h5{
     font-weight: 700;
     margin-top: -10px;
+    width: fit-content;
+    font-size: 15pt;
 }
 
 .card-body > .card-price > div > p{
     color: #ED4956;
-    font-size: 10pt;
+    font-size: 9.5pt;
     margin-top: -8px;
     margin-left: 5px;
     font-weight: 600;
@@ -342,24 +344,30 @@ hr{
 }
 
 .card-body > div > a:last-child{
-    width: 85px;
     flex-shrink: 0;
     background-color: #E76F5F;
     color: #ffffff;
     border-color: #E76F5F;
+    width: fit-content;
 }
 
 .card-body > div > a:last-child:hover{
     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
     border-color: #D3C9BC;
+    border-width: 5px;
+    font-weight: 500;
 }
+
+
 
 /*sub*/
 #sub_wide1-1{
-    display: flex;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr auto;
     margin-top: 30px;
-    width: 300px !important;
 }
+
 /*스와이퍼*/
 #four-slide{
     width: 500px;
@@ -393,23 +401,23 @@ hr{
     opacity: 1;
 }
 
-
-
 #recommend{
     background-color: #FAF8F5;
     margin: 10px 0;
+    padding: 10px;
     display: flex;
-    align-items: center;
 }
 
 #recommend > #heart{
-    width: 365px;
-    margin: 10px 5px 10px 10px;
+    position: relative;
+    top: 5px;
 }
 
-#heart-log{
-    width: 100px;
-    margin: 10px 5px 10px 0;
+.log_heart{
+    width: 150px;
+    height: 60px;
+    margin: 0 0 0 5px;
+    padding: 2px 10px;
     background-color: #faf8f5;
     color: #ED4956;
     border-color: #E76F5F;
@@ -418,7 +426,7 @@ hr{
     font-weight: 700;
 }
 
-#heart-log:not(.active):hover {
+.log_heart:not(.active):hover {
     background-color: #E76F5F;
     color: white;
 }
@@ -430,7 +438,6 @@ hr{
     border-color:#999999;
     border-style: solid;
 }
-
 
 #schedule{
     width: 100%;
@@ -479,6 +486,11 @@ hr{
     text-decoration-line: line-through;
 }
 
+.p-right{
+    position: relative;
+    right: 15px;
+}
+
 #purchase>div>h6{
     font-size: 14pt;
     font-weight: 500;
@@ -506,9 +518,9 @@ hr{
     height: 40px;
     position: relative;
     top: -5px;
-    background-color: #1D3557;
+    background-color: #ED4956;
     color: #ffffff;
-    border-color: #1D3557;
+    border-color: #ED4956;
     border-style: none;
     border-radius: 5px;
     font-weight: 600;
@@ -518,7 +530,7 @@ hr{
 }
 
 #people >button:hover{
-    background-color: #4A7C8F;
+    background-color: #E76F5F;
 }
 
 #log-discount{
@@ -557,6 +569,7 @@ hr{
     border-style: solid;
     font-weight: 700;
 }
+
 
 /*sub 구역2*/
 #main-schedule{
@@ -612,7 +625,7 @@ hr{
 }
 
 #sub_intro > p{
-    height: 90px;
+    height: fit-content;
     text-align: center;
     background-color: #F3FEE7;
     font-size: 12pt;
@@ -624,13 +637,18 @@ hr{
     margin: 30px 0;
 }
 
+#intro_grid{
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
 #sub_intro > div > div img{
-    width: 350px;
+    width: 400px;
 }
 
 #intro_space{
     padding: 5px 30px;
-    width: 600px;
+    width: fit-content;
 }
 
 #bus_place{
@@ -649,7 +667,7 @@ hr{
 
 #bus_place > div{
     width: 550px;
-    height: 80px;
+    height: fit-content;;
     text-align: center;
     position: relative;
     top: -130px;
@@ -680,9 +698,9 @@ hr{
 }
 
 #sub_details > ul > li{
-    width: 950px;
-    margin: 10px 15px 55px;
-    padding: 20px 20px 10px;
+    width: fit-content;
+    margin: 10px 40px 55px;
+    padding: 15px 20px;
     list-style: none;
     background-color: #FFFFDD;
     opacity: 0.9;
@@ -690,12 +708,14 @@ hr{
 }
 
 #sub_details > ul > li > h6{
-    height: 20px;
+    height: fit-content;
+    margin: 10px 0 ;
     font-size: 13pt;
     font-weight: 600;
 }
 
 #sub_details >ul > li > div{
+    height: fit-content;
     align-items: flex-start;
     padding: 0 10px;
 }
@@ -703,9 +723,6 @@ hr{
 #sub_details >ul > li > div > p{
     font-size: 11pt;
     font-weight: 500;
-}
-#sub_details >ul > li > div > p:first-child{
-    height: 10px;
 }
 
 /* tab4 pretour */
@@ -741,9 +758,9 @@ hr{
 }
 
 #log-ad{
-    height: 90px;
+    height: fit-content;
     margin-top: 50px;
-    padding: 0 20px;
+    padding: 20px;
     background-color: #E6F2FF;
     border-radius: 10px;
     display: flex;
@@ -760,9 +777,14 @@ hr{
     margin: 15px 0 0 0;
 }
 
+#log-ad > div:last-child{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap : 10px
+}
+
 #log-ad > div > button{
-    width: 80px;
-    height: 35px;
+    padding: 5px 10px;
     background-color: white;
     border-radius: 5px;
     border-style: none;
@@ -786,7 +808,7 @@ hr{
 }
 
 .review > div > div{
-    width: 160px;
+    width: fit-content;
     height: 25px;
     background-color: #FFFFDD;
     text-align: center;

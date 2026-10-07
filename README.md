@@ -133,7 +133,7 @@
 div-flask/
 ├── config.py                     # 데이터베이스 URI, 시크릿 키 등 기본 설정 파일
 ├── requirements.txt              # 파이썬 의존성 패키지 명세서
-├── seed_database.py              # 회원, 96개 여행 상품, 초기 주문/리뷰 시딩 스크립트
+├── seed_database.py              # 회원, 96개 여행 상품, 공지사항, 초기 주문/리뷰 시딩 스크립트
 ├── seed_accommodations_data.py   # 6대 권역 120개 연계 숙박 시설 시딩 스크립트
 ├── travel.db                     # SQLite 데이터베이스 파일 (자동 생성/연동)
 ├── .flaskenv                     # Flask 실행 환경 변수 정의 (FLASK_APP, FLASK_DEBUG)
@@ -147,7 +147,8 @@ div-flask/
     ├── timedealseed.py           # M타임딜 기본 데이터 자동 등록 모듈
     ├── static/                   # 정적 에셋 디렉토리
     │   ├── css/                  # 모듈별 분리된 스타일시트
-    │   │   ├── main.css          # 공통 및 메인 화면 스타일
+    │   │   ├── base.css          # base.html 공통 레이아웃 (GNB 헤더, 푸터, 글로벌 테마, 언어 선택기 등)
+    │   │   ├── main.css          # 메인 화면 전용 스타일 (슬라이드 배너, M타임딜, 여행 후기 등)
     │   │   ├── product.css       # 권역별 상품 목록 및 상세 화면 스타일
     │   │   ├── reserve.css       # 예약 신청 페이지 스타일
     │   │   ├── payment.css       # 결제 진행 화면 스타일
@@ -156,7 +157,8 @@ div-flask/
     │   │   ├── nearby_slide.css  # 인근 연관 추천 관광지 캐러셀 스타일
     │   │   ├── login.css         # 로그인 전용 스타일
     │   │   ├── signup.css        # 회원가입 전용 스타일
-    │   │   └── customer.css      # 고객센터 FAQ 및 1:1 문의 스타일
+    │   │   ├── customer.css      # 고객센터 FAQ 및 1:1 문의 스타일
+    │   │   └── notice.css        # 공지사항 목록 및 아코디언 상세 스타일
     │   ├── js/                   # 모듈별 자바스크립트
     │   │   ├── lookup.js         # 예약 내역 아코디언 토글 인터랙션
     │   │   ├── payment.js        # PortOne 결제 호출 및 금액 계산
@@ -166,7 +168,7 @@ div-flask/
     ├── templates/                # Jinja2 HTML 템플릿 디렉토리
     │   ├── base.html             # 공통 레이아웃 (GNB 헤더, 언어 선택기, 푸터)
     │   ├── index.html            # 메인 홈 페이지
-    │   ├── notice.html           # 공지사항 상세 뷰
+    │   ├── notice.html           # 공지사항 목록 및 아코디언 상세 뷰 (base.html 연동)
     │   ├── auth/                 # 회원 인증 관련 템플릿 (login, signup, signup_success)
     │   ├── customer/             # 고객센터 관련 템플릿 (faq, question_form, customer_detail)
     │   ├── main_fragments/       # 메인 화면 조각 컴포넌트 (배너, 권역아이콘, 타임딜, 후기, 공지)
