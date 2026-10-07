@@ -75,7 +75,14 @@
     </div>
 
     <div id="main_text">
+        {% if kw %}
+        <p class="fs-5 mb-1 text-dark">
+            🔍 '<strong>{{ kw }}</strong>' 검색 결과 (총 <strong>{{ products|length }}</strong>건)
+            <a href="{{ url_for('product.main_product') }}" class="btn btn-sm btn-outline-secondary ms-2 py-0 px-2" style="font-size: 0.8rem;">검색 초기화</a>
+        </p>
+        {% else %}
         <p> 숨 가쁜 일상을 벗어나 당신의 취향을 채워줄 대한민국 전역의 보석 같은 여행지를 한눈에 만나보세요. </p>
+        {% endif %}
     </div>
     <hr>
 
