@@ -4,7 +4,6 @@ import enum
 import uuid
 import json
 from pybo import db
-from pybo import db
 
 class User(db.Model):
     __tablename__ = 'users'

@@ -84,8 +84,8 @@ def review_detail(review_id):
 
 @bp.route('/deal/detail/<int:deal_id>/')
 def deal_detail(deal_id):
-    deal = TimeDeal.query.get_or_404(deal_id)
-    return render_template('product/deal_detail.html', deal=deal)
+    TimeDeal.query.get_or_404(deal_id)
+    return redirect(url_for('product.main_product'))
 
 
 # 언어 변경

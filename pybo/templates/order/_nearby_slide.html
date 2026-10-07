@@ -4,7 +4,6 @@
 {% set reg_name = target_region|default(product.region if product else (order.primary_product.region if (order and order.primary_product) else '')) %}
 
 {% if items and items|length > 0 %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/nearby_slide.css') }}">
 
 <!-- 연관 근처 관광지 추천 슬라이드 (Bootstrap 5) -->
 <div class="mt-4 pt-4 border-top">
