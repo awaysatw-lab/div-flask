@@ -20,6 +20,10 @@ def check_user_booked_product(user, product_id):
 
 @bp.route('/list')
 def list():
+    if g.user is None:
+        flash('로그인이 필요한 서비스입니다.')
+        return redirect(url_for('auth.login', next=request.full_path))
+    
     page = request.args.get('page', default=1, type=int)
     region = request.args.get('region', default='', type=str).strip()
     kw = request.args.get('kw', default='', type=str).strip()
