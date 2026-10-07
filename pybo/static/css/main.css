@@ -1,7 +1,53 @@
+font[color], font[size], .goog-te-menu-value, .skiptranslate, font {
+    font-family: inherit !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
 /* ==========================================================================
    길마중 - main.css (메인 화면 전용 스타일)
    적용 대상: index.html (메인 화면 프래그먼트 컴포넌트 전용)
    ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'NexonLv1Gothic';
+    font-weight: 400;
+    font-display: swap;
+    color: #212529;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    width: 100%;
+    min-height: 100%;
+    background-color: #ffffff;
+    color: #212529;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+button,input {
+    font-family: inherit;
+}
+
+.content-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
 
 /* ==========================================================================
    1. 메인 화면 레이아웃 컨테이너
