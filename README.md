@@ -100,14 +100,30 @@
 | | Werkzeug 3.1.8 | WSGI 유틸리티 및 비밀번호 해싱 (`pbkdf2:sha256`) |
 | | Authlib 1.8.0 | 카카오 OAuth 2.0 소셜 인증 연동 |
 | **Frontend** | HTML5 / CSS3 | 시맨틱 마크업 및 현대적 스타일링 |
-| | JavaScript (ES6+) | 비동기 UI 제어 및 모달, 탭, 타이머 인터랙션 |
-| | Bootstrap 5.3 | 반응형 그리드 및 UI 컴포넌트 라이브러리 |
+| | JavaScript (ES6+) | 비동기 UI 제어 및 모달, 탭, 타이머, 캔버스 인터랙션 |
+| | Bootstrap 5.3 | 반응형 그리드 및 UI 컴포넌트를 활용한 **CSS 구조 단순화** |
+| | HTML5 Canvas | 지도 구분선 기반 권역 선택 및 플러드필(Flood Fill) 렌더링 |
 | | Swiper.js | 터치 지원 모바일 친화적 이미지 캐러셀 |
+| **Translation** | Google 번역 API | 실시간 페이지 다국어(한국어, 영어, 일본어, 중국어) 번역 연동 |
 | **Database** | SQLite 3 | 로컬 개발 및 파일 기반 관계형 데이터베이스 |
 | | (확장 가능) MySQL / MariaDB | 운영 전환 지원을 위한 SQLAlchemy 표준 스키마 설계 |
-| **Payment** | PortOne V2 API | PG사 연동 모의/실거래 결제 SDK |
+| **Payment** | PortOne V2 API | 전자결제 모듈 연동 (**테스트 편의를 위해 Comment/Mock 처리**) |
 | **DevOps & Tool** | Git | 소스 코드 버전 관리 |
 | | python-dotenv | 환경 변수 관리 (`.flaskenv`) |
+
+### 💡 기술 적용 세부 내역 (Technical Details)
+- **Google 번역 API를 통한 Language 변경 기능 추가**:
+  - `Google Translate Element API`를 GNB 헤더에 탑재하여 원클릭으로 4개 국어(한국어, English, 日本語, 简体中文) 실시간 페이지 번역을 지원합니다.
+  - 커스텀 드롭다운 메뉴와 Google Translate의 번역 위젯을 자바스크립트로 연동하여 기본 번역 바의 투박함을 가리고 세련된 글로벌 UI를 구현했습니다.
+- **권역별 지도의 지역 구분선에 따른 지역 선택 기능 추가**:
+  - `HTML5 Canvas` 및 픽셀 기반 플러드 필(Flood Fill) 정밀 시드 좌표 알고리즘을 적용하여 지도 이미지의 지역 구분선을 기준으로 권역(수도권, 강원, 충청, 경상, 전라, 제주)을 감지합니다.
+  - 마우스 호버 시 해당 권역의 하이라이트 색상 반전 효과를 지원하며, 구분선 안쪽 클릭 시 해당 권역의 상품 탭 및 슬라이드 배너가 유기적으로 자동 전환됩니다.
+- **PortOne 전자결제 기능 추가 (Comment/Mock 처리)**:
+  - PortOne(구 아임포트) V2 SDK를 기반으로 신용/체크카드, 간편결제 등 전자결제 연동 프로세스를 구축했습니다.
+  - 개발 및 평가 환경에서 실제 과금 없이 모든 예약 프로세스를 원활하게 검증할 수 있도록 **모의 승인(Mock Payment) 모드로 처리**하였으며, 실제 상용 가맹점 Store ID 및 Channel Key를 주입하여 즉시 실결제로 전환할 수 있도록 결제 호출 코드를 주석(Comment)으로 완비했습니다.
+- **Bootstrap을 이용한 CSS 단순화 및 최적화**:
+  - Bootstrap 5.3의 Flexbox 유틸리티, 반응형 그리드(`row`, `col`), 카드(`card`), 아코디언(`accordion`), 배지(`badge`) 컴포넌트를 적극 도입하여 기존의 길고 복잡했던 커스텀 CSS 코드를 대폭 감축하고 단순화했습니다.
+  - 브랜드 아이덴티티 색상인 네이비(`#1D3557`)를 중심으로 CSS 변수(`--bs-primary`)를 재정의하여 일관된 톤앤매너와 높은 코드 가독성을 확보했습니다.
 
 ---
 
