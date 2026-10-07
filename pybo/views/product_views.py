@@ -21,11 +21,22 @@ REGION_ALIAS = {
 
 @bp.route('/main_product')
 def main_product():
+    kw = request.args.get('kw', default='', type=str).strip()
     raw_region = request.args.get('region', 'all').lower()
     selected_region = REGION_ALIAS.get(raw_region, 'all')
-    products_data = TourProduct.query.all()
 
-    return render_template('product/main_product.html', products=products_data, selected_region=selected_region)
+    query = TourProduct.query
+    if kw:
+        query = query.filter(TourProduct.name.ilike(f"%{kw}%"))
+
+    products_data = query.all()
+
+    return render_template(
+        'product/main_product.html',
+        products=products_data,
+        selected_region=selected_region,
+        kw=kw
+    )
 
 
 @bp.route('/sub_product/<int:product_id>')
