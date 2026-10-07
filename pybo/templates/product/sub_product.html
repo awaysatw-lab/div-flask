@@ -36,15 +36,15 @@
                     <div id="recommend">
                         <p id="heart">❤️{{ "{:,}".format(product.recommendation_count) }}명이 추천했습니다!</p>
                         {% if g.user %}
-                        <button class="log_heart">추천하기</button>
+                        <button class="log_heart" >추천하기</button>
                         {% else %}
                         <button class="log_heart" onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`"> 추천하기 <br> (로그인)</button>
                         {% endif %}
                     </div>
                     <button class="white-btn" onclick="location.href=`{{ url_for('customer.faq_list') }}`">1:1문의</button>
-                    <button class="white-btn">❤️</button>
-                    <button class="white-btn">🖨️</button>
-                    <button class="white-btn">🖇️</button>
+                    <button class="white-btn" id="like-btn">♡</button>
+                    <button class="white-btn" onclick="window.print()">🖨️</button>
+                    <button class="white-btn" id="copy-btn">🖇️</button>
                 </div>
                 <div>
                     <p id="schedule">여행일정 : {{ product.schedule_summary }} </p>
@@ -211,7 +211,7 @@
         <div id="review_w">
             {% for review in reviews %}
             <div id="detail_star">
-                <div>👤 {{ review.author.name if review.author else '고객' }} (아이디: {{ review.author.user_id if review.author else review.user_id }}) ⭐ {{ review.rating }}</div>
+                <div>👤 {{ review.author.name if review.author else '고객' }} (아이디: {{ review.author.user_id if review.author else review.user_id }}) <span class="review-stars"> {{ '★' * review.rating }}{{ '☆' * (5 - review.rating) }}</span>  </div>
                 <div>
                     <div> {{ review.created_at.strftime('%Y-%m-%d') if review.created_at else '' }}</div>
                     {% if g.user and review.user_id == g.user.id %}
@@ -222,10 +222,7 @@
             <p> {{ review.content }} </p>
             {% endfor %}
         </div>
-        <div id="more">
-            <div>더보기</div>
-            <div>답글</div>
-        </div>
+        <div id="more" onclick="location.href=`{{ url_for('review.list') }}`">더보기</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.js"></script>

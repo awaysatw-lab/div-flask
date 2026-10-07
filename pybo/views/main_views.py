@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, g, session
 from pybo import db
-from pybo.models import Review, TimeDeal, Notice
+from pybo.models import Review, TimeDeal, Notice, TourProduct
 from datetime import datetime
+from sqlalchemy import func
 
 bp = Blueprint('main', __name__, url_prefix='/')
 
@@ -12,7 +13,18 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 @bp.route('/')
 def index():
-    context = get_common_context()
+    try:
+        context = get_common_context()
+        if context is None:
+            context = {}
+    except Exception:
+        context = {}
+
+    top_products = TourProduct.query.order_by(TourProduct.recommendation_count.desc()).limit(6).all()
+    if not top_products or len(top_products) == 0:
+        top_products = TourProduct.query.order_by(TourProduct.id.desc()).
+    context['product_list'] = top_products
+
     return render_template('index.html', **context)
 
 
@@ -45,8 +57,6 @@ def notice_detail(notice_id):
     notice_obj = Notice.query.get_or_404(notice_id)
     notice_obj.views = (notice_obj.views or 0) + 1
     db.session.commit()
-
-    # 해당 공지사항이 위치한 페이지 자동 계산 (10개씩 페이징 기준)
     newer_count = Notice.query.filter(Notice.created_at > notice_obj.created_at).count()
     page = (newer_count // 10) + 1
     notice_list = Notice.query.order_by(Notice.created_at.desc()).paginate(page=page, per_page=10)
@@ -64,17 +74,24 @@ def notice_detail(notice_id):
 # ==========================================
 # 슬라이드 상품
 # ==========================================
+
 @bp.route('/main')
 def main():
-    context = get_common_context()
+    try:
+        context = get_common_context()
+        if context is None:
+            context = {}
+    except Exception:
+        context = {}
+
+    top_products = TourProduct.query.order_by(TourProduct.recommendation_count.desc()).limit(6).all()
+    if not top_products or len(top_products) == 0:
+        top_products = TourProduct.query.order_by(TourProduct.id.desc()).limit(6).all()
+
+    # 💡 위와 동일하게 중복 에러를 원천 차단합니다.
+    context['product_list'] = top_products
+
     return render_template('index.html', **context)
-
-
-@bp.route('/autumn-detail')
-def autumn_detail():
-    context = get_common_context()
-    return render_template('index.html', **context)
-
 
 # ==========================================
 # 지역 아이콘 상품
