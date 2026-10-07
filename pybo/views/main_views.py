@@ -46,7 +46,9 @@ def notice_detail(notice_id):
     notice_obj.views = (notice_obj.views or 0) + 1
     db.session.commit()
 
-    page = request.args.get('page', type=int, default=1)
+    # 해당 공지사항이 위치한 페이지 자동 계산 (10개씩 페이징 기준)
+    newer_count = Notice.query.filter(Notice.created_at > notice_obj.created_at).count()
+    page = (newer_count // 10) + 1
     notice_list = Notice.query.order_by(Notice.created_at.desc()).paginate(page=page, per_page=10)
     category_list = ['전체', '시스템', '공모전', '투어안내', '이벤트', '안내']
 
