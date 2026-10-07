@@ -2,7 +2,7 @@ import json
 import random
 from datetime import datetime, timezone, timedelta
 from pybo import create_app, db
-from pybo.models import User, TourProduct, RegionEnum, Review, Order, OrderItem, Payment
+from pybo.models import User, TourProduct, RegionEnum, Review, Order, OrderItem, Payment, Notice
 
 def seed_database():
     users_data = [
@@ -13760,12 +13760,134 @@ def seed_database():
     total_orders = Order.query.count()
     print(f"[Seed] 성공! 총 {total_count}개 관광 상품 및 {total_orders}개 주문/결제 데이터가 적재되었습니다.")
 
+    # 공지사항 (Notice) 데이터 적재
+    seed_notices()
+
     # 연관 숙박 (호텔/민박 120건) 적재
     try:
         from seed_accommodations_data import seed_accommodations
         seed_accommodations()
     except Exception as e:
         print(f"[Seed] 숙박 데이터 적재 중 오류: {e}")
+
+def seed_notices():
+    notice_data = [
+        {
+            'category': '시스템',
+            'subject': '[시스템] 결제 모듈 전용 인프라 정기 보안 업데이트에 따른 일시 순단 고지',
+            'content': (
+                "안녕하세요, 길마중 서비스 운영팀입니다.\n\n"
+                "고객님들의 안전하고 원활한 결제 서비스 이용을 위해 전자결제(PortOne) 및 금융 인프라 정기 보안 점검 및 시스템 업데이트가 진행될 예정입니다.\n\n"
+                "■ 작업 일시: 2026년 10월 15일(목) 02:00 ~ 04:00 (약 2시간)\n"
+                "■ 작업 영향: 해당 점검 시간 동안 신용카드 및 간편결제(카카오페이/토스페이) 승인이 일시적으로 순단될 수 있습니다.\n"
+                "■ 참고 사항: 이미 완료된 예약의 조회 및 취소 접수는 정상 이용 가능합니다.\n\n"
+                "이용에 불편을 드려 대단히 죄송하며, 더욱 안전하고 신뢰할 수 있는 여행 서비스를 제공하기 위해 최선을 다하겠습니다.\n감사합니다."
+            ),
+            'views': 1420,
+            'days_ago': 1
+        },
+        {
+            'category': '공모전',
+            'subject': '[공모전] 2026 길마중 숨은 가을 비경 숏폼/사진 공모전 개최 및 부상 안내',
+            'content': (
+                "올가을, 당신만의 특별한 국내 여행지를 공유해 주세요!\n\n"
+                "길마중과 함께 떠난 가을 투어의 아름다운 순간, 또는 나만 알고 있는 전국의 숨은 단풍/일몰 명소를 영상과 사진으로 담아 응모해 주시면 푸짐한 여행 지원금을 드립니다.\n\n"
+                "■ 접수 기간: 2026년 10월 1일(목) ~ 10월 31일(토)\n"
+                "■ 참가 부문: \n"
+                "   1) 숏폼 영상 (Instagram Reels, YouTube Shorts / 60초 이내)\n"
+                "   2) 고화질 사진 (해상도 2000px 이상, 3장 이내)\n"
+                "■ 시상 내역:\n"
+                "   - 대상 (1명): 2026 하반기 여행지원금 100만 원 및 상패\n"
+                "   - 최우수상 (2명): 길마중 패키지 전 상품 50만 원 이용권\n"
+                "   - 우수상 (5명): 길마중 20만 원 상당 여행 쿠폰\n"
+                "   - 참가상 (선착순 100명): 스타벅스 모바일 음료 쿠폰\n\n"
+                "■ 접수 방법: 고객센터 1:1 문의 게시판 접수 또는 이메일 contest@gilmajungtour.com\n\n"
+                "여행자 여러분의 많은 관심과 참여를 기다립니다!"
+            ),
+            'views': 3285,
+            'days_ago': 5
+        },
+        {
+            'category': '투어안내',
+            'subject': '가을 단풍철 예약 폭주에 따른 동해안 특별 프리미엄 패키지 열차 증편 확정 소식',
+            'content': (
+                "가을 성수기 동해안 및 강원권 단풍 명소 패키지 예약 수요 급증에 따라, 한국철도공사(코레일)와의 협력을 통해 주말 특별 프리미엄 관광열차를 일 2회 추가 증편 운행하기로 확정하였습니다.\n\n"
+                "■ 대상 상품: [강원권] 설악산 주전골 단풍 트레킹 & 동해 바다열차 힐링 패키지\n"
+                "■ 증편 기간: 2026년 10월 10일 ~ 11월 15일 (매주 토/일 운행)\n"
+                "■ 예약 안내: 길마중 웹사이트 '여행 > 강원권' 메뉴에서 실시간 좌석 예약이 가능합니다.\n\n"
+                "단풍 절정기 쾌적하고 편안한 이동을 약속드립니다. 조기 마감될 수 있으니 예약을 서둘러 주세요!"
+            ),
+            'views': 854,
+            'days_ago': 7
+        },
+        {
+            'category': '이벤트',
+            'subject': '[이벤트] 신규 가입 회원 대상 전국 인기 투어 15% 웰컴 할인 쿠폰 지급',
+            'content': (
+                "길마중에 오신 모든 여행자분들을 진심으로 환영합니다!\n\n"
+                "지금 회원가입을 완료하시면, 전국 6대 권역 96개 모든 투어 패키지에 결제 즉시 사용 가능한 '15% 웰컴 회원 할인' 혜택이 계정에 자동 적용됩니다.\n\n"
+                "■ 혜택 대상: 길마중 신규 회원 가입 고객 전체\n"
+                "■ 혜택 내용: 모든 일반/특가 투어 상품 기본 15% 자동 할인 적용\n"
+                "■ 사용 방법: 원하는 투어 상품 선택 후 예약/결제 단계에서 회원 할인이 즉시 계산되어 청구됩니다.\n\n"
+                "지금 바로 길마중과 함께 잊지 못할 추억을 만들어보세요!"
+            ),
+            'views': 2140,
+            'days_ago': 12
+        },
+        {
+            'category': '안내',
+            'subject': '[안내] 2026 가을·겨울 시즌 맞이 전국 6대 권역 신규 관광 코스 정식 오픈',
+            'content': (
+                "수도권의 도심 야경부터 강원의 청정 숲길, 충청의 호수 드라이브, 경상의 역사 문화 탐방, 전라의 오감 미식 투어, 제주의 에메랄드빛 해안까지!\n\n"
+                "2026년 가을·겨울 시즌을 맞이하여 길마중 전문 여행 기획팀이 엄선한 신규 96개 패키지 상품이 정식 오픈되었습니다.\n\n"
+                "■ 주요 특징:\n"
+                "   1) 권역별 인터랙티브 지도와 연동된 원클릭 지역 필터링\n"
+                "   2) 매일 새로운 혜택의 'M타임딜' 한정 특가 라인업\n"
+                "   3) 실시간 120개 검증된 인근 숙박 시설 연계 예약 시스템\n\n"
+                "새로워진 길마중의 다채로운 테마 여행을 지금 확인해보세요."
+            ),
+            'views': 1980,
+            'days_ago': 20
+        },
+        {
+            'category': '안내',
+            'subject': '[안내] 개인정보 처리방침 및 전자금융거래 이용약관 개정 사전 안내',
+            'content': (
+                "항상 길마중을 신뢰하고 이용해 주시는 회원 여러분께 감사드립니다.\n\n"
+                "개인정보 보호법 개정 사항을 반영하고, 간편결제 및 다국어 서비스 도입에 따른 이용 편의를 제고하고자 개인정보 처리방침 및 전자금융거래 이용약관을 아래와 같이 개정합니다.\n\n"
+                "■ 주요 개정 내용:\n"
+                "   - 전자결제대행사(PG사) 위탁 정보 처리 목적 명확화\n"
+                "   - 비회원 예약조회를 위한 인증 데이터 보관 및 파기 주기 구체화\n"
+                "   - 다국어 번역 서비스 제공을 위한 언어 세션 쿠키 처리 근거 신설\n\n"
+                "■ 개정 일자: 2026년 11월 1일(일) 효력 발생\n"
+                "■ 이의 제기: 본 개정에 동의하지 않으시는 경우 고객센터를 통해 회원 탈퇴를 요청하실 수 있습니다."
+            ),
+            'views': 620,
+            'days_ago': 30
+        }
+    ]
+
+    for n in notice_data:
+        existing = Notice.query.filter_by(subject=n['subject']).first()
+        created_time = datetime.now() - timedelta(days=n['days_ago'])
+        if not existing:
+            notice = Notice(
+                category=n['category'],
+                subject=n['subject'],
+                content=n['content'],
+                views=n['views'],
+                created_at=created_time
+            )
+            db.session.add(notice)
+        else:
+            existing.category = n['category']
+            existing.content = n['content']
+            existing.views = n['views']
+            existing.created_at = created_time
+
+    db.session.commit()
+    total_notices = Notice.query.count()
+    print(f"[Seed] 공지사항 {len(notice_data)}건 적재 완료 (총 {total_notices}건).")
 
 if __name__ == '__main__':
     app = create_app()

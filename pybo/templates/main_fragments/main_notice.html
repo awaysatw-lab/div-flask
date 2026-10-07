@@ -2,14 +2,14 @@
     <div class="info-footer-inside">
 
         <div class="notice-section">
-            <h3>📢 공지사항 및 새소식</h3>
+            <h3><a href="{{ url_for('main.notice') }}" class="text-decoration-none text-dark">📢 공지사항 및 새소식</a></h3>
             <ul>
                 <!-- 플라스크 문법으로 변경: 데이터가 있을 때만 반복문 실행 -->
                 {% if latest_notices %}
                     {% for notice in latest_notices %}
                     <li>
-                        <!-- 상세 페이지 라우트가 있다면 매핑 (예: notice.detail) -->
-                        <a href="{{ url_for('main.notice') }}">
+                        <!-- 상세 페이지 라우트 매핑 (아코디언 자동 펼침) -->
+                        <a href="{{ url_for('main.notice_detail', notice_id=notice.id) }}">
                             [{{ notice.category }}] {{ notice.subject }}
                         </a>
                         <!-- 플라스크(파이썬) 날짜 포맷팅 .strftime() 사용 -->

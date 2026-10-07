@@ -7,7 +7,8 @@ font[color], font[size], .goog-te-menu-value, .skiptranslate, font {
 }
 
 /* ==========================================================================
-   초기화
+   길마중 - main.css (메인 화면 전용 스타일)
+   적용 대상: index.html (메인 화면 프래그먼트 컴포넌트 전용)
    ========================================================================== */
 * {
     margin: 0;
@@ -49,400 +50,18 @@ button,input {
 }
 
 /* ==========================================================================
-   헤더 (수정완료)
+   1. 메인 화면 레이아웃 컨테이너
    ========================================================================== */
-
-.site-header {
-    width: 100%;
-    height: 90px;
-    background-color: #faf8f5;
-    border-bottom: 1px solid #F6F4EE;
-}
-
-.header-container {
+.content-container {
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    flex-shrink: 0;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #333333;
-    gap: 8px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: x-large;
-}
-
-.logo-area span {
-    cursor: default;
-    font-size: x-small;
-}
-
-.logo-circle {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-.logo {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: #212529;
-    letter-spacing: -0.5px;
-}
-
-.slogan {
-    font-size: 0.75rem;
-    color: #2B2D42;
-    margin-left: 5px;
-}
-
-.header-right-block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: center;
-    flex: 1;
-    height: 100%;
-}
-
-.top-util-menu {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    padding: 6px 2px;
-    font-size: 13px;
-    color: #2B2D42;
-    white-space: nowrap !important;
-    flex-shrink: 0;
-}
-
-.top-util-menu .util-link {
-    color: #2B2D42;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-.top-util-menu .util-link:hover {
-    color: #2B2D42;
-    text-decoration: underline;
-}
-
-.top-util-menu .logout-btn {
-    color: #2B2D42;
-}
-
-.top-util-menu .util-divider {
-    color: #2B2D42;
-    font-size: 11px;
-}
-
-.top-util-menu .util-user-name {
-    font-weight: bold;
-    color: #1E3A5F;
-}
-
-.top-util-menu .lang-dropdown {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    color: #2B2D42;
-}
-
-
-.nav-search-line {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 35px;
-    margin-top: 4px;
-}
-
-.nav-links {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 35px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.nav-item {
-    position: relative;
-    display: flex;
-    align-items: center;       /* 아이템 내부 요소 정렬 */
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-}
-
-.nav-item > a {
-    text-decoration: none;
-    color: #2B2D42;
-    font-size: 1.05rem;
-    font-weight: bold;
-    letter-spacing: -0.3px;
-    display: flex;
-    align-items: center;       /* 링크 글자 내부 아이콘 정렬 */
-    white-space: nowrap !important;
-}
-
-/* 외부 CSS(.nav-link)에 의한 너비 확장 방지 */
-.site-header .nav-link {
-    width: auto !important;
-    white-space: nowrap !important;
-}
-
-.nav-item:hover > a {
-    color: #000000;
-    font-weight: bold;
-}
-
-.btn-box {
-    padding: 6px 10px;
-}
-
-.nav-item .badge {
-    background-color: #007bff;
-    color: #ffffff;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 1px 5px;
-    border-radius: 3px;
-    margin-left: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 14px;
-    vertical-align: middle;
-    transform: translateY(-1px);
-}
-
-.arrow {
-    font-size: 0.75rem;
-    color: #2B2D42;
-    margin: 0 0 3px 7px;
-    display: inline-block;
-    transform: translateY(1px);
-}
-
-.search-box-wrap {
-    width: 280px;
-    display: flex;
-    align-items: center;
-    background-color: #ffffff;
-    border: 1px solid #999999;
-    border-radius: 20px;
-    padding: 2px 5px;
-    flex-shrink: 0;
-}
-
-.header-search-input {
-    width: 100%;
-    padding: 5px 15px 5px 20px;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #212529;
-}
-
-.header-search-input::placeholder {
-    color: #999999;
-}
-
-.header-search-btn {
-    background: transparent;
-    border: none;
-    font-size: 15px;
-    padding: 0 10px;
-    cursor: pointer;
-    color: #212529;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* =========================================================
-   언어 선택 메뉴
-   ========================================================= */
-
-.cs-lang-dropdown {
-    position: relative;
-    display: inline-block;
-    z-index: 999999;
-}
-
-#languageDropdown {
-    position: relative;
-    z-index: 1000000;
-    cursor: pointer;
-    user-select: none;
-    white-space: nowrap;
-}
-
-#languageDropdown:hover {
-    color: #007bff !important;
-}
-
-#customLangMenu {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    display: none;
-    width: 110px;
-    min-width: 110px;
-    margin: 0;
-    padding: 6px 0;
-    list-style: none;
-    background-color: #ffffff;
-    border: 1px solid #EAE6DF;
-    border-radius: 4px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    z-index: 1000001;
-    text-align: left;
-}
-
-#customLangMenu li {
-    display: block;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-#customLangMenu .lang-item {
-    display: block;
-    width: 100%;
-    padding: 8px 16px;
-    color: #2B2D42;
-    font-size: 0.85rem;
-    font-weight: 500;
-    line-height: 1.4;
-    text-decoration: none;
-    white-space: nowrap;
-    cursor: pointer;
-    background-color: #ffffff;
-    transition:
-        background-color 0.15s ease,
-        color 0.15s ease;
-}
-
-#customLangMenu .lang-item:hover {
-    background-color: #F8F6F2;
-    color: #007bff;
-}
-
-#currentLanguageText {
-    display: inline-block;
-    white-space: nowrap;
-}
-
-.header-container,
-.header-right-block,
-.top-util-menu {
-    position: relative;
-}
-
-.site-header {
-    position: relative;
-    z-index: 99999;
-}
-
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #ffffff;
-    border: 1px solid #EAE6DF;
-    border-radius: 4px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    z-index: 99999;
-    padding: 0;
-    list-style: none;
-}
-
-.nav-item:hover .dropdown-menu {
-    display: block;
-}
-
-.dropdown-menu a {
-    text-decoration: none;
-    color: #2B2D42;
-    font-size: 0.88rem;
-    display: block;
-    padding: 10px 12px;
-    font-weight: 500;
-}
-
-.dropdown-menu a:hover {
-    background-color: #F8F6F2;
-    color: #007bff;
-}
-
-.mega-menu {
-    display: none;
-    flex-direction: row;
-    gap: 40px;
-    padding: 20px;
-    min-width: 120px;
-}
-
-.nav-item:hover .mega-menu {
-    display: flex;
-}
-
-.menu-column {
-    flex: 1;
-}
-
-.menu-column h3 {
-    font-size: 0.85rem;
-    color: #2B2D42;
-    margin-bottom: 12px;
-    padding-left: 8px;
-    border-left: 3px solid #007bff;
-    font-weight: 600;
-}
-
-.menu-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.menu-column ul li a {
-    padding: 6px 8px;
-    border-radius: 4px;
+    padding: 0 20px;
 }
 
 /* ==========================================================================
-   메인 슬라이드
+   2. 메인 슬라이드 배너
    ========================================================================== */
-
-
 .main-banner-full {
     background-size: cover;
     background-position: center;
@@ -450,23 +69,7 @@ button,input {
     height: 420px;
     transition: background-image 0.6s ease-in-out;
 }
-.banner-arrows {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    user-select: none;
-}
 
-.arrow-btn {
-    cursor: pointer;
-    padding: 0 5px;
-    transition: color 0.2s;
-}
-
-.arrow-btn:hover {
-    color: #F7931E;
-}
 .banner-content-wrap {
     position: absolute;
     top: 0;
@@ -507,7 +110,6 @@ button,input {
     letter-spacing: -0.5px;
 }
 
-
 .banner-text p {
     font-size: 1.05rem;
     color: #fff;
@@ -515,63 +117,58 @@ button,input {
     font-weight: 500;
 }
 
-#bannerTitle {
+#bannerTitle, #bannerDesc {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
     white-space: normal;
-    overflow-wrap: break-word;
-    word-break: keep-all;
-    line-height: 1.2;
-}
-
-#bannerDesc {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-break: keep-all;
-    line-height: 1.5;
-}
-
-#bannerTitle,
-#bannerDesc {
     overflow-wrap: anywhere;
+    word-break: keep-all;
 }
+
+#bannerTitle { line-height: 1.2; }
+#bannerDesc { line-height: 1.5; }
 
 .banner-arrows {
     margin-top: 15px;
     background: rgba(255, 255, 255, 0.25);
     color: #ffffff;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     width: fit-content;
     padding: 5px 14px;
     border-radius: 20px;
     font-size: 0.78rem;
     font-weight: bold;
     letter-spacing: 1px;
+    user-select: none;
 }
 
-/* ==========================================================================
-   지역별
-   ========================================================================== */
+.arrow-btn {
+    cursor: pointer;
+    padding: 0 5px;
+    transition: color 0.2s;
+}
 
+.arrow-btn:hover { color: #F7931E; }
+
+/* ==========================================================================
+   3. 지역별 여행 카테고리
+   ========================================================================== */
 .region-category {
     width: 100%;
     padding: 38px 0 42px;
     background: #fff;
 }
 
-
 .travel-tab-content {
     display: none;
     margin-top: 30px;
 }
 
-.travel-tab-content.active {
-    display: block;
-}
+.travel-tab-content.active { display: block; }
 
 .icon-list {
     display: flex;
@@ -579,10 +176,7 @@ button,input {
     justify-content: center;
 }
 
-.region-list {
-    gap: 34px;
-}
-
+.region-list { gap: 34px; }
 
 .icon-item {
     width: 105px;
@@ -601,10 +195,11 @@ button,input {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
-.circle-img svg {
+.circle-img img, .circle-img svg {
     display: block;
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
 
 .icon-item > span {
@@ -618,31 +213,36 @@ button,input {
 .more-btn-wrap {
     display: flex;
     justify-content: center;
-    margin: 5px 0;
+    margin: 25px 0 10px;
+    width: 100%;
 }
 
 .btn-content-more {
-    width: 286px;
-    height: 43px;
-    border: none;
-    border-radius: 0;
-    background: #51899b;
-    color: #fff;
-    font-size: 14px;
+    padding: 12px 35px;
+    font-size: 0.95rem;
     font-weight: 600;
+    color: #2B2D42;
+    background-color: #ffffff;
+    border: 1px solid #EAE6DF;
+    border-radius: 25px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn-content-more:hover {
+    background-color: #F8F6F2;
+    border-color: #999999;
 }
 
 /* ==========================================================================
-   타임딜
+   4. M타임딜
    ========================================================================== */
-
 .time-deal {
     background-color: #FAF8F5;
     padding: 65px 45px;
     border-radius: 12px;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: -0.03em;
 }
 
@@ -660,17 +260,15 @@ button,input {
     margin-bottom: 45px;
 }
 
-/* 좌우 카드 정렬을 위한 부모 컨테이너 */
 .time-deal .deal-container {
     display: flex;
     gap: 24px;
     width: 100%;
-    align-items: stretch; /* 좌측 메인 카드와 우측 서브 영역의 전체 높이를 완벽히 일치시킴 */
+    align-items: stretch;
 }
 
-/* [개선] 왼쪽 메인 타임딜 카드 */
 .main-deal-card {
-    flex: 1;                 /* 우측 서브 영역과 정확히 1:1 공간 분할 */
+    flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -678,7 +276,7 @@ button,input {
     border: 1px solid #EAE6DF;
     border-radius: 12px;
     overflow: hidden;
-    height: 520px;           /* 우측 서브카드 2개 합산 및 간격(20px) 높이에 정확히 매칭 */
+    height: 520px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
@@ -688,7 +286,6 @@ button,input {
     border-color: #D3C9BC;
 }
 
-/* 이미지 및 뱃지 공통 영역 */
 .main-img-area, .sub-img-area {
     background-size: cover;
     background-position: center;
@@ -697,10 +294,9 @@ button,input {
     background-color: #F6F4EE;
 }
 
-/* [개선] 메인 이미지 영역의 거대한 크기 축소 */
 .main-img-area {
     width: 100%;
-    height: 250px;           /* 기존 330px에서 하향 조정하여 텍스트 겹침 공간 확보 */
+    height: 250px;
 }
 
 .badge-group {
@@ -712,23 +308,8 @@ button,input {
     left: 16px;
 }
 
-.badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 4px;
-}
-
-.badge.blue {
-    background-color: #1E3A5F;
-    color: #ffffff;
-}
-
-.badge.green {
-    background-color: #F6F4EE;
-    color: #2B2D42;
-    border: 1px solid #EAE6DF;
-}
+.badge.blue { background-color: #1E3A5F; color: #ffffff; }
+.badge.green { background-color: #F6F4EE; color: #2B2D42; border: 1px solid #EAE6DF; }
 
 .timer-banner {
     background-color: #1E3A5F;
@@ -744,13 +325,12 @@ button,input {
     font-weight: 600;
 }
 
-/* [개선] 메인 카드 하단 정보 영역 정렬 */
 .main-deal-card .deal-info {
     flex: 1;
     padding: 24px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 텍스트 내용과 가격 라인을 위아래로 반듯하게 밀어냄 */
+    justify-content: space-between;
 }
 
 .main-deal-card .product-title {
@@ -795,26 +375,22 @@ button,input {
     color: #2B2D42;
 }
 
-/* ==========================================
-   오른쪽 서브 카드 리스트 세부 정렬
-   ========================================== */
 .sub-deal-list {
-    flex: 1;                 /* 좌측 메인 카드와 정확히 1:1 공간 분할 */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px;               /* 서브 카드 간격 고정 */
+    gap: 20px;
 }
 
-/* [개선] 개별 서브 카드 스타일 독립 분리 */
 .sub-card {
-    flex: 1;                 /* 부모 높이 안에서 반씩 영역 배분 */
+    flex: 1;
     min-width: 0;
     display: flex;
     background-color: #ffffff;
     border: 1px solid #EAE6DF;
     border-radius: 12px;
     overflow: hidden;
-    height: 250px;           /* 부모 강제 지정 (250px * 2개 + gap 20px = 520px 구조 매칭) */
+    height: 250px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
@@ -859,93 +435,42 @@ button,input {
 }
 
 /* ==========================================================================
-   후기
+   5. 여행 후기
    ========================================================================== */
-
 .travel-reviews {
     height: auto;
-    padding: 0 0 45px;
+    padding: 45px 0 35px;
 }
 
 .travel-reviews h3 {
-    margin-bottom: 20px;
-    font-size: 1.3rem;
-}
-
-.review-wrapper {
-    position: relative;
-    width: 100%;
-    height: 280px;
-    overflow: hidden;
-    border-radius: 8px;
-}
-
-.review-grid {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-    gap: 15px;
-}
-
-
-.review-card {
-    min-width: 0;
-    border: 1px solid #F6F4EE;
-    border-radius: 6px;
-    overflow: hidden;
-    height: 100%;
-    background-color: #ffffff;
-}
-
-.review-card .thumb {
-    width: 100%;
-    height: 200px;
-    background-color: #F6F4EE;
-}
-
-.review-card p {
-    padding: 10px;
-    font-size: 0.8rem;
-    color: #212529;
-}
-.review-grid .review-card.hide-card {
-    display: none !important;
-}
-
-/* 더보기 버튼 박스 레이아웃 및 텍스트 중앙 정렬 */
-.more-btn-wrap {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-    width: 100%;
-}
-
-.btn-content-more {
-    padding: 12px 35px;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 700;
     color: #2B2D42;
+}
+
+.review-card-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    border-color: #EAE6DF !important;
     background-color: #ffffff;
-    border: 1px solid #EAE6DF;
-    border-radius: 25px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.btn-content-more:hover {
-    background-color: #F8F6F2;
-    border-color: #999999;
+.review-card-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(43, 45, 66, 0.08) !important;
+    border-color: #D3C9BC !important;
 }
 
+.review-card-item .review-thumb-img {
+    transition: transform 0.35s ease;
+}
+
+.review-card-item:hover .review-thumb-img {
+    transform: scale(1.05);
+}
 
 /* ==========================================================================
-   공지사항
+   6. 공지사항 및 고객센터 박스
    ========================================================================== */
-
 .info-footer-box-wrap {
     width: 100%;
     border: 1px solid #FFFFDD;
@@ -954,7 +479,6 @@ button,input {
     margin-bottom: 50px;
     padding: 0;
     overflow: hidden;
-    border-bottom: none;
 }
 
 .info-footer-inside {
@@ -963,42 +487,44 @@ button,input {
     justify-content: space-between;
 }
 
-.notice-box {
+.notice-section, .notice-box {
     flex: 1.6;
     min-width: 0;
     padding: 30px;
     border-right: 1px solid #FFFFDD;
 }
 
-.notice-box h4 {
+.notice-section h3, .notice-box h4 {
     font-size: 1.1rem;
     font-weight: bold;
     color: #212529;
     margin-bottom: 18px;
 }
 
-.notice-box ul {
-    list-style: none;
-}
-
-.notice-box li {
+.notice-section ul, .notice-box ul { list-style: none; }
+.notice-section li, .notice-box li {
     margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+.notice-section li:last-child, .notice-box li:last-child { margin-bottom: 0; }
 
-.notice-box li:last-child {
-    margin-bottom: 0;
-}
-
-.notice-box a {
+.notice-section a, .notice-box a {
     text-decoration: none;
     color: #2B2D42;
     font-size: 0.9rem;
     font-weight: 500;
 }
 
-.notice-box a:hover {
+.notice-section a:hover, .notice-box a:hover {
     color: #E76F5F;
     text-decoration: underline;
+}
+
+.notice-section .date {
+    font-size: 0.8rem;
+    color: #8E90A6;
 }
 
 .cs-box {
@@ -1006,12 +532,7 @@ button,input {
     min-width: 0;
     padding: 30px;
     background-color: transparent;
-    border-radius: 0;
 }
-
-/* ==========================================================================
-   고객센터
-   ========================================================================== */
 
 .cs-box h4 {
     font-size: 1.1rem;
@@ -1033,502 +554,46 @@ button,input {
     line-height: 1.5;
 }
 
-
 /* ==========================================================================
-   푸터
+   7. 메인 화면 반응형 미디어 쿼리
    ========================================================================== */
-
-.site-footer {
-    width: 100%;
-    background-color: #faf8f5;
-    border-top: 1px solid #F6F4EE;
-    padding: 40px 0;
-    margin-top: 20px;
-}
-
-.footer-container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-    font-size: xx-small;
-}
-
-.footer-links {
-    font-size: 10px;
-    color: #1D3557;
-    margin-bottom: 25px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.footer-links a {
-    text-decoration: none;
-    color: #212529;
-}
-
-.footer-links a.bold-text {
-    font-weight: bold;
-    color: #212529;
-}
-
-.footer-body {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    margin-bottom: 25px;
-}
-
-.company-info {
-    flex: 2.5;
-    font-size: 10px;
-    color: #2B2D42;
-    line-height: 1.7;
-}
-
-.company-info p {
-    margin-bottom: 5px;
-}
-
-.company-info span {
-    margin-right: 3px;
-}
-
-.btn-check-info {
-    color: #2B2D42;
-    text-decoration: none;
-    margin-right: 12px;
-}
-
-.cs-phone-line {
-    margin-top: 10px;
-    font-size: 0.8rem;
-    color: #212529;
-}
-
-.cs-phone-line .highlight {
-    font-size: 14px;
-    color: #212529;
-    margin-left: 2px;
-}
-
-.escrow-info {
-    flex: 1;
-    font-size: 10px;
-    color: #999999;
-    border-left: 1px solid #e9ecef;
-    padding-left: 20px;
-    line-height: 1.6;
-}
-
-.escrow-info h5 {
-    font-size: 12px;
-    color: #212529;
-    margin-bottom: 6px;
-    font-weight: bold;
-}
-
-.btn-escrow {
-    display: inline-block;
-    margin-top: 6px;
-    color: #2B2D42;
-    text-decoration: underline;
-}
-
-.footer-notice {
-    border-top: 1px solid #FAF8F5;
-    padding-top: 15px;
-    margin-bottom: 25px;
-}
-
-.footer-notice ul {
-    list-style: none;
-}
-
-.footer-notice li {
-    font-size: 10px;
-    color: #1E3A5F;
-    line-height: 1.6;
-    margin-bottom: 4px;
-}
-
-.footer-copyright {
-    font-size: 12px;
-    color: #212529;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
-
-/* ==========================================================================
-   반응형
-   ========================================================================== */
-@media (max-width: 991px) {
-    .site-header {
-        height: auto;
-        padding: 10px 0;
-    }
-
-    .header-container {
-        flex-direction: column;
-        height: auto;
-        gap: 12px;
-    }
-
-    .header-right-block {
-        align-items: center;
-        width: 100%;
-    }
-
-    .top-util-menu {
-        justify-content: center;
-        width: 100%;
-    }
-
-    .nav-search-line {
-        justify-content: center;
-        width: 100%;
-        gap: 20px;
-    }
-
-    .content-container { padding: 0 15px; }
-    .banner-content-wrap { padding: 0 15px; }
+@media (max-width: 991.98px) {
+    .content-container, .banner-content-wrap { padding: 0 15px; }
     .banner-text { width: 280px; min-height: 220px; padding: 30px; }
     .banner-text h2 { font-size: 2rem; }
-    .time-deal { padding: 35px 20px; }
-    .time-deal .deal-container { grid-template-columns: 1fr; }
-    .sub-card { min-height: 180px; }
-    .review-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .review-card:nth-child(n+4) { display: none; }
-    .info-footer-inside { flex-direction: column; }
-    .notice-box { border-right: none; border-bottom: 1px solid #FFFFDD; }
-}
 
-@media (max-width: 900px) {
-    .region-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 18px;
-    }
-
+    .region-list { gap: 18px; flex-wrap: wrap; justify-content: center; }
     .icon-item { width: 90px; }
     .circle-img { width: 82px; height: 82px; }
     .icon-item > span { font-size: 13px; }
+
+    .time-deal { padding: 35px 20px; }
+    .time-deal .deal-container { flex-direction: column; }
+    .sub-card { min-height: 180px; }
+
+    .info-footer-inside { flex-direction: column; }
+    .notice-section, .notice-box { border-right: none; border-bottom: 1px solid #FFFFDD; }
 }
 
-@media (max-width: 700px) {
-    .header-container {
-        flex-direction: column;
-        gap: 12px;
-        align-items: center;
-    }
-
-    .header-right-block {
-        align-items: center;
-    }
-
-    .nav-search-line {
-        flex-direction: column;
-        gap: 12px;
-        align-items: center;
-    }
-
-    .nav-links {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .search-box-wrap {
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .region-list {
-        justify-content: center;
-        row-gap: 25px;
-    }
-
+@media (max-width: 767.98px) {
     .main-banner-full { height: 360px; }
     .banner-content-wrap { justify-content: center; }
     .banner-text { width: 280px; min-height: auto; padding: 25px; }
     .banner-text h2 { font-size: 1.8rem; }
     .banner-text p { font-size: 0.9rem; }
-    .icon-list { gap: 30px; }
-    .icon-item { width: 90px; }
-    .circle-img { width: 90px; height: 90px; }
-    .btn-content-more { width: 100%; min-width: 0; }
-    .time-deal { padding: 30px 15px; border-radius: 12px; }
-    .main-img-area { height: 220px; }
-    .main-deal-card .deal-info { padding: 25px 20px; }
-    .main-deal-card .product-title { font-size: 1.1rem; }
-    .main-deal-card .price-line .price { font-size: 1.4rem; }
-    .sub-card { flex-direction: column; }
-    .sub-img-area { width: 100%; min-height: 180px; }
-    .sub-card-text { width: 100%; }
-    .travel-reviews { padding-bottom: 35px; }
-    .review-wrapper { height: 230px; }
-    .review-grid { grid-template-columns: 1fr 1fr; }
-    .review-card:nth-child(n+3) { display: none; }
-    .review-card .thumb { height: 150px; }
-    .footer-body { flex-direction: column; gap: 25px; }
-    .escrow-info { border-left: none; border-top: 1px solid #e9ecef; padding-left: 0; padding-top: 20px; }
-}
 
-@media (max-width: 480px) {
-    .region-list { gap: 18px 25px; }
+    .region-list { row-gap: 20px; }
     .icon-item { width: 80px; }
     .circle-img { width: 72px; height: 72px; }
     .icon-item > span { font-size: 12px; }
-}
+    .btn-content-more { width: 100%; min-width: 0; }
 
-/* ==========================================================================
-   예약 / 예약확인 / 결제 화면 통합 테마 (로그인 버튼 #1D3557 색상 통일)
-   ========================================================================== */
-
-/* 1. 컨테이너 레벨 CSS 변수 오버라이드 */
-.reserve-container,
-.payment-container,
-.checkout-layout,
-.lookup-container,
-.complete-container,
-.reservation-detail-card,
-.standalone-detail-wrap,
-.review-container {
-    --bs-primary: #1D3557;
-    --bs-primary-rgb: 29, 53, 87;
-    --bs-primary-text-emphasis: #1D3557;
-    --bs-primary-bg-subtle: #e8edf3;
-    --bs-primary-border-subtle: #b6c4d4;
-    --bs-link-color: #1D3557;
-    --bs-link-hover-color: #4A7C8F;
-}
-
-/* 2. 메인 버튼 스타일 (로그인 버튼 #1D3557, 호버 #4A7C8F) */
-.reserve-container .btn-primary,
-.payment-container .btn-primary,
-.checkout-layout .btn-primary,
-.lookup-container .btn-primary,
-.complete-container .btn-primary,
-.reservation-detail-card .btn-primary,
-.standalone-detail-wrap .btn-primary,
-.review-container .btn-primary,
-.btn-primary-action,
-#checkout_button,
-#pay_button {
-    background-color: #1D3557 !important;
-    border-color: #1D3557 !important;
-    color: #ffffff !important;
-    box-shadow: 0 3px 7px rgba(32, 63, 104, 0.25);
-    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.reserve-container .btn-primary:hover,
-.payment-container .btn-primary:hover,
-.checkout-layout .btn-primary:hover,
-.lookup-container .btn-primary:hover,
-.complete-container .btn-primary:hover,
-.reservation-detail-card .btn-primary:hover,
-.standalone-detail-wrap .btn-primary:hover,
-.review-container .btn-primary:hover,
-.btn-primary-action:hover,
-#checkout_button:hover,
-#pay_button:hover {
-    background-color: #4A7C8F !important;
-    border-color: #4A7C8F !important;
-    color: #ffffff !important;
-}
-
-.reserve-container .btn-primary:active,
-.payment-container .btn-primary:active,
-.checkout-layout .btn-primary:active,
-.lookup-container .btn-primary:active,
-.complete-container .btn-primary:active,
-.reservation-detail-card .btn-primary:active,
-.standalone-detail-wrap .btn-primary:active,
-.review-container .btn-primary:active,
-.btn-primary-action:active,
-#checkout_button:active,
-#pay_button:active {
-    background-color: #152740 !important;
-    border-color: #152740 !important;
-    color: #ffffff !important;
-}
-
-/* 3. 아웃라인 버튼 (#1D3557) */
-.reserve-container .btn-outline-primary,
-.payment-container .btn-outline-primary,
-.checkout-layout .btn-outline-primary,
-.lookup-container .btn-outline-primary,
-.complete-container .btn-outline-primary,
-.reservation-detail-card .btn-outline-primary,
-.standalone-detail-wrap .btn-outline-primary,
-.review-container .btn-outline-primary {
-    color: #1D3557 !important;
-    border-color: #1D3557 !important;
-    background-color: transparent !important;
-    transition: all 0.2s ease;
-}
-
-.reserve-container .btn-outline-primary:hover,
-.payment-container .btn-outline-primary:hover,
-.checkout-layout .btn-outline-primary:hover,
-.lookup-container .btn-outline-primary:hover,
-.complete-container .btn-outline-primary:hover,
-.reservation-detail-card .btn-outline-primary:hover,
-.standalone-detail-wrap .btn-outline-primary:hover,
-.review-container .btn-outline-primary:hover {
-    background-color: #1D3557 !important;
-    border-color: #1D3557 !important;
-    color: #ffffff !important;
-}
-
-/* 4. 파란색 텍스트 (.text-primary) -> #1D3557 로 변경 */
-.reserve-container .text-primary,
-.payment-container .text-primary,
-.checkout-layout .text-primary,
-.lookup-container .text-primary,
-.complete-container .text-primary,
-.reservation-detail-card .text-primary,
-.standalone-detail-wrap .text-primary,
-.review-container .text-primary {
-    color: #1D3557 !important;
-}
-
-/* 5. 배지 및 배경 (.bg-primary, .badge.bg-primary) -> #1D3557 로 변경 */
-.reserve-container .bg-primary,
-.payment-container .bg-primary,
-.checkout-layout .bg-primary,
-.lookup-container .bg-primary,
-.complete-container .bg-primary,
-.reservation-detail-card .bg-primary,
-.standalone-detail-wrap .bg-primary,
-.review-container .bg-primary {
-    background-color: #1D3557 !important;
-    color: #ffffff !important;
-}
-
-/* 6. 은은한 톤 배지 (bg-primary-subtle) -> #1D3557 틴트로 변경 */
-.reserve-container .bg-primary-subtle,
-.payment-container .bg-primary-subtle,
-.checkout-layout .bg-primary-subtle,
-.lookup-container .bg-primary-subtle,
-.complete-container .bg-primary-subtle,
-.reservation-detail-card .bg-primary-subtle,
-.standalone-detail-wrap .bg-primary-subtle,
-.review-container .bg-primary-subtle {
-    background-color: #e8edf3 !important;
-    color: #1D3557 !important;
-}
-
-.reserve-container .border-primary-subtle,
-.payment-container .border-primary-subtle,
-.checkout-layout .border-primary-subtle,
-.lookup-container .border-primary-subtle,
-.complete-container .border-primary-subtle,
-.reservation-detail-card .border-primary-subtle,
-.standalone-detail-wrap .border-primary-subtle,
-.review-container .border-primary-subtle {
-    border-color: #b6c4d4 !important;
-}
-
-/* 7. 카드 테두리 (.border-primary) -> #1D3557 로 변경 */
-.reserve-container .border-primary,
-.payment-container .border-primary,
-.checkout-layout .border-primary,
-.lookup-container .border-primary,
-.complete-container .border-primary,
-.reservation-detail-card .border-primary,
-.standalone-detail-wrap .border-primary,
-.review-container .border-primary,
-#finalPaymentSection,
-.receipt-bottom-card {
-    border-color: #1D3557 !important;
-}
-
-/* 8. 알림창 (.alert-primary) -> #1D3557 틴트로 변경 */
-.reserve-container .alert-primary,
-.payment-container .alert-primary,
-.checkout-layout .alert-primary,
-.lookup-container .alert-primary,
-.complete-container .alert-primary,
-.reservation-detail-card .alert-primary,
-.standalone-detail-wrap .alert-primary,
-.review-container .alert-primary {
-    background-color: #e8edf3 !important;
-    border-color: #b6c4d4 !important;
-    color: #1D3557 !important;
-}
-
-/* 9. 입력 필드 및 체크박스 포커스 (#1D3557 테마 통일) */
-.reserve-container .form-check-input:checked,
-.payment-container .form-check-input:checked,
-.checkout-layout .form-check-input:checked,
-.review-container .form-check-input:checked {
-    background-color: #1D3557 !important;
-    border-color: #1D3557 !important;
-}
-
-.reserve-container .form-control:focus,
-.payment-container .form-control:focus,
-.lookup-container .form-control:focus,
-.reserve-container .form-select:focus,
-.review-container .form-control:focus,
-.review-container .form-select:focus {
-    border-color: #1D3557 !important;
-    box-shadow: 0 0 0 0.25rem rgba(29, 53, 87, 0.25) !important;
-}
-
-/* 10. 후기 목록 페이징 (#1D3557 테마) */
-.review-container .pagination .page-item.active .page-link {
-    background-color: #1D3557 !important;
-    border-color: #1D3557 !important;
-    color: #ffffff !important;
-}
-
-.review-container .pagination .page-link {
-    color: #1D3557;
-}
-
-.review-container .pagination .page-link:hover {
-    color: #4A7C8F;
-    background-color: #e8edf3;
-}
-    margin-bottom: 3.5rem;
-}
-
-/* ==========================================================================
-   번역 바
-   ========================================================================== */
-iframe.goog-te-banner-frame,
-iframe.goog-te-banner-frame.skiptranslate {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    position: absolute !important;
-    top: -9999px !important;
-    left: -9999px !important;
-}
-
-.goog-te-banner-frame + body {
-    top: 0;
-}
-
-body > .skiptranslate {
-    display: none !important;
-    height: 0 !important;
-    min-height: 0 !important;
-}
-
-html {
-    margin-top: 0 !important;
-}
-
-body {
-    top: 0 !important;
-    margin-top: 0 !important;
+    .time-deal { padding: 25px 15px; }
+    .main-img-area { height: 200px; }
+    .main-deal-card .deal-info { padding: 20px 15px; }
+    .main-deal-card .product-title { font-size: 1.1rem; }
+    .main-deal-card .price-line .price { font-size: 1.4rem; }
+    .sub-card { flex-direction: column; height: auto; }
+    .sub-img-area { width: 100%; height: 160px; }
+    .sub-card-text { width: 100%; padding: 15px; }
 }

@@ -109,7 +109,7 @@ hr{
     overflow-y: auto;
     scrollbar-width: thin;
     height: auto;
-    padding: 20px;
+    padding: 16px;
     margin-bottom: 20px;
     border-color: #1D3557;
     border-style: solid;
@@ -120,17 +120,31 @@ hr{
 }
 
 #map-choice > div {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
+}
+
+#map-choice > div:last-child {
+    margin-bottom: 0;
 }
 
 #map-choice > div > h6 {
     font-weight: 700;
-    font-size: 15pt;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+}
+
+#map-choice > div > p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 10px;
 }
 
 /* 지도 밑 탭 버튼 */
 #map-choice #pills-tab {
     width: 100%;
+    gap: 8px !important;
+    row-gap: 8px !important;
+    margin-bottom: 0 !important;
 }
 
 #map-choice #pills-tab > li {
@@ -149,13 +163,16 @@ hr{
 
 #map-choice #pills-tab > li > button {
     width: 100%;
-    height: 40px;
+    height: 38px;
     background-color: #FAF8F5;
     color: #212529;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 
@@ -337,6 +354,8 @@ hr{
 .card-body > div > a:last-child:hover{
     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
     border-color: #D3C9BC;
+    border-width: 5px;
+    font-weight: 500;
 }
 
 
