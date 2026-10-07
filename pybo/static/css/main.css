@@ -1,7 +1,14 @@
+font[color], font[size], .goog-te-menu-value, .skiptranslate, font {
+    font-family: inherit !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
 /* ==========================================================================
    초기화
    ========================================================================== */
-
 * {
     margin: 0;
     padding: 0;

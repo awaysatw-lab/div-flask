@@ -19,7 +19,7 @@
                         {% else %}
                             <h5>{{ "{:,}".format(product.original_price) }}원</h5>
                         {% endif %}
-                        <p>(회원가입 시 {{ "{:,}".format(product.member_discount_rate * 100)|int }}% 할인)</p>
+                        <p>(로그인 시 {{ "{:,}".format(product.member_discount_rate * 100)|int }}% 할인)</p>
                     </div>
                 </div>
                 <div id="card-btn">
