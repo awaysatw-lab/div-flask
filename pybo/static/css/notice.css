@@ -1,0 +1,148 @@
+/* ==========================================================================
+   길마중 - notice.css (공지사항 페이지 전용 스타일)
+   적용 대상: notice.html
+   ========================================================================== */
+
+.notice-wrapper {
+    max-width: 1100px;
+    margin: 40px auto 70px;
+    padding: 0 20px;
+}
+
+.notice-header-title {
+    color: #1D3557;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.notice-category-btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #EAE6DF;
+    color: #495057;
+    background-color: #FAF8F5;
+}
+
+.notice-category-btn:hover {
+    background-color: #1D3557;
+    border-color: #1D3557;
+    color: #ffffff;
+}
+
+.notice-category-btn.active {
+    background-color: #1D3557;
+    border-color: #1D3557;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.notice-table-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #EAE6DF;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    background: #ffffff;
+}
+
+.notice-table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.notice-table th {
+    background-color: #FAF8F5;
+    color: #1D3557;
+    font-weight: 700;
+    padding: 14px 12px;
+    border-bottom: 2px solid #EAE6DF;
+}
+
+.notice-row {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.notice-row:hover {
+    background-color: #F8F9FA;
+}
+
+.notice-row.active-row {
+    background-color: #F4F7FB;
+}
+
+.notice-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.badge-system { background-color: #e8edf3; color: #1D3557; border: 1px solid #b6c4d4; }
+.badge-contest { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.badge-tour { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+.badge-event { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+.badge-notice { background-color: #e9ecef; color: #495057; border: 1px solid #ced4da; }
+
+.notice-title-link {
+    color: #212529;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.notice-row:hover .notice-title-link {
+    color: #1D3557;
+}
+
+.notice-new-badge {
+    background-color: #E76F5F;
+    color: #ffffff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.notice-content-box {
+    background-color: #FAF8F5;
+    border-top: 1px dashed #D3C9BC;
+    padding: 24px 30px;
+    line-height: 1.8;
+    font-size: 0.95rem;
+    color: #2B2D42;
+    white-space: pre-line;
+}
+
+.notice-search-wrap {
+    max-width: 340px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #1D3557;
+    border-color: #1D3557;
+    color: #ffffff;
+}
+
+.pagination .page-link {
+    color: #1D3557;
+}
+
+@media (max-width: 768px) {
+    .notice-hide-mobile {
+        display: none !important;
+    }
+    .notice-content-box {
+        padding: 16px 18px;
+        font-size: 0.9rem;
+    }
+}
+

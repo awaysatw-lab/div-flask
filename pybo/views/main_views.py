@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, g, session
+from pybo import db
 from pybo.models import Review, TimeDeal, Notice
 from datetime import datetime
 
@@ -17,7 +18,45 @@ def index():
 
 @bp.route('/notice/')
 def notice():
-    return render_template('/notice.html')
+    page = request.args.get('page', type=int, default=1)
+    kw = request.args.get('kw', type=str, default='').strip()
+    category = request.args.get('category', type=str, default='all').strip()
+
+    notice_query = Notice.query.order_by(Notice.created_at.desc())
+    if category and category != 'all':
+        notice_query = notice_query.filter(Notice.category == category)
+    if kw:
+        search = f"%{kw}%"
+        notice_query = notice_query.filter(Notice.subject.ilike(search) | Notice.content.ilike(search))
+
+    notice_list = notice_query.paginate(page=page, per_page=10)
+    category_list = ['전체', '시스템', '공모전', '투어안내', '이벤트', '안내']
+
+    return render_template('notice.html',
+                           notice_list=notice_list,
+                           page=page,
+                           kw=kw,
+                           category=category,
+                           category_list=category_list)
+
+
+@bp.route('/notice/<int:notice_id>/')
+def notice_detail(notice_id):
+    notice_obj = Notice.query.get_or_404(notice_id)
+    notice_obj.views = (notice_obj.views or 0) + 1
+    db.session.commit()
+
+    page = request.args.get('page', type=int, default=1)
+    notice_list = Notice.query.order_by(Notice.created_at.desc()).paginate(page=page, per_page=10)
+    category_list = ['전체', '시스템', '공모전', '투어안내', '이벤트', '안내']
+
+    return render_template('notice.html',
+                           selected_notice_id=notice_id,
+                           notice_list=notice_list,
+                           page=page,
+                           kw='',
+                           category='all',
+                           category_list=category_list)
 
 
 # ==========================================
