@@ -8,10 +8,10 @@ def seed_time_deals():
         inspector = inspect(db.engine)
         if not inspector.has_table('time_deal'):
             return
+        if TimeDeal.query.first():
+            return
     except Exception:
         return
-
-    print("🌱 데이터베이스에 국내 타임딜 테스트 데이터를 등록하는 중...")
 
     # [수정] 2. 메인 타임딜 데이터 (해외 시드니 -> 국내 제주도)
     main_deal = TimeDeal(
@@ -60,4 +60,3 @@ def seed_time_deals():
     db.session.add(sub_deal1)
     db.session.add(sub_deal2)
     db.session.commit()
-    print("✅ 국내 타임딜 테스트 데이터 자동 등록 완료!")

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, g, session
-from pybo.models import Review, TimeDeal
+from pybo.models import Review, TimeDeal, Notice
 from datetime import datetime
 
 bp = Blueprint('main', __name__, url_prefix='/')
@@ -84,8 +84,8 @@ def review_detail(review_id):
 
 @bp.route('/deal/detail/<int:deal_id>/')
 def deal_detail(deal_id):
-    deal = TimeDeal.query.get_or_404(deal_id)
-    return render_template('product/deal_detail.html', deal=deal)
+    TimeDeal.query.get_or_404(deal_id)
+    return redirect(url_for('product.main_product'))
 
 
 # 언어 변경
@@ -104,6 +104,8 @@ def get_common_context():
     main_deal = TimeDeal.query.filter_by(product_type='main').first()
     sub_deal_list = TimeDeal.query.filter_by(product_type='sub').limit(2).all()
 
+    latest_notices = Notice.query.order_by(Notice.created_at.desc()).limit(3).all()
+
     print(f"==================================================")
     print(f"=== 현재 DB에서 가져온 전체 여행 후기 개수: {len(review_list)}개 ===")
     if len(review_list) > 0:
@@ -112,11 +114,13 @@ def get_common_context():
         print(f"=== 첫 번째 후기 내용: {review_title}")
     print(f"=== 메인 타임딜 타겟: {main_deal.title if main_deal else '없음'}")
     print(f"=== 서브 타임딜 노출 개수: {len(sub_deal_list)}개 ===")
+    print(f"=== 최신 공지사항 개수: {len(latest_notices)}개 ===")
     print(f"==================================================")
 
     return {
         'review_list': review_list,
         'main_deal': main_deal,
         'sub_deal_list': sub_deal_list,
+        'latest_notices': latest_notices,
         'now': datetime.now()
     }
