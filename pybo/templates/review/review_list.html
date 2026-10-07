@@ -3,27 +3,30 @@
 {% block title %}길마중 - 여행후기{% endblock %}
 
 {% block content %}
-<div class="container my-5 review-container" style="max-width: 1140px;">
+<div class="container my-5 review-container" style="max-width: 1080px;">
 
-    <!-- ==========================================================================
-         1. 🗺️ 상단 타이틀 및 네비게이션 버튼 섹션
-         ========================================================================== -->
-    <div class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom" style="border-bottom: 1px solid #e9ecef !important;">
-        <div>
-            <h1 class="fw-bold mb-2" style="color: #1e293b; font-size: 2rem; letter-spacing: -0.5px;">여행후기</h1>
-            <p class="text-muted mb-0" style="font-size: 1.05rem;">여행을 다녀온 고객분들의<br>솔직한 여행 이야기</p>
-        </div>
-
-
+<div class="d-flex justify-content-between align-items-end mb-4 pb-3" style="border-bottom: 2px solid #f1f3f5;">
+    <!-- 왼쪽: 타이틀 및 서브 타이틀 영역 -->
+    <div>
+        <h3 class="fw-bold m-0 d-flex align-items-center" style="color: #03214c; font-size: 1.5rem; letter-spacing: -0.5px;">
+            <span class="fs-3 mb-1" style="font-size: 1.4rem;"></span>이달의 베스트 여행후기</h3>
+            <p class="text-muted mt-2 mb-0" style="font-size: 0.9rem; color: #6c757d;">
+            여행을 다녀온 고객분들의 솔직한 여행 이야기입니다.</p>
     </div>
+
+    <!-- 오른쪽: 바로가기 링크 영역 (공지사항 검색바 위치) -->
+    <div class="mb-1">
+        <a href="#" class="text-decoration-none fw-semibold ps-3 pe-3 pt-2 pb-2"
+           style="font-size: 0.85rem; color: #495057; border: 1px solid #dee2e6; border-radius: 4px; background-color: #fff;">
+            + 지난 베스트여행후기
+        </a>
+    </div>
+</div>
 
     <!-- ==========================================================================
          2. 👑 이달의 베스트 여행후기 섹션
          ========================================================================== -->
-    <div class="d-flex justify-content-between align-items-end mb-4">
-        <h3 class="fw-bold m-0" style="color: #212529; font-size: 1.4rem;">이달의 베스트 여행후기</h3>
-        <a href="#" class="text-decoration-none text-dark small fw-semibold" style="font-size: 0.9rem;">+ 지난 베스트여행후기</a>
-    </div>
+
 
     <!-- 베스트 후기 카드 그리드 -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 mb-4">
