@@ -109,11 +109,13 @@
   <!-- 액션 버튼 그룹 (Review 작성/수정 & 상세 내역확인) -->
   <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 my-4">
     {% set existing_rev = order.get_user_review(g.user, product.id) %}
-    {% if existing_rev %}
+    {% if existing_rev and g.user and existing_rev.user_id == g.user.id %}
     <a href="{{ url_for('review.modify', review_id=existing_rev.id) }}" class="btn btn-primary btn-lg px-4 fw-bold shadow-sm">✏️ Review 수정</a>
     <a href="{{ url_for('review.delete', review_id=existing_rev.id, next=url_for('order.lookup', order_no=order.order_no)) }}" class="btn btn-outline-danger btn-lg px-4 fw-bold shadow-sm" onclick="return confirm('작성하신 리뷰를 정말 삭제하시겠습니까?');">🗑️ Review 삭제</a>
-    {% else %}
+    {% elif g.user %}
     <a href="{{ url_for('review.create', product_id=product.id, order_no=order.order_no) }}" class="btn btn-primary btn-lg px-4 fw-bold shadow-sm">✍️ Review 작성</a>
+    {% else %}
+    <a href="{{ url_for('auth.login', next=url_for('order.lookup', order_no=order.order_no)) }}" class="btn btn-outline-secondary btn-lg px-4 fw-bold shadow-sm" title="로그인 후 후기를 작성할 수 있습니다.">✍️ Review 작성 (로그인 필요)</a>
     {% endif %}
     <a href="{{ url_for('order.lookup', order_no=order.order_no) }}" class="btn btn-primary btn-lg px-4 fw-bold shadow-sm">상세 내역확인하기</a>
   </div>

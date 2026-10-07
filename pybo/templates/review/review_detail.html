@@ -63,8 +63,8 @@
                         </button>
                         {% endif %}
                     {% else %}
-                        <a href="{{ url_for('auth.login', next=url_for('review.create', product_id=product.id)) }}" class="btn btn-outline-primary btn-sm px-3 fw-semibold">
-                            ✍️ Review 작성 (로그인)
+                        <a href="{{ url_for('auth.login', next=url_for('review.detail', product_id=product.id)) }}" class="btn btn-outline-primary btn-sm px-3 fw-semibold">
+                            ✍️ Review 작성 (로그인 필요)
                         </a>
                     {% endif %}
                     <a href="{{ url_for('product.sub_product', product_id=product.id) }}" class="btn btn-outline-primary btn-sm px-3 fw-semibold">
