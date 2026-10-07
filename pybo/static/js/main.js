@@ -1,81 +1,50 @@
-document.addEventListener('DOMContentLoaded', function () {
-    syncCurrentLanguageDisplay();
-
-    const slideImages = ['slide1.jpg', 'slide2.jpg', 'slide3.jpg', 'slide4.jpg', 'slide5.jpg', 'slide6.jpg'];
-    slideImages.forEach(img => { const i = new Image(); i.src = `/static/img/${img}`; });
-    const bannerSection = document.getElementById('mainBanner');
-    const bannerText = document.getElementById('bannerArrowText');
-    const prevBtn = document.getElementById('prevBanner');
-    const nextBtn = document.getElementById('nextBanner');
-    const titleElement = document.querySelector('.banner-text h2');
-
-    if (titleElement) {
-        const textLength = titleElement.textContent.trim().length;
-    }
-
-    const slides = [
-        { img: '/static/img/slide1.jpg', title: '추억이 물드는<br>가을 여행', desc: '일상에서 벗어나<br>수도권 추천 여행' },
-        { img: '/static/img/slide2.jpg', title: '설악의 붉은 숨결<br>강원 단풍 여행', desc: '대자연의 황금빛 매력<br>강원권 추천 여행' },
-        { img: '/static/img/slide3.jpg', title: '고즈넉한 서정<br>충청 가을 산책', desc: '은은한 단풍빛 고을<br>충청권 추천 여행' },
-        { img: '/static/img/slide4.jpg', title: '천년의 억새 물결<br>경상 가을 정취', desc: '황금빛 들녘과 바다<br>경상권 추천 여행' },
-        { img: '/static/img/slide5.jpg', title: '내장산 붉은 터널<br>전라 단풍 비경', desc: '가을의 깊은 향기 속으로<br>전라권 추천 여행' },
-        { img: '/static/img/slide6.jpg', title: '은빛 억새의 춤<br>낭만의 제주 가을', desc: '푸른 바다와 황금빛 오름<br>제주권 추천 여행' }
-    ];
-
-    let currentIndex = 0;
-    let slideTimer = null;
-
     function updateSlider(index) {
-        if (!bannerSection) return;
+        if (!bannerSection || slides.length === 0) return;
 
+        // 배경 이미지 세팅
         bannerSection.style.backgroundImage = `url('${slides[index].img}')`;
+        bannerSection.style.backgroundSize = 'cover';
+        bannerSection.style.backgroundPosition = 'center';
+        bannerSection.style.backgroundRepeat = 'no-repeat';
+
         if (bannerText) bannerText.innerText = `${index + 1} / ${slides.length}`;
 
         const titleEl = document.getElementById('bannerTitle');
         const descEl = document.getElementById('bannerDesc');
-        if (titleEl) titleEl.innerHTML = slides[index].title;
-        if (descEl) descEl.innerHTML = slides[index].desc;
-    }
 
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        updateSlider(currentIndex);
-    }
-
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        updateSlider(currentIndex);
-    }
-
-    function startTimer() {
-        if (bannerSection) {
-            slideTimer = setInterval(nextSlide, 3000); // 3초 간격 자동 전환
+        // 1. 💡 [제목 스타일 보완]: 제목 줄바꿈 적용 및 너무 커서 밀리지 않게 여백 조정
+        if (titleEl && slides[index].title) {
+            titleEl.innerHTML = slides[index].title.replace(/\n/g, '<br>');
+            titleEl.style.marginBottom = '15px';
+            titleEl.style.fontSize = '2.2rem'; // 해상도에 맞게 적절한 크기 유지
+            titleEl.style.wordBreak = 'keep-all';
         }
-    }
 
-    function resetTimer() {
-        clearInterval(slideTimer);
-        startTimer();
-    }
+        // 2. 💡 [설명글 이탈 방지 핵심]: 글자가 상자 밑으로 절대 삐져나가지 않도록 말줄임 링을 채웁니다.
+        if (descEl && slides[index].desc) {
+            descEl.innerHTML = slides[index].desc.replace(/\n/g, '<br>');
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', function() {
-            nextSlide();
-            resetTimer();
-        });
-    }
-    if (prevBtn) {
-        prevBtn.addEventListener('click', function() {
-            prevSlide();
-            resetTimer();
-        });
-    }
+            // CSS 말줄임 엔진 강제 주입 (4줄 이상 길어지면 자동으로 ... 처리되도록 제한)
+            descEl.style.display = '-webkit-box';
+            descEl.style.webkitBoxOrient = 'vertical';
+            descEl.style.webkitLineClamp = '4';
+            descEl.style.overflow = 'hidden';
+            descEl.style.textOverflow = 'ellipsis';
+            descEl.style.lineHeight = '1.6';
+            descEl.style.fontSize = '1.05rem';
+            descEl.style.color = 'rgba(255, 255, 255, 0.9)'; // 가독성 개선
+        }
 
-    startTimer();
-
+        // 배너 전체 클릭 시 상세페이지로 이동
+        bannerSection.onclick = function() {
+            if (slides[index].link && slides[index].link !== '#') {
+                location.href = slides[index].link;
+            }
+        };
+    }
 
     // ==========================================================================
-    // 2. 지역별 / 테마별 탭 버튼 전환 제어 (중복 선언부 제거 완료)
+    // 2. 지역별 / 테마별 탭 버튼 전환 제어
     // ==========================================================================
     const tabButtons = document.querySelectorAll('.tab-btn, [data-tab]');
     const tabContents = document.querySelectorAll('.travel-tab-content');
@@ -104,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
     const travelDropdown = document.querySelector('.nav-item.dropdown, .dropdown');
     const dropdownMenu = document.querySelector('.dropdown-menu, .travel-tab-content-wrapper');
 
@@ -155,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateMTimeDeals();
     setInterval(updateMTimeDeals, 1000);
-});
+
 
 // ========================================
 // 언어 메뉴 열기 / 닫기

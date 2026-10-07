@@ -1,24 +1,139 @@
 
 <section class="main-banner-full" id="mainBanner"
-         onclick="location.href='{{ url_for('main.autumn_detail') }}'"
-         style="background-image: url('{{ url_for('static', filename='img/slide1.jpg') }}'); cursor: pointer;">
+         style="cursor: pointer; background-size: cover; background-position: center; background-repeat: no-repeat; overflow: hidden;">
 
     <div class="banner-overlay"></div>
     <div class="banner-content-wrap">
-        <div class="banner-text" onclick="event.stopPropagation();" style="cursor: default;">
-            <h2 id="bannerTitle">
-                추억이 물드는<br>
-                가을 여행
-            </h2>
-            <p id="bannerDesc">
-                일상에서 벗어나<br>
-                가을 추천 여행
-            </p>
-            <div class="banner-arrows" onclick="event.stopPropagation();">
-                <span class="arrow-btn" id="prevBanner" style="cursor: pointer;">〈</span>
-                <span id="bannerArrowText">1 / 6</span>
-                <span class="arrow-btn" id="nextBanner" style="cursor: pointer;">〉</span>
+
+        <div class="banner-text" onclick="event.stopPropagation();"
+             style="cursor: default; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; min-height: 450px; padding: 40px 30px 25px 30px; box-sizing: border-box;">
+
+            <h2 id="bannerTitle">로딩 중...</h2>
+            <p id="bannerDesc">잠시만 기다려주세요.</p>
+
+            <div class="banner-arrows" onclick="event.stopPropagation();"
+                 style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.82); padding: 4px 12px; border-radius: 15px; color: #111111; width: fit-content; gap: 8px; backdrop-filter: blur(4px); box-shadow: 0 1px 4px rgba(0,0,0,0.12);">
+                <span class="arrow-btn" id="prevBanner" style="cursor: pointer; font-weight: bold; user-select: none; font-size: 0.85rem; padding: 0 4px;">〈</span>
+                <span id="bannerArrowText" style="font-size: 0.8rem; font-weight: 600; user-select: none; letter-spacing: 0.3px;">1 / 6</span>
+                <span class="arrow-btn" id="nextBanner" style="cursor: pointer; font-weight: bold; user-select: none; font-size: 0.85rem; padding: 0 4px;">〉</span>
             </div>
+
         </div>
+
     </div>
 </section>
+
+<div id="dbSlideData" style="display: none;">
+    {% if product_list %}
+        {% for product in product_list %}
+        <div class="db-slide-item"
+             data-img="{{ product.image_url if product.image_url else '/static/img/tours/default-tour.jpg' }}"
+             data-title="{{ product.name if product.name else '' }}"
+             data-desc="{{ product.description if product.description else '' }}"
+             data-link="/product/sub_product/{{ product.id }}">
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<script>
+(function() {
+    const rawSlides = [];
+
+    const dataItems = document.querySelectorAll('#dbSlideData .db-slide-item');
+    if (dataItems && dataItems.length > 0) {
+        dataItems.forEach(function(item) {
+            const imgPath = item.getAttribute('data-img');
+            const titleText = item.getAttribute('data-title');
+            const descText = item.getAttribute('data-desc');
+            const linkPath = item.getAttribute('data-link');
+
+            if (imgPath) {
+                rawSlides.push({
+                    img: imgPath,
+                    title: titleText ? titleText : "추천 여행 상품",
+                    desc: descText ? descText : "지금 바로 확인해보세요.",
+                    link: linkPath
+                });
+            }
+        });
+    }
+
+    const defaultSlides = [
+        { img: '/static/img/slide1.jpg', title: '추억이 물드는 가을 여행', desc: '일상에서 벗어나 수도권 추천 여행', link: '#' },
+        { img: '/static/img/slide2.jpg', title: '설악의 붉은 숨결 강원 단풍 여행', desc: '대자연의 황금빛 매력 강원권 추천 여행', link: '#' }
+    ];
+
+    const slides = rawSlides.length > 0 ? rawSlides : defaultSlides;
+
+    slides.forEach(slide => { if(slide.img) { const i = new Image(); i.src = slide.img; } });
+
+    let currentIndex = 0;
+    let slideTimer = null;
+
+    const bannerSection = document.getElementById('mainBanner');
+    const bannerText = document.getElementById('bannerArrowText');
+    const prevBtn = document.getElementById('prevBanner');
+    const nextBtn = document.getElementById('nextBanner');
+
+    function updateSlider(index) {
+        if (!bannerSection || slides.length === 0) return;
+
+        bannerSection.style.backgroundImage = `url('${slides[index].img}')`;
+        if (bannerText) bannerText.innerText = `${index + 1} / ${slides.length}`;
+
+        const titleEl = document.getElementById('bannerTitle');
+        const descEl = document.getElementById('bannerDesc');
+
+        if (titleEl && slides[index].title) titleEl.innerHTML = slides[index].title.replace(/\n/g, '<br>');
+        if (descEl && slides[index].desc) descEl.innerHTML = slides[index].desc.replace(/\n/g, '<br>');
+
+        bannerSection.onclick = function() {
+            if (slides[index].link && slides[index].link !== '#') {
+                location.href = slides[index].link;
+            }
+        };
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlider(currentIndex);
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlider(currentIndex);
+    }
+
+    function startTimer() {
+        if (bannerSection && slides.length > 1) {
+            slideTimer = setInterval(nextSlide, 3000); // 3초 간격 자동 슬라이드
+        }
+    }
+
+    function resetTimer() {
+        clearInterval(slideTimer);
+        startTimer();
+    }
+
+    if (slides.length > 0) {
+        updateSlider(currentIndex);
+        startTimer();
+
+        if (nextBtn) {
+            nextBtn.onclick = function(e) {
+                e.stopPropagation();
+                nextSlide();
+                resetTimer();
+            };
+        }
+        if (prevBtn) {
+            prevBtn.onclick = function(e) {
+                e.stopPropagation();
+                prevSlide();
+                resetTimer();
+            };
+        }
+    }
+})();
+</script>
