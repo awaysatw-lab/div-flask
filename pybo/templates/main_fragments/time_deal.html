@@ -7,8 +7,8 @@
              메인 딜 (왼쪽 큰 카드)
              ================================================= -->
         {% if main_deal %}
-        <a href="{{ url_for('main.deal_detail', deal_id=main_deal.id) }}" class="main-deal-card" style="text-decoration: none; color: inherit; display: block;" loading="lazy">
-            <div class="main-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ main_deal.image_file) }}'); background-size: cover; background-position: center;">
+        <a href="/product/sub_product/{{ main_deal.id }}" class="main-deal-card" style="text-decoration: none; color: inherit; display: block;" loading="lazy">
+            <div class="main-img-area" style="background-image: url('{{ main_deal.image_file if main_deal.image_file else '/static/img/tours/default-tour.jpg' }}'); background-size: cover; background-position: center;">
                 <div class="badge-group">
                     {% if main_deal.badge1 %}<span class="badge blue">{{ main_deal.badge1 }}</span>{% endif %}
                     {% if main_deal.badge2 %}<span class="badge green">{{ main_deal.badge2 }}</span>{% endif %}
@@ -41,8 +41,8 @@
         <div class="sub-deal-list">
             {% if sub_deal_list %}
                 {% for sub in sub_deal_list %}
-                <a href="{{ url_for('main.deal_detail', deal_id=sub.id) }}" class="sub-card" style="text-decoration: none; color: inherit; display: flex;" loading="lazy">
-                    <div class="sub-img-area" style="background-image: url('{{ url_for('static', filename='img/' ~ sub.image_file) }}'); background-size: cover; background-position: center;">
+                <a href="/product/sub_product/{{ sub.id }}" class="sub-card" style="text-decoration: none; color: inherit; display: flex;" loading="lazy">
+                    <div class="sub-img-area" style="background-image: url('{{ sub.image_file if sub.image_file else '/static/img/tours/default-tour.jpg' }}'); background-size: cover; background-position: center;">
                         <div class="badge-group sub-badges">
                             {% if sub.badge1 %}<span class="badge blue">{{ sub.badge1 }}</span>{% endif %}
                         </div>
@@ -54,7 +54,6 @@
                             </div>
                             <p class="hashtags" style="margin-top: 6px;">{{ sub.hashtags }}</p>
 
-                            <!-- 서브 타이머 배너 -->
                             <div class="timer-banner" style="transform: scale(0.85); margin-top: 10px; margin-bottom: 0; transform-origin: left center;">
                                 <span class="clock-icon">⏱️</span>
                                 <span class="time-text sub-timer" data-endtime="{{ sub.end_date.strftime('%Y-%m-%dT%H:%M:%S') }}">시간 계산 중...</span>
@@ -75,7 +74,6 @@
     </div>
 </section>
 
-<!-- [추가] 실시간 카운트다운 타이머 스크립트 -->
 <script>
 function updateTimers() {
     const timerElements = document.querySelectorAll('[data-endtime]');
@@ -107,7 +105,6 @@ function updateTimers() {
     });
 }
 
-// 페이지 로드 시 즉시 실행 및 1초마다 반복 업데이트
 document.addEventListener("DOMContentLoaded", () => {
     updateTimers();
     setInterval(updateTimers, 1000);
