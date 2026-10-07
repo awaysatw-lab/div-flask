@@ -20,6 +20,10 @@ def check_user_booked_product(user, product_id):
 
 @bp.route('/list')
 def list():
+    if g.user is None:
+        flash('로그인이 필요한 서비스입니다.')
+        return redirect(url_for('auth.login', next=request.full_path))
+    
     page = request.args.get('page', default=1, type=int)
     region = request.args.get('region', default='', type=str).strip()
     kw = request.args.get('kw', default='', type=str).strip()
@@ -84,8 +88,20 @@ def detail(product_id):
         reviews = all_product_reviews
 
     can_review = False
+    user_review = None
+    is_my_review = False
+    my_review = None
+
     if hasattr(g, 'user') and g.user:
         can_review = check_user_booked_product(g.user, product_id)
+        user_review = Review.query.filter_by(user_id=g.user.id, product_id=product_id).first()
+        if selected_review:
+            if selected_review.user_id == g.user.id:
+                is_my_review = True
+                my_review = selected_review
+        elif user_review:
+            is_my_review = True
+            my_review = user_review
 
     return render_template(
         "review/review_detail.html",
@@ -95,7 +111,10 @@ def detail(product_id):
         review_count=review_count,
         latest_review_date=latest_review_date,
         avg_rating=avg_rating,
-        can_review=can_review
+        can_review=can_review,
+        user_review=user_review,
+        is_my_review=is_my_review,
+        my_review=my_review
     )
 
 @bp.route('/view/<int:review_id>')
@@ -103,9 +122,38 @@ def view(review_id):
     review = Review.query.get_or_404(review_id)
     return redirect(url_for('review.detail', product_id=review.product_id, review_id=review.id))
 
+@bp.route('/delete/<int:review_id>', methods=['GET', 'POST'])
+def delete(review_id):
+    """자신의 Review 삭제 기능: 본인 확인 후 삭제"""
+    review = Review.query.get_or_404(review_id)
+    product_id = review.product_id
+
+    # 로그인 확인 및 본인 작성 여부 검증
+    if not (hasattr(g, 'user') and g.user and review.user_id == g.user.id):
+        flash('본인이 작성한 후기만 삭제할 수 있습니다.', 'danger')
+        return redirect(url_for('review.detail', product_id=product_id))
+
+    try:
+        db.session.delete(review)
+        db.session.commit()
+        flash('작성하신 여행 후기가 성공적으로 삭제되었습니다.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'후기 삭제 중 오류가 발생했습니다: {str(e)}', 'danger')
+
+    next_url = request.args.get('next') or request.form.get('next')
+    if next_url:
+        return redirect(next_url)
+    return redirect(url_for('review.detail', product_id=product_id))
+
 @bp.route('/create/<int:product_id>', methods=['GET', 'POST'])
 @bp.route('/create', methods=['GET', 'POST'])
 def create(product_id=None):
+    # 비로그인 사용자 후기 작성 차단: 로그인 페이지로 리다이렉트
+    if not (hasattr(g, 'user') and g.user):
+        flash('후기를 작성하려면 먼저 로그인해 주세요.', 'warning')
+        return redirect(url_for('auth.login', next=request.full_path))
+
     if product_id is None:
         product_id = request.args.get('product_id', type=int) or request.form.get('product_id', type=int)
 
@@ -120,20 +168,10 @@ def create(product_id=None):
     if order_no:
         order = Order.query.filter_by(order_no=order_no).first()
 
-    # 1. 예약자 검증: 로그인된 회원의 경우 자신이 예약한 상품에만 작성 가능
-    if hasattr(g, 'user') and g.user:
-        if not check_user_booked_product(g.user, product_id):
-            flash('해당 여행 상품을 예약하신 회원만 후기를 작성하실 수 있습니다.', 'danger')
-            return redirect(url_for('review.detail', product_id=product_id))
-    else:
-        # 비로그인 사용자: 예약번호(order_no)가 있고 해당 비회원 주문에 상품이 포함된 경우에만 허용
-        guest_booked = False
-        if order and order.status != 'CANCELLED':
-            if any(item.product_id == product_id for item in order.items):
-                guest_booked = True
-        if not guest_booked:
-            flash('로그인 후 예약하신 상품에 대해 리뷰를 작성하실 수 있습니다.', 'info')
-            return redirect(url_for('auth.login', next=request.full_path))
+    # 예약자 검증: 로그인된 회원의 경우 자신이 예약한 상품에만 작성 가능
+    if not check_user_booked_product(g.user, product_id):
+        flash('해당 여행 상품을 예약하신 회원만 후기를 작성하실 수 있습니다.', 'danger')
+        return redirect(url_for('review.detail', product_id=product_id))
 
     all_product_reviews = db.session.query(Review).filter_by(product_id=product_id).order_by(Review.created_at.desc()).all()
     review_count = len(all_product_reviews)
@@ -157,25 +195,8 @@ def create(product_id=None):
         elif not content:
             flash('후기 내용을 입력해 주세요.', 'danger')
         else:
-            # 작성자 결정 (로그인 회원 우선, 비로그인 시 주문자 정보 또는 게스트 계정 매핑)
-            if hasattr(g, 'user') and g.user:
-                author_user = g.user
-            elif order and order.user:
-                author_user = order.user
-            else:
-                # 비로그인 게스트 사용자 계정 확보 (Foreign Key 무결성 유지)
-                guest_user = User.query.filter_by(user_id='guest').first()
-                if not guest_user:
-                    guest_user = User(
-                        user_id='guest',
-                        name=(order.guest_name if (order and order.guest_name) else '여행자'),
-                        email=(order.guest_email if (order and order.guest_email) else 'guest@gilmajoong.com'),
-                        phone=(order.guest_phone if (order and order.guest_phone) else '010-0000-0000')
-                    )
-                    guest_user.set_password('guest1234!')
-                    db.session.add(guest_user)
-                    db.session.commit()
-                author_user = guest_user
+            # 작성자: 로그인된 회원
+            author_user = g.user
 
             now = datetime.now(timezone.utc)
             new_review = Review(
