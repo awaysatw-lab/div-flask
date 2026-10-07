@@ -147,7 +147,8 @@ div-flask/
     ├── timedealseed.py           # M타임딜 기본 데이터 자동 등록 모듈
     ├── static/                   # 정적 에셋 디렉토리
     │   ├── css/                  # 모듈별 분리된 스타일시트
-    │   │   ├── main.css          # 공통 및 메인 화면 스타일
+    │   │   ├── base.css          # base.html 공통 레이아웃 (GNB 헤더, 푸터, 글로벌 테마, 언어 선택기 등)
+    │   │   ├── main.css          # 메인 화면 전용 스타일 (슬라이드 배너, M타임딜, 여행 후기 등)
     │   │   ├── product.css       # 권역별 상품 목록 및 상세 화면 스타일
     │   │   ├── reserve.css       # 예약 신청 페이지 스타일
     │   │   ├── payment.css       # 결제 진행 화면 스타일
