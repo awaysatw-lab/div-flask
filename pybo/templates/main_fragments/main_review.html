@@ -57,10 +57,6 @@
     {% endif %}
 
     {% if review_list and review_list|length >= 5 %}
-    <div class="more-btn-wrap">
-        <a href="{{ url_for('review.list') }}" class="btn-content-more text-decoration-none d-inline-block">
-            후기 전체보기 ➔
-        </a>
-    </div>
+
     {% endif %}
 </section>
