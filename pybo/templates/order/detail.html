@@ -16,18 +16,6 @@
     {% include 'order/_detail_card.html' %}
 
     <div style="margin-top: 28px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-      {% if first_item and first_item.product %}
-        {% set existing_rev = order.get_user_review(g.user, first_item.product.id) %}
-        {% if existing_rev %}
-        <a href="{{ url_for('review.modify', review_id=existing_rev.id) }}" class="btn btn-primary fw-bold px-4 py-2" style="border-radius: 8px;">
-          ✏️ Review 수정
-        </a>
-        {% else %}
-        <a href="{{ url_for('review.create', product_id=first_item.product.id, order_no=order.order_no) }}" class="btn btn-primary fw-bold px-4 py-2" style="border-radius: 8px;">
-          ✍️ Review 작성
-        </a>
-        {% endif %}
-      {% endif %}
       <a href="{{ url_for('order.lookup') }}" class="btn-outline-back">
         &lt; 예약 목록으로 돌아가기
       </a>

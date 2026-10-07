@@ -84,8 +84,8 @@ def review_detail(review_id):
 
 @bp.route('/deal/detail/<int:deal_id>/')
 def deal_detail(deal_id):
-    deal = TimeDeal.query.get_or_404(deal_id)
-    return render_template('product/deal_detail.html', deal=deal)
+    TimeDeal.query.get_or_404(deal_id)
+    return redirect(url_for('product.main_product'))
 
 
 # 언어 변경
@@ -103,16 +103,6 @@ def get_common_context():
     review_list = Review.query.order_by(Review.created_at.desc()).all()
     main_deal = TimeDeal.query.filter_by(product_type='main').first()
     sub_deal_list = TimeDeal.query.filter_by(product_type='sub').limit(2).all()
-
-    print(f"==================================================")
-    print(f"=== 현재 DB에서 가져온 전체 여행 후기 개수: {len(review_list)}개 ===")
-    if len(review_list) > 0:
-        review_title = review_list[0].title if hasattr(review_list[0], 'title') else (
-            review_list[0].subject if hasattr(review_list[0], 'subject') else review_list[0].content[:10])
-        print(f"=== 첫 번째 후기 내용: {review_title}")
-    print(f"=== 메인 타임딜 타겟: {main_deal.title if main_deal else '없음'}")
-    print(f"=== 서브 타임딜 노출 개수: {len(sub_deal_list)}개 ===")
-    print(f"==================================================")
 
     return {
         'review_list': review_list,

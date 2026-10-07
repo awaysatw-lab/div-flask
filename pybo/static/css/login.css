@@ -513,10 +513,6 @@ body {
         text-align: center;
     }
 
-    .intro-line {
-        margin-left: auto;
-        margin-right: auto;
-    }
     .login-box {
         width: 100%;
         max-width: 360px;

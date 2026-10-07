@@ -23,84 +23,148 @@ function toggleLangMenu() {
 
 
 // ==========================================================================
-// 6. 언어 변경
+// 6. 구글 번역 쿠키 및 동기화 유틸리티
 // ==========================================================================
 
-function changeLanguage(lang) {
+function setGoogTransCookie(lang) {
+    const cookieValue = '/ko/' + lang;
+    const host = window.location.hostname;
 
-    const menu =
-        document.getElementById(
-            'customLangMenu'
-        );
+    document.cookie = 'googtrans=' + cookieValue + '; path=/;';
 
-    const currentLanguageText =
-        document.getElementById(
-            'currentLanguageText'
-        );
+    if (host && host !== 'localhost') {
+        document.cookie = 'googtrans=' + cookieValue + '; domain=' + host + '; path=/;';
+        document.cookie = 'googtrans=' + cookieValue + '; domain=.' + host + '; path=/;';
+    }
+}
 
+function clearGoogTransCookies() {
+    const host = window.location.hostname;
+    const domainVariations = ['', host, '.' + host];
+    const hostParts = host.split('.');
+    if (hostParts.length > 2) {
+        domainVariations.push('.' + hostParts.slice(-2).join('.'));
+    }
 
+    const pathVariations = ['/', window.location.pathname];
+
+    domainVariations.forEach(function (domain) {
+        pathVariations.forEach(function (path) {
+            const domainAttr = domain ? '; domain=' + domain : '';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + path + domainAttr;
+        });
+    });
+}
+
+function syncCurrentLanguageDisplay() {
     const languageNames = {
-
         'ko': '한국어',
         'en': 'English',
         'ja': '日本語',
         'zh-CN': '简体中文'
-
     };
 
+    const currentLanguageText = document.getElementById('currentLanguageText');
+    if (!currentLanguageText) return;
+
+    const match = document.cookie.match(/(?:^|;\s*)googtrans=\/ko\/([a-zA-Z\-]+)/);
+    if (match && match[1] && languageNames[match[1]]) {
+        currentLanguageText.textContent = languageNames[match[1]];
+    } else {
+        currentLanguageText.textContent = '한국어';
+    }
+}
+
+// ==========================================================================
+// 언어 변경 (1회 클릭 즉시 적용)
+// ==========================================================================
+
+function changeLanguage(lang) {
+    const menu = document.getElementById('customLangMenu');
+    const currentLanguageText = document.getElementById('currentLanguageText');
+
+    const languageNames = {
+        'ko': '한국어',
+        'en': 'English',
+        'ja': '日本語',
+        'zh-CN': '简体中文'
+    };
 
     if (currentLanguageText) {
-
-        currentLanguageText.textContent =
-            languageNames[lang] || '한국어';
-
+        currentLanguageText.textContent = languageNames[lang] || '한국어';
     }
-
 
     if (menu) {
-
         menu.style.display = 'none';
-
     }
 
+    // 1. 한국어로 복원하는 경우
+    if (lang === 'ko') {
+        clearGoogTransCookies();
 
-    const googleSelect =
-        document.querySelector(
-            '.goog-te-combo'
-        );
+        const googleSelect = document.querySelector('.goog-te-combo');
+        if (googleSelect) {
+            googleSelect.value = '';
+            googleSelect.selectedIndex = 0;
+            googleSelect.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+        }
 
+        const iframe = document.querySelector('iframe.goog-te-banner-frame');
+        if (iframe) {
+            try {
+                const innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const restoreBtn = innerDoc.querySelector('button[id*="restore"]') || innerDoc.querySelector('.goog-close-link');
+                if (restoreBtn) restoreBtn.click();
+            } catch (e) {}
+        }
 
-    if (!googleSelect) {
-
-        console.log(
-            'Google Translate 로딩 대기 중...'
-        );
-
-        setTimeout(
-            function () {
-
-                changeLanguage(lang);
-
-            },
-            500
-        );
-
+        const isTranslated = document.documentElement.classList.contains('translated-ltr') ||
+                             document.documentElement.classList.contains('translated-rtl') ||
+                             document.querySelector('.goog-te-banner-frame') !== null;
+        if (isTranslated) {
+            window.location.reload();
+        }
         return;
     }
 
+    // 2. 외국어(en, ja, zh-CN)로 번역하는 경우
+    setGoogTransCookie(lang);
 
-    googleSelect.value = lang;
+    const googleSelect = document.querySelector('.goog-te-combo');
 
-    googleSelect.dispatchEvent(
-        new Event('change')
-    );
+    if (!googleSelect) {
+        let attempts = 0;
+        const checkTimer = setInterval(function () {
+            attempts++;
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                clearInterval(checkTimer);
+                applyGoogleLanguage(select, lang);
+            } else if (attempts >= 30) {
+                clearInterval(checkTimer);
+            }
+        }, 100);
+        return;
+    }
 
+    applyGoogleLanguage(googleSelect, lang);
+}
 
-    // 번역이 적용된 뒤 슬라이더 크기 재계산
-    setTimeout(
-        fixBannerText,
-        500
-    );
+function applyGoogleLanguage(googleSelect, lang) {
+    if (googleSelect.value && googleSelect.value !== lang) {
+        googleSelect.value = '';
+        googleSelect.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+
+        setTimeout(function () {
+            googleSelect.value = lang;
+            googleSelect.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+            if (typeof fixBannerText === 'function') setTimeout(fixBannerText, 500);
+        }, 100);
+    } else {
+        googleSelect.value = lang;
+        googleSelect.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+        if (typeof fixBannerText === 'function') setTimeout(fixBannerText, 500);
+    }
 }
 
 
@@ -317,6 +381,8 @@ document.addEventListener(
     'DOMContentLoaded',
     function () {
 
+        syncCurrentLanguageDisplay();
+
         hideGoogleTranslateBar();
 
         fixBannerText();
@@ -357,3 +423,5 @@ document.addEventListener(
 
     }
 );
+
+syncCurrentLanguageDisplay();

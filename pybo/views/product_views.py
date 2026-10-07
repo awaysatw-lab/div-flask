@@ -1,13 +1,6 @@
 import ast
-import json
-
 from flask import render_template, Blueprint, request
-
-from pybo.forms import OrderReserveForm
-
-from pybo import db
-from pybo.models import User, TourProduct, Review, Order
-from pybo.views.main_views import review_list
+from pybo.models import TourProduct, Review
 
 bp = Blueprint('product', __name__, url_prefix='/product')
 
@@ -39,13 +32,9 @@ def main_product():
 def sub_product(product_id):
     selected_product = TourProduct.query.get_or_404(product_id)
     product_review = Review.query.filter_by(product_id=product_id).all()
-    product_time = Order.query.all()
-
-
     product_images = selected_product.get_image_list()
 
     # itinerary
-    import ast
     raw_itinerary = selected_product.itinerary_json
     product_itinerary = []
 
@@ -69,12 +58,11 @@ def sub_product(product_id):
     elif isinstance(raw_details, dict):
         product_details = raw_details
 
-
     return render_template('product/sub_product.html',
-                           product=selected_product, reviews=product_review, times=product_time,
+                           product=selected_product, reviews=product_review,
                            product_images=product_images,
                            product_itinerary=product_itinerary,
-                           product_details=product_details )
+                           product_details=product_details)
 
 
 
