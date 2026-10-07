@@ -103,7 +103,7 @@ hr{
 /* 1. 메인 레이아웃 기본 (큰 화면: 데스크톱 > 1024px) */
 .product-main-layout {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 5fr;
     gap: 24px;
     align-items: start; /* sticky 고정을 위해 필수 */
 }
@@ -150,11 +150,12 @@ hr{
 }
 
 /* 지도 밑 탭 버튼 */
-#map-choice #pills-tab {
+#map-btn > ul{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     width: 100%;
-    gap: 8px !important;
-    row-gap: 8px !important;
-    margin-bottom: 0 !important;
+    gap: 10px;
+    row-gap: 8px;
 }
 
 #map-choice #pills-tab > li {
@@ -167,13 +168,22 @@ hr{
     grid-column: span 2;
 }
 
+@media (max-width: 800px) {
+    #map-btn > ul {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    #map-choice #pills-tab > li:first-child {
+        grid-column: span 1;
+    }
+}
+
 #map-choice #pills-tab > li:first-child > button {
     width: 100%;
 }
 
 #map-choice #pills-tab > li > button {
     width: 100%;
-    height: 38px;
     background-color: #FAF8F5;
     color: #212529;
     border-radius: 8px;
@@ -412,12 +422,20 @@ hr{
     color: white;
 }
 
+.log_heart.active {
+    display: none;
+}
+
 .white-btn{
     height: 35px;
     padding: 5px;
     background-color: white;
     border-color:#999999;
     border-style: solid;
+}
+
+#like-btn.active {
+    color: #ff4d4d;
 }
 
 #schedule{
@@ -736,6 +754,7 @@ hr{
 .information > p{
     color: #2B2D42;
     padding: 2px;
+    line-height: 30px;
 }
 
 #log-ad{
@@ -822,6 +841,12 @@ hr{
 #detail_star > div{
     display: flex;
     justify-content: space-around;
+
+}
+
+.review-stars {
+    color: #f39c12;
+    margin: 0 5px/* 선명한 주황빛 금색 */
 }
 
 #detail_star > div > div{
@@ -833,7 +858,7 @@ hr{
 }
 
 #more{
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0 30px;
+    width: fit-content;
+    margin: 10px 10px 30px auto;
+    cursor: pointer;
 }
