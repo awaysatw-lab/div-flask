@@ -16,12 +16,19 @@
     color: #212529;
 }
 
-html, body {
+html {
     width: 100%;
     min-height: 100%;
     background-color: #ffffff;
     color: #212529;
-    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    min-height: 100%;
+    background-color: #ffffff;
+    color: #212529;
+    overflow-x: clip;
 }
 
 img {

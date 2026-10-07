@@ -88,7 +88,7 @@ hr{
 #map-choice {
     width: 330px;
     height: auto;
-    padding: 20px;
+    padding: 16px;
     margin-bottom: 20px;
     border-color: #1D3557;
     border-style: solid;
@@ -110,20 +110,41 @@ hr{
         overflow-y: auto;
         scrollbar-width: thin;
     }
+    #map-choice::-webkit-scrollbar {
+        width: 4px;
+    }
+    #map-choice::-webkit-scrollbar-thumb {
+        background-color: #d1d5db;
+        border-radius: 4px;
+    }
 }
 
 #map-choice > div {
-    margin-bottom: 20px;
+    margin-bottom: 14px;
+}
+
+#map-choice > div:last-child {
+    margin-bottom: 0;
 }
 
 #map-choice > div > h6 {
     font-weight: 700;
-    font-size: 15pt;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+}
+
+#map-choice > div > p {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 10px;
 }
 
 /* 지도 밑 탭 버튼 */
 #map-choice #pills-tab {
     width: 100%;
+    gap: 8px !important;
+    row-gap: 8px !important;
+    margin-bottom: 0 !important;
 }
 
 #map-choice #pills-tab > li {
@@ -142,13 +163,16 @@ hr{
 
 #map-choice #pills-tab > li > button {
     width: 100%;
-    height: 40px;
+    height: 38px;
     background-color: #FAF8F5;
     color: #212529;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 #pills-tab > li > button.active {
@@ -224,8 +248,11 @@ hr{
     #map-choice {
         width: 100%;
         max-width: 350px;
-        position: static; /* 맨 위에 위치 */
+        position: static !important; /* 맨 위에 위치 */
+        top: auto !important;
         margin: 0 auto 10px auto;
+        max-height: none !important;
+        overflow-y: visible !important;
     }
 
     .tab-content {
