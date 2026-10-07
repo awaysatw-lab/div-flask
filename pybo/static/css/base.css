@@ -1,3 +1,11 @@
+font[color], font[size], .goog-te-menu-value, .skiptranslate, font {
+    font-family: inherit !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+}
+
 /* ==========================================================================
    길마중 - base.css (공통 레이아웃 및 글로벌 스타일)
    적용 대상: base.html (모든 페이지 공통 적용)
