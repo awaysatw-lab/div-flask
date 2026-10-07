@@ -41,10 +41,13 @@
             </div>
           </div>
           {% if not hide_product_review_btn %}
-          <div class="flex-shrink-0 mt-2 mt-sm-0">
-            {% if existing_rev %}
+          <div class="flex-shrink-0 mt-2 mt-sm-0 d-flex gap-2 align-items-center">
+            {% if not existing_rev %}
             <a href="{{ url_for('review.modify', review_id=existing_rev.id) }}" class="btn btn-primary btn-sm fw-bold px-3 shadow-sm">
               ✏️ Review 수정
+            </a>
+            <a href="{{ url_for('review.delete', review_id=existing_rev.id, next=url_for('order.lookup', order_no=order.order_no)) }}" class="btn btn-outline-danger btn-sm fw-bold px-3 shadow-sm" onclick="return confirm('작성하신 리뷰를 정말 삭제하시겠습니까?');">
+              🗑️ Review 삭제
             </a>
             {% else %}
             <a href="{{ url_for('review.create', product_id=item.product.id, order_no=order.order_no) }}" class="btn btn-primary btn-sm fw-bold px-3 shadow-sm">

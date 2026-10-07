@@ -84,8 +84,20 @@ def detail(product_id):
         reviews = all_product_reviews
 
     can_review = False
+    user_review = None
+    is_my_review = False
+    my_review = None
+
     if hasattr(g, 'user') and g.user:
         can_review = check_user_booked_product(g.user, product_id)
+        user_review = Review.query.filter_by(user_id=g.user.id, product_id=product_id).first()
+        if selected_review:
+            if selected_review.user_id == g.user.id:
+                is_my_review = True
+                my_review = selected_review
+        elif user_review:
+            is_my_review = True
+            my_review = user_review
 
     return render_template(
         "review/review_detail.html",
@@ -95,13 +107,40 @@ def detail(product_id):
         review_count=review_count,
         latest_review_date=latest_review_date,
         avg_rating=avg_rating,
-        can_review=can_review
+        can_review=can_review,
+        user_review=user_review,
+        is_my_review=is_my_review,
+        my_review=my_review
     )
 
 @bp.route('/view/<int:review_id>')
 def view(review_id):
     review = Review.query.get_or_404(review_id)
     return redirect(url_for('review.detail', product_id=review.product_id, review_id=review.id))
+
+@bp.route('/delete/<int:review_id>', methods=['GET', 'POST'])
+def delete(review_id):
+    """자신의 Review 삭제 기능: 본인 확인 후 삭제"""
+    review = Review.query.get_or_404(review_id)
+    product_id = review.product_id
+
+    # 로그인 확인 및 본인 작성 여부 검증
+    if not (hasattr(g, 'user') and g.user and review.user_id == g.user.id):
+        flash('본인이 작성한 후기만 삭제할 수 있습니다.', 'danger')
+        return redirect(url_for('review.detail', product_id=product_id))
+
+    try:
+        db.session.delete(review)
+        db.session.commit()
+        flash('작성하신 여행 후기가 성공적으로 삭제되었습니다.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'후기 삭제 중 오류가 발생했습니다: {str(e)}', 'danger')
+
+    next_url = request.args.get('next') or request.form.get('next')
+    if next_url:
+        return redirect(next_url)
+    return redirect(url_for('review.detail', product_id=product_id))
 
 @bp.route('/create/<int:product_id>', methods=['GET', 'POST'])
 @bp.route('/create', methods=['GET', 'POST'])
