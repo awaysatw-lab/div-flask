@@ -245,113 +245,22 @@ hr{
         margin: 0 auto;
     }
 }
-.card > div > #on_img_box{
+.card > div > #on_img_box {
     display: none;
 }
- .card:nth-of-type(1) > div > #on_img_box{
-     display: block;
-     height: 30px;
-     width: 70px;
-     position: absolute;
-     margin-top: -210px;
-     border-radius: 10px;
-     background-color: #FFC939;
-     text-align: center;
-     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
-     border-color: #D3C9BC;
-     border-width: 5px;
-     font-weight: 500;
- }
- .card:nth-of-type(2) > div > #on_img_box{
-     display: block;
-     height: 30px;
-     width: 70px;
-     position: absolute;
-     margin-top: -210px;
-     border-radius: 10px;
-     background-color: #FFC939;
-     text-align: center;
-     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
-     border-color: #D3C9BC;
-     border-width: 5px;
-     font-weight: 500;
- }
-
-
-.card-body > .heart_star{
-    height: 25px;
-    position: relative;
-    top: -5px;
-    bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-    margin: 0;
-    font-size: 11pt;
-}
-
-.card-body > h5{
-    font-weight: 700;
-}
-
-.card-body > .card-price{
-    height: 90px;
-    background-color: #FAF8F5;
+.card:nth-of-type(-n+2) > div > #on_img_box {
+    display: block;
+    height: 30px;
+    width: 70px;
+    position: absolute;
+    margin-top: -210px;
     border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-.card-body > .card-price > p{
-    margin-top: 5px;
-    text-decoration-line: line-through;
-    color: #2B2D42;
-}
-
-.card-body > .card-price > div{
-    display: flex;
-}
-
-.card-body > .card-price > div > h5{
-    font-weight: 700;
-    margin-top: -10px;
-}
-
-.card-body > .card-price > div > p{
-    color: #ED4956;
-    font-size: 10pt;
-    margin-top: -8px;
-    margin-left: 5px;
-    font-weight: 600;
-}
-
-#card-btn{
-    display: flex;
-    gap: 8px;
-    justify-content: space-between;
-}
-
-.card-body > div > a:first-child{
-    flex: 1;
-    min-width: 0;
-    background-color: #1D3557;
-    color: #ffffff;
-    border-color: #1D3557;
-}
-.card-body > div > a:first-child:hover{
+    background-color: #FFC939;
+    text-align: center;
     box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
     border-color: #D3C9BC;
-}
-
-.card-body > div > a:last-child{
-    width: 85px;
-    flex-shrink: 0;
-    background-color: #E76F5F;
-    color: #ffffff;
-    border-color: #E76F5F;
-}
-
-.card-body > div > a:last-child:hover{
-    box-shadow: 0 10px 25px rgba(43, 45, 66, 0.05);
-    border-color: #D3C9BC;
+    border-width: 5px;
+    font-weight: 500;
 }
 
 /*sub*/
