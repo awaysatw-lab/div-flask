@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'sudo': 1,
         'gang': 2,
         'chung': 3,
-        'geong': 4,
+        'gyeong': 4,
         'jeon': 5,
         'jeju': 6
     };
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { x: 114, y: 225 }, // 세종
             { x: 131, y: 253 }  // 대전
         ],
-        'geong': [
+        'gyeong': [
             { x: 251, y: 251 }, // 경북
             { x: 236, y: 310 }, // 대구
             { x: 207, y: 359 }, // 경남
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'sudo': 1,
         'gang': 2,
         'chung': 3,
-        'geong': 4,
+        'gyeong': 4,
         'jeon': 5,
         'jeju': 6
     };
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
         1: 'sudo',
         2: 'gang',
         3: 'chung',
-        4: 'geong',
+        4: 'gyeong',
         5: 'jeon',
         6: 'jeju'
     };
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'sudo': { text: '📍 수도권', x: 111, y: 121 },
         'gang': { text: '📍 강원권', x: 209, y: 98 },
         'chung': { text: '📍 충청권', x: 128, y: 223 },
-        'geong': { text: '📍 경상권', x: 239, y: 292 },
+        'gyeong': { text: '📍 경상권', x: 239, y: 292 },
         'jeon': { text: '📍 전라권', x: 97, y: 369 },
         'jeju': { text: '📍 제주권', x: 84, y: 490 }
     };
@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * 특정 권역만 화면에 표시하도록 전환하는 핵심 함수
-     * @param {string} region ('all', 'sudo', 'gang', 'chung', 'geong', 'jeon', 'jeju')
+     * @param {string} region ('all', 'sudo', 'gang', 'chung', 'gyeong', 'jeon', 'jeju')
      */
     function activateRegion(region) {
         if (!region) region = 'all';
@@ -543,8 +543,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'gangwon': 'gang',
         'chung': 'chung',
         'chungcheong': 'chung',
-        'geong': 'geong',
-        'gyeongsang': 'geong',
+        'gyeong': 'gyeong',
+        'gyeongsang': 'gyeong',
         'jeon': 'jeon',
         'jeolla': 'jeon',
         'jeju': 'jeju'
