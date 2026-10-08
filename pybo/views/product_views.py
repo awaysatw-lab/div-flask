@@ -100,23 +100,11 @@ def toggle_product_like():
     session_db = selected_product.query.session
 
     create_table_query = """
-                         CREATE TABLE IF NOT EXISTS direct_product_like \
-                         ( \
-                             user_id \
-                             INTEGER \
-                             NOT \
-                             NULL, \
-                             product_id \
-                             INTEGER \
-                             NOT \
-                             NULL, \
-                             PRIMARY \
-                             KEY \
-                         ( \
-                             user_id, \
-                             product_id \
-                         )
-                             ); \
+                         CREATE TABLE IF NOT EXISTS direct_product_like
+                         (user_id INTEGER NOT NULL, 
+                            product_id INTEGER NOT NULL,
+                             PRIMARY KEY(user_id, product_id)
+                             ); 
                          """
     try:
         session_db.execute(text(create_table_query))

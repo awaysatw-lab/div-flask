@@ -90,7 +90,7 @@
                 {% if g.user %}
                 {% else %}
                 <div id="log-discount">
-                    <div>💡로그인 시 할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원 결제 ( {{ (product.member_discount_rate * 100)|int }}% 특별 할인 적용 ) </div>
+                    <div>💡 로그인 시 할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원 결제 ( {{ (product.member_discount_rate * 100)|int }}% 특별 할인 적용 ) </div>
                     <div>
                         <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인하고 할인 결제</button>
                         <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">회원가입</button>
