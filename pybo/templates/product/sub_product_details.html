@@ -2,9 +2,9 @@
     {% for item in product_itinerary %}
         <h5>🍱 일정 중 식사 안내</h5>
         <div class="meals-section">
-            <p> - 아침: {{ item.meals.breakfast }}</p>
-            <p> - 점심: {{ item.meals.lunch }}</p>
-            <p> - 저녁: {{ item.meals.dinner }}</p>
+            <p> - 아침 : {{ item.meals.breakfast }}</p>
+            <p> - 점심 : {{ item.meals.lunch }}</p>
+            <p> - 저녁 : {{ item.meals.dinner }}</p>
         </div>
 
         <hr>
@@ -16,8 +16,8 @@
                 <li>
                     <h6> {{ time_detail.icon }} {{ time_detail.title }}</h6>
                     <div>
-                        <p>- 위치: {{ time_detail.location }}</p>
-                        <p>- 안내: {{ time_detail.desc }}</p>
+                        <p>- 위치 : {{ time_detail.location }}</p>
+                        <p>- 안내 : {{ time_detail.desc }}</p>
                     </div>
                 </li>
             {% endfor %}
