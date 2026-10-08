@@ -71,6 +71,14 @@ def sub_product(product_id):
     elif isinstance(raw_details, dict):
         product_details = raw_details
 
+    session_db = TourProduct.query.session
+    is_liked = False
+    if g.user:
+        check_query = text("SELECT user_id FROM direct_product_like WHERE user_id = :u_id AND product_id = :p_id")
+        already_liked = session_db.execute(check_query, {'u_id': g.user.id, 'p_id': product_id}).fetchone()
+        if already_liked:
+            is_liked = True  # 추천한 기록이 있다면 True로 변경
+
     is_liked = False
     if g.user:
         is_liked = selected_product.is_liked_by(g.user)
