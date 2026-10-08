@@ -95,14 +95,32 @@ def toggle_product_like():
         return jsonify({'error': 'bad_request'}), 400
 
     selected_product = TourProduct.query.get_or_404(product_id)
+    session_db = selected_product.query.session
 
-    # 1. DB에서 현재 유저가 이 상품을 이미 추천했는지 조회 (ProductLike 모델 사용)
-    existing_like = ProductLike.query.filter_by(user_id=g.user.id, product_id=product_id).first()
+    create_table_query = """
+                         CREATE TABLE IF NOT EXISTS direct_product_like
+                         (user_id INTEGER NOT NULL, 
+                            product_id INTEGER NOT NULL,
+                             PRIMARY KEY(user_id, product_id)
+                             ); 
+                         """
+    try:
+        session_db.execute(text(create_table_query))
+        session_db.commit()  # 테이블 생성을 먼저 확실하게 커밋
+    except Exception:
+        session_db.rollback()  # 이미 테이블이 존재하는 등의 이유로 에러가 나면 롤백 후 진행
 
-    if existing_like:
-        # 추천 취소 처리
-        db.session.delete(existing_like)
-        selected_product.recommendation_count = max(0, (selected_product.recommendation_count or 0) - 1)
+    # 3. DB에서 현재 유저가 이 상품을 이미 추천했는지 조회
+    check_query = text("SELECT user_id FROM direct_product_like WHERE user_id = :u_id AND product_id = :p_id")
+    already_liked = session_db.execute(check_query, {'u_id': g.user.id, 'p_id': product_id}).fetchone()
+
+    if already_liked:
+        # 4-A. 이미 추천 이력이 DB에 있다면 -> 추천 취소 처리
+        selected_product.recommendation_count = max(0, selected_product.recommendation_count - 1)
+
+        # DB에서 추천 기록 삭제
+        delete_query = text("DELETE FROM direct_product_like WHERE user_id = :u_id AND product_id = :p_id")
+        session_db.execute(delete_query, {'u_id': g.user.id, 'p_id': product_id})
         status = "canceled"
     else:
         # 추천 등록 처리
