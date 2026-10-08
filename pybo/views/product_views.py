@@ -1,7 +1,7 @@
 import ast
 from flask import render_template, Blueprint, request, session, g, jsonify
-from pybo.models import TourProduct, Review
-from sqlalchemy import text
+from pybo import db
+from pybo.models import TourProduct, Review, ProductLike
 
 
 bp = Blueprint('product', __name__, url_prefix='/product')
@@ -71,13 +71,9 @@ def sub_product(product_id):
     elif isinstance(raw_details, dict):
         product_details = raw_details
 
-    session_db = TourProduct.query.session
     is_liked = False
     if g.user:
-        check_query = text("SELECT user_id FROM direct_product_like WHERE user_id = :u_id AND product_id = :p_id")
-        already_liked = session_db.execute(check_query, {'u_id': g.user.id, 'p_id': product_id}).fetchone()
-        if already_liked:
-            is_liked = True  # 추천한 기록이 있다면 True로 변경
+        is_liked = selected_product.is_liked_by(g.user)
 
     return render_template('product/sub_product.html',
                            product=selected_product, reviews=product_review,
@@ -89,7 +85,9 @@ def sub_product(product_id):
 
 @bp.route('/sub_product/like', methods=['POST'])
 def toggle_product_like():
-    # 2. 자바스크립트가 보낸 JSON 데이터 파싱
+    if not g.user:
+        return jsonify({'error': 'unauthorized', 'message': '로그인이 필요합니다.'}), 401
+
     data = request.get_json() or {}
     product_id = data.get('product_id')
 
@@ -125,19 +123,16 @@ def toggle_product_like():
         session_db.execute(delete_query, {'u_id': g.user.id, 'p_id': product_id})
         status = "canceled"
     else:
-        # 4-B. 추천한 적이 없다면 -> 추천 처리
-        selected_product.recommendation_count += 1
-
-        # DB에 새로운 추천 기록 추가
-        insert_query = text("INSERT INTO direct_product_like (user_id, product_id) VALUES (:u_id, :p_id)")
-        session_db.execute(insert_query, {'u_id': g.user.id, 'p_id': product_id})
+        # 추천 등록 처리
+        new_like = ProductLike(user_id=g.user.id, product_id=product_id)
+        db.session.add(new_like)
+        selected_product.recommendation_count = (selected_product.recommendation_count or 0) + 1
         status = "liked"
 
-    # 5. 숫자 카운트와 추천 기록을 DB에 최종 커밋
     try:
-        session_db.commit()
+        db.session.commit()
     except Exception as e:
-        session_db.rollback()
+        db.session.rollback()
         return jsonify({'error': 'database_error', 'details': str(e)}), 500
 
     return jsonify({
@@ -145,4 +140,5 @@ def toggle_product_like():
         'status': status,
         'recommendation_count': selected_product.recommendation_count
     }), 200
+
 
