@@ -34,15 +34,17 @@
                 <div>
                     <!-- 슬라이드 밑-->
                     <div id="recommend">
-                        <p id="heart">❤️{{ "{:,}".format(product.recommendation_count) }}명이 추천했습니다!</p>
+                        <p id="heart">❤️{{ "{:,}".format(product.recommendation_count) }}명이 추천했습니다! 이 상품이 마음에 들면 추천해주세요.</p>
                         {% if g.user %}
-                        <button class="log_heart" >추천하기</button>
+                        <button class="log_heart {% if is_liked %}active{% endif %}">
+                            {% if is_liked %}추천완료 ❤️{% else %}추천하기{% endif %}</button>
                         {% else %}
                         <button class="log_heart" onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`"> 추천하기 <br> (로그인)</button>
                         {% endif %}
                     </div>
                     <button class="white-btn" onclick="location.href=`{{ url_for('customer.faq_list') }}`">1:1문의</button>
-                    <button class="white-btn" id="like-btn">♡</button>
+                    <button class="white-btn" id="like-btn" class="{% if is_liked %}active{% endif %}">
+                        {% if is_liked %}❤️{% else %}♡{% endif %}</button>
                     <button class="white-btn" onclick="window.print()">🖨️</button>
                     <button class="white-btn" id="copy-btn">🖇️</button>
                 </div>
@@ -77,10 +79,10 @@
                     <h5>🛒 비회원 일반 구매</h5>
                     {% endif %}
                     <div>
-                        <p>수량/인원: 1인</p>
+                        <p>수량/인원 : 1인 기준</p>
                     </div>
                     {% if g.user %}
-                        <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 회원 바로 구매하기(할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원)</button>
+                        <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 바로 구매하기 (할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원)</button>
                     {% else %}
                         <button onclick="location.href=`{{ url_for('order.reserve', product_id=product.id) }}`"> 비회원 바로 구매하기(정가 {{ "{:,}".format(product.original_price) }}원)</button>
                     {% endif %}
@@ -88,10 +90,10 @@
                 {% if g.user %}
                 {% else %}
                 <div id="log-discount">
-                    <div>💡로그인 시 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원 ( {{ (product.member_discount_rate * 100)|int }}% 특별할인 적용 ) </div>
+                    <div>💡로그인 시 할인가 {{ "{:,}".format((product.original_price * (1 - product.member_discount_rate))|int) }}원 결제 ( {{ (product.member_discount_rate * 100)|int }}% 특별 할인 적용 ) </div>
                     <div>
                         <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인하고 할인 결제</button>
-                        <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">간편 회원가입</button>
+                        <button onclick="location.href=`{{ url_for('auth.signup', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">회원가입</button>
                     </div>
                 </div>
                 {% endif %}
@@ -126,7 +128,7 @@
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="color: #212529">지도보기</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="color: #212529">출발 전 정보</button>
+                <button class="nav-link" id="info-tab" data-bs-toggle="tab" data-bs-target="#info-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false" style="color: #212529">추가정보</button>
             </li>
         </ul>
         <div class="tab-content 2-100" id="myTabContent">
@@ -180,8 +182,8 @@
     <div class="wide1">
         <div id="log-ad">
             <div>
-                <h6>로그인하시면 위 추천 민박 및 호텔을 회원가로 함꼐 예약하실 수 있습니다.</h6>
-                <p>회원 가입 즉시 관광 상품 10~20% 및 숙박 시설 우대 할인이 자동 적용됩니다.</p>
+                <h6>로그인하시면 추천 숙소를 회원가로 함께 예약하실 수 있습니다.</h6>
+                <p>회원 가입 즉시 패키지 10~20% 및 숙소 우대 할인이 자동 적용됩니다.</p>
             </div>
             <div>
                 <button onclick="location.href=`{{ url_for('auth.login', next=request.full_path.rstrip('?') if (request.endpoint and not request.endpoint.startswith('auth.')) else None) }}`">로그인</button>
@@ -204,19 +206,18 @@
                         {{ (total.sum / total_count) | round(1) }}
                     {% else %}0.0
                     {% endif %}/ 5.0 </div>
-                <p>(비회원은 후기 읽기만 가능합니다.)</p>
-
+                <p>(비회원은 읽기만 가능합니다.)</p>
             </div>
         </div>
         <div id="review_w">
             {% for review in reviews %}
             <div id="detail_star">
-                <div>👤 {{ review.author.name if review.author else '고객' }} (아이디: {{ review.author.user_id if review.author else review.user_id }}) <span class="review-stars"> {{ '★' * review.rating }}{{ '☆' * (5 - review.rating) }}</span>  </div>
+                <div>👤 {{ review.author.name if review.author else '고객' }} ({{ review.author.user_id if review.author else review.user_id }}) <span class="review-stars"> {{ '★' * review.rating }}{{ '☆' * (5 - review.rating) }}</span>  </div>
                 <div>
-                    <div> {{ review.created_at.strftime('%Y-%m-%d') if review.created_at else '' }}</div>
                     {% if g.user and review.user_id == g.user.id %}
                     <div><a href="{{ url_for('review.modify', review_id=review.id) }}" class="badge bg-primary text-white text-decoration-none" style="font-size: 0.75rem;">✏️ 수정</a></div>
                     {% endif %}
+                    <div> {{ review.created_at.strftime('%Y-%m-%d') if review.created_at else '' }}</div>
                 </div>
             </div>
             <p> {{ review.content }} </p>

@@ -22,7 +22,7 @@ def index():
 
     top_products = TourProduct.query.order_by(TourProduct.recommendation_count.desc()).limit(6).all()
     if not top_products or len(top_products) == 0:
-        top_products = TourProduct.query.order_by(TourProduct.id.desc()).
+        top_products = TourProduct.query.order_by(TourProduct.id.desc())
     context['product_list'] = top_products
 
     return render_template('index.html', **context)
