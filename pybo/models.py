@@ -22,8 +22,21 @@ class User(db.Model):
     orders = db.relationship('Order', backref='user', lazy='dynamic', cascade='all, delete-orphan')
     #cart = db.relationship('Cart', backref='user', uselist=False, cascade='all, delete-orphan')
     likes = db.relationship('ProductLike', backref='user', lazy='dynamic', cascade='all, delete-orphan')
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
 
 class RegionEnum(str, enum.Enum):
     SEOUL_GYEONGGI = "서울/경기"
@@ -84,7 +97,7 @@ class TourProduct(db.Model):
 
     def is_liked_by(self, user):
         """특정 사용자가 이미 추천했는지 여부"""
-        if not user or not user.is_authenticated:
+        if not user or not getattr(user, 'id', None):
             return False
         return self.likes.filter_by(user_id=user.id).first() is not None
 
