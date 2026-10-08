@@ -657,4 +657,45 @@ body { top: 0 !important; margin-top: 0 !important; }
     transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
+/* ==========================================================================
+   글로벌 브랜드 로고 마크 (.logo-mark) - 공통 단일 정의
+   ========================================================================== */
+.logo-mark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    margin-bottom: 7px;
+}
+
+.logo-mark span {
+    width: 6px;
+    height: 24px;
+    display: block;
+    margin: 0 1px;
+    border-radius: 1px;
+}
+
+.logo-mark span:nth-child(1) { background: #1E3A5F; }
+.logo-mark span:nth-child(2) { background: #A64C4D; }
+.logo-mark span:nth-child(3) { background: #E0AA3E; }
+.logo-mark span:nth-child(4) { background: #3D7D66; }
+
+/* 큰 로고 마크 변형 (예: 예약/결제 완료 화면) */
+.complete-container .logo-mark,
+.logo-mark.logo-mark-lg {
+    height: 32px;
+    margin-bottom: 12px;
+}
+
+.complete-container .logo-mark span,
+.logo-mark.logo-mark-lg span {
+    width: 8px;
+    height: 30px;
+    margin: 0 2px;
+    border-radius: 2px;
+}
+
+
+
 
