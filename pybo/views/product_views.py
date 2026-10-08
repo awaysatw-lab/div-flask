@@ -2,7 +2,7 @@ import ast
 from flask import render_template, Blueprint, request, session, g, jsonify
 from pybo import db
 from pybo.models import TourProduct, Review, ProductLike
-
+from sqlalchemy import text
 
 bp = Blueprint('product', __name__, url_prefix='/product')
 
@@ -71,9 +71,16 @@ def sub_product(product_id):
     elif isinstance(raw_details, dict):
         product_details = raw_details
 
+    session_db = TourProduct.query.session
     is_liked = False
     if g.user:
-        is_liked = selected_product.is_liked_by(g.user)
+        # 안전한 db.session 방식으로 변경
+        check_query = text("SELECT user_id FROM direct_product_like WHERE user_id = :u_id AND product_id = :p_id")
+        already_liked = db.session.execute(check_query, {'u_id': g.user.id, 'p_id': product_id}).fetchone()
+
+        if already_liked:
+            is_liked = True  # 추천한 기록이 있다면 True로 변경
+
 
     return render_template('product/sub_product.html',
                            product=selected_product, reviews=product_review,
@@ -95,38 +102,45 @@ def toggle_product_like():
         return jsonify({'error': 'bad_request'}), 400
 
     selected_product = TourProduct.query.get_or_404(product_id)
-    session_db = selected_product.query.session
 
     create_table_query = """
                          CREATE TABLE IF NOT EXISTS direct_product_like
-                         (user_id INTEGER NOT NULL, 
-                            product_id INTEGER NOT NULL,
-                             PRIMARY KEY(user_id, product_id)
-                             ); 
+                         ( \
+                             user_id \
+                             INTEGER \
+                             NOT \
+                             NULL, \
+                             product_id \
+                             INTEGER \
+                             NOT \
+                             NULL, \
+                             PRIMARY \
+                             KEY \
+                         ( \
+                             user_id, \
+                             product_id \
+                         )); \
                          """
     try:
-        session_db.execute(text(create_table_query))
-        session_db.commit()  # 테이블 생성을 먼저 확실하게 커밋
+        db.session.execute(text(create_table_query))
+        db.session.commit()
     except Exception:
-        session_db.rollback()  # 이미 테이블이 존재하는 등의 이유로 에러가 나면 롤백 후 진행
+        db.session.rollback()
 
-    # 3. DB에서 현재 유저가 이 상품을 이미 추천했는지 조회
     check_query = text("SELECT user_id FROM direct_product_like WHERE user_id = :u_id AND product_id = :p_id")
-    already_liked = session_db.execute(check_query, {'u_id': g.user.id, 'p_id': product_id}).fetchone()
+    already_liked = db.session.execute(check_query, {'u_id': g.user.id, 'p_id': product_id}).fetchone()
 
     if already_liked:
-        # 4-A. 이미 추천 이력이 DB에 있다면 -> 추천 취소 처리
-        selected_product.recommendation_count = max(0, selected_product.recommendation_count - 1)
+        selected_product.recommendation_count = max(0, (selected_product.recommendation_count or 0) - 1)
 
-        # DB에서 추천 기록 삭제
         delete_query = text("DELETE FROM direct_product_like WHERE user_id = :u_id AND product_id = :p_id")
-        session_db.execute(delete_query, {'u_id': g.user.id, 'p_id': product_id})
+        db.session.execute(delete_query, {'u_id': g.user.id, 'p_id': product_id})
         status = "canceled"
     else:
-        # 추천 등록 처리
-        new_like = ProductLike(user_id=g.user.id, product_id=product_id)
-        db.session.add(new_like)
         selected_product.recommendation_count = (selected_product.recommendation_count or 0) + 1
+
+        insert_query = text("INSERT INTO direct_product_like (user_id, product_id) VALUES (:u_id, :p_id)")
+        db.session.execute(insert_query, {'u_id': g.user.id, 'p_id': product_id})
         status = "liked"
 
     try:
